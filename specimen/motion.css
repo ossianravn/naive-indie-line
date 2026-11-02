@@ -36,12 +36,26 @@
     opacity: 0;
   }
 }
-[data-boil="art"] .takes.awake > * {
-  animation-play-state: running;
+/* Any element can set data-boil for its subtree; the nearest one wins, because the choice travels as inherited
+   custom properties rather than through ancestor selectors. */
+[data-boil="off"] {
+  --boil: paused;
+  --boil-hover: paused;
+}
+[data-boil="hover"] {
+  --boil: paused;
+  --boil-hover: running;
+}
+[data-boil="art"] {
+  --boil: running;
+  --boil-hover: running;
+}
+.takes.awake > * {
+  animation-play-state: var(--boil, paused);
 }
 @media (hover: hover) and (pointer: fine) {
-  [data-boil="hover"] .takes.awake:hover > * {
-    animation-play-state: running;
+  .takes.awake:hover > * {
+    animation-play-state: var(--boil-hover, paused);
   }
 }
 /* Settling after a reroll: the script steps data-show through the takes, then removes it. */

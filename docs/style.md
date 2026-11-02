@@ -125,6 +125,8 @@ Each letter takes a small seeded tilt and lift, so a word reads as hand-lettered
 | `hover` (default)     | A drawing while the pointer is over it (fine pointers only)       |
 | `art`                 | Every drawing, lettering and scene on screen, all the time        |
 
+Any element can set `data-boil` for its subtree, and the nearest one wins (the choice travels as inherited custom properties), so a hero or an empty state can boil all the time inside a hover page, or a dense screen can switch it off. Heroes and empty states boil on hover like everything else for now; always-on for them can become a setting.
+
 Never boiling: controls, frames round fields, tables and anything a person reads or operates. Boil pauses off screen, and `prefers-reduced-motion` stops it.
 
 Values (proposed): three takes, 120 ms each (about 8 drawings a second, "on threes" at 24 fps); the takes swap by `opacity` in `steps(1, end)`, so nothing reflows. The other moments, from the motion sweep of 2 November 2026:
@@ -169,4 +171,3 @@ The plan tracks these as decisions; the direction itself (S1) is agreed.
 7. The correction pen as the only second colour.
 8. The wash as an art-only second tone.
 9. Our own letters: which of the four faces to keep, and whether to build them as font files now.
-10. Line boil: whether some surfaces (heroes, empty states, the desk) boil all the time by default; the document default is `hover`.
