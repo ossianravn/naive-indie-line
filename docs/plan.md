@@ -61,7 +61,7 @@ Style decisions (S) are the maintainer's; the [Style brief](style.md#open-choice
 | S15 | **People with faces** alongside the headless visitors                                                      | decided 2026-11-02 | Dot eyes, a line nose, a short mouth; seeded hair, glasses and beards                                                           |
 | S16 | **A growing object library** in collections: indie, food and drink, studio, people                         | decided 2026-11-02 | The maintainer: objects are where the kit expands most, now and over time. 55 objects in the specimen                           |
 | S17 | **Go big on motion**, as drawing: the pen moves, the paper does not                                        | decided 2026-11-02 | Asked for by the maintainer. The sweep keeps controls quick and quiet and spends the delight on art, rerolls and rare moments |
-| S18 | **Line boil as an option**: `data-boil` is `off`, `hover` or `art`; three takes from labelled pen forks, 120 ms each | decided 2026-11-02 (as an option) | The maintainer loves the redrawn look of rerolling but not its roughness. Open: the default, and which surfaces boil by default |
+| S18 | **Line boil as an option**: `data-boil` is `off`, `hover` or `art`; three takes from labelled pen forks, 120 ms each | decided 2026-11-02; default `hover` | The maintainer loves the redrawn look of rerolling but not its roughness, and chose `hover` as the default. Open: whether heroes and empty states boil all the time |
 | S19 | **Motion values**: one curve, `cubic-bezier(0.23, 1, 0.32, 1)`; 140–200 ms for controls and overlays; draw-on only in rare moments | proposed | From the motion sweep; see the style brief's Motion table |
 
 Logic decisions (L) follow Patina's, carried over by request; each still needs the maintainer's confirmation where Patina's did.
@@ -116,7 +116,8 @@ Each phase ships kit parts with the site pages and demo screens that use them, a
 - [x] Lettering: skeleton alphabet with Æ Ø Å and accents, four faces, a field to try your own words (S14)
 - [x] Motion sweep (`find-animation-opportunities`): five opportunities kept, five rejected; recorded in the style brief (S17–S19)
 - [x] Prototype motion in the specimen: a Line boil setting (off, hover, art), the settle on reroll and scene change, marks the pen puts down, press feedback, a real dialog that opens and closes, and the scene and empty state drawn on when first seen
-- [ ] Maintainer review, round 2: S2–S11, S13's face, S14's faces and font build, S18's default
+- [x] Line boil default: `hover` (S18), set in the specimen
+- [ ] Maintainer review, round 2: S2–S11, S13's face, S14's faces and font build
 - [ ] Fold the agreed choices into the specimen and the brief; drop the losing options
 
 Exit: the maintainer signs off the specimen as the style.
@@ -182,7 +183,7 @@ Docs complete, changelog, share images drawn by the pen, consumer installs into 
 ## Open questions for the maintainer
 
 1. Which of the four lettering faces to keep, and should Phase 1b build them as font files (S14)?
-2. Line boil (S18): default `off`, or `hover` for drawings? Should heroes and empty states boil by default?
+2. Line boil (S18): the default is `hover`; should heroes and empty states boil all the time?
 3. Typewriter face (S13): Courier Prime or Cutive Mono? Labels in small caps or typewriter by default (S9)?
 4. Reading face (S3) and hand face (S4).
 5. Frames (S6): filtered CSS frames everywhere they resize, as recommended?

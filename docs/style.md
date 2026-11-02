@@ -121,8 +121,8 @@ Each letter takes a small seeded tilt and lift, so a word reads as hand-lettered
 
 | Setting (`data-boil`) | What boils                                                        |
 | --------------------- | ----------------------------------------------------------------- |
-| `off` (default)       | Nothing                                                           |
-| `hover`               | A drawing while the pointer is over it (fine pointers only)       |
+| `off`                 | Nothing                                                           |
+| `hover` (default)     | A drawing while the pointer is over it (fine pointers only)       |
 | `art`                 | Every drawing, lettering and scene on screen, all the time        |
 
 Never boiling: controls, frames round fields, tables and anything a person reads or operates. Boil pauses off screen, and `prefers-reduced-motion` stops it.
@@ -169,4 +169,4 @@ The plan tracks these as decisions; the direction itself (S1) is agreed.
 7. The correction pen as the only second colour.
 8. The wash as an art-only second tone.
 9. Our own letters: which of the four faces to keep, and whether to build them as font files now.
-10. Line boil: which setting is the default, and where `hover` and `art` apply by default (heroes, empty states, the desk).
+10. Line boil: whether some surfaces (heroes, empty states, the desk) boil all the time by default; the document default is `hover`.
