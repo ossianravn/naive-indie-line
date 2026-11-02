@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "textarea",
+  "title": "Textarea",
+  "description": "Textarea, in the Fineliner style.",
+  "registryDependencies": [
+    "@fineliner/base"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/textarea.tsx",
+      "content": "import * as React from \"react\"\nimport { cn } from \"@/fineliner/lib/utils\"\n\n// A few lines of text inside the steady pen line of a field; it grows with what is written. Width follows the\n// writing it expects (the 34rem measure for a note); set it at the call site. data-ruled=\"true\" adds faint notebook\n// lines on the text baseline.\nfunction Textarea({ className, ...props }: React.ComponentProps<\"textarea\">) {\n  return (\n    <textarea\n      data-slot=\"textarea\"\n      className={cn(\n        \"control-field flex field-sizing-content min-h-24 w-full px-tight py-hair data-[ruled=true]:bg-[linear-gradient(transparent_calc(1lh-1px),color-mix(in_srgb,var(--pen)_22%,transparent)_calc(1lh-1px))] data-[ruled=true]:bg-size-[100%_1lh] data-[ruled=true]:bg-local data-[ruled=true]:bg-origin-content\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Textarea }\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/textarea.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

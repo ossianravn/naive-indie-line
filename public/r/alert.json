@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "alert",
+  "title": "Alert",
+  "description": "Alert, in the Fineliner style.",
+  "dependencies": [
+    "class-variance-authority@^0.7.1"
+  ],
+  "registryDependencies": [
+    "@fineliner/base",
+    "@fineliner/pen"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/alert.tsx",
+      "content": "import * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\nimport { penMark } from \"@/fineliner/pen/pen-marks\"\nimport { cn } from \"@/fineliner/lib/utils\"\n\n// A note open on the page, as in a margin: a short pen rule down its inline-start edge and a pen mark by the title.\n// Pass an icon (a Lucide icon) as the first child and it takes the mark's place. Destructive writes the rule, the mark\n// and the title in the correction pen; the description stays in the reading pen.\nconst MARK = penMark(\"arrow\", \"alert\", \"calm\")\n\nconst alertVariants = cva(\n  \"group/alert relative grid w-full grid-cols-[auto_minmax(0,1fr)] items-start gap-x-tight gap-y-0.5 py-hair pl-snug text-left text-small leading-small text-pen before:absolute before:inset-y-0 before:left-0 before:w-3 before:-translate-x-1/2 before:bg-[linear-gradient(currentColor,currentColor)] before:bg-size-[var(--pen-weight)_100%] before:bg-center before:bg-no-repeat before:[filter:var(--wob,var(--wob-3))] has-data-[slot=alert-action]:pr-28 *:[svg]:row-span-2 *:[svg]:mt-[0.2rem] *:[svg:not([class*='size-'])]:size-4\",\n  {\n    variants: {\n      variant: {\n        default: \"\",\n        destructive: \"text-correction\",\n      },\n    },\n    defaultVariants: {\n      variant: \"default\",\n    },\n  },\n)\n\nfunction Alert({\n  className,\n  variant,\n  children,\n  ...props\n}: React.ComponentProps<\"div\"> & VariantProps<typeof alertVariants>) {\n  return (\n    <div\n      data-slot=\"alert\"\n      role=\"alert\"\n      className={cn(alertVariants({ variant }), className)}\n      {...props}\n    >\n      <span\n        aria-hidden=\"true\"\n        data-slot=\"alert-mark\"\n        className=\"pointer-events-none col-start-1 row-start-1 mt-[0.15rem] block h-[0.85rem] w-[1.3rem] group-has-[>svg]/alert:hidden [&>svg]:size-full\"\n        dangerouslySetInnerHTML={{ __html: MARK }}\n      />\n      {children}\n    </div>\n  )\n}\n\nfunction AlertTitle({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"alert-title\"\n      className={cn(\n        \"col-start-2 font-read text-ui leading-ui font-medium\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction AlertDescription({\n  className,\n  ...props\n}: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"alert-description\"\n      className={cn(\n        \"col-start-2 max-w-measure text-small leading-small text-balance text-pen-quiet md:text-pretty [&_p]:m-0 [&_p:not(:last-child)]:mb-hair\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction AlertAction({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"alert-action\"\n      className={cn(\"absolute top-1/2 right-0 -translate-y-1/2\", className)}\n      {...props}\n    />\n  )\n}\n\nexport { Alert, AlertTitle, AlertDescription, AlertAction }\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/alert.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

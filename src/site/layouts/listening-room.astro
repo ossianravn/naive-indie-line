@@ -1,0 +1,95 @@
+---
+// Listening Room's own frame: a product, not the docs. Its mark, its navigation; a quiet link back to Fineliner.
+import "@/fineliner/styles/fineliner.css"
+import { FinelinerDefs } from "@/fineliner/defs/fineliner-defs"
+import { appearanceScript } from "@/fineliner/theme/appearance-script"
+import { frameVars, seedOf } from "@/fineliner/pen"
+import { Drawing } from "@/fineliner/drawing/drawing"
+import { Lettering } from "@/fineliner/drawing/lettering"
+
+interface Props {
+  title: string
+  /** Sign-in has no navigation. */
+  bare?: boolean
+}
+const { title, bare = false } = Astro.props
+const path = Astro.url.pathname.replace(/\/$/, "")
+const NAV = [
+  { href: "/listening-room", label: "Catalogue" },
+  { href: "/listening-room/settings", label: "Settings" },
+]
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · Listening Room</title>
+    <meta
+      name="description"
+      content="Listening Room, a record shop with a room to listen in: a demo product built with Fineliner."
+    />
+    <script is:inline set:html={appearanceScript()} />
+  </head>
+  <body>
+    <FinelinerDefs />
+    <a
+      class="label absolute -left-[999px] top-2 z-30 bg-pen px-tight py-hair text-paper focus:left-2"
+      href="#main"
+    >
+      Skip to content
+    </a>
+    {!bare && (
+      <header class="mx-auto max-w-[72rem] px-snug sm:px-line">
+        <div class="flex h-18 items-center gap-snug sm:gap-section">
+          <a
+            href="/listening-room"
+            class="flex items-center gap-tight no-underline"
+            aria-label="Listening Room"
+          >
+            <Drawing
+              object="turntable"
+              seed="listening-room"
+              title=""
+              still
+              className="w-11"
+            />
+            <Lettering
+              text="Listening Room"
+              seed="listening-room"
+              face="stilt"
+              className="max-[26rem]:hidden [&>svg]:h-7 [&>svg]:w-auto"
+            />
+          </a>
+          <nav aria-label="Listening Room">
+            <ul class="m-0 flex list-none gap-snug p-0">
+              {NAV.map(({ href, label }) => (
+                <li>
+                  <a
+                    href={href}
+                    aria-current={path === href ? "page" : undefined}
+                    class="text-small text-pen-quiet no-underline hover:text-pen aria-[current=page]:text-pen aria-[current=page]:underline"
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <a href="/" class="label ml-auto text-pen-quiet max-sm:hidden">
+            Demo · Fineliner
+          </a>
+        </div>
+        <div
+          class="rule"
+          style={frameVars(seedOf("listening-room-rule"))}
+          aria-hidden="true"
+        />
+      </header>
+    )}
+    <main id="main">
+      <slot />
+    </main>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "radio-group",
+  "title": "Radio Group",
+  "description": "Radio Group, in the Fineliner style.",
+  "dependencies": [
+    "@base-ui/react@^1.9.0"
+  ],
+  "registryDependencies": [
+    "@fineliner/base",
+    "@fineliner/pen"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/radio-group.tsx",
+      "content": "import { Radio as RadioPrimitive } from \"@base-ui/react/radio\"\nimport { RadioGroup as RadioGroupPrimitive } from \"@base-ui/react/radio-group\"\nimport { penMark } from \"@/fineliner/pen/pen-marks\"\nimport { cn } from \"@/fineliner/lib/utils\"\n\n// A circle the pen draws (a round line bent by the wobble filter); choosing it puts down an inked dot. The circle\n// presses harder under the pointer and dims with its text when disabled. The ::after inset keeps the hit area at 24px.\nconst DOT = penMark(\"dot\", \"radio-group\", \"calm\")\n\nfunction RadioGroup({ className, ...props }: RadioGroupPrimitive.Props) {\n  return (\n    <RadioGroupPrimitive\n      data-slot=\"radio-group\"\n      className={cn(\"grid w-full gap-tight\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction RadioGroupItem({ className, ...props }: RadioPrimitive.Root.Props) {\n  return (\n    <RadioPrimitive.Root\n      data-slot=\"radio-group-item\"\n      className={cn(\n        \"group/radio-group-item peer relative isolate flex aspect-square size-[1.15rem] shrink-0 cursor-pointer rounded-full text-pen before:absolute before:inset-0 before:-z-10 before:rounded-full before:border-(length:--pen-weight) before:border-current before:[filter:var(--wob,var(--wob-1))] after:absolute after:-inset-x-3 after:-inset-y-2 hover:[--pen-weight:var(--pen-weight-pressed)] data-disabled:cursor-not-allowed data-disabled:text-pen-faint aria-invalid:text-correction\",\n        className,\n      )}\n      {...props}\n    >\n      <RadioPrimitive.Indicator\n        data-slot=\"radio-group-indicator\"\n        className=\"put-down pointer-events-none absolute inset-0\"\n      >\n        <span\n          aria-hidden=\"true\"\n          className=\"block size-full [&>svg]:size-full\"\n          dangerouslySetInnerHTML={{ __html: DOT }}\n        />\n      </RadioPrimitive.Indicator>\n    </RadioPrimitive.Root>\n  )\n}\n\nexport { RadioGroup, RadioGroupItem }\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/radio-group.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

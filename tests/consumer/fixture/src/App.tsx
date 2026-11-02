@@ -1,14 +1,43 @@
+import { useState } from "react"
 import { FinelinerDefs } from "@/fineliner/defs/fineliner-defs"
 import { Drawing } from "@/fineliner/drawing/drawing"
 import { Lettering } from "@/fineliner/drawing/lettering"
 import { Circled } from "@/fineliner/drawing/pen-mark"
 import { cn } from "@/fineliner/lib/utils"
 import { useAppearance } from "@/fineliner/theme"
+import { Avatar, AvatarFallback } from "@/fineliner/ui/avatar"
+import { Button } from "@/fineliner/ui/button"
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/fineliner/ui/dialog"
+import { Field, FieldGroup, FieldLabel } from "@/fineliner/ui/field"
+import { Input } from "@/fineliner/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/fineliner/ui/select"
+import { ToggleGroup, ToggleGroupItem } from "@/fineliner/ui/toggle-group"
 
-// A record shop's opening notice: lettering, a drawing and a ringed date, with a switch between day and night, using
-// the parts the install test adds.
+const LENGTHS = [
+  { value: "30", label: "Half an hour" },
+  { value: "60", label: "An hour" },
+]
+
+// A record shop's opening notice: lettering, a drawing and a ringed date, a day and night switch, and a booking
+// dialog, using the parts the install test adds.
 export function App() {
   const [appearance, setAppearance] = useAppearance()
+  const [length, setLength] = useState("60")
   const night = appearance.theme === "night"
 
   return (
@@ -19,15 +48,65 @@ export function App() {
         <Drawing object="turntable" seed="consumer" className="w-64" />
         <p className={cn("font-read text-body", night && "text-pen")}>
           Records, coffee and a listening corner, open from{" "}
-          <Circled seed="opening">Friday</Circled>.
+          <Circled seed="opening">Thursday</Circled>.
         </p>
-        <button
-          type="button"
-          className="frame h-control w-fit px-snug font-ui text-ui"
-          onClick={() => setAppearance({ theme: night ? "day" : "night" })}
+        <Avatar size="lg">
+          <AvatarFallback name="Maya Singh">MS</AvatarFallback>
+        </Avatar>
+        <ToggleGroup
+          variant="outline"
+          spacing={0}
+          value={[appearance.theme]}
+          onValueChange={(value) =>
+            value[0] && setAppearance({ theme: value[0] as "day" | "night" })
+          }
+          aria-label="Light"
         >
-          {night ? "Day" : "Night"}
-        </button>
+          <ToggleGroupItem value="day">Day</ToggleGroupItem>
+          <ToggleGroupItem value="night">Night</ToggleGroupItem>
+        </ToggleGroup>
+        <Dialog>
+          <DialogTrigger render={<Button className="w-fit" />}>
+            Book a session
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Book a listening session</DialogTitle>
+              <DialogDescription>Thursday 5 November</DialogDescription>
+            </DialogHeader>
+            <FieldGroup>
+              <Field>
+                <FieldLabel htmlFor="name">Name</FieldLabel>
+                <Input id="name" className="w-64" />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="length">Length</FieldLabel>
+                <Select
+                  items={LENGTHS}
+                  value={length}
+                  onValueChange={(value) => value && setLength(value)}
+                >
+                  <SelectTrigger id="length" className="w-44">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {LENGTHS.map((item) => (
+                      <SelectItem key={item.value} value={item.value}>
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
+            </FieldGroup>
+            <DialogFooter>
+              <DialogClose render={<Button variant="outline" />}>
+                Cancel
+              </DialogClose>
+              <Button>Book</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </main>
     </>
   )

@@ -23,8 +23,13 @@
   --wash: var(--wash-oxblood);
 }
 
-:root {
+/* Recomputed wherever a pen is chosen, so a region with its own pen gets its own quieter pens and tint. */
+:root,
+[data-pen] {
   --ink: var(--pen);
+  /* Quieter pens for placeholders (still 4.5:1 on flat paper) and for disabled text (exempt from contrast). */
+  --pen-quiet: color-mix(in srgb, var(--pen) 78%, var(--paper));
+  --pen-faint: color-mix(in srgb, var(--pen) 45%, var(--paper));
   /* A flat tint of the pen for hover and recessed wells: ink thinned to almost nothing. */
   --tint: color-mix(in srgb, var(--pen) 9%, var(--paper));
 }

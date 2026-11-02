@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "native-select",
+  "title": "Native Select",
+  "description": "Native Select, in the Fineliner style.",
+  "registryDependencies": [
+    "@fineliner/base",
+    "@fineliner/pen"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/native-select.tsx",
+      "content": "import * as React from \"react\"\nimport { penMark } from \"@/fineliner/pen/pen-marks\"\nimport { cn } from \"@/fineliner/lib/utils\"\n\ntype NativeSelectProps = Omit<React.ComponentProps<\"select\">, \"size\"> & {\n  size?: \"sm\" | \"default\"\n}\n\n// The platform's own select inside the same steady field as Select's trigger, with the pen's chevron over it. The\n// open list stays native and follows the page's colour scheme. Width goes on the wrapper, set at the call site.\nconst CHEVRON = penMark(\"chevron\", \"native-select\", \"calm\")\n\nfunction NativeSelect({\n  className,\n  size = \"default\",\n  ...props\n}: NativeSelectProps) {\n  return (\n    <div\n      className={cn(\"group/native-select relative w-fit\", className)}\n      data-slot=\"native-select-wrapper\"\n      data-size={size}\n    >\n      <select\n        data-slot=\"native-select\"\n        data-size={size}\n        className=\"control-field h-control w-full min-w-0 cursor-pointer appearance-none py-0 pr-9 pl-tight has-[option[value='']:checked]:text-pen-quiet data-[size=sm]:h-control-compact data-[size=sm]:text-small\"\n        {...props}\n      />\n      <span\n        aria-hidden=\"true\"\n        data-slot=\"native-select-icon\"\n        className=\"pointer-events-none absolute top-1/2 right-tight h-2.5 w-3.5 -translate-y-1/2 text-pen select-none group-has-[select:disabled]/native-select:text-pen-faint [&>svg]:size-full\"\n        dangerouslySetInnerHTML={{ __html: CHEVRON }}\n      />\n    </div>\n  )\n}\n\nfunction NativeSelectOption({\n  className,\n  ...props\n}: React.ComponentProps<\"option\">) {\n  return (\n    <option\n      data-slot=\"native-select-option\"\n      className={cn(\"bg-[Canvas] text-[CanvasText]\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction NativeSelectOptGroup({\n  className,\n  ...props\n}: React.ComponentProps<\"optgroup\">) {\n  return (\n    <optgroup\n      data-slot=\"native-select-optgroup\"\n      className={cn(\"bg-[Canvas] text-[CanvasText]\", className)}\n      {...props}\n    />\n  )\n}\n\nexport { NativeSelect, NativeSelectOptGroup, NativeSelectOption }\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/native-select.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,68 @@
+---
+// The components index: every primitive by group, with what it is for and where its states live.
+import Base from "@/site/layouts/base.astro"
+import type { DemoMeta } from "@/site/docs/demo-kit"
+
+type Group = NonNullable<DemoMeta["group"]>
+const ORDER: (Group | "Other")[] = [
+  "Actions",
+  "Forms",
+  "Overlays",
+  "Navigation",
+  "Data display",
+  "Charts",
+  "Conversation",
+  "Fineliner extras",
+  "Other",
+]
+const modules = import.meta.glob<{ meta: DemoMeta }>(
+  "../../site/docs/demos/*.tsx",
+  { eager: true },
+)
+const entries = Object.entries(modules)
+  .map(([path, mod]) => ({
+    name: path.replace(/^.*\/(.+)\.tsx$/, "$1"),
+    ...mod.meta,
+  }))
+  .sort((a, b) => a.title.localeCompare(b.title))
+const groups = ORDER.map((group) => ({
+  group,
+  items: entries.filter((e) => (e.group ?? "Other") === group),
+})).filter((g) => g.items.length > 0)
+---
+
+<Base
+  title="Components"
+  description="Every Fineliner component, with its states and the command that installs it."
+>
+  <div class="mx-auto max-w-[76rem] px-snug pt-section sm:px-line">
+    <p class="label m-0">Fineliner · {entries.length} components</p>
+    <h1 class="mb-tight mt-tight text-title leading-heading">Components</h1>
+    <p class="m-0 max-w-measure">
+      shadcn/ui's parts with shadcn's names, props and data-slots, built on Base
+      UI and drawn with one pen.
+    </p>
+    {groups.map(({ group, items }) => (
+      <section class="mt-section" aria-labelledby={`g-${group}`}>
+        <h2 id={`g-${group}`} class="m-0 mb-snug text-h2">
+          {group}
+        </h2>
+        <ul class="m-0 grid list-none gap-x-section gap-y-snug p-0 sm:grid-cols-2 lg:grid-cols-3">
+          {items.map((item) => (
+            <li class="max-w-[24rem]">
+              <a
+                class="text-lead leading-subhead"
+                href={`/docs/components/${item.name}`}
+              >
+                {item.title}
+              </a>
+              <p class="m-0 mt-hair text-small leading-small">
+                {item.description}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</Base>

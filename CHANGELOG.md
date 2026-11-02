@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+Phase 2: core primitives and Listening Room.
+
+- 28 shadcn primitives on Base UI, each its own registry item with shadcn's names, props, variants and `data-slot`s: button, badge, card, input, textarea, label, field, checkbox, radio group, switch, select, native select, tabs, toggle, toggle group, separator, skeleton, avatar, alert, progress, slider, kbd, tooltip, popover, dialog, alert dialog, dropdown menu and spinner. Fields keep a steady pen line; buttons, boxes and sheets are drawn frames seeded by their own words; the main action and chosen options are pockets of ink; ticks, dots and underlines are pen marks put down; menus, selects, popovers and dialogs float on paper with the cartoonist's shadow and grow from their trigger. Avatar fallbacks are portraits drawn from the name.
+- `base`: `styles/controls.css` (`control-field`, `float-sheet`, `put-down`, `press`, `term`), the `pocket` and `rule-y` utilities, a shadow that follows its sheet, `lib/frame-style.ts` (`frameStyle()`, `clearOfShadow`), containers that follow the nearest `data-containers`, and drawings that utilities can size.
+- Docs: `/docs` and a page per component with its states; `docs/primitives.md`.
+- Listening Room, the demo product: a record shop's catalogue, sign-in and settings at `/listening-room`.
+- `test:consumer` installs seven items, primitives included.
+
 Phase 1: the pen and the drawings.
 
 - `pen` (new item): the framework-free pen engine. `drawing({ object | scene, seed, hand, takes })` and `lettering(text, { face, seed, hand, takes })` return one SVG per take; `penMark()` draws ticks, rings, underlines, strikes, arrows, chevrons and pills; `define()` with `objectsIn()` adds objects. 55 objects in four collections (indie, food and drink, studio, people), three scenes (listening room, studio, bistro) and four lettering faces (Liner, Stilt, Ribbon, Tramline). The same seed draws the same SVG in Node and in Chromium.

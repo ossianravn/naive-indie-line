@@ -1,11 +1,14 @@
 /* How the pen's drawings paint, and how their takes move. One weight for every line at every size (non-scaling
    strokes), so a 40px avatar and a 600px scene are drawn with the same pen. */
 
-.fl-drawing {
-  display: block;
-  width: 100%;
-  height: auto;
-  overflow: visible;
+/* The drawing's box is a default the call site sizes (w-20, [&>svg]:h-6), so it sits in a layer below utilities. */
+@layer components {
+  .fl-drawing {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
 }
 .fl-drawing .ln {
   fill: none;

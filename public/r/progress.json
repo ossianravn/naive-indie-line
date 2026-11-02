@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "progress",
+  "title": "Progress",
+  "description": "Progress, in the Fineliner style.",
+  "dependencies": [
+    "@base-ui/react@^1.9.0"
+  ],
+  "registryDependencies": [
+    "@fineliner/base"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/progress.tsx",
+      "content": "\"use client\"\n\nimport { Progress as ProgressPrimitive } from \"@base-ui/react/progress\"\nimport { cn } from \"@/fineliner/lib/utils\"\n\n// A drawn frame for the track; the done part is a pocket of ink inset from the frame that grows as the task moves on.\n// Indeterminate progress has the pen fill the track and lift again, slowly; under reduced motion it pulses instead.\n// Label in the reading voice, value in the typewriter.\n\nfunction Progress({\n  className,\n  children,\n  value,\n  locale = \"en-US\",\n  ...props\n}: ProgressPrimitive.Root.Props) {\n  // A fixed locale by default, so the value reads the same on the server and in the browser (no hydration mismatch).\n  return (\n    <ProgressPrimitive.Root\n      value={value}\n      locale={locale}\n      data-slot=\"progress\"\n      className={cn(\n        \"flex flex-wrap items-baseline gap-x-tight gap-y-hair\",\n        className,\n      )}\n      {...props}\n    >\n      {children}\n      <ProgressTrack>\n        <ProgressIndicator />\n      </ProgressTrack>\n    </ProgressPrimitive.Root>\n  )\n}\n\nfunction ProgressTrack({ className, ...props }: ProgressPrimitive.Track.Props) {\n  return (\n    <ProgressPrimitive.Track\n      className={cn(\n        \"frame relative flex h-3.5 w-full items-stretch p-[3px] text-pen [--over:2px] calm:[--over:0.8px]\",\n        className,\n      )}\n      data-slot=\"progress-track\"\n      {...props}\n    />\n  )\n}\n\nfunction ProgressIndicator({\n  className,\n  ...props\n}: ProgressPrimitive.Indicator.Props) {\n  return (\n    <ProgressPrimitive.Indicator\n      data-slot=\"progress-indicator\"\n      className={cn(\n        \"h-auto! rounded-[1px] bg-pen transition-[width] duration-200 ease-out [filter:var(--wob,var(--wob-2))] forced-colors:bg-[CanvasText] forced-colors:forced-color-adjust-none data-indeterminate:w-full data-indeterminate:motion-safe:animate-[fl-put-down_1.4s_ease-in-out_infinite_alternate] data-indeterminate:motion-reduce:animate-pulse data-indeterminate:motion-reduce:[animation-duration:2.4s]\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction ProgressLabel({ className, ...props }: ProgressPrimitive.Label.Props) {\n  return (\n    <ProgressPrimitive.Label\n      className={cn(\n        \"font-ui text-small leading-small font-medium text-pen\",\n        className,\n      )}\n      data-slot=\"progress-label\"\n      {...props}\n    />\n  )\n}\n\nfunction ProgressValue({ className, ...props }: ProgressPrimitive.Value.Props) {\n  return (\n    <ProgressPrimitive.Value\n      className={cn(\n        \"ml-auto font-type text-small leading-small text-pen-quiet tabular-nums\",\n        className,\n      )}\n      data-slot=\"progress-value\"\n      {...props}\n    />\n  )\n}\n\nexport {\n  Progress,\n  ProgressTrack,\n  ProgressIndicator,\n  ProgressLabel,\n  ProgressValue,\n}\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/progress.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

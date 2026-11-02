@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "button",
+  "title": "Button",
+  "description": "Button, in the Fineliner style.",
+  "dependencies": [
+    "@base-ui/react@^1.9.0",
+    "class-variance-authority@^0.7.1"
+  ],
+  "registryDependencies": [
+    "@fineliner/base"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/button.tsx",
+      "content": "import { Button as ButtonPrimitive } from \"@base-ui/react/button\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\nimport { frameStyle } from \"@/fineliner/lib/frame-style\"\nimport { cn } from \"@/fineliner/lib/utils\"\n\n// The one thing to press is a pocket of solid ink with paper text; the others are drawn frames whose pen presses\n// harder under the pointer, or pale washes. Labels are the reading serif at control size. Focus is the page's dashed\n// ring. A disabled ink button is an empty pocket: its outline dashed, nothing filled in.\nconst buttonVariants = cva(\n  \"group/button relative isolate inline-flex shrink-0 cursor-pointer items-center justify-center font-ui text-ui leading-none whitespace-nowrap select-none press disabled:pointer-events-none disabled:text-pen-faint aria-invalid:text-correction [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4\",\n  {\n    variants: {\n      variant: {\n        default: cn(\n          \"pocket\",\n          \"text-paper before:bg-pen hover:before:-inset-px forced-colors:before:border disabled:before:border-(length:--pen-weight) disabled:before:border-dashed disabled:before:border-pen-faint disabled:before:bg-transparent\",\n        ),\n        outline:\n          \"frame text-pen hover:[--pen-weight:var(--pen-weight-pressed)] aria-expanded:[--pen-weight:var(--pen-weight-pressed)]\",\n        secondary: cn(\n          \"pocket\",\n          \"text-pen before:bg-tint hover:before:bg-pen/15 aria-expanded:before:bg-pen/15\",\n        ),\n        ghost: cn(\n          \"pocket\",\n          \"text-pen hover:before:bg-tint aria-expanded:before:bg-tint\",\n        ),\n        destructive:\n          \"frame text-correction hover:[--pen-weight:var(--pen-weight-pressed)]\",\n        link: \"h-auto! px-0! text-pen underline decoration-1 underline-offset-[0.25em] decoration-pen/45 hover:decoration-pen\",\n      },\n      size: {\n        default:\n          \"h-control gap-tight px-snug has-data-[icon=inline-end]:pr-tight has-data-[icon=inline-start]:pl-tight\",\n        xs: \"h-7 gap-hair px-tight text-small [&_svg:not([class*='size-'])]:size-3\",\n        sm: \"h-control-compact gap-hair px-tight text-small [&_svg:not([class*='size-'])]:size-3.5\",\n        lg: \"h-12 gap-tight px-line\",\n        icon: \"size-control\",\n        \"icon-xs\": \"size-7 [&_svg:not([class*='size-'])]:size-3\",\n        \"icon-sm\": \"size-control-compact\",\n        \"icon-lg\": \"size-12\",\n      },\n    },\n    defaultVariants: {\n      variant: \"default\",\n      size: \"default\",\n    },\n  },\n)\n\nfunction Button({\n  className,\n  variant = \"default\",\n  size = \"default\",\n  style,\n  ...props\n}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {\n  return (\n    <ButtonPrimitive\n      data-slot=\"button\"\n      className={cn(buttonVariants({ variant, size, className }))}\n      style={frameStyle([props.children, props[\"aria-label\"]], style)}\n      {...props}\n    />\n  )\n}\n\nexport { Button, buttonVariants }\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/button.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

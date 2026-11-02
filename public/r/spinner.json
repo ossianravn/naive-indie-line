@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "spinner",
+  "title": "Spinner",
+  "description": "Spinner, in the Fineliner style.",
+  "registryDependencies": [
+    "@fineliner/base",
+    "@fineliner/pen"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/spinner.tsx",
+      "content": "import { penMark } from \"@/fineliner/pen/pen-marks\"\nimport { cn } from \"@/fineliner/lib/utils\"\n\n// A pen ring in currentColor, turning gently. A quarter of it is left out, so the gap shows the turn. Under reduced\n// motion it turns slower, in eight steps, like a clock's hand, rather than not at all: it still has to say \"working\".\nconst RING = penMark(\"ring\", \"spinner\", \"lively\")\nconst VIEWBOX = /viewBox=\"([^\"]+)\"/.exec(RING)?.[1] ?? \"0 0 100 40\"\nconst STROKES = RING.replace(/^<svg[^>]*>/, \"\").replace(/<\\/svg>$/, \"\")\n\nfunction Spinner({ className, ...props }: React.ComponentProps<\"svg\">) {\n  return (\n    <svg\n      viewBox={VIEWBOX}\n      preserveAspectRatio=\"none\"\n      fill=\"none\"\n      data-slot=\"spinner\"\n      role=\"status\"\n      aria-label=\"Loading\"\n      className={cn(\n        \"size-4 animate-spin overflow-visible [animation-duration:1.4s] [clip-path:polygon(50%_50%,50%_-25%,-25%_-25%,-25%_125%,125%_125%,125%_50%)] motion-reduce:[animation-duration:3.2s] motion-reduce:[animation-timing-function:steps(8,end)]\",\n        className,\n      )}\n      {...props}\n    >\n      <g className=\"fl-drawing\" dangerouslySetInnerHTML={{ __html: STROKES }} />\n    </svg>\n  )\n}\n\nexport { Spinner }\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/spinner.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

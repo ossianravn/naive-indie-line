@@ -1,0 +1,35 @@
+---
+import Base from "@/site/layouts/base.astro"
+import { DemoHost } from "@/site/docs/demo-host"
+import type { DemoMeta } from "@/site/docs/demo-kit"
+
+export function getStaticPaths() {
+  const modules = import.meta.glob<{ meta: DemoMeta }>(
+    "../../../site/docs/demos/*.tsx",
+    { eager: true },
+  )
+  return Object.entries(modules).map(([path, mod]) => ({
+    params: { name: path.replace(/^.*\/(.+)\.tsx$/, "$1") },
+    props: { meta: mod.meta },
+  }))
+}
+
+const { name } = Astro.params
+const { meta } = Astro.props
+---
+
+<Base title={meta.title} description={meta.description}>
+  <div class="mx-auto max-w-[76rem] px-snug pt-section sm:px-line">
+    <p class="label m-0">
+      <a href="/docs">Components</a> · {meta.item}
+    </p>
+    <h1 class="mb-tight mt-tight text-title leading-heading">{meta.title}</h1>
+    <p class="m-0 max-w-measure text-body leading-body sm:text-lead sm:leading-lead">
+      {meta.description}
+    </p>
+    <pre class="mt-snug w-fit max-w-full overflow-x-auto bg-paper-2 px-snug py-tight font-type text-small"><code>npx shadcn add @fineliner/{meta.item}</code></pre>
+  </div>
+  <div class="mx-auto mt-section max-w-[76rem] px-snug sm:px-line">
+    <DemoHost name={name ?? ""} client:load />
+  </div>
+</Base>

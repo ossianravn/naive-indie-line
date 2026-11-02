@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "slider",
+  "title": "Slider",
+  "description": "Slider, in the Fineliner style.",
+  "dependencies": [
+    "@base-ui/react@^1.9.0"
+  ],
+  "registryDependencies": [
+    "@fineliner/base"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/slider.tsx",
+      "content": "import { Slider as SliderPrimitive } from \"@base-ui/react/slider\"\nimport { cn } from \"@/fineliner/lib/utils\"\n\n// The track is one pen line (a rule, bent by the wobble filter); the range is the same line drawn heavier; each thumb\n// is a paper circle with a drawn edge that presses harder under the pointer. The thumb's focus lives on a hidden range\n// input, so the page's dashed ring is drawn with has-focus-visible, on the thumb itself, which is never filtered.\n// Orientation is matched on data-orientation; the root's width stays a plain class so a call-site width replaces it,\n// and a vertical slider takes its height from the call site (at least 10rem).\nconst line =\n  \"bg-[linear-gradient(currentColor,currentColor)] bg-center bg-no-repeat\"\n\nfunction Slider({\n  className,\n  defaultValue,\n  value,\n  min = 0,\n  max = 100,\n  ...props\n}: SliderPrimitive.Root.Props) {\n  const _values = Array.isArray(value)\n    ? value\n    : Array.isArray(defaultValue)\n      ? defaultValue\n      : [min, max]\n\n  return (\n    <SliderPrimitive.Root\n      className={cn(\"w-full data-[orientation=vertical]:w-auto\", className)}\n      data-slot=\"slider\"\n      defaultValue={defaultValue}\n      value={value}\n      min={min}\n      max={max}\n      thumbAlignment=\"edge\"\n      {...props}\n    >\n      <SliderPrimitive.Control className=\"relative flex w-full touch-none items-center py-hair text-pen select-none data-disabled:cursor-not-allowed data-disabled:text-pen-faint data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-40 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col data-[orientation=vertical]:px-hair data-[orientation=vertical]:py-0\">\n        <SliderPrimitive.Track\n          data-slot=\"slider-track\"\n          className={cn(\n            line,\n            \"relative grow [filter:var(--wob-3)] select-none data-[orientation=horizontal]:h-3 data-[orientation=horizontal]:w-full data-[orientation=horizontal]:bg-size-[100%_var(--pen-weight)] data-[orientation=vertical]:h-full data-[orientation=vertical]:w-3 data-[orientation=vertical]:bg-size-[var(--pen-weight)_100%]\",\n          )}\n        >\n          <SliderPrimitive.Indicator\n            data-slot=\"slider-range\"\n            className={cn(\n              line,\n              \"select-none data-[orientation=horizontal]:h-full data-[orientation=horizontal]:bg-size-[100%_3px] data-[orientation=vertical]:w-full data-[orientation=vertical]:bg-size-[3px_100%]\",\n            )}\n          />\n        </SliderPrimitive.Track>\n        {Array.from({ length: _values.length }, (_, index) => (\n          <SliderPrimitive.Thumb\n            data-slot=\"slider-thumb\"\n            key={index}\n            className=\"relative isolate block size-5 shrink-0 cursor-grab rounded-full select-none before:absolute before:inset-0 before:-z-10 before:rounded-full before:border-(length:--pen-weight) before:border-current before:bg-paper before:[filter:var(--wob,var(--wob-2))] after:absolute after:-inset-2 hover:[--pen-weight:var(--pen-weight-pressed)] has-focus-visible:outline-[1.5px] has-focus-visible:outline-offset-4 has-focus-visible:outline-pen has-focus-visible:outline-dashed data-dragging:cursor-grabbing data-dragging:[--pen-weight:var(--pen-weight-pressed)] data-disabled:pointer-events-none\"\n          />\n        ))}\n      </SliderPrimitive.Control>\n    </SliderPrimitive.Root>\n  )\n}\n\nexport { Slider }\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/slider.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

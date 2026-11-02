@@ -27,13 +27,20 @@
 }
 
 /* Containers: open by default (groups sit on the page, aligned with it), boxed on request (a frame round every
-   card). Mark a card's frame with .container-frame so it follows the setting. */
-:root[data-containers="open"] .container-frame {
-  padding: 0;
+   card). Mark a card's frame with .container-frame and pad it with --card-inset so it follows the setting. --boxed is
+   inherited, so the nearest data-containers wins: a boxed region on an open page, or the other way round. */
+[data-containers="open"] {
+  --boxed: 0;
 }
-:root[data-containers="open"] .container-frame::before,
-:root[data-containers="open"] .container-frame::after {
-  display: none;
+[data-containers="boxed"] {
+  --boxed: 1;
+}
+.container-frame {
+  --card-inset: calc(var(--card-spacing, var(--space-snug)) * var(--boxed, 1));
+  &::before,
+  &::after {
+    opacity: var(--boxed, 1);
+  }
 }
 
 /* A rule: one pen line across its box. The box is taller than the line, or the wobble would be clipped. */
@@ -42,6 +49,30 @@
   background: linear-gradient(currentColor, currentColor) center / 100%
     var(--pen-weight) no-repeat;
   filter: var(--wob, var(--wob-3));
+}
+
+/* The same line standing up: a box wider than the line, for the same reason. */
+@utility rule-y {
+  width: 0.75rem;
+  background: linear-gradient(currentColor, currentColor) center /
+    var(--pen-weight) 100% no-repeat;
+  filter: var(--wob, var(--wob-3));
+}
+
+/* A pocket: a fill on ::before with the same wobble as a drawn frame, so it never reads as a crisp rectangle. Colour it
+   with before:bg-* (ink for the main action, tint for quiet fills and highlighted items); ::after stays free. */
+@utility pocket {
+  position: relative;
+  isolation: isolate;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 1px;
+    pointer-events: none;
+    filter: var(--wob, var(--wob-2));
+  }
 }
 
 /* A pocket of ink: the solid fill behind the one thing to press or the chosen option. */
@@ -64,12 +95,25 @@
   border-bottom: var(--pen-weight) solid currentColor;
   filter: var(--wob-4);
   pointer-events: none;
+  /* On a sheet that opens, the shadow follows the paper a beat later. */
+  transition: opacity var(--overlay) var(--ease-out) 40ms;
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pen-shadow {
+    transition: none;
+  }
 }
 
 @media (forced-colors: active) {
   .frame::before,
   .frame::after,
   .rule,
+  .rule-y,
+  .pocket::before,
   .ink-fill,
   .pen-shadow {
     filter: none;

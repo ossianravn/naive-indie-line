@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "label",
+  "title": "Label",
+  "description": "Label, in the Fineliner style.",
+  "registryDependencies": [
+    "@fineliner/base"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/label.tsx",
+      "content": "import * as React from \"react\"\nimport { cn } from \"@/fineliner/lib/utils\"\n\n// A label in the reading voice at control size, beside the control it names. Field labels above a control use\n// FieldLabel, which sets them in the label voice.\nfunction Label({ className, ...props }: React.ComponentProps<\"label\">) {\n  return (\n    <label\n      data-slot=\"label\"\n      className={cn(\n        \"flex items-center gap-tight text-ui leading-ui text-pen select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:text-pen-faint peer-disabled:cursor-not-allowed peer-disabled:text-pen-faint has-data-disabled:cursor-not-allowed has-data-disabled:text-pen-faint\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Label }\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/label.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

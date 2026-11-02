@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "popover",
+  "title": "Popover",
+  "description": "Popover, in the Fineliner style.",
+  "dependencies": [
+    "@base-ui/react@^1.9.0"
+  ],
+  "registryDependencies": [
+    "@fineliner/base"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/popover.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Popover as PopoverPrimitive } from \"@base-ui/react/popover\"\nimport { clearOfShadow, frameStyle } from \"@/fineliner/lib/frame-style\"\nimport { cn } from \"@/fineliner/lib/utils\"\n\n// A small sheet of paper drawn round by the pen, lifted off the page by the cartoonist's shadow: a second line along\n// the right and bottom that follows the sheet in 40 ms later. It grows from its trigger. The popup takes focus\n// programmatically, so it draws no ring of its own; the controls inside it keep the page's dashed ring. The shadow\n// lies 7px right of and below the sheet, so a sheet that opens above or to the left of its trigger stands 7px further\n// off, clear of the trigger's frame.\n\nfunction Popover({ ...props }: PopoverPrimitive.Root.Props) {\n  return <PopoverPrimitive.Root data-slot=\"popover\" {...props} />\n}\n\nfunction PopoverTrigger({ ...props }: PopoverPrimitive.Trigger.Props) {\n  return <PopoverPrimitive.Trigger data-slot=\"popover-trigger\" {...props} />\n}\n\nfunction PopoverContent({\n  className,\n  align = \"center\",\n  alignOffset = 0,\n  side = \"bottom\",\n  sideOffset = clearOfShadow,\n  children,\n  style,\n  ...props\n}: PopoverPrimitive.Popup.Props &\n  Pick<\n    PopoverPrimitive.Positioner.Props,\n    \"align\" | \"alignOffset\" | \"side\" | \"sideOffset\"\n  >) {\n  return (\n    <PopoverPrimitive.Portal>\n      <PopoverPrimitive.Positioner\n        align={align}\n        alignOffset={alignOffset}\n        side={side}\n        sideOffset={sideOffset}\n        className=\"isolate z-50\"\n      >\n        <PopoverPrimitive.Popup\n          data-slot=\"popover-content\"\n          className={cn(\n            \"float-sheet frame z-50 flex w-72 max-w-(--available-width) origin-(--transform-origin) flex-col gap-tight p-snug text-small leading-small outline-hidden duration-200 ease-(--ease-out) data-open:animate-in data-open:fade-in-0 data-open:zoom-in-97 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-97 motion-reduce:zoom-in-100 motion-reduce:zoom-out-100\",\n            className,\n          )}\n          style={frameStyle(\"popover-content\", style)}\n          {...props}\n        >\n          <span aria-hidden=\"true\" className=\"pen-shadow\" />\n          {children}\n        </PopoverPrimitive.Popup>\n      </PopoverPrimitive.Positioner>\n    </PopoverPrimitive.Portal>\n  )\n}\n\nfunction PopoverHeader({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"popover-header\"\n      className={cn(\"flex flex-col gap-1 text-small leading-small\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction PopoverTitle({ className, ...props }: PopoverPrimitive.Title.Props) {\n  return (\n    <PopoverPrimitive.Title\n      data-slot=\"popover-title\"\n      className={cn(\n        \"m-0 font-read text-body leading-subhead font-medium text-pen\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction PopoverDescription({\n  className,\n  ...props\n}: PopoverPrimitive.Description.Props) {\n  return (\n    <PopoverPrimitive.Description\n      data-slot=\"popover-description\"\n      className={cn(\"m-0 text-small leading-small text-pen-quiet\", className)}\n      {...props}\n    />\n  )\n}\n\nexport {\n  Popover,\n  PopoverContent,\n  PopoverDescription,\n  PopoverHeader,\n  PopoverTitle,\n  PopoverTrigger,\n}\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/popover.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

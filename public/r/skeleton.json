@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "skeleton",
+  "title": "Skeleton",
+  "description": "Skeleton, in the Fineliner style.",
+  "registryDependencies": [
+    "@fineliner/base"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/skeleton.tsx",
+      "content": "import { cn } from \"@/fineliner/lib/utils\"\n\n// A quiet pocket of tint in the shape of the content it stands in for, with a slow pulse. Its edges wobble like any\n// pocket, so it reads as drawn, not as a grey box. Give it that content's own geometry at the call site: a line of\n// text, a circle for an avatar, a sleeve's square.\nfunction Skeleton({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"skeleton\"\n      className={cn(\n        \"animate-pulse rounded-[2px] bg-tint [animation-duration:2.6s] [filter:var(--wob,var(--wob-2))]\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Skeleton }\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/skeleton.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

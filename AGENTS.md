@@ -8,6 +8,7 @@ Fineliner is a shadcn/ui component library drawn with one fine-liner on unbleach
 
 - **The kit** (`src/fineliner/`) is what consumers install through the shadcn registry. **The site** (everything else under `src/`) documents and exercises it. Kit code imports nothing from the site; ESLint enforces it.
 - **Drawings** live in the kit's pen engine (`src/fineliner/pen/`): one draw function per object in a collection file under `pen/objects/`, registered with `define(T(...))` where `const T = objectsIn("<collection>")`, built from the shared shapes (box, cylinder, arc). A new object appears in `/drawings` and the desk by itself. Look at it large before reporting. The static prototype in `specimen/` stays as the style reference.
+- **Listening Room** (`src/site/listening-room/`, `/listening-room`) is the demo product: a record shop's catalogue, sign-in and settings, built only from kit parts. Its data is static and made up; `/listening-room/data/<worst|empty|one|thousand>` (dev only) starts the catalogue from worst-case data.
 - **Every variation is seeded.** Same seed, same output on the server, in the browser and in every build.
 - The [plan](docs/plan.md) is the source of truth for decisions, phases and progress. Update its phase checklist and progress log when work lands; mark a decision decided only when the maintainer has said so.
 - `.dev-docs/` is unpublished: the reference photograph lives there because the label is someone else's artwork. Never commit it or copy it into published folders.
@@ -27,9 +28,10 @@ Prefer installed packages. Propose a new dependency with the need it serves.
 | ------------------------------------------------------------------ | ------------------------------------ |
 | Paper, pens, voices, frames, the line, motion, drawings, lettering | [Style brief](docs/style.md)         |
 | The pen engine, drawings, takes, rendering, the theme runtime      | [Architecture](docs/architecture.md) |
+| A shadcn part in `src/fineliner/ui/`, its docs demo                | [Primitives](docs/primitives.md)     |
 | Phase scope, decisions, what ports from Patina, progress           | [Plan](docs/plan.md)                 |
 
-Patina's architecture, seeded-variation, primitives and quality documents still describe the shared logic until Fineliner's own versions exist.
+Patina's seeded-variation and quality documents still describe the shared logic until Fineliner's own versions exist.
 
 ## Design and interaction discipline
 

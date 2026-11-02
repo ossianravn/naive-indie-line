@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "input",
+  "title": "Input",
+  "description": "Input, in the Fineliner style.",
+  "dependencies": [
+    "@base-ui/react@^1.9.0"
+  ],
+  "registryDependencies": [
+    "@fineliner/base"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/input.tsx",
+      "content": "import * as React from \"react\"\nimport { Input as InputPrimitive } from \"@base-ui/react/input\"\nimport { cn } from \"@/fineliner/lib/utils\"\n\n// A field with a steady pen line: text sits inside it, so it never wobbles. 16px text (no zoom on iOS) and the page's\n// dashed focus ring. Width follows the value it holds; set it at the call site.\nfunction Input({ className, type, ...props }: React.ComponentProps<\"input\">) {\n  return (\n    <InputPrimitive\n      type={type}\n      data-slot=\"input\"\n      className={cn(\n        \"control-field h-control w-full min-w-0 px-tight py-hair file:inline-flex file:h-7 file:border-0 file:bg-transparent file:font-type file:text-small file:text-pen\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Input }\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/input.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

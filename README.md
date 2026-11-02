@@ -4,7 +4,7 @@ A shadcn/ui component library drawn with one fine-liner on unbleached paper: a s
 
 <img alt="Four room vignettes in the style: a kitchen where a shirt with nobody in it pours wine, a desk under a window, a balcony at night and a listening corner with a record player." src="docs/style/explorations/scenes.webp">
 
-**Status:** Phase 1 is done: the pen engine, 55 drawing objects, scenes, lettering, `<Drawing>`, the drawing desk and the shadcn registry with its install test. Phase 2, the core primitives, is next. The [plan](docs/plan.md) tracks decisions and progress; the [style brief](docs/style.md) owns the style.
+**Status:** Phase 2 is done: 28 shadcn primitives drawn with one pen, each with a docs page, and Listening Room, a record shop's catalogue, sign-in and settings built from them. Phase 1 brought the pen engine, 55 drawing objects, scenes, lettering, `<Drawing>`, the drawing desk and the shadcn registry. Phase 3, data, navigation and the rest of shadcn parity, is next. The [plan](docs/plan.md) tracks decisions and progress; the [style brief](docs/style.md) owns the style.
 
 ## Run it
 

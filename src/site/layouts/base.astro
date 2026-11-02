@@ -19,6 +19,7 @@ const NAV = [
   { href: "/", label: "Specimen" },
   { href: "/drawings", label: "Drawings" },
   { href: "/desk", label: "Desk" },
+  { href: "/docs", label: "Components" },
 ]
 ---
 
@@ -54,7 +55,11 @@ const NAV = [
               <a
                 class="text-small no-underline aria-[current=page]:underline"
                 href={href}
-                aria-current={path === href ? "page" : undefined}
+                aria-current={
+                  path === href || (href !== "/" && path.startsWith(`${href}/`))
+                    ? "page"
+                    : undefined
+                }
               >
                 {label}
               </a>

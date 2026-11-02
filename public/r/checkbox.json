@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "checkbox",
+  "title": "Checkbox",
+  "description": "Checkbox, in the Fineliner style.",
+  "dependencies": [
+    "@base-ui/react@^1.9.0"
+  ],
+  "registryDependencies": [
+    "@fineliner/base",
+    "@fineliner/pen"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/checkbox.tsx",
+      "content": "\"use client\"\n\nimport { Checkbox as CheckboxPrimitive } from \"@base-ui/react/checkbox\"\nimport { penMark } from \"@/fineliner/pen/pen-marks\"\nimport { cn } from \"@/fineliner/lib/utils\"\n\n// A drawn box; checking it puts a tick down that runs past the box, the way a hand ticks a form. Partly checked (a\n// header row over some selected rows) draws a short stroke instead. Both wipe in from the left as they appear.\nconst TICK = penMark(\"tick\", \"checkbox\", \"calm\")\nconst DASH = penMark(\"strike\", \"checkbox\", \"calm\")\n\nfunction Checkbox({ className, ...props }: CheckboxPrimitive.Root.Props) {\n  return (\n    <CheckboxPrimitive.Root\n      data-slot=\"checkbox\"\n      className={cn(\n        \"peer frame relative flex size-[1.1rem] shrink-0 cursor-pointer items-center justify-center text-pen [--over:1.5px] hover:[--pen-weight:var(--pen-weight-pressed)] data-disabled:cursor-not-allowed data-disabled:text-pen-faint aria-invalid:text-correction\",\n        className,\n      )}\n      {...props}\n    >\n      <CheckboxPrimitive.Indicator\n        data-slot=\"checkbox-indicator\"\n        className=\"put-down pointer-events-none absolute -top-1.5 -left-0.5 size-[1.6rem] text-pen\"\n      >\n        <span\n          aria-hidden=\"true\"\n          className=\"block size-full in-data-indeterminate:hidden [&>svg]:size-full\"\n          dangerouslySetInnerHTML={{ __html: TICK }}\n        />\n        <span\n          aria-hidden=\"true\"\n          className=\"absolute inset-x-[0.3rem] top-[0.85rem] hidden h-2 in-data-indeterminate:block [&>svg]:size-full\"\n          dangerouslySetInnerHTML={{ __html: DASH }}\n        />\n      </CheckboxPrimitive.Indicator>\n    </CheckboxPrimitive.Root>\n  )\n}\n\nexport { Checkbox }\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/checkbox.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

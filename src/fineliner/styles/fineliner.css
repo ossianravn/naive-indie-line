@@ -1,5 +1,6 @@
 /* Fineliner: the Tailwind entry. Import this file once; it brings Tailwind, the tokens, the paper and the frames. */
 @import "tailwindcss";
+@import "tw-animate-css";
 @import "./fonts.css";
 @import "./tokens.css";
 @import "./stocks.css";
@@ -9,11 +10,66 @@
 @import "./base.css";
 @import "./frames.css";
 @import "./drawing.css";
+@import "./controls.css";
 
 @custom-variant night (&:where([data-theme="night"], [data-theme="night"] *));
 @custom-variant dark (&:where([data-theme="night"], [data-theme="night"] *));
 /* calm: inside a calm page or region, unless a lively region sits between (the nearest marked ancestor wins). */
 @custom-variant calm (&:where([data-hand="calm"], [data-hand="calm"] *):not(:where([data-hand="calm"] [data-hand="lively"], [data-hand="calm"] [data-hand="lively"] *)));
+
+/* shadcn's state variants (from shadcn/tailwind.css, MIT), so base-nova sources work without that import: Base UI
+   marks state with data attributes, Radix-shaped code with data-state. */
+@custom-variant data-open {
+  &:where([data-state="open"]),
+  &:where([data-open]:not([data-open="false"])) {
+    @slot;
+  }
+}
+@custom-variant data-closed {
+  &:where([data-state="closed"]),
+  &:where([data-closed]:not([data-closed="false"])) {
+    @slot;
+  }
+}
+@custom-variant data-checked {
+  &:where([data-state="checked"]),
+  &:where([data-checked]:not([data-checked="false"])) {
+    @slot;
+  }
+}
+@custom-variant data-unchecked {
+  &:where([data-state="unchecked"]),
+  &:where([data-unchecked]:not([data-unchecked="false"])) {
+    @slot;
+  }
+}
+@custom-variant data-selected {
+  &:where([data-selected="true"]) {
+    @slot;
+  }
+}
+@custom-variant data-disabled {
+  &:where([data-disabled="true"]),
+  &:where([data-disabled]:not([data-disabled="false"])) {
+    @slot;
+  }
+}
+@custom-variant data-active {
+  &:where([data-state="active"]),
+  &:where([data-active]:not([data-active="false"])) {
+    @slot;
+  }
+}
+@custom-variant data-horizontal {
+  &:where([data-orientation="horizontal"]) {
+    @slot;
+  }
+}
+@custom-variant data-vertical {
+  &:where([data-orientation="vertical"]) {
+    @slot;
+  }
+}
 
 @theme inline {
   --default-font-family: var(--face-ui);
@@ -59,6 +115,8 @@
   --color-ink: var(--ink);
   --color-wash: var(--wash);
   --color-tint: var(--tint);
+  --color-pen-quiet: var(--pen-quiet);
+  --color-pen-faint: var(--pen-faint);
   --color-correction: var(--correction);
 
   --color-background: var(--background);

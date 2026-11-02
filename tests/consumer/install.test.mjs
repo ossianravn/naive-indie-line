@@ -25,7 +25,16 @@ const shadcn = path.join(repo, "node_modules/shadcn/dist/index.js")
 // The items whose parts fixture/src/App.tsx imports. base and pen arrive as their item dependencies, which exercises
 // the --base dependency URLs and fails the type-check if an item leaves out one it imports. Not the fineliner
 // umbrella: it lists every item, so it would hide a missing dependency.
-const items = ["drawing"]
+// dialog brings button, field brings label and separator, toggle-group brings toggle, avatar brings drawing.
+const items = [
+  "drawing",
+  "dialog",
+  "field",
+  "input",
+  "select",
+  "toggle-group",
+  "avatar",
+]
 
 // The environment for every command. Settings an outer `npm run` exports (npm_config_prefix, npm_package_*) would
 // point npm at this repository, and inherited proxy settings would override the guard, so neither is passed on.
