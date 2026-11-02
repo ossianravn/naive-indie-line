@@ -16,12 +16,12 @@ A shadcn/ui component library drawn with one fine-liner on unbleached paper: a s
 
 ## Install
 
-Fineliner installs with the shadcn CLI from its own registry, into your project's `src/fineliner`, where it is yours to change. Add the registry to `components.json`, with the URL the site is served from:
+Fineliner installs with the shadcn CLI from its own registry at [naiveindieline.com](https://naiveindieline.com), into your project's `src/fineliner`, where it is yours to change. Add the registry to `components.json`:
 
 ```json
 {
   "registries": {
-    "@fineliner": "https://<site>/r/{name}.json"
+    "@fineliner": "https://naiveindieline.com/r/{name}.json"
   }
 }
 ```

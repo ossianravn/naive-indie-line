@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "fineliner",
-  "homepage": "https://github.com/ossianravn/naive-indie-line",
+  "homepage": "https://naiveindieline.com",
   "items": [
     {
       "name": "base",

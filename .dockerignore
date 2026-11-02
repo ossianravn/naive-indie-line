@@ -1,0 +1,12 @@
+# Not needed to build the site, or must never reach an image.
+.git
+.claude
+.astro
+.agent-annotations
+.dev-docs
+.tools
+node_modules
+dist
+tests
+.env
+.env.*

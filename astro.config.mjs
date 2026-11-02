@@ -37,8 +37,8 @@ const touchNewFiles = {
 }
 
 export default defineConfig({
-  // The public URL, for absolute share-image links; set SITE_URL when deploying.
-  site: process.env.SITE_URL || undefined,
+  // The canonical URL, for absolute share-image links and the registry address; SITE_URL overrides it.
+  site: process.env.SITE_URL || "https://naiveindieline.com",
   // Project ports rather than Astro's defaults (4321 and 4322), so Fineliner never collides with another project.
   server: ({ command }) => ({
     host: "127.0.0.1",

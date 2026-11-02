@@ -201,7 +201,7 @@ export function buildRegistry({ base } = {}) {
   return {
     $schema: "https://ui.shadcn.com/schema/registry.json",
     name: "fineliner",
-    homepage: "https://github.com/ossianravn/naive-indie-line",
+    homepage: "https://naiveindieline.com",
     items,
   }
 }
