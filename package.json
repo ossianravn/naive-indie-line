@@ -22,7 +22,10 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check:contrast": "node tools/check-contrast.mjs",
-    "build:textures": "node tools/paper/build-textures.mjs"
+    "build:textures": "node tools/paper/build-textures.mjs",
+    "registry": "node tools/registry/build.mjs",
+    "registry:check": "node tools/registry/build.mjs --check",
+    "test:consumer": "node --test tests/consumer/*.test.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^7.1.2",
@@ -47,6 +50,7 @@
     "globals": "^17.14.0",
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "^1.1.2",
+    "shadcn": "^4.23.0",
     "sharp": "^0.35.5",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",

@@ -1,0 +1,283 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "fineliner",
+  "homepage": "https://github.com/ossianravn/naive-indie-line",
+  "items": [
+    {
+      "name": "base",
+      "type": "registry:item",
+      "title": "Base",
+      "description": "Tokens, paper stocks, pens, frames, the appearance runtime, FinelinerDefs, cn and the pen's seed and filters. Every other item builds on it; make src/fineliner/styles/fineliner.css your Tailwind entry.",
+      "dependencies": [
+        "cn@^0.5.1"
+      ],
+      "devDependencies": [
+        "@fontsource-variable/newsreader@^5.3.0",
+        "@fontsource/courier-prime@^5.3.0",
+        "@fontsource/gaegu@^5.3.0"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/defs/fineliner-defs.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/defs/fineliner-defs.tsx"
+        },
+        {
+          "path": "src/fineliner/lib/utils.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/lib/utils.ts"
+        },
+        {
+          "path": "src/fineliner/pen/filters.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/filters.ts"
+        },
+        {
+          "path": "src/fineliner/pen/seed.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/seed.ts"
+        },
+        {
+          "path": "src/fineliner/styles/base.css",
+          "type": "registry:file",
+          "target": "~/src/fineliner/styles/base.css"
+        },
+        {
+          "path": "src/fineliner/styles/drawing.css",
+          "type": "registry:file",
+          "target": "~/src/fineliner/styles/drawing.css"
+        },
+        {
+          "path": "src/fineliner/styles/fineliner.css",
+          "type": "registry:file",
+          "target": "~/src/fineliner/styles/fineliner.css"
+        },
+        {
+          "path": "src/fineliner/styles/fonts.css",
+          "type": "registry:file",
+          "target": "~/src/fineliner/styles/fonts.css"
+        },
+        {
+          "path": "src/fineliner/styles/frames.css",
+          "type": "registry:file",
+          "target": "~/src/fineliner/styles/frames.css"
+        },
+        {
+          "path": "src/fineliner/styles/pens.css",
+          "type": "registry:file",
+          "target": "~/src/fineliner/styles/pens.css"
+        },
+        {
+          "path": "src/fineliner/styles/roles.css",
+          "type": "registry:file",
+          "target": "~/src/fineliner/styles/roles.css"
+        },
+        {
+          "path": "src/fineliner/styles/stocks.css",
+          "type": "registry:file",
+          "target": "~/src/fineliner/styles/stocks.css"
+        },
+        {
+          "path": "src/fineliner/styles/textures.generated.css",
+          "type": "registry:file",
+          "target": "~/src/fineliner/styles/textures.generated.css"
+        },
+        {
+          "path": "src/fineliner/styles/tokens.css",
+          "type": "registry:file",
+          "target": "~/src/fineliner/styles/tokens.css"
+        },
+        {
+          "path": "src/fineliner/theme/appearance-script.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/theme/appearance-script.ts"
+        },
+        {
+          "path": "src/fineliner/theme/appearance.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/theme/appearance.ts"
+        },
+        {
+          "path": "src/fineliner/theme/index.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/theme/index.ts"
+        },
+        {
+          "path": "src/fineliner/theme/use-appearance.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/theme/use-appearance.ts"
+        }
+      ]
+    },
+    {
+      "name": "drawing",
+      "type": "registry:component",
+      "title": "Drawing",
+      "description": "Drawing, Lettering and PenMark: objects, scenes, words and marks drawn by the pen from their seeds as inline SVG, with line boil and draw-on.",
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/pen"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/drawing/drawing-motion.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/drawing/drawing-motion.ts"
+        },
+        {
+          "path": "src/fineliner/drawing/drawing.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/drawing/drawing.tsx"
+        },
+        {
+          "path": "src/fineliner/drawing/lettering.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/drawing/lettering.tsx"
+        },
+        {
+          "path": "src/fineliner/drawing/pen-mark.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/drawing/pen-mark.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pen",
+      "type": "registry:component",
+      "title": "Pen",
+      "description": "The pen engine, framework-free: seeded strokes, shapes and sheets, the object library with every collection, scenes, lettering and pen marks, as SVG strings on a server, at build time or in the browser.",
+      "registryDependencies": [
+        "@fineliner/base"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/pen/drawing-svg.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/drawing-svg.ts"
+        },
+        {
+          "path": "src/fineliner/pen/geometry.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/geometry.ts"
+        },
+        {
+          "path": "src/fineliner/pen/glyphs.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/glyphs.ts"
+        },
+        {
+          "path": "src/fineliner/pen/index.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/index.ts"
+        },
+        {
+          "path": "src/fineliner/pen/layers.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/layers.ts"
+        },
+        {
+          "path": "src/fineliner/pen/lettering-svg.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/lettering-svg.ts"
+        },
+        {
+          "path": "src/fineliner/pen/library.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/library.ts"
+        },
+        {
+          "path": "src/fineliner/pen/objects/bistro.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/bistro.ts"
+        },
+        {
+          "path": "src/fineliner/pen/objects/desk.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/desk.ts"
+        },
+        {
+          "path": "src/fineliner/pen/objects/devices.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/devices.ts"
+        },
+        {
+          "path": "src/fineliner/pen/objects/food.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/food.ts"
+        },
+        {
+          "path": "src/fineliner/pen/objects/gear.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/gear.ts"
+        },
+        {
+          "path": "src/fineliner/pen/objects/hifi.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/hifi.ts"
+        },
+        {
+          "path": "src/fineliner/pen/objects/home.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/home.ts"
+        },
+        {
+          "path": "src/fineliner/pen/objects/index.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/index.ts"
+        },
+        {
+          "path": "src/fineliner/pen/objects/music.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/music.ts"
+        },
+        {
+          "path": "src/fineliner/pen/objects/people.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/people.ts"
+        },
+        {
+          "path": "src/fineliner/pen/objects/plants.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/plants.ts"
+        },
+        {
+          "path": "src/fineliner/pen/objects/visitors.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/visitors.ts"
+        },
+        {
+          "path": "src/fineliner/pen/pen-marks.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/pen-marks.ts"
+        },
+        {
+          "path": "src/fineliner/pen/scenes.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/scenes.ts"
+        },
+        {
+          "path": "src/fineliner/pen/shapes.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/shapes.ts"
+        },
+        {
+          "path": "src/fineliner/pen/stroke.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/stroke.ts"
+        }
+      ]
+    },
+    {
+      "name": "fineliner",
+      "type": "registry:item",
+      "title": "Fineliner",
+      "description": "Every part of Fineliner: the base, the pen engine and every component. Blocks are sample pages, so they install one at a time.",
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/drawing",
+        "@fineliner/pen"
+      ],
+      "files": []
+    }
+  ]
+}

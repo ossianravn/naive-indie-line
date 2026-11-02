@@ -1,0 +1,13 @@
+// Every collection registers its objects when imported. Add a collection file here; its objects then appear in
+// drawing(), the scenes and the docs.
+import "./hifi"
+import "./music"
+import "./plants"
+import "./home"
+import "./bistro"
+import "./food"
+import "./devices"
+import "./gear"
+import "./desk"
+import "./people"
+import "./visitors"

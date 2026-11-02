@@ -1,0 +1,15 @@
+---
+// The drawing desk: reroll any object, scene or line of lettering, then take its seed, JSX or SVG.
+import Base from "@/site/layouts/base.astro"
+import { Desk } from "@/site/desk/desk"
+---
+
+<Base
+  title="Desk"
+  description="Fineliner's drawing desk: choose an object, a scene or lettering, reroll the seed, and take the seed, JSX or SVG."
+>
+  <div class="mx-auto max-w-[76rem] px-snug pt-section sm:px-line">
+    <h1 class="m-0 mb-line text-title leading-heading">Desk</h1>
+    <Desk client:only="react" />
+  </div>
+</Base>

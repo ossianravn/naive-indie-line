@@ -1,0 +1,132 @@
+/* How the pen's drawings paint, and how their takes move. One weight for every line at every size (non-scaling
+   strokes), so a 40px avatar and a 600px scene are drawn with the same pen. */
+
+.fl-drawing {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.fl-drawing .ln {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--pen-weight);
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.fl-drawing .ink {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: var(--pen-weight);
+  vector-effect: non-scaling-stroke;
+  stroke-linejoin: round;
+}
+.fl-drawing .wash {
+  fill: var(--wash);
+}
+.fl-drawing .sheet-fill {
+  fill: var(--paper);
+}
+
+/* Takes: the same drawing several times, stacked. Paused, the first shows; running, they cycle (line boil). The
+   choice travels as inherited custom properties, so the nearest element with data-boil wins. */
+[data-boil="off"] {
+  --boil: paused;
+  --boil-hover: paused;
+}
+[data-boil="hover"] {
+  --boil: paused;
+  --boil-hover: running;
+}
+[data-boil="art"] {
+  --boil: running;
+  --boil-hover: running;
+}
+.fl-takes {
+  display: grid;
+}
+.fl-takes > * {
+  grid-area: 1 / 1;
+  animation: fl-take calc(var(--take) * 3) steps(1, end) infinite;
+  animation-play-state: var(--boil, paused);
+}
+.fl-takes > * + * {
+  opacity: 0;
+}
+.fl-takes > :nth-child(2) {
+  animation-delay: calc(var(--take) * -2);
+}
+.fl-takes > :nth-child(3) {
+  animation-delay: calc(var(--take) * -1);
+}
+@media (hover: hover) and (pointer: fine) {
+  .fl-takes:hover > * {
+    animation-play-state: var(--boil-hover, paused);
+  }
+}
+@keyframes fl-take {
+  0% {
+    opacity: 1;
+  }
+  33.333% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+/* Settling after a reroll: settleDrawing() steps data-show through the takes, then removes it. */
+.fl-takes[data-show] > * {
+  animation: none;
+  opacity: 0;
+}
+.fl-takes[data-show="0"] > :nth-child(1),
+.fl-takes[data-show="1"] > :nth-child(2),
+.fl-takes[data-show="2"] > :nth-child(3) {
+  opacity: 1;
+}
+
+/* A drawing waiting to be drawn on the first time it is seen (drawOnView). If no script ever draws it (a static page,
+   a failed load), it simply appears after 2.5s. */
+.fl-drawing.fl-unseen .ln {
+  stroke-dasharray: 0 100000;
+  animation: fl-appear 0s linear 2.5s forwards;
+}
+.fl-drawing.fl-unseen :is(.ink, .wash, .sheet-fill) {
+  opacity: 0;
+  animation: fl-appear 0s linear 2.5s forwards;
+}
+@keyframes fl-appear {
+  to {
+    stroke-dasharray: none;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fl-takes > * {
+    animation: none;
+  }
+  .fl-drawing.fl-unseen .ln {
+    stroke-dasharray: none;
+  }
+  .fl-drawing.fl-unseen :is(.ink, .wash, .sheet-fill) {
+    opacity: 1;
+  }
+}
+
+/* Forced colours: drawings stay, in the system's text colour. */
+@media (forced-colors: active) {
+  .fl-drawing .ln,
+  .fl-drawing .ink {
+    stroke: CanvasText;
+  }
+  .fl-drawing .ink {
+    fill: CanvasText;
+  }
+  .fl-drawing .wash,
+  .fl-drawing .sheet-fill {
+    fill: Canvas;
+  }
+}

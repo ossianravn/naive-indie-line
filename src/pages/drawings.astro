@@ -1,0 +1,43 @@
+---
+// The object library: every drawing object by collection, rendered at build time. Hover one to see it boil.
+import Base from "@/site/layouts/base.astro"
+import { Drawing } from "@/fineliner/drawing/drawing"
+import { COLLECTIONS, listObjects } from "@/fineliner/pen"
+
+const seed = "library"
+const total = listObjects().length
+---
+
+<Base
+  title="Drawings"
+  description="Fineliner's object library: every drawing by collection, each drawn by the pen from a seed."
+>
+  <div class="mx-auto max-w-[76rem] px-snug pt-section sm:px-line">
+    <h1 class="m-0 text-title leading-heading">Drawings</h1>
+    <p class="m-0 mt-snug max-w-measure">
+      {total} objects in {COLLECTIONS.length} collections, each drawn by the pen
+      from a seed. The library keeps growing; the <a href="/desk">desk</a>{" "}
+      rerolls any of them.
+    </p>
+    {COLLECTIONS.map(([key, title]) => (
+      <section class="mt-section" aria-labelledby={`c-${key}`}>
+        <h2 id={`c-${key}`} class="m-0 mb-line text-h2">
+          {title}
+        </h2>
+        <ul class="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(9rem,1fr))] items-end gap-x-line gap-y-section p-0">
+          {listObjects(key).map((o) => (
+            <li class="grid justify-items-center gap-tight">
+              <Drawing
+                object={o.id}
+                seed={seed}
+                title=""
+                className="max-w-full [&>svg]:max-h-44 [&>svg]:w-auto [&>svg]:max-w-full"
+              />
+              <span class="label text-center">{o.name}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</Base>

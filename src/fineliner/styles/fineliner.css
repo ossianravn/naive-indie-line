@@ -8,6 +8,7 @@
 @import "./roles.css";
 @import "./base.css";
 @import "./frames.css";
+@import "./drawing.css";
 
 @custom-variant night (&:where([data-theme="night"], [data-theme="night"] *));
 @custom-variant dark (&:where([data-theme="night"], [data-theme="night"] *));

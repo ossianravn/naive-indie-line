@@ -40,5 +40,9 @@ export function stream(seed: number, label: string) {
     signed: () => next() * 2 - 1,
     pick: <T>(items: readonly T[]): T =>
       items[Math.floor(next() * items.length)] as T,
+    /** True with probability p. */
+    chance: (p: number) => next() < p,
   }
 }
+
+export type Stream = ReturnType<typeof stream>

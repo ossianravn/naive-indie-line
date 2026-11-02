@@ -1,0 +1,13 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "fineliner",
+  "title": "Fineliner",
+  "description": "Every part of Fineliner: the base, the pen engine and every component. Blocks are sample pages, so they install one at a time.",
+  "registryDependencies": [
+    "@fineliner/base",
+    "@fineliner/drawing",
+    "@fineliner/pen"
+  ],
+  "files": [],
+  "type": "registry:item"
+}

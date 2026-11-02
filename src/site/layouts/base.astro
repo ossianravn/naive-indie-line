@@ -5,6 +5,7 @@ import "@/site/site.css"
 import { FinelinerDefs } from "@/fineliner/defs/fineliner-defs"
 import { appearanceScript } from "@/fineliner/theme/appearance-script"
 import { frameVars, seedOf } from "@/fineliner/pen"
+import { Lettering } from "@/fineliner/drawing/lettering"
 import { siteAppearance } from "@/site/appearance"
 
 interface Props {
@@ -13,6 +14,12 @@ interface Props {
 }
 const { title, description } = Astro.props
 const fullTitle = title === "Fineliner" ? title : `${title} · Fineliner`
+const path = Astro.url.pathname.replace(/\/$/, "") || "/"
+const NAV = [
+  { href: "/", label: "Specimen" },
+  { href: "/drawings", label: "Drawings" },
+  { href: "/desk", label: "Desk" },
+]
 ---
 
 <!doctype html>
@@ -33,10 +40,28 @@ const fullTitle = title === "Fineliner" ? title : `${title} · Fineliner`
       Skip to content
     </a>
     <header class="mx-auto flex max-w-[76rem] items-center justify-between gap-snug px-snug pt-snug sm:px-line">
-      <a class="text-lead leading-heading no-underline" href="/">
-        Fineliner
+      <a class="block no-underline" href="/" aria-label="Fineliner">
+        <Lettering
+          text="Fineliner"
+          seed="wordmark"
+          className="[&>svg]:h-7 [&>svg]:w-auto"
+        />
       </a>
-      <span class="label">Specimen Nº 1</span>
+      <nav aria-label="Site">
+        <ul class="m-0 flex list-none gap-snug p-0">
+          {NAV.map(({ href, label }) => (
+            <li>
+              <a
+                class="text-small no-underline aria-[current=page]:underline"
+                href={href}
+                aria-current={path === href ? "page" : undefined}
+              >
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </header>
     <div class="mx-auto max-w-[76rem] px-snug sm:px-line">
       <div

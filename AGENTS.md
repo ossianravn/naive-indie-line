@@ -7,7 +7,7 @@ Working instructions for coding agents in Fineliner. Follow explicit user direct
 Fineliner is a shadcn/ui component library drawn with one fine-liner on unbleached paper: a slow wobbly line, rare pockets of solid ink, a book serif, a typewriter and seeded drawings of objects, rooms and people. It repeats [Patina UI](https://github.com/ossianravn/patina-ui)'s logic (local checkout `C:\CodexApp\patina-ui`) in this style. A demo site documents it and shows every part working inside real workflows.
 
 - **The kit** (`src/fineliner/`) is what consumers install through the shadcn registry. **The site** (everything else under `src/`) documents and exercises it. Kit code imports nothing from the site; ESLint enforces it.
-- **The prototype** (`specimen/`) is the static style specimen the style was agreed on. It is the reference for Phase 1 (the pen, objects, scenes, lettering, motion) until those are ported into the kit; then it goes. New objects go there today, one draw function each, registered with `NIL.objects.define` in the collection's file under `specimen/objects/`.
+- **Drawings** live in the kit's pen engine (`src/fineliner/pen/`): one draw function per object in a collection file under `pen/objects/`, registered with `define(T(...))` where `const T = objectsIn("<collection>")`, built from the shared shapes (box, cylinder, arc). A new object appears in `/drawings` and the desk by itself. Look at it large before reporting. The static prototype in `specimen/` stays as the style reference.
 - **Every variation is seeded.** Same seed, same output on the server, in the browser and in every build.
 - The [plan](docs/plan.md) is the source of truth for decisions, phases and progress. Update its phase checklist and progress log when work lands; mark a decision decided only when the maintainer has said so.
 - `.dev-docs/` is unpublished: the reference photograph lives there because the label is someone else's artwork. Never commit it or copy it into published folders.
@@ -23,10 +23,11 @@ Prefer installed packages. Propose a new dependency with the need it serves.
 
 ## Read the owning document
 
-| When changing                                                      | Read                         |
-| ------------------------------------------------------------------ | ---------------------------- |
-| Paper, pens, voices, frames, the line, motion, drawings, lettering | [Style brief](docs/style.md) |
-| Phase scope, decisions, what ports from Patina, progress           | [Plan](docs/plan.md)         |
+| When changing                                                      | Read                                 |
+| ------------------------------------------------------------------ | ------------------------------------ |
+| Paper, pens, voices, frames, the line, motion, drawings, lettering | [Style brief](docs/style.md)         |
+| The pen engine, drawings, takes, rendering, the theme runtime      | [Architecture](docs/architecture.md) |
+| Phase scope, decisions, what ports from Patina, progress           | [Plan](docs/plan.md)                 |
 
 Patina's architecture, seeded-variation, primitives and quality documents still describe the shared logic until Fineliner's own versions exist.
 
@@ -54,7 +55,7 @@ The bar: before showing or reporting a screen, ask whether Apple would ship it. 
 
 Verify with the least total effort; never create unit tests. The dev server runs on **4791** (preview 4792); the static prototype on 4790 (`.claude/launch.json`). Never use framework default ports.
 
-1. Run `npm run typecheck` and `npm run lint` always; `npm run build` when routes, modules or dependencies change; `npm run check:contrast` when stocks, pens or textures change (after `npm run build:textures` if you edited the layers).
+1. Run `npm run typecheck` and `npm run lint` always; `npm run build` when routes, modules or dependencies change; `npm run registry` then `npm run registry:check` when a kit file is added, moved or changes its imports, and `npm run test:consumer` when an item's files or dependencies change; `npm run check:contrast` when stocks, pens or textures change (after `npm run build:textures` if you edited the layers).
 2. Look at the changed screen with realistic content at 1440 and 390 px, day and night, on more than one stock. The browser pane may be hidden, which freezes transitions, timers and observers: check motion through the Web Animations API and say what you could not watch.
 3. Add a lasting test only for a boundary that will change again (from Phase 1: the registry install contract and the seed-to-drawing promise), in `tests/consumer/`.
 4. Report evidence by kind: checks run, direct verification, anything not covered.

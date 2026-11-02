@@ -2,6 +2,7 @@
 // The specimen: Fineliner's materials on one sheet. Paper and pens, the voices and the type scale, and the line.
 import Base from "@/site/layouts/base.astro"
 import { AppearancePanel } from "@/site/appearance-panel"
+import { Drawing } from "@/fineliner/drawing/drawing"
 import Lines from "@/site/specimen/lines.astro"
 import PaperPens from "@/site/specimen/paper-pens.astro"
 import Voices from "@/site/specimen/voices.astro"
@@ -12,14 +13,19 @@ import Voices from "@/site/specimen/voices.astro"
   description="A shadcn/ui kit drawn with one fine-liner on unbleached paper: the specimen of its paper, pens, voices and line."
 >
   <div class="mx-auto max-w-[76rem] px-snug pt-section sm:px-line">
-    <h1 class="m-0 max-w-[15ch] text-display leading-display">
-      One pen, cream paper, and a quiet hand.
-    </h1>
-    <p class="m-0 mt-snug max-w-measure text-lead leading-lead max-sm:text-body max-sm:leading-body">
-      Fineliner is a shadcn/ui kit drawn the way a natural-wine label is: a
-      single fine-liner with a slow wobble, no shading, and small pockets of
-      solid ink where the eye should land.
-    </p>
+    <div class="grid items-end gap-line lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+      <div>
+        <h1 class="m-0 max-w-[15ch] text-display leading-display">
+          One pen, cream paper, and a quiet hand.
+        </h1>
+        <p class="m-0 mt-snug max-w-measure text-lead leading-lead max-sm:text-body max-sm:leading-body">
+          Fineliner is a shadcn/ui kit drawn the way a natural-wine label is: a
+          single fine-liner with a slow wobble, no shading, and small pockets of
+          solid ink where the eye should land.
+        </p>
+      </div>
+      <Drawing scene="room" seed="corner-shop" drawOnView client:visible />
+    </div>
     <div class="mt-line max-w-[46rem]">
       <AppearancePanel client:idle />
     </div>
