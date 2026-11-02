@@ -31,9 +31,10 @@ Prefer installed packages. Propose a new dependency with the need it serves.
 | The pen engine, drawings, takes, rendering, the theme runtime      | [Architecture](docs/architecture.md) |
 | A shadcn part in `src/fineliner/ui/`, its docs demo                | [Primitives](docs/primitives.md)     |
 | An extra (`src/fineliner/extras/`) or a block (`blocks/`)          | [Extras and blocks](docs/extras.md)  |
+| Accessibility, performance, what the release must meet             | [Quality](docs/quality.md)           |
 | Phase scope, decisions, what ports from Patina, progress           | [Plan](docs/plan.md)                 |
 
-Patina's seeded-variation and quality documents still describe the shared logic until Fineliner's own versions exist.
+Patina's seeded-variation document still describes the shared seed logic; Fineliner's own rules for seeds live in [Architecture](docs/architecture.md).
 
 ## Design and interaction discipline
 

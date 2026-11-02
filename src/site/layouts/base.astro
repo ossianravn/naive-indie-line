@@ -7,6 +7,7 @@ import { appearanceScript } from "@/fineliner/theme/appearance-script"
 import { frameVars, seedOf } from "@/fineliner/pen"
 import { Lettering } from "@/fineliner/drawing/lettering"
 import { siteAppearance } from "@/site/appearance"
+import { shareFor } from "@/site/share/shares"
 
 interface Props {
   title: string
@@ -14,6 +15,11 @@ interface Props {
 }
 const { title, description } = Astro.props
 const fullTitle = title === "Fineliner" ? title : `${title} · Fineliner`
+// The share image drawn for this page (src/pages/og), absolute once the site has a URL.
+const shareImage = new URL(
+  shareFor(Astro.url.pathname),
+  Astro.site ?? Astro.url,
+).href
 const path = Astro.url.pathname.replace(/\/$/, "") || "/"
 const NAV = [
   { href: "/specimen", label: "Specimen" },
@@ -31,6 +37,12 @@ const NAV = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={shareImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
     <script is:inline set:html={appearanceScript(siteAppearance)} />
   </head>
   <body>

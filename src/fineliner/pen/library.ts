@@ -108,15 +108,16 @@ export function place(
   )
 }
 
-/** One object alone on its tile, as an SVG string. */
+/** One object alone on its tile, as an SVG string, named by `label` (the object's name by default); "" leaves it
+ * decorative (aria-hidden). */
 export function tile(
   o: DrawingObject,
   seed: string,
   hand: HandName,
   take = 0,
-  label: string | undefined = o.name,
+  label: string = o.name,
 ) {
   const s = sheet(`fl${seedOf(`${seed}:${o.id}`).toString(36)}t${take}`)
   place(s, o.id, seed, hand, o.at, o.k, {}, take)
-  return s.svg(o.size[0], o.size[1], label)
+  return s.svg(o.size[0], o.size[1], label || undefined)
 }

@@ -168,7 +168,7 @@ export function SignIn01({
                       ref={emailField}
                       id="sign-in-email"
                       type="email"
-                      autoComplete="username email"
+                      autoComplete="username"
                       spellCheck={false}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}

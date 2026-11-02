@@ -145,7 +145,7 @@ function Shell({
           <NavItem name="Settings" icon={SettingsIcon} {...nav} />
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" tooltip="Maya Singh">
-              <Avatar className="size-8">
+              <Avatar className="size-8" aria-hidden="true">
                 <AvatarFallback name="Maya Singh">MS</AvatarFallback>
               </Avatar>
               <span className="flex min-w-0 flex-col">

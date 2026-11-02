@@ -54,7 +54,11 @@ export default function ResizableDemo() {
         <div className={`${BOX} h-72`}>
           <ResizablePanelGroup orientation="horizontal">
             <ResizablePanel defaultSize="38%" minSize="25%">
-              <ul className="m-0 h-full list-none overflow-auto p-hair">
+              <ul
+                tabIndex={0}
+                aria-label="Records in the rack"
+                className="m-0 h-full list-none overflow-auto p-hair"
+              >
                 {LIST.map((r, i) => (
                   <li
                     key={r.id}

@@ -28,6 +28,8 @@
   --pen-forest: #1b3524;
   --pen-oxblood: #4d1e28;
   --correction: #5e1612;
+  /* The quiet pen (secondary text) is mixed nearer the pen, so it keeps 4.5:1 on the recess too. */
+  --quiet-share: 88%;
 }
 
 :root[data-stock="bond"] {

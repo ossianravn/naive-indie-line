@@ -1,23 +1,25 @@
-import type { ComponentType } from "react"
+import { lazy, Suspense, type ComponentType } from "react"
 import { TooltipProvider } from "@/fineliner/ui/tooltip"
-import type { DemoMeta } from "./demo-kit"
 
-// Every demo, bundled into one island so each docs page can hydrate the demo it names.
-type DemoModule = { default: ComponentType; meta: DemoMeta }
-const modules = import.meta.glob<DemoModule>("./demos/*.tsx", { eager: true })
+// Every demo as its own chunk, loaded by name, so a docs page ships only the demo it shows. The server waits for the
+// lazy demo while it streams the page, so the HTML holds the whole demo; the browser hydrates it once its chunk
+// arrives, keeping the server's HTML on screen until then.
+const loaders = import.meta.glob<{ default: ComponentType }>("./demos/*.tsx")
 const demos = Object.fromEntries(
-  Object.entries(modules).map(([path, mod]) => [
+  Object.entries(loaders).map(([path, load]) => [
     path.replace(/^.*\/(.+)\.tsx$/, "$1"),
-    mod,
+    lazy(load),
   ]),
 )
 
 /** Renders one component's demo by name. */
 export function DemoHost({ name }: { name: string }) {
-  const Demo = demos[name]?.default
+  const Demo = demos[name]
   return (
     <TooltipProvider>
-      {Demo ? <Demo /> : <p className="text-pen-quiet">No demo yet.</p>}
+      <Suspense fallback={null}>
+        {Demo ? <Demo /> : <p className="text-pen-quiet">No demo yet.</p>}
+      </Suspense>
     </TooltipProvider>
   )
 }

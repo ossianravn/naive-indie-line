@@ -47,7 +47,8 @@ export function drawing({
           `drawing() needs a known object or scene, got "${object ?? scene}"`,
         )
       const label = named ?? o.name
-      out.push(tile(o, key, hand, take, label || undefined))
+      // Pass "" through: an undefined label would fall back to the object's name and name every take.
+      out.push(tile(o, key, hand, take, label))
     }
   }
   return out

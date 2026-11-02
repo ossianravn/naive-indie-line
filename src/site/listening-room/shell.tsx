@@ -79,7 +79,8 @@ export function ListeningRoomShell({
 }) {
   return (
     <SidebarProvider>
-      <Sidebar collapsible="icon">
+      {/* On wide screens the column is the shop's navigation landmark; on phones it is a sheet, named by its title. */}
+      <Sidebar collapsible="icon" role="navigation" aria-label="Listening Room">
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
@@ -158,7 +159,7 @@ export function ListeningRoomShell({
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton size="lg" tooltip="Maya Singh">
-                <Avatar size="sm" className="size-8!">
+                <Avatar size="sm" className="size-8!" aria-hidden="true">
                   <AvatarFallback name="Maya Singh">MS</AvatarFallback>
                 </Avatar>
                 <span className="flex min-w-0 flex-col">

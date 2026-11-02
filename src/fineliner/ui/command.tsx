@@ -154,6 +154,9 @@ function CommandSeparator({
   return (
     <CommandPrimitive.Separator
       data-slot="command-separator"
+      // A listbox may own only groups and options, and cmdk fixes role="separator", so the rule is drawn for the eye
+      // and hidden from assistive tech; the group headings already divide the list.
+      aria-hidden="true"
       className={cn(
         "rule pointer-events-none mx-snug my-1 text-pen-faint",
         className,

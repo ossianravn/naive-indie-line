@@ -17,6 +17,7 @@ export default function SkeletonDemo() {
         <div
           className="flex w-[20rem] max-w-full items-center gap-tight"
           aria-busy="true"
+          role="status"
           aria-label="Loading booking"
         >
           <Skeleton className="size-8 shrink-0 rounded-full" />
@@ -46,6 +47,7 @@ export default function SkeletonDemo() {
         <div
           className="flex w-full max-w-measure flex-col gap-2.5"
           aria-busy="true"
+          role="status"
           aria-label="Loading the record's notes"
         >
           <Skeleton className="h-3.5 w-full" />
@@ -56,6 +58,7 @@ export default function SkeletonDemo() {
       <StateRow label="Sleeve">
         <Skeleton
           className="aspect-square w-40"
+          role="status"
           aria-label="Loading the sleeve"
         />
       </StateRow>

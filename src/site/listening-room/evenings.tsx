@@ -22,7 +22,7 @@ export function Evenings() {
       </p>
       <ItemGroup className="mt-snug max-w-[44rem]">
         {EVENINGS.map((evening) => (
-          <Item key={evening.date}>
+          <Item key={evening.date} role="listitem">
             <ItemMedia variant="number" className="w-16 font-type text-small">
               {shortDay(evening.date).replace(/^\w+ /u, "")}
             </ItemMedia>

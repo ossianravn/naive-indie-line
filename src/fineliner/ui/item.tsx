@@ -33,6 +33,8 @@ function ItemSeparator({
     <Separator
       data-slot="item-separator"
       orientation="horizontal"
+      // An item group is a list, which may own only list items: the rule is for the eye, hidden from assistive tech.
+      aria-hidden="true"
       className={cn("my-0 text-pen-faint", className)}
       {...props}
     />

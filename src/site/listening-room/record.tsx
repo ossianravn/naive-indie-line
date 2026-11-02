@@ -63,7 +63,12 @@ export function RecordPage({ record }: { record: Release }) {
       </Breadcrumb>
 
       <div className="mt-line grid gap-x-section gap-y-line md:grid-cols-[14rem_minmax(0,1fr)]">
-        <Drawing object="record" seed={record.id} className="w-40 md:w-full" />
+        <Drawing
+          object="record"
+          seed={record.id}
+          title=""
+          className="w-40 md:w-full"
+        />
         <div className="min-w-0">
           <h1 className="m-0 text-h1 wrap-anywhere">{record.title}</h1>
           <p className="m-0 mt-hair text-lead leading-subhead text-pen-quiet">
@@ -131,23 +136,25 @@ export function RecordPage({ record }: { record: Release }) {
               </h2>
               <ItemGroup className="mt-tight max-w-[34rem]">
                 {sessions.map((s) => (
-                  <Item
-                    key={s.id}
-                    size="sm"
-                    render={<a href="/listening-room/sessions" />}
-                  >
-                    <CalendarDaysIcon
-                      aria-hidden="true"
-                      className="size-4 shrink-0 text-pen-quiet"
-                    />
-                    <ItemContent>
-                      <ItemTitle>{s.guest}</ItemTitle>
-                      <ItemDescription>
-                        {shortDay(s.date)}, {s.start}–{endOf(s)} ·{" "}
-                        {SESSION_STATUS[s.status]}
-                      </ItemDescription>
-                    </ItemContent>
-                  </Item>
+                  // A list may own only list items, and the row is a link, so each sits in its own list item.
+                  <div key={s.id} role="listitem">
+                    <Item
+                      size="sm"
+                      render={<a href="/listening-room/sessions" />}
+                    >
+                      <CalendarDaysIcon
+                        aria-hidden="true"
+                        className="size-4 shrink-0 text-pen-quiet"
+                      />
+                      <ItemContent>
+                        <ItemTitle>{s.guest}</ItemTitle>
+                        <ItemDescription>
+                          {shortDay(s.date)}, {s.start}–{endOf(s)} ·{" "}
+                          {SESSION_STATUS[s.status]}
+                        </ItemDescription>
+                      </ItemContent>
+                    </Item>
+                  </div>
                 ))}
               </ItemGroup>
             </section>
