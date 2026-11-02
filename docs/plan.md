@@ -14,10 +14,11 @@ It repeats [Patina UI](https://github.com/ossianravn/patina-ui) (`C:\CodexApp\pa
 2. **shadcn parity**: every `registry:ui` item in the current shadcn release, restyled, with shadcn's names, props, variants and `data-slot` attributes, built on Base UI, as Patina did.
 3. **Seeded drawings as a system**: the pen engine, an object library that keeps growing (indie, food and drink, a creative freelancer's studio, people), scene composition and formats (spot, scene, avatar, border), used in empty states, avatars, covers, headers and share images, with a playground to explore seeds.
 4. **Our own letters**: display faces drawn from one skeleton alphabet (Liner, Stilt, Ribbon, Tramline), first as SVG lettering, then as font files.
-5. **Extras the style suggests**: label cards with a spine, record sleeves, track lists, hand notes with arrows, circled words, price tags and the drawn border.
-6. **A demo site**: home, component docs, the playground, a theme studio and a demo product used end to end.
-7. **Installable** through the shadcn CLI into fresh Vite and Next.js apps.
-8. **Quality**: WCAG 2.2 AA on every stock in day and night, and the "would Apple ship this" bar.
+5. **Motion that is drawing**: line boil as an option, marks the pen puts down, pictures drawn in front of you in rare moments, and quick, quiet feedback on controls. [Style brief: Motion](style.md#motion).
+6. **Extras the style suggests**: label cards with a spine, record sleeves, track lists, hand notes with arrows, circled words, price tags and the drawn border.
+7. **A demo site**: home, component docs, the playground, a theme studio and a demo product used end to end.
+8. **Installable** through the shadcn CLI into fresh Vite and Next.js apps.
+9. **Quality**: WCAG 2.2 AA on every stock in day and night, and the "would Apple ship this" bar.
 
 ## Non-goals for v1
 
@@ -59,6 +60,9 @@ Style decisions (S) are the maintainer's; the [Style brief](style.md#open-choice
 | S14 | **Our own letters**: Liner, Stilt, Ribbon, Tramline from one skeleton alphabet                             | proposed | Inspired by the maintainer's references, not copied. Open: which faces to keep, and when to build font files |
 | S15 | **People with faces** alongside the headless visitors                                                      | decided 2026-11-02 | Dot eyes, a line nose, a short mouth; seeded hair, glasses and beards                                                           |
 | S16 | **A growing object library** in collections: indie, food and drink, studio, people                         | decided 2026-11-02 | The maintainer: objects are where the kit expands most, now and over time. 55 objects in the specimen                           |
+| S17 | **Go big on motion**, as drawing: the pen moves, the paper does not                                        | decided 2026-11-02 | Asked for by the maintainer. The sweep keeps controls quick and quiet and spends the delight on art, rerolls and rare moments |
+| S18 | **Line boil as an option**: `data-boil` is `off`, `hover` or `art`; three takes from labelled pen forks, 120 ms each | decided 2026-11-02 (as an option) | The maintainer loves the redrawn look of rerolling but not its roughness. Open: the default, and which surfaces boil by default |
+| S19 | **Motion values**: one curve, `cubic-bezier(0.23, 1, 0.32, 1)`; 140–200 ms for controls and overlays; draw-on only in rare moments | proposed | From the motion sweep; see the style brief's Motion table |
 
 Logic decisions (L) follow Patina's, carried over by request; each still needs the maintainer's confirmation where Patina's did.
 
@@ -110,7 +114,9 @@ Each phase ships kit parts with the site pages and demo screens that use them, a
 - [x] Object registry with collections; 55 objects across indie, food and drink, studio and people; people with faces and portraits for avatars (S15, S16)
 - [x] Scenes: listening room, studio and bistro, chosen in the specimen
 - [x] Lettering: skeleton alphabet with Æ Ø Å and accents, four faces, a field to try your own words (S14)
-- [ ] Maintainer review, round 2: S2–S11, S13's face, S14's faces and font build
+- [x] Motion sweep (`find-animation-opportunities`): five opportunities kept, five rejected; recorded in the style brief (S17–S19)
+- [ ] Prototype motion in the specimen: a Boil setting (off, hover, art), the settle on reroll, marks put down by the pen, press feedback and the empty state drawn on
+- [ ] Maintainer review, round 2: S2–S11, S13's face, S14's faces and font build, S18's default
 - [ ] Fold the agreed choices into the specimen and the brief; drop the losing options
 
 Exit: the maintainer signs off the specimen as the style.
@@ -123,7 +129,7 @@ Exit: the specimen page renders from the kit on every stock, day and night, at 1
 
 ### Phase 1: the pen and the drawings (the signature)
 
-Port the pen into the framework-free engine with labelled forks per object part, snapped inputs and no `**` or `Math.pow` (Patina's cross-engine rules). Object library v1: the specimen's 55 objects in their collections, each with tags, a default tile and a curated pose list; the registry stays open for new objects in every later phase. Scene composition, formats (spot, scene, avatar, border), `<Drawing>` and `drawing()`. Marks: frame, underline, circled word, strike, tick, arrow note, chevron, pill. The drawing desk playground (seed, object or scene, hand, reroll, copy, download SVG). First registry build and install test.
+Port the pen into the framework-free engine with labelled forks per object part and per take (`take:n`, for line boil and settling), snapped inputs and no `**` or `Math.pow` (Patina's cross-engine rules). Object library v1: the specimen's 55 objects in their collections, each with tags, a default tile and a curated pose list; the registry stays open for new objects in every later phase. Scene composition, formats (spot, scene, avatar, border), `<Drawing>` and `drawing()`. Marks: frame, underline, circled word, strike, tick, arrow note, chevron, pill. `drawing()` can return several takes in one SVG, cycled by CSS, so boil works in server-rendered pages without a script. The drawing desk playground (seed, object or scene, hand, boil, reroll, copy, download SVG). First registry build and install test.
 
 Exit: server and browser render identical SVG for the same seed; the desk rerolls; `base` and `drawing` install into a scratch Vite app that builds.
 
@@ -164,17 +170,20 @@ Docs complete, changelog, share images drawn by the pen, consumer installs into 
 | Pen-drawn frames need measuring (S6)                                   | Filtered CSS frames for anything that resizes; the pen only where the shape is fixed                                                     |
 | A large object library drifts in quality and style                     | One draw function per object on shared geometry (box, cylinder, arc); a library page that shows every object at once; review per collection |
 | Our own fonts take longer than expected                                 | Ship the SVG lettering first; the font build is its own phase (1b) and can wait                                                          |
+| Boil tires the eye or costs paint time                                  | Off by default; never on controls or data; paused off screen and under reduced motion; three takes swapped by opacity, no re-rendering    |
 
 ## Progress log
 
 - **2026-11-02**: Repository initialised. Read Patina's plan, design language, seeded variation and architecture. Three gpt-image explorations (objects, scenes, an imagined listening-room interface) all held the style closely. Built the specimen: a monoline pen with slow eased wobble, corner overshoot and circle loops; blanks as masks; ten objects; a seeded room; paper tiles; the interface sampler with drawn and filtered frames. The first scene with one nested mask per blank timed out the browser's screenshot; one mask per depth layer fixed it. Checked day and night, recycled and kraft, at 1440, 800 and 375 px, with no horizontal scroll. Waiting on the maintainer for S1–S11.
 - **2026-11-02, round 2**: the maintainer approved the direction and asked for less boxing, a typewriter voice, our own fonts, faces and many more objects. Fixed the rules list (one word per line). Added the containers, typewriter and labels settings. Rebuilt the library as a registry with collections and drew 45 new objects (55 in all), people with faces and seeded hair, portraits (now the avatar fallback in the sampler) and two new scenes. A rotation bug (radians passed where degrees were expected) kept every arm down until the people were checked large. Drew a skeleton alphabet and four lettering faces from it. Checked at 800 and 375 px, day and night; no horizontal scroll.
+- **2026-11-02, motion**: the maintainer asked to go big on animation and to keep the redrawn look of rerolling as an option. Swept the specimen with `find-animation-opportunities`: kept line boil, the reroll settle, marks the pen puts down, press feedback, overlay entrances and draw-on for rare moments; rejected boiling controls, animating keystroke redraws, table motion and draw-on across docs pages. Recorded as S17–S19 and the style brief's Motion section; the prototype waits for the go-ahead.
 
 ## Open questions for the maintainer
 
 1. Which of the four lettering faces to keep, and should Phase 1b build them as font files (S14)?
-2. Typewriter face (S13): Courier Prime or Cutive Mono? Labels in small caps or typewriter by default (S9)?
-3. Reading face (S3) and hand face (S4).
-4. Frames (S6): filtered CSS frames everywhere they resize, as recommended?
-5. Library name (S10) and demo product (S11).
-6. License (L9): MIT, as Patina?
+2. Line boil (S18): default `off`, or `hover` for drawings? Should heroes and empty states boil by default?
+3. Typewriter face (S13): Courier Prime or Cutive Mono? Labels in small caps or typewriter by default (S9)?
+4. Reading face (S3) and hand face (S4).
+5. Frames (S6): filtered CSS frames everywhere they resize, as recommended?
+6. Library name (S10) and demo product (S11).
+7. License (L9): MIT, as Patina?

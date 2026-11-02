@@ -113,6 +113,32 @@ Four display faces drawn by the pen from **one skeleton alphabet** (`specimen/le
 
 Each letter takes a small seeded tilt and lift, so a word reads as hand-lettered and still renders the same every time. Today they draw as SVG, named by their text for screen readers. The same skeleton can build real font files: expand the strokes to outlines, then compile OTF and WOFF2 with a few alternates per letter that cycle, as handwriting fonts do. Ribbon needs two layers (outline and fill) or a colour font.
 
+## Motion
+
+**The pen moves; the paper does not.** Motion in this style is drawing: lines that are redrawn, marks that are put down, a picture that is drawn in front of you. Surfaces do not slide, bounce or glow.
+
+**Line boil** is the signature, and an option. A drawing is drawn three times from the same seed with a different pen each time (a labelled fork, `take:1`, `take:2`, so the composition never changes) and the takes cycle, as hand-drawn animation does when every frame is traced again. Rerolling to a new seed shows the opposite: everything changes at once, which reads as rough; boil keeps the thing still and lets only the line breathe.
+
+| Setting (`data-boil`) | What boils                                                        |
+| --------------------- | ----------------------------------------------------------------- |
+| `off` (default)       | Nothing                                                           |
+| `hover`               | A drawing while the pointer is over it (fine pointers only)       |
+| `art`                 | Every drawing, lettering and scene on screen, all the time        |
+
+Never boiling: controls, frames round fields, tables and anything a person reads or operates. Boil pauses off screen, and `prefers-reduced-motion` stops it.
+
+Values (proposed): three takes, 120 ms each (about 8 drawings a second, "on threes" at 24 fps); the takes swap by `opacity` in `steps(1, end)`, so nothing reflows. The other moments, from the motion sweep of 2 November 2026:
+
+| Moment                         | Motion                                                                                                   |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------- |
+| Reroll, scene or face change   | The new drawing settles: its three takes play once at 60 ms each (180 ms), then rest on the first       |
+| Tick, radio dot, tab underline, chosen segment | The pen puts the mark down: `clip-path: inset(0 100% 0 0)` to `inset(0)`, 140 ms `cubic-bezier(0.23, 1, 0.32, 1)`; removal is instant |
+| Press                          | `scale: 0.97`, 160 ms on the same curve                                                                   |
+| Dialogs and popovers           | `opacity: 0; scale: 0.97` to settled, 200 ms on the same curve via `@starting-style`; popovers grow from their trigger (`--transform-origin`), dialogs stay centred; the shadow line follows 40 ms later |
+| Empty states, first run, heroes | The pen draws the picture: strokes draw on with `pathLength="1"` dash offsets, 240 ms each, staggered 18 ms, once per page view |
+
+Reduced motion: no boil and no draw-on; marks appear with a 100 ms fade; dialogs fade without scale.
+
 ## Drawings (the signature)
 
 Patina's signature is seeded riso **prints** of abstract motifs. This kit's is seeded **drawings** of things: an object library drawn by the pen in oblique view, composed into scenes.
@@ -141,3 +167,4 @@ The plan tracks these as decisions; the direction itself (S1) is agreed.
 7. The correction pen as the only second colour.
 8. The wash as an art-only second tone.
 9. Our own letters: which of the four faces to keep, and whether to build them as font files now.
+10. Line boil: which setting is the default, and where `hover` and `art` apply by default (heroes, empty states, the desk).
