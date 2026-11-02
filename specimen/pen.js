@@ -84,7 +84,8 @@
   /** A pen with a hand. Each call draws the next stroke from the pen's own stream. */
   function pen(seed, handName = "lively") {
     const hand = HANDS[handName] ?? HANDS.lively
-    const rand = prng(fork(seedOf(seed), "pen"))
+    // Takes (line boil, settling) redraw the same composition with another pen: a labelled fork per take.
+    const rand = prng(fork(seedOf(seed), NIL.take ? `pen:take:${NIL.take}` : "pen"))
     const between = (a, b) => a + rand() * (b - a)
 
     /** Offset a polyline along its normals by slow wobble plus tremor. `closed` makes the offsets meet. */

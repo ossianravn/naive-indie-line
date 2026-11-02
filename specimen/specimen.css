@@ -204,7 +204,8 @@ p {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
-    transition: none !important;
+  body,
+  .switch .knob {
+    transition: none;
   }
 }

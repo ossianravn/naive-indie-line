@@ -28,14 +28,8 @@
   background: linear-gradient(currentColor, currentColor) center / var(--pen-weight) 100% no-repeat;
   filter: var(--wob-5);
 }
-.segmented .ink-fill {
-  display: none;
-}
 .segmented label:has(input:checked) {
   color: var(--paper);
-}
-.segmented label:has(input:checked) .ink-fill {
-  display: block;
 }
 .segmented label:has(input:focus-visible) {
   outline: 1.5px dashed var(--pen);
@@ -62,10 +56,6 @@
 .swatches .ring {
   position: absolute;
   inset: 0;
-  opacity: 0;
-}
-.swatches label:has(input:checked) .ring {
-  opacity: 1;
 }
 .swatches label:has(input:focus-visible) {
   outline: 1.5px dashed var(--pen);
@@ -103,11 +93,6 @@
 .check .tick {
   position: absolute;
   inset: 0;
-  opacity: 0;
-}
-.check input:checked + .box .tick,
-.radio input:checked + .disc .dot {
-  opacity: 1;
 }
 .radio .disc {
   position: relative;
@@ -118,9 +103,6 @@
 .radio .disc > * {
   position: absolute;
   inset: 0;
-}
-.radio .dot {
-  opacity: 0;
 }
 :is(.check, .radio, .switch) input:focus-visible + * {
   outline: 1.5px dashed var(--pen);
@@ -150,14 +132,10 @@
   inset: 0;
 }
 .switch .knob .dot {
-  opacity: 0;
   scale: 2.2;
 }
 .switch input:checked + .track .knob {
   translate: 1.25rem 0;
-}
-.switch input:checked + .track .knob .dot {
-  opacity: 1;
 }
 
 .slider {
@@ -217,8 +195,4 @@
   right: -0.2rem;
   bottom: -0.35rem;
   height: 0.55rem;
-  opacity: 0;
-}
-.tab[aria-selected="true"] .uline {
-  opacity: 1;
 }

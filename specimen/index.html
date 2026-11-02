@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="day" data-stock="recycled" data-pen="navy" data-hand="lively" data-read="newsreader" data-script="gaegu" data-type="courier" data-labels="caps" data-containers="open" data-frames="pen">
+<html lang="en" data-theme="day" data-stock="recycled" data-pen="navy" data-hand="lively" data-read="newsreader" data-script="gaegu" data-type="courier" data-labels="caps" data-containers="open" data-frames="pen" data-boil="off">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="choices.css" />
     <link rel="stylesheet" href="marks.css" />
     <link rel="stylesheet" href="sampler.css" />
+    <link rel="stylesheet" href="motion.css" />
   </head>
   <body>
     <svg id="filters" width="0" height="0" aria-hidden="true" style="position: absolute"></svg>
@@ -41,6 +42,10 @@
           <div class="setting" data-setting="hand">
             <span class="label" id="l-hand">Hand</span>
             <div class="segmented" role="radiogroup" aria-labelledby="l-hand"></div>
+          </div>
+          <div class="setting" data-setting="boil">
+            <span class="label" id="l-boil">Line boil</span>
+            <div class="segmented" role="radiogroup" aria-labelledby="l-boil"></div>
           </div>
           <div class="setting" data-setting="read">
             <span class="label" id="l-read">Reading face</span>
@@ -196,6 +201,7 @@
     <script src="lettering/glyphs.js"></script>
     <script src="lettering/lettering.js"></script>
     <script src="marks.js"></script>
+    <script src="motion.js"></script>
     <script src="paper.js"></script>
     <script src="ui.js"></script>
     <script src="specimen.js"></script>

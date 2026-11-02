@@ -9,6 +9,7 @@
     stock: [["recycled", "Recycled"], ["kraft", "Kraft"], ["bond", "Bond"]],
     pen: [["navy", "Navy"], ["black", "Soft black"], ["sepia", "Sepia"], ["forest", "Forest"], ["oxblood", "Oxblood"]],
     hand: [["calm", "Calm"], ["lively", "Lively"]],
+    boil: [["off", "Off"], ["hover", "Hover"], ["art", "Art"]],
     read: [["newsreader", "Newsreader"], ["garamond", "Garamond"], ["caslon", "Caslon"]],
     script: [["gaegu", "Gaegu"], ["patrick", "Patrick"], ["shadows", "Shadows"]],
     type: [["courier", "Courier Prime"], ["cutive", "Cutive Mono"]],
@@ -72,8 +73,12 @@
     },
   }
 
+  const ART = new Set(["avatar-portrait", "empty-crate"])
+  const { takes, watch, settle } = NIL.motion
+
   function mark(name, seed, hand) {
     const M = NIL.marks
+    if (ART.has(name)) return takes(() => custom[name](seed, hand))
     if (custom[name]) return custom[name](seed, hand)
     if (name === "ring-sm") return M.ring(seed, hand, 20, 20)
     if (name === "ring-avatar") return M.ring(seed, hand, 44, 44)
@@ -85,6 +90,7 @@
     document.querySelectorAll("[data-mark]").forEach((el, i) => {
       el.innerHTML = mark(el.dataset.mark, seedFor(el, i), state.hand)
     })
+    watch(document)
     document.querySelectorAll(".frame, .ink-fill").forEach((el, i) => {
       const r = NIL.stream(NIL.seedOf(seedFor(el, i)), "frame")
       el.style.setProperty("--wob", `var(--wob-${1 + Math.floor(r.next() * 6)})`)
@@ -193,7 +199,9 @@
   let sceneName = "room"
   function scene() {
     const [, draw] = NIL.scenes[sceneName]
-    document.getElementById("scene").innerHTML = draw(document.getElementById("scene-seed").value || "corner-shop", state.hand)
+    const host = document.getElementById("scene")
+    host.innerHTML = takes(() => draw(document.getElementById("scene-seed").value || "corner-shop", state.hand))
+    watch(host)
   }
 
   function sceneChoices() {
@@ -206,25 +214,30 @@
     group.addEventListener("change", (e) => {
       sceneName = e.target.value
       scene()
+      settle(document.getElementById("scene"))
     })
   }
 
   function library() {
-    document.getElementById("library").innerHTML = NIL.objects.COLLECTIONS.map(([key, title]) => {
+    const host = document.getElementById("library")
+    host.innerHTML = NIL.objects.COLLECTIONS.map(([key, title]) => {
       const tiles = NIL.objects
         .list(key)
-        .map((o) => `<figure>${NIL.objects.tile(o, librarySeed, state.hand)}<figcaption class="label">${o.name}</figcaption></figure>`)
+        .map((o) => `<figure>${takes(() => NIL.objects.tile(o, librarySeed, state.hand))}<figcaption class="label">${o.name}</figcaption></figure>`)
         .join("")
       return `<h3 class="collection">${title}</h3><div class="library-grid">${tiles}</div>`
     }).join("")
+    watch(host)
   }
 
   const SAMPLES = { liner: "Listening room", stilt: "Pét-nat · Side B", ribbon: "Open 10–6", tramline: "Studio 2026" }
   function letters() {
     const own = document.getElementById("letters-text").value.trim()
-    document.getElementById("letters").innerHTML = Object.entries(NIL.lettering.FACES)
-      .map(([key, face]) => `<figure>${NIL.lettering.draw(own || SAMPLES[key], { face: key, hand: state.hand })}<figcaption class="label">${face.name}</figcaption></figure>`)
+    const host = document.getElementById("letters")
+    host.innerHTML = Object.entries(NIL.lettering.FACES)
+      .map(([key, face]) => `<figure>${takes(() => NIL.lettering.draw(own || SAMPLES[key], { face: key, hand: state.hand }))}<figcaption class="label">${face.name}</figcaption></figure>`)
       .join("")
+    watch(host)
   }
 
   function drawAll() {
@@ -252,6 +265,8 @@
   sceneChoices()
   drawAll()
   document.querySelectorAll(".frame").forEach((el) => frames.observe(el))
+  NIL.motion.drawWhenSeen(document.getElementById("scene"))
+  NIL.motion.drawWhenSeen(document.querySelector(".empty-art"))
 
   document.getElementById("scene-seed").addEventListener("input", scene)
   document.getElementById("letters-text").addEventListener("input", letters)
@@ -260,9 +275,11 @@
     if (which === "scene") {
       document.getElementById("scene-seed").value = pickWord()
       scene()
+      settle(document.getElementById("scene"))
     } else if (which === "library") {
       librarySeed = pickWord()
       library()
+      settle(document.getElementById("library"))
     }
     const tab = e.target.closest(".tab")
     if (tab) tab.parentElement.querySelectorAll(".tab").forEach((t) => t.setAttribute("aria-selected", String(t === tab)))

@@ -1,0 +1,185 @@
+/* Motion is drawing. One curve for everything, quick on controls; the delight goes to art, rerolls and rare moments. */
+
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --take: 120ms;
+  --put-down: 140ms;
+  --press: 160ms;
+  --overlay: 200ms;
+}
+
+/* Takes: the same drawing three times, stacked. Paused, the first shows; running, they cycle (line boil). */
+.takes {
+  display: grid;
+}
+.takes > * {
+  grid-area: 1 / 1;
+  animation: take calc(var(--take) * 3) steps(1, end) infinite paused;
+}
+.takes > * + * {
+  opacity: 0;
+}
+.takes > :nth-child(2) {
+  animation-delay: calc(var(--take) * -2);
+}
+.takes > :nth-child(3) {
+  animation-delay: calc(var(--take) * -1);
+}
+@keyframes take {
+  0% {
+    opacity: 1;
+  }
+  33.333% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+[data-boil="art"] .takes.awake > * {
+  animation-play-state: running;
+}
+@media (hover: hover) and (pointer: fine) {
+  [data-boil="hover"] .takes.awake:hover > * {
+    animation-play-state: running;
+  }
+}
+/* Settling after a reroll: the script steps data-show through the takes, then removes it. */
+.takes[data-show] > * {
+  animation: none;
+  opacity: 0;
+}
+.takes[data-show="0"] > :nth-child(1),
+.takes[data-show="1"] > :nth-child(2),
+.takes[data-show="2"] > :nth-child(3) {
+  opacity: 1;
+}
+[data-mark] > .takes,
+[data-mark] > .takes > .doodle {
+  height: 100%;
+}
+/* Drawings sized by max-width need their stack to span the figure, or the percentage has nothing to resolve to. */
+.library .takes {
+  justify-self: stretch;
+  justify-items: center;
+}
+.letters .takes {
+  justify-self: stretch;
+  justify-items: start;
+}
+
+/* A picture waiting to be drawn on the first time it is seen. */
+.doodle.unseen .ln {
+  stroke-dasharray: 0 100000;
+}
+.doodle.unseen :is(.ink, .wash, .sheet-fill) {
+  opacity: 0;
+}
+
+/* The pen puts a mark down: revealed left to right as it appears, gone at once when it goes. The insets reach past
+   the box because pen marks run past their corners. */
+:is(.check .tick, .radio .dot, .switch .knob .dot, .tab .uline, .segmented .ink-fill, .swatches .ring) {
+  clip-path: inset(-40% 100% -40% -40%);
+}
+:is(
+    .check input:checked + .box .tick,
+    .radio input:checked + .disc .dot,
+    .switch input:checked + .track .knob .dot,
+    .tab[aria-selected="true"] .uline,
+    .segmented label:has(input:checked) .ink-fill,
+    .swatches label:has(input:checked) .ring
+  ) {
+  clip-path: inset(-40%);
+  transition: clip-path var(--put-down) var(--ease-out);
+}
+.switch input:checked + .track .knob .dot {
+  transition-delay: 60ms;
+}
+
+/* Press: the control gives a little under the finger. */
+:is(.btn, .segmented label, .swatches label, .tab) {
+  transition: scale var(--press) var(--ease-out);
+}
+:is(.btn:not(:disabled), .segmented label, .swatches label, .tab):active {
+  scale: 0.97;
+}
+
+/* Dialogs open from nothing to settled and close the same way; the cartoonist's shadow line follows. */
+.sheet-dialog {
+  /* .frame makes boxes relative; a modal dialog must stay fixed and centred. */
+  position: fixed;
+  inset: 0;
+  height: fit-content;
+  margin: auto;
+  max-width: min(25rem, calc(100vw - 2rem));
+  overflow: visible;
+  border: 0;
+  color: var(--pen);
+  opacity: 1;
+  scale: 1;
+  transition:
+    opacity var(--overlay) var(--ease-out),
+    scale var(--overlay) var(--ease-out),
+    display var(--overlay) allow-discrete,
+    overlay var(--overlay) allow-discrete;
+}
+.sheet-dialog:not([open]) {
+  opacity: 0;
+  scale: 0.97;
+  transition-duration: 150ms;
+}
+@starting-style {
+  .sheet-dialog[open] {
+    opacity: 0;
+    scale: 0.97;
+  }
+}
+.sheet-dialog.lifted::after {
+  transition: opacity var(--overlay) var(--ease-out) 40ms;
+}
+@starting-style {
+  .sheet-dialog[open].lifted::after {
+    opacity: 0;
+  }
+}
+.sheet-dialog::backdrop {
+  background: color-mix(in srgb, var(--paper) 60%, transparent);
+  transition:
+    opacity var(--overlay) var(--ease-out),
+    display var(--overlay) allow-discrete,
+    overlay var(--overlay) allow-discrete;
+}
+.sheet-dialog:not([open])::backdrop {
+  opacity: 0;
+}
+@starting-style {
+  .sheet-dialog[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+/* Reduced motion: no boil, settle or draw-on (the script skips them); marks fade in; dialogs fade without scale. */
+@media (prefers-reduced-motion: reduce) {
+  .takes > * {
+    animation: none !important;
+  }
+  :is(.check .tick, .radio .dot, .switch .knob .dot, .tab .uline, .segmented .ink-fill, .swatches .ring) {
+    clip-path: none;
+    opacity: 0;
+  }
+  :is(
+      .check input:checked + .box .tick,
+      .radio input:checked + .disc .dot,
+      .switch input:checked + .track .knob .dot,
+      .tab[aria-selected="true"] .uline,
+      .segmented label:has(input:checked) .ink-fill,
+      .swatches label:has(input:checked) .ring
+    ) {
+    opacity: 1;
+    transition: opacity 100ms ease-out !important;
+  }
+  .sheet-dialog,
+  .sheet-dialog:not([open]) {
+    scale: 1;
+  }
+}

@@ -88,9 +88,6 @@
 .btn:hover {
   --pen-weight: 2px;
 }
-.btn:active {
-  translate: 0 1px;
-}
 .btn.solid {
   color: var(--paper);
 }

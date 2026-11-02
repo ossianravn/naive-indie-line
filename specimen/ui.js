@@ -41,7 +41,12 @@
       <div class="radios" role="radiogroup" aria-labelledby="f-side">${radio("side", "a", "Side A", true)}${radio("side", "b", "Side B")}</div></div>
     <div class="form-row"><label class="label" for="f-vol">Volume</label>
       <span class="slider"><span class="track" data-mark="underline"></span><input id="f-vol" type="range" value="60"></span></div>
-    <div class="actions"><button class="btn frame sm" type="button" disabled>Sold out</button><button class="btn frame sm correction" type="button">Remove</button></div>
+    <div class="actions"><button class="btn frame sm" type="button" disabled>Sold out</button><button class="btn frame sm correction" type="button" data-open="remove-dialog">Remove</button></div>
+    <dialog class="sheet-dialog dialog frame lifted" id="remove-dialog" aria-labelledby="rd-title" data-seed="remove-dialog">
+      <h3 id="rd-title">Take it off the shelf?</h3>
+      <p>Pétillant Naturel leaves the shop's list. Anyone who booked a listening of it keeps their seat.</p>
+      <div class="actions"><button class="btn frame sm" type="button" data-close autofocus>Keep it</button><button class="btn frame sm correction" type="button" data-close>Remove</button></div>
+    </dialog>
   </article>`
 
   const records = `

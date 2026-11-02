@@ -139,6 +139,8 @@ Values (proposed): three takes, 120 ms each (about 8 drawings a second, "on thre
 
 Reduced motion: no boil and no draw-on; marks appear with a 100 ms fade; dialogs fade without scale.
 
+In the specimen: `specimen/motion.js` (takes, settle, draw-on, dialogs) and `specimen/motion.css` (boil, reveals, press, dialog entrance). The Line boil setting switches `data-boil`; Reroll and the scene picker settle; Remove in the States card opens the dialog; the scene and the empty crate draw on the first time they are seen.
+
 ## Drawings (the signature)
 
 Patina's signature is seeded riso **prints** of abstract motifs. This kit's is seeded **drawings** of things: an object library drawn by the pen in oblique view, composed into scenes.
