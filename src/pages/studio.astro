@@ -1,0 +1,24 @@
+---
+import Base from "@/site/layouts/base.astro"
+import { Studio } from "@/site/studio/studio"
+---
+
+<Base
+  title="Theme studio"
+  description="Paper, pen, hand, line boil, containers, labels and density, on the shop's own screens and every kind of part at once, exported as CSS or a shadcn registry item."
+>
+  <div class="mx-auto max-w-[76rem] px-snug pt-section sm:px-line">
+    <p class="label m-0 text-pen-quiet">
+      Fineliner · <a href="/docs">Components</a>
+    </p>
+    <h1 class="mt-tight mb-tight text-title leading-heading">Theme studio</h1>
+    <p class="m-0 max-w-measure">
+      Choose the paper, the pen and the hand, watch them land on the shop's
+      dashboard and every kind of part, then take the theme away as CSS or a
+      shadcn item.
+    </p>
+  </div>
+  <div class="mx-auto mt-section max-w-[76rem] px-snug pb-page sm:px-line">
+    <Studio client:load />
+  </div>
+</Base>

@@ -1,0 +1,46 @@
+---
+// The drawings: a shelf of objects from each collection, drawn by the pen from their seeds at build time. Each boils
+// under the pointer, as every drawing does by default; none of this hydrates.
+import { Drawing } from "@/fineliner/drawing/drawing"
+import SectionHead from "@/site/specimen/section-head.astro"
+
+const SHELF = [
+  ["turntable", "Turntable"],
+  ["record", "Record"],
+  ["bottle", "Wine bottle"],
+  ["glass", "Glass"],
+  ["laptop", "Laptop"],
+  ["person-wave", "Waving"],
+  ["armchair", "Armchair"],
+  ["house-plant", "House plant"],
+] as const
+---
+
+<section
+  class="mx-auto max-w-[76rem] px-snug py-section sm:px-line"
+  aria-labelledby="drawings"
+>
+  <SectionHead n={2} id="drawings" title="Drawn, not printed" />
+  <p class="m-0 -mt-snug max-w-measure text-pen-quiet">
+    A library of objects, people and rooms, each drawn by the pen from a seed:
+    the same seed draws the same picture on the server and in the browser, and
+    another seed draws it again by another hand. Hover one to see the line boil.
+  </p>
+  <ul class="m-0 mt-line grid list-none grid-cols-2 gap-x-snug gap-y-line p-0 min-[30rem]:grid-cols-4 lg:grid-cols-8">
+    {SHELF.map(([object, name]) => (
+      <li class="flex flex-col items-center gap-tight">
+        <Drawing
+          object={object}
+          seed={`home-${object}`}
+          title=""
+          className="h-28 w-full [&>svg]:h-full"
+        />
+        <span class="label text-pen-quiet">{name}</span>
+      </li>
+    ))}
+  </ul>
+  <p class="m-0 mt-line flex flex-wrap gap-x-snug gap-y-hair">
+    <a href="/drawings">The whole library</a>
+    <a href="/desk">Reroll one at the desk</a>
+  </p>
+</section>

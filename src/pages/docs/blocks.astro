@@ -1,0 +1,59 @@
+---
+import Base from "@/site/layouts/base.astro"
+import { BlockPreview } from "@/site/docs/blocks/block-preview"
+import { BLOCKS } from "@/site/docs/blocks/blocks"
+---
+
+<Base
+  title="Blocks"
+  description="Whole pages built from Fineliner's parts, each running in a preview at desktop and phone width, with the command that installs it."
+>
+  <div class="mx-auto max-w-[76rem] px-snug pt-section sm:px-line">
+    <p class="label m-0">
+      <a href="/docs">Components</a> · {BLOCKS.length} blocks
+    </p>
+    <h1 class="mb-tight mt-tight text-title leading-heading">Blocks</h1>
+    <p class="m-0 max-w-measure">
+      Whole pages built from Fineliner's parts, with Listening Room's content.
+      Install one into your app, then make its copy and data yours.
+    </p>
+  </div>
+  <div class="mx-auto max-w-[76rem] px-snug sm:px-line">
+    {BLOCKS.map(({ name, title, description, variants }) => (
+      <section
+        id={name}
+        class="mt-page scroll-mt-20"
+        aria-labelledby={`block-${name}`}
+      >
+        <div class="flex flex-wrap items-baseline gap-x-snug gap-y-hair">
+          <h2 id={`block-${name}`} class="m-0 text-h2">
+            <a href={`#${name}`} class="text-pen no-underline">
+              {title}
+            </a>
+          </h2>
+          <span class="font-type text-small text-pen-quiet">{name}</span>
+        </div>
+        <p class="m-0 mt-hair max-w-measure text-pen-quiet">{description}</p>
+        <pre class="mt-snug w-fit max-w-full overflow-x-auto bg-paper-2 px-tight py-tight font-type text-small sm:px-snug"><code>npx shadcn add @fineliner/{name}</code></pre>
+        <div class="mt-snug">
+          <BlockPreview
+            name={name}
+            title={title}
+            variants={variants}
+            client:visible
+          />
+        </div>
+      </section>
+    ))}
+  </div>
+</Base>
+
+<script>
+  import { apply, readSaved, STORAGE_KEY } from "@/fineliner/theme/appearance"
+  import { siteAppearance } from "@/site/appearance"
+
+  // A preview frame that changes the appearance (the settings block) saves it; the page follows.
+  addEventListener("storage", (event) => {
+    if (event.key === STORAGE_KEY) apply(readSaved(siteAppearance))
+  })
+</script>

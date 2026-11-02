@@ -1,0 +1,73 @@
+---
+// Install and make it yours: the registry steps, then the theme studio, the blocks, the components and the desk.
+import { PenMark } from "@/fineliner/drawing/pen-mark"
+import SectionHead from "@/site/specimen/section-head.astro"
+import { InstallSteps } from "./install-steps"
+
+// The registry is served from this site's /r, wherever the site runs.
+const registry = (Astro.site?.origin ?? Astro.url.origin).replace(/\/$/, "")
+const NEXT = [
+  {
+    title: "Theme studio",
+    hook: "Paper, pen, hand, line boil and labels on real screens; export a theme.",
+    href: "/studio",
+  },
+  {
+    title: "Blocks",
+    hook: "Whole sections to start from: hero, sign-in, settings, dashboard, pricing.",
+    href: "/docs/blocks",
+  },
+  {
+    title: "Components",
+    hook: "Every part with its states and the command that installs it.",
+    href: "/docs",
+  },
+  {
+    title: "The drawing desk",
+    hook: "Reroll any drawing or scene, then copy its seed or download the SVG.",
+    href: "/desk",
+  },
+] as const
+---
+
+<section
+  class="mx-auto max-w-[76rem] px-snug py-section sm:px-line"
+  aria-labelledby="install"
+>
+  <SectionHead n={5} id="install" title="Install and make it yours" />
+  <p class="m-0 -mt-snug mb-line max-w-measure text-pen-quiet">
+    Fineliner installs with the shadcn CLI from its own registry, into your
+    project's src/fineliner, where it is yours to change.
+  </p>
+  <div class="grid gap-section lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+    <InstallSteps registry={registry} client:visible />
+    <div>
+      <h3 class="m-0 text-body leading-subhead font-medium">Then</h3>
+      <ul class="m-0 mt-tight list-none p-0">
+        {NEXT.map(({ title, hook, href }) => (
+          <li>
+            <a
+              href={href}
+              class="grid grid-cols-[1.5rem_minmax(0,1fr)] gap-x-tight py-tight no-underline"
+            >
+              <PenMark
+                name="next"
+                seed={href}
+                hand="calm"
+                className="mt-1.5 h-3 w-5 rtl:-scale-x-100"
+              />
+              <span>
+                <span class="block font-medium underline decoration-pen/40 underline-offset-[0.2em]">
+                  {title}
+                </span>
+                <span class="block text-small leading-small text-pen-quiet">
+                  {hook}
+                </span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>

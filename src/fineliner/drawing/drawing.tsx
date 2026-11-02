@@ -29,6 +29,7 @@ export function Drawing({
   still,
   drawOnView,
   className,
+  ref: outer,
   ...props
 }: DrawingProps) {
   const html = useMemo(() => {
@@ -49,14 +50,19 @@ export function Drawing({
       )
       .join("")
   }, [object, scene, seed, hand, title, still, drawOnView])
-  const ref = useRef<HTMLSpanElement>(null)
+  const inner = useRef<HTMLSpanElement | null>(null)
   useEffect(() => {
-    const el = ref.current
+    const el = inner.current
     return drawOnView && el ? drawWhenSeen(el) : undefined
   }, [drawOnView, html])
   return (
     <span
-      ref={ref}
+      // A caller's ref is kept beside the drawing's own, which drawOnView needs.
+      ref={(el) => {
+        inner.current = el
+        if (typeof outer === "function") outer(el)
+        else if (outer) outer.current = el
+      }}
       data-slot="drawing"
       data-object={object}
       data-scene={scene}

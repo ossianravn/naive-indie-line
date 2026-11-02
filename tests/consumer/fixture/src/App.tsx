@@ -27,6 +27,8 @@ import {
   SelectValue,
 } from "@/fineliner/ui/select"
 import { ToggleGroup, ToggleGroupItem } from "@/fineliner/ui/toggle-group"
+import { RecordSleeve } from "@/fineliner/extras/record-sleeve"
+import { SignIn01 } from "@/fineliner/blocks/sign-in-01"
 import { Bar, BarChart, XAxis } from "recharts"
 import {
   ChartContainer,
@@ -86,6 +88,12 @@ export function App() {
           <ToggleGroupItem value="day">Day</ToggleGroupItem>
           <ToggleGroupItem value="night">Night</ToggleGroupItem>
         </ToggleGroup>
+        <RecordSleeve
+          title="Harbour Lights"
+          artist="Ellen Moe Trio"
+          catalogue="LR-0431"
+          size="sm"
+        />
         <Table>
           <TableHeader>
             <TableRow>
@@ -149,6 +157,7 @@ export function App() {
           </DialogContent>
         </Dialog>
       </main>
+      <SignIn01 product="Side B" />
     </>
   )
 }

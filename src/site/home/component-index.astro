@@ -1,0 +1,96 @@
+---
+// The index: every component A to Z, read from the docs demos' meta so it never falls behind. Each entry carries the
+// pen mark of its group (the key sits above the list) and opens its docs page. Rendered at build time: the entries
+// are links and nothing here hydrates.
+import type { MarkName } from "@/fineliner/pen"
+import { PenMark } from "@/fineliner/drawing/pen-mark"
+import type { DemoMeta } from "@/site/docs/demo-kit"
+import SectionHead from "@/site/specimen/section-head.astro"
+
+type Group = NonNullable<DemoMeta["group"]> | "Other"
+
+const metas = import.meta.glob<DemoMeta>("../docs/demos/*.tsx", {
+  eager: true,
+  import: "meta",
+})
+const entries = Object.entries(metas)
+  .map(([path, meta]) => ({
+    name: path.replace(/^.*\/(.+)\.tsx$/, "$1"),
+    title: meta.title,
+    group: (meta.group ?? "Other") as Group,
+  }))
+  .sort((a, b) => a.title.localeCompare(b.title))
+
+// One mark per group, seeded by the group, so every entry repeats its key's own drawing.
+const GROUPS: [Group, MarkName][] = [
+  ["Actions", "next"],
+  ["Forms", "tick"],
+  ["Overlays", "ring"],
+  ["Navigation", "chevron"],
+  ["Data display", "dot"],
+  ["Charts", "underline"],
+  ["Conversation", "pill"],
+  ["Fineliner extras", "arrow"],
+  ["Other", "strike"],
+]
+const markOf = new Map(GROUPS)
+const used = GROUPS.filter(([group]) => entries.some((e) => e.group === group))
+const letters = [...new Set(entries.map((e) => e.title[0]!.toUpperCase()))]
+---
+
+<section
+  class="mx-auto max-w-[76rem] px-snug py-section sm:px-line"
+  aria-labelledby="index"
+>
+  <SectionHead n={4} id="index" title="The index" />
+  <p class="m-0 -mt-snug mb-line max-w-measure text-pen-quiet">
+    All {entries.length} components, A to Z. Each opens its page: every state,
+    drawn on paper, and the command that installs it.
+  </p>
+  <ul
+    class="m-0 mb-line flex list-none flex-wrap gap-x-snug gap-y-hair p-0"
+    aria-label="Key"
+  >
+    {used.map(([group, mark]) => (
+      <li class="label flex items-center gap-hair text-pen-quiet">
+        <PenMark name={mark} seed={group} hand="calm" className="h-3 w-4" />
+        {group}
+      </li>
+    ))}
+  </ul>
+  <div class="columns-1 gap-x-section min-[30rem]:columns-2 md:columns-3 lg:columns-4">
+    {letters.map((letter) => (
+      <section
+        aria-labelledby={`index-${letter}`}
+        class="grid break-inside-avoid grid-cols-[1.75rem_minmax(0,1fr)] items-baseline pb-snug"
+      >
+        <h3
+          id={`index-${letter}`}
+          class="m-0 font-read text-lead leading-none font-medium"
+        >
+          {letter}
+        </h3>
+        <ul class="m-0 list-none p-0">
+          {entries
+            .filter((e) => e.title[0]!.toUpperCase() === letter)
+            .map((e) => (
+              <li>
+                <a
+                  href={`/docs/components/${e.name}`}
+                  class="flex items-center gap-tight py-0.5 no-underline hover:underline"
+                >
+                  <PenMark
+                    name={markOf.get(e.group) ?? "strike"}
+                    seed={e.group}
+                    hand="calm"
+                    className="h-3 w-4 shrink-0 text-pen-quiet"
+                  />
+                  {e.title}
+                </a>
+              </li>
+            ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</section>

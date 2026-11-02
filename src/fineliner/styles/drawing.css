@@ -46,8 +46,11 @@
   --boil: running;
   --boil-hover: running;
 }
-.fl-takes {
-  display: grid;
+/* Takes stack in one grid cell. The grid sits in the components layer, so a call site's hidden or display wins. */
+@layer components {
+  .fl-takes {
+    display: grid;
+  }
 }
 .fl-takes > * {
   grid-area: 1 / 1;

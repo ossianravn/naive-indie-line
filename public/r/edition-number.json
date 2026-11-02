@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "edition-number",
+  "title": "Edition Number",
+  "description": "An edition number, Nº 0412, in the typewriter, optionally of a total, or set on the spine.",
+  "registryDependencies": [
+    "@fineliner/base"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/extras/edition-number.tsx",
+      "content": "import type { ComponentProps } from \"react\"\nimport { cn } from \"@/fineliner/lib/utils\"\n\n// \"Nº 0412\": a numbered copy in the typewriter, zero padded so a run of numbers lines up, with tabular figures, and\n// \"of 500\" when the size of the run matters. With `spine` it stands up an edge, bottom to top, in the reading serif\n// (the spine voice), as the words on a label do. It takes the size and colour of its context. Screen readers hear\n// \"Number 412 of 500\" instead of the sign and the padding.\n//\n// The spine is writing-mode vertical-rl turned 180°, which every engine draws the same way. Inside another spine\n// (anything marked data-spine, such as a LabelCard's) it takes the spine voice and leaves the turning to that spine.\n\nexport interface EditionNumberProps extends Omit<\n  ComponentProps<\"span\">,\n  \"children\"\n> {\n  value: number\n  /** How many digits to pad the number to. */\n  digits?: number\n  /** The size of the run: \"Nº 0412 of 500\". */\n  of?: number\n  /** The printed sign before the number. */\n  prefix?: string\n  /** What assistive technology reads in place of the sign. */\n  label?: string\n  /** Set it up the edge, bottom to top, in the spine voice. */\n  spine?: boolean\n}\n\nconst NBSP = \" \"\nconst whole = (n: number) => Math.max(0, Math.trunc(Number.isFinite(n) ? n : 0))\n\n/** A copy's number in a run: \"Nº 0412\", \"Nº 0412 of 500\", or the same up a spine. */\nexport function EditionNumber({\n  value,\n  digits = 4,\n  of,\n  prefix = \"Nº\",\n  label = \"Number\",\n  spine = false,\n  className,\n  ...props\n}: EditionNumberProps) {\n  const n = String(whole(value)).padStart(digits, \"0\")\n  const total = of === undefined ? \"\" : `${NBSP}of${NBSP}${whole(of)}`\n  const spoken = `${label} ${whole(value)}${of === undefined ? \"\" : ` of ${whole(of)}`}`\n  return (\n    <span\n      data-slot=\"edition-number\"\n      data-spine={spine ? \"\" : undefined}\n      className={cn(\n        \"whitespace-nowrap tabular-nums\",\n        spine\n          ? \"inline-block font-read tracking-[0.04em] [writing-mode:vertical-rl] rotate-180 in-data-spine:rotate-none\"\n          : \"font-type in-data-spine:font-read in-data-spine:tracking-[0.04em]\",\n        className,\n      )}\n      {...props}\n    >\n      <span aria-hidden=\"true\">\n        {prefix ? `${prefix}${NBSP}` : \"\"}\n        {n}\n        {total}\n      </span>\n      <span className=\"sr-only\">{spoken}</span>\n    </span>\n  )\n}\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/extras/edition-number.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

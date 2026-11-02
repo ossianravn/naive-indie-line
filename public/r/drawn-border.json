@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "drawn-border",
+  "title": "Drawn Border",
+  "description": "The label's border round a region: four pen strokes that run past or stop short of their corners, optionally doubled, in CSS.",
+  "registryDependencies": [
+    "@fineliner/base"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/extras/drawn-border.tsx",
+      "content": "import type { ComponentProps, CSSProperties } from \"react\"\nimport { wordsOf } from \"@/fineliner/lib/frame-style\"\nimport { cn } from \"@/fineliner/lib/utils\"\nimport { frameVars } from \"@/fineliner/pen/filters\"\nimport { seedOf } from \"@/fineliner/pen/seed\"\n\n// The label's border round a region: four pen strokes whose ends run past or stop short of their corners, as on the\n// reference label. It is the CSS frame (frames.css) with seeded overshoots and wobble, so it renders on the server\n// and resizes with its content without measuring. Doubled, a second frame with its own seed stands a gap inside the\n// first. The border draws in currentColor; the label's lines run further past their corners than a button's, and\n// the calm hand pulls them in.\n\nexport interface DrawnBorderProps extends ComponentProps<\"div\"> {\n  /** A second border inside the first, `--border-gap` (7px by default) in from it. */\n  double?: boolean\n  /** Same seed, same border. Defaults to the region's words. */\n  seed?: string | number\n}\n\n/** A hand-drawn border round a region, single or doubled. */\nexport function DrawnBorder({\n  double = false,\n  seed,\n  className,\n  style,\n  children,\n  ...props\n}: DrawnBorderProps) {\n  const key = String(seed ?? (wordsOf(children).trim() || \"drawn-border\"))\n  const outer = frameVars(seedOf(key)) as CSSProperties\n  return (\n    <div\n      data-slot=\"drawn-border\"\n      data-double={double || undefined}\n      className={cn(\n        \"frame block p-snug text-pen [--border-gap:var(--space-hair)] [--over:7px] calm:[--over:2px]\",\n        double && \"p-[calc(var(--border-gap)+var(--space-snug))]\",\n        className,\n      )}\n      style={{ ...outer, ...style }}\n      {...props}\n    >\n      {double && (\n        <span\n          aria-hidden=\"true\"\n          data-slot=\"drawn-border-inner\"\n          className=\"frame pointer-events-none absolute! inset-(--border-gap) [--over:4px] calm:[--over:1px]\"\n          style={frameVars(seedOf(`${key}:inner`)) as CSSProperties}\n        />\n      )}\n      {children}\n    </div>\n  )\n}\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/extras/drawn-border.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -26,7 +26,8 @@ const shadcn = path.join(repo, "node_modules/shadcn/dist/index.js")
 // the --base dependency URLs and fails the type-check if an item leaves out one it imports. Not the fineliner
 // umbrella: it lists every item, so it would hide a missing dependency.
 // dialog brings button, field brings label and separator, toggle-group brings toggle, avatar brings drawing, and
-// chart brings recharts and the pen's plotting module.
+// chart brings recharts and the pen's plotting module; record-sleeve is an extra and sign-in-01 a block, which
+// installs with its own item dependencies.
 const items = [
   "drawing",
   "dialog",
@@ -37,6 +38,8 @@ const items = [
   "avatar",
   "table",
   "chart",
+  "record-sleeve",
+  "sign-in-01",
 ]
 
 // The environment for every command. Settings an outer `npm run` exports (npm_config_prefix, npm_package_*) would

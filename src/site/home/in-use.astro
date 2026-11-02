@@ -1,0 +1,79 @@
+---
+// In use: three small scenes built from real Fineliner components doing their jobs in Listening Room, each with a
+// caption that says what it shows and links the parts it is made of. Each scene is its own island, hydrated when it
+// comes into view.
+import SectionHead from "@/site/specimen/section-head.astro"
+import { BookScene } from "./scene-book"
+import { HoldScene } from "./scene-hold"
+import { WeekScene } from "./scene-week"
+
+const PARTS = {
+  hold: [
+    ["Drawing", "/drawings"],
+    ["Badge", "/docs/components/badge"],
+    ["Button", "/docs/components/button"],
+  ],
+  book: [
+    ["Calendar", "/docs/components/calendar"],
+    ["Toggle group", "/docs/components/toggle-group"],
+  ],
+  week: [
+    ["Chart", "/docs/components/chart"],
+    ["Tooltip", "/docs/components/tooltip"],
+  ],
+}
+const ROWS = [
+  {
+    key: "hold",
+    title: "A record on hold",
+    text: "Jonas asked for Paper Moons. One press holds it: the ink pocket moves from the action to the record's state.",
+  },
+  {
+    key: "book",
+    title: "Booking the room",
+    text: "A printed month with today ringed by the pen and Sundays struck out, and the session's length on a segmented control.",
+  },
+  {
+    key: "week",
+    title: "The week, drawn",
+    text: "Records sold by format. The pen draws every bar through its exact value; solid, outline and dotted tell the formats apart, not colour.",
+  },
+] as const
+---
+
+<section
+  class="mx-auto max-w-[76rem] px-snug py-section sm:px-line"
+  aria-labelledby="in-use"
+>
+  <SectionHead n={3} id="in-use" title="In use" />
+  <p class="m-0 -mt-snug max-w-measure text-pen-quiet">
+    Real components doing their jobs in{" "}
+    <a href="/listening-room">Listening Room</a>, the record shop this kit was
+    built with.
+  </p>
+  <ol class="m-0 mt-line flex list-none flex-col gap-section p-0">
+    {ROWS.map(({ key, title, text }) => (
+      <li class="grid items-start gap-x-section gap-y-snug lg:grid-cols-[18rem_minmax(0,1fr)]">
+        <div>
+          <h3 class="m-0 text-lead leading-subhead font-medium">{title}</h3>
+          <p class="m-0 mt-hair text-small leading-small text-pen-quiet">
+            {text}
+          </p>
+          <p class="label m-0 mt-tight text-pen-quiet">
+            {PARTS[key].map(([name, href], i) => (
+              <>
+                {i > 0 && " · "}
+                <a href={href}>{name}</a>
+              </>
+            ))}
+          </p>
+        </div>
+        <div class="min-w-0">
+          {key === "hold" && <HoldScene client:visible />}
+          {key === "book" && <BookScene client:visible />}
+          {key === "week" && <WeekScene client:visible />}
+        </div>
+      </li>
+    ))}
+  </ol>
+</section>

@@ -16,10 +16,11 @@ const { title, description } = Astro.props
 const fullTitle = title === "Fineliner" ? title : `${title} · Fineliner`
 const path = Astro.url.pathname.replace(/\/$/, "") || "/"
 const NAV = [
-  { href: "/", label: "Specimen" },
+  { href: "/specimen", label: "Specimen" },
   { href: "/drawings", label: "Drawings" },
   { href: "/desk", label: "Desk" },
   { href: "/docs", label: "Components" },
+  { href: "/studio", label: "Studio" },
 ]
 ---
 

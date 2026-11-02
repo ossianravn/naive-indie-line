@@ -1,0 +1,57 @@
+---
+// One block alone on a page, for the preview frames on /docs/blocks and their "Open" links: the block lays out for
+// the frame's width, as it would in an app, and its fixed or full-height parts behave as on a real page.
+import "@/fineliner/styles/fineliner.css"
+import { FinelinerDefs } from "@/fineliner/defs/fineliner-defs"
+import { appearanceScript } from "@/fineliner/theme/appearance-script"
+import { siteAppearance } from "@/site/appearance"
+import { BlockHost } from "@/site/docs/blocks/block-host"
+import { BLOCKS } from "@/site/docs/blocks/blocks"
+
+export function getStaticPaths() {
+  return BLOCKS.flatMap(({ name, title, variants }) => [
+    { params: { path: name }, props: { name, title, variant: undefined } },
+    ...(variants ?? []).slice(1).map((variant) => ({
+      params: { path: `${name}/${variant}` },
+      props: { name, title, variant },
+    })),
+  ])
+}
+
+interface Props {
+  name: string
+  title: string
+  variant?: string
+}
+const { name, title, variant } = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>{title} · Blocks · Fineliner</title>
+    <script is:inline set:html={appearanceScript(siteAppearance)} />
+  </head>
+  <body>
+    <FinelinerDefs />
+    <main>
+      <BlockHost name={name} variant={variant} client:load />
+    </main>
+    <script>
+      import {
+        apply,
+        readSaved,
+        STORAGE_KEY,
+      } from "@/fineliner/theme/appearance"
+      import { siteAppearance } from "@/site/appearance"
+
+      // Appearance chosen in another frame or tab (the settings block) re-inks this one too.
+      addEventListener("storage", (event) => {
+        if (event.key === STORAGE_KEY) apply(readSaved(siteAppearance))
+      })
+    </script>
+  </body>
+</html>

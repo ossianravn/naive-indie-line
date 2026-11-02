@@ -4,7 +4,7 @@ A shadcn/ui component library drawn with one fine-liner on unbleached paper: a s
 
 <img alt="Four room vignettes in the style: a kitchen where a shirt with nobody in it pours wine, a desk under a window, a balcony at night and a listening corner with a record player." src="docs/style/explorations/scenes.webp">
 
-**Status:** Phase 3 is done: shadcn parity drawn with one pen (64 parts, each with a docs page; `form` and `toast` are served by `field` and `sonner`), a chart drawn by the pen through the exact data, and Listening Room, a record shop's catalogue, record pages, sessions, overview, sign-in and settings built from them. Phase 4, Fineliner's own extras, blocks, the home page and the theme studio, is next.
+**Status:** Phase 4 is done: shadcn parity drawn with one pen (64 parts), twelve extras of Fineliner's own (label cards, record sleeves, track lists, price tags, hand notes and more), seven blocks, the theme studio and the home page, with Listening Room, a record shop, built from them. Phase 5, release v0.1, is next.
 
 ## Run it
 

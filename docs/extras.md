@@ -1,0 +1,42 @@
+# Extras and blocks
+
+Fineliner's own parts (`src/fineliner/extras/`) and its page-sized blocks (`src/fineliner/blocks/`). Extras come from the things the style is drawn from: wine labels, record sleeves, menus, price tags, a shop's notes in the margin. Blocks are whole sections built only from kit parts, installed one at a time through the registry, as shadcn's blocks are. Both follow [Primitives](primitives.md) for frames, pockets, marks, voices and motion, and [Style](style.md) for the pen.
+
+## Extras
+
+Each extra is one file (or a small group) in `src/fineliner/extras/`, exports a React component named as below, renders on the server, and has a docs page at `/docs/components/<file>` with `group: "Fineliner extras"`.
+
+| Extra (file)                             | What it is                                                                                                                                                                                                                                                                |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `LabelCard` (label-card)                 | A label from a bottle or a sleeve: a drawing (an object or a scene) inside a drawn border, a title in lettering or the reading face, a kicker, and spine text set vertically, bottom to top, along one edge (the style's spine voice). Open by default, framed when boxed |
+| `RecordSleeve` (record-sleeve)           | A square sleeve: a drawing on the front, the title lettered, the artist in the reading face, the catalogue number on the spine; the record's edge (a solid disc) peeks out of the open side. Sizes `sm`, `md`, `lg`; seeded by the catalogue number                       |
+| `TrackList` (track-list)                 | Side A and side B as a list: number and duration in the typewriter, the title in the reading face, a dotted leader between; the playing track marked by the pen (a tick or a ring), a side heading in the label voice                                                     |
+| `TastingNote` (tasting-note)             | A wine on the shop's list: name and producer in the reading face, grape, region and year in the typewriter, the note in the hand voice, the price, and a glass or bottle drawing                                                                                          |
+| `PriceTag` (price-tag)                   | A hanging tag: a drawn tag outline with a punched hole and a loop of string, the price in the typewriter, an old price struck through by the pen; it hangs a few seeded degrees off true at the lively hand and straight at the calm one                                  |
+| `HandNote` (hand-note)                   | An aside in the hand voice with a drawn arrow toward what it is about (`up`, `down`, `start`, `end`, or a curl); in the margin on wide screens, under its line on phones. The arrow mirrors in right-to-left text                                                         |
+| `EditionNumber` (edition-number)         | "Nº 0412" in the typewriter, optionally "of 500", or set on the spine                                                                                                                                                                                                     |
+| `DrawnBorder` (drawn-border)             | The label's border round a region: four pen strokes that run past or stop short of their corners, optionally doubled with a gap, in CSS (frame utilities, seeded with `frameVars`) so it resizes without measuring                                                        |
+| `RoomHeader` (room-header)               | A page head: a scene drawn by the pen (room, studio or bistro) with the title lettered beside or under it and a kicker in the label voice; drawn on the first time it is seen; the scene follows the boil setting                                                         |
+| `PullQuote` (pull-quote)                 | A quote set large in the reading face against a `rule-y` margin, the quotation marks drawn by the pen, the source in the label voice                                                                                                                                      |
+| `ReadingProgress` (reading-progress)     | A pen line along the top of the page that draws itself as the reader scrolls an article; a plain line under reduced motion                                                                                                                                                |
+| `AppearanceControl` (appearance-control) | Every appearance setting (light, paper, pen, hand, line boil, containers, labels, density) as segmented controls and pen swatches, reading and writing `useAppearance`; Patina's `appearance-control` in this style. Used by the settings block and the theme studio      |
+
+Drawings in extras come from the object library and scenes (`Drawing`, `Lettering`, `PenMark`); seeds come from the content (a catalogue number, a title), so the same thing is drawn the same way everywhere.
+
+## Blocks
+
+A block is `src/fineliner/blocks/<name>-<number>.tsx` (helpers `<name>-<number>-<part>.tsx` install with it), a registry block that installs on its own with its item dependencies. The `fineliner` umbrella item leaves blocks out. Each has a live view at `/docs/blocks/view/<name>-<number>` and a card on `/docs/blocks`. Content is Listening Room's; a block takes its data as props with that content as the default, so it renders out of the box.
+
+| Block          | What it is                                                                                                                                                         |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `sign-in-01`   | Sign in with email and password or a link by email, beside a drawing; errors in the correction pen                                                                 |
+| `settings-01`  | A narrow settings column: profile, the `AppearanceControl`, notifications as switches, and closing the account behind an alert dialog                              |
+| `dashboard-01` | The shop's week: four figures in the typewriter, a chart drawn by the pen, a table of holds and a list of the next sessions                                        |
+| `pricing-01`   | Three memberships for the listening room as price tags, a monthly or yearly segmented control, what each includes ticked by the pen, and questions in an accordion |
+| `article-01`   | A journal post: `RoomHeader`, `EditionNumber`, prose in `typography`, a `PullQuote`, a `HandNote` in the margin and `ReadingProgress`                              |
+| `empty-01`     | Empty states with drawings: an empty catalogue, no search results, nothing booked, each with one action                                                            |
+| `hero-01`      | A lettered wordmark beside a drawn scene the visitor can reroll, one line of copy, the install command in a code block and two actions                             |
+
+## The theme studio and the home page
+
+The studio (`/studio`) chooses a whole appearance: named presets (combinations of paper, pen, hand, line boil, containers, labels and density), live previews built from blocks, and an export as CSS custom properties and as a shadcn `registry:theme` item. The home page (`/`) shows the language at its best with real components and installs within a minute; the specimen moves to `/specimen`.

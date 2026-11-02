@@ -1,4 +1,4 @@
-/* Site-only pieces: the specimen's segmented settings and pen swatches. Phase 2's toggle group replaces them. */
+/* Site-only pieces: the drawing desk's segmented settings, from before the kit had a toggle group. */
 
 .segmented {
   display: inline-flex;
@@ -49,49 +49,9 @@
   outline-offset: 5px;
 }
 
-.swatch {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: scale var(--press) var(--ease-out);
-}
-.swatch:active {
-  scale: 0.94;
-}
-.swatch-chip {
-  width: 1.1rem;
-  height: 1.1rem;
-  border-radius: 50%;
-  background: var(--pen);
-  filter: var(--wob-2);
-}
-.swatch::after {
-  content: "";
-  position: absolute;
-  inset: 1px;
-  border: var(--pen-weight) solid var(--pen);
-  border-radius: 50%;
-  filter: var(--wob-3);
-  clip-path: inset(-20% 100% -20% -20%);
-}
-.swatch:has(input:checked)::after {
-  clip-path: inset(-20%);
-  transition: clip-path var(--put-down) var(--ease-out);
-}
-.swatch:has(input:focus-visible) {
-  outline: 1.5px dashed var(--pen);
-  outline-offset: 2px;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .segmented label,
-  .swatch,
-  .segmented label:has(input:checked) .ink-fill,
-  .swatch:has(input:checked)::after {
+  .segmented label:has(input:checked) .ink-fill {
     transition: none;
   }
 }

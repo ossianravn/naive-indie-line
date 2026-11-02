@@ -1,8 +1,9 @@
 ---
+// Listening Room's sign-in is the kit's sign-in-01 block, as a consumer would install it.
 import ListeningRoom from "@/site/layouts/listening-room.astro"
-import { SignIn } from "@/site/listening-room/sign-in"
+import { SignIn01 } from "@/fineliner/blocks/sign-in-01"
 ---
 
 <ListeningRoom title="Sign in">
-  <SignIn client:load />
+  <SignIn01 redirectTo="/listening-room" client:load />
 </ListeningRoom>

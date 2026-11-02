@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+Phase 4: extras, blocks, the theme studio and the home page.
+
+- Twelve extras, each its own registry item with a docs page: `label-card`, `record-sleeve`, `track-list`, `tasting-note`, `price-tag`, `hand-note`, `edition-number`, `drawn-border`, `room-header`, `pull-quote`, `reading-progress` and `appearance-control`.
+- Seven blocks (`registry:block`): `sign-in-01`, `settings-01`, `dashboard-01`, `pricing-01`, `article-01`, `empty-01` and `hero-01`, with live previews at `/docs/blocks`. The `fineliner` umbrella leaves blocks out.
+- The theme studio at `/studio`: presets, every setting on live previews, and the export as CSS or a shadcn `registry:theme` item.
+- The home page: the hero block, the drawing library, components in use, an A–Z index and install; the specimen moved to `/specimen`.
+- `drawing`: a caller's `ref` on `Drawing` is merged with the one draw-on needs; the takes' grid sits in the components layer, so `hidden` hides a drawing.
+- Listening Room's sign-in and settings are the blocks.
+- `test:consumer` also installs `record-sleeve` and `sign-in-01`.
+
 Phase 3: the rest of shadcn parity.
 
 - 38 more parts, each its own registry item with a docs page: table, pagination, breadcrumb, accordion, collapsible, command, combobox, sheet, drawer, menubar, navigation menu, context menu, hover card, calendar, sonner, sidebar, scroll area, resizable, carousel, input OTP, input group, button group, empty, item, aspect ratio, typography, direction, and the conversation set (message, bubble, message scroller, marker, trace, attachment, code block, questionnaire). Tables rule their rows with hand-drawn lines cheap enough for 200 rows; sheets, drawers and toasts fade and grow, never slide; code is highlighted with one pen.

@@ -8,6 +8,9 @@ import tailwindcss from "@tailwindcss/vite"
 const demoHost = fileURLToPath(
   new URL("./src/site/docs/demo-host.tsx", import.meta.url),
 )
+const blockList = fileURLToPath(
+  new URL("./src/site/docs/blocks/blocks.ts", import.meta.url),
+)
 
 /**
  * Dev only. The watcher reports a new file as added, and two things only react to changes: Tailwind's class
@@ -26,6 +29,8 @@ const touchNewFiles = {
         if (existsSync(file)) utimesSync(file, now, now)
         if (/[\\/]site[\\/]docs[\\/]demos[\\/][^\\/]+\.tsx$/u.test(file))
           utimesSync(demoHost, now, now)
+        if (/[\\/]fineliner[\\/]blocks[\\/][^\\/]+\.tsx$/u.test(file))
+          utimesSync(blockList, now, now)
       }, 100)
     })
   },

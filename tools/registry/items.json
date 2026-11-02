@@ -32,7 +32,26 @@
     "drawing": "Drawing, Lettering and PenMark: objects, scenes, words and marks drawn by the pen from their seeds as inline SVG, with line boil and draw-on.",
     "fineliner": "Every part of Fineliner: the base, the pen engine and every component. Blocks are sample pages, so they install one at a time.",
     "chart": "Recharts drawn with the page's one pen: drawnBar, drawnCurve, drawnDot and drawnSector draw strokes through the exact data points, and series are told apart by solid, outline, dotted and lined marks rather than colour.",
-    "use-highlighted-code": "useHighlightedCode: Shiki loaded lazily, one grammar at a time, with tokens mapped to one pen (bold keywords, italic strings, quiet comments) for CodeBlock."
+    "use-highlighted-code": "useHighlightedCode: Shiki loaded lazily, one grammar at a time, with tokens mapped to one pen (bold keywords, italic strings, quiet comments) for CodeBlock.",
+    "sign-in-01": "Sign in with email and password or a link by email, beside a scene drawn by the pen; errors in the correction pen.",
+    "dashboard-01": "The shop's week: four figures in the typewriter, guests by day drawn by the pen, the records on hold and the next sessions.",
+    "pricing-01": "Three memberships on hanging price tags, a monthly or yearly segmented control, ticked features and questions in an accordion.",
+    "empty-01": "Empty states with drawings: a first run, no search results and nothing booked, each with one action.",
+    "label-card": "A label from a bottle or a sleeve: a drawing inside a drawn border, a lettered title, a kicker and spine text set bottom to top.",
+    "record-sleeve": "A square record sleeve: a drawing on the front, the title lettered, the catalogue number on the spine and the record's edge peeking out.",
+    "track-list": "Side A and side B: numbers and durations in the typewriter, titles in the reading face, dotted leaders, the playing track marked by the pen.",
+    "tasting-note": "A wine on the list: name and producer, grape, region and year in the typewriter, the note in the hand voice, the price and a drawing.",
+    "price-tag": "A hanging price tag: a drawn tag with a punched hole and string, the price in the typewriter, an old price struck through by the pen.",
+    "hand-note": "An aside in the hand voice with a drawn arrow toward what it is about, in the margin on wide screens and under its line on phones.",
+    "edition-number": "An edition number, Nº 0412, in the typewriter, optionally of a total, or set on the spine.",
+    "drawn-border": "The label's border round a region: four pen strokes that run past or stop short of their corners, optionally doubled, in CSS.",
+    "room-header": "A page head: a scene drawn by the pen with the title lettered beside or under it, drawn on the first time it is seen.",
+    "pull-quote": "A quote set large in the reading face against a pen rule, its quotation marks drawn by the pen.",
+    "reading-progress": "A pen line along the top of the page that draws itself as the reader scrolls an article.",
+    "appearance-control": "Every appearance setting (light, paper, pen, hand, line boil, containers, labels, density) as segmented controls and pen swatches.",
+    "settings-01": "A narrow settings column: profile, every appearance setting through AppearanceControl, notifications as switches, and closing the account behind an alert dialog.",
+    "article-01": "A journal post: a lettered RoomHeader with the issue's EditionNumber, prose in Typography with a drop cap, a PullQuote, a HandNote in the margin and ReadingProgress.",
+    "hero-01": "A lettered wordmark beside a scene the visitor can reroll, one line of copy, the install command in a code block and two actions."
   },
   "requires": {
     "code-block": ["use-highlighted-code"]
