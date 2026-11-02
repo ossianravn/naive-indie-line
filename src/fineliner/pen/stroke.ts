@@ -18,7 +18,12 @@ export const HANDS = {
 const r1 = (n: number) => Math.round(n * 10) / 10
 
 /** Slow 1D noise along a line: random offsets at knots `wave` apart, eased between them. */
-function noise(rand: () => number, size: number, wave: number, amp: number) {
+export function noise(
+  rand: () => number,
+  size: number,
+  wave: number,
+  amp: number,
+) {
   const n = Math.ceil(snap(size / wave)) + 2
   const knots = Array.from({ length: n }, () => (rand() * 2 - 1) * amp)
   return (s: number) => {
@@ -29,10 +34,10 @@ function noise(rand: () => number, size: number, wave: number, amp: number) {
   }
 }
 
-type Sample = [number, number, number]
+export type Sample = [number, number, number]
 
 /** Points every `step` px along a polyline, with their distance from the start. */
-function resample(points: Point[], step: number): Sample[] {
+export function resample(points: Point[], step: number): Sample[] {
   const first = points[0] as Point
   const out: Sample[] = [[first[0], first[1], 0]]
   let s = 0

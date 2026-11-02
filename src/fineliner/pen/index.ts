@@ -9,6 +9,7 @@ export {
 } from "./filters"
 export * from "./geometry"
 export { pen, HANDS, type Pen, type HandName } from "./stroke"
+export { plot, type Plot } from "./plot"
 export { sheet, type Sheet } from "./layers"
 export { box, cylinder, depth, handle, scribble, type Box } from "./shapes"
 export {

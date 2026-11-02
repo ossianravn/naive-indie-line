@@ -82,7 +82,7 @@ export function Catalogue({ initial = RELEASES }: { initial?: Release[] }) {
   }
 
   return (
-    <div className="mx-auto max-w-[72rem] px-snug pt-section pb-page sm:px-line">
+    <div className="mx-auto w-full max-w-[72rem] px-snug pt-section pb-page sm:px-line">
       <header className="flex flex-wrap items-end justify-between gap-snug">
         <div>
           <p className="label m-0 text-pen-quiet">The racks · November</p>

@@ -44,7 +44,7 @@ export function Drawing({
     return svg
       .map((s) =>
         drawOnView
-          ? s.replace('class="fl-drawing"', 'class="fl-drawing fl-unseen"')
+          ? s.replace('class="fl-drawing ', 'class="fl-drawing fl-unseen ')
           : s,
       )
       .join("")

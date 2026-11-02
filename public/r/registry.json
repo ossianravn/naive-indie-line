@@ -121,6 +121,26 @@
       ]
     },
     {
+      "name": "accordion",
+      "type": "registry:component",
+      "title": "Accordion",
+      "description": "Accordion, in the Fineliner style.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/pen"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/accordion.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/accordion.tsx"
+        }
+      ]
+    },
+    {
       "name": "alert",
       "type": "registry:component",
       "title": "Alert",
@@ -157,6 +177,43 @@
           "path": "src/fineliner/ui/alert-dialog.tsx",
           "type": "registry:file",
           "target": "~/src/fineliner/ui/alert-dialog.tsx"
+        }
+      ]
+    },
+    {
+      "name": "aspect-ratio",
+      "type": "registry:component",
+      "title": "Aspect Ratio",
+      "description": "Aspect Ratio, in the Fineliner style.",
+      "registryDependencies": [
+        "@fineliner/base"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/aspect-ratio.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/aspect-ratio.tsx"
+        }
+      ]
+    },
+    {
+      "name": "attachment",
+      "type": "registry:component",
+      "title": "Attachment",
+      "description": "Attachment, in the Fineliner style.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "class-variance-authority@^0.7.1"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/button"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/attachment.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/attachment.tsx"
         }
       ]
     },
@@ -201,6 +258,47 @@
       ]
     },
     {
+      "name": "breadcrumb",
+      "type": "registry:component",
+      "title": "Breadcrumb",
+      "description": "Breadcrumb, in the Fineliner style.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "lucide-react@^1.66.0"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/pen"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/breadcrumb.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/breadcrumb.tsx"
+        }
+      ]
+    },
+    {
+      "name": "bubble",
+      "type": "registry:component",
+      "title": "Bubble",
+      "description": "Bubble, in the Fineliner style.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "class-variance-authority@^0.7.1"
+      ],
+      "registryDependencies": [
+        "@fineliner/base"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/bubble.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/bubble.tsx"
+        }
+      ]
+    },
+    {
       "name": "button",
       "type": "registry:component",
       "title": "Button",
@@ -221,6 +319,48 @@
       ]
     },
     {
+      "name": "button-group",
+      "type": "registry:component",
+      "title": "Button Group",
+      "description": "Button Group, in the Fineliner style.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "class-variance-authority@^0.7.1"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/separator"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/button-group.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/button-group.tsx"
+        }
+      ]
+    },
+    {
+      "name": "calendar",
+      "type": "registry:component",
+      "title": "Calendar",
+      "description": "Calendar, in the Fineliner style.",
+      "dependencies": [
+        "react-day-picker@^10.0.2"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/button",
+        "@fineliner/pen"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/calendar.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/calendar.tsx"
+        }
+      ]
+    },
+    {
       "name": "card",
       "type": "registry:component",
       "title": "Card",
@@ -233,6 +373,67 @@
           "path": "src/fineliner/ui/card.tsx",
           "type": "registry:file",
           "target": "~/src/fineliner/ui/card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "carousel",
+      "type": "registry:component",
+      "title": "Carousel",
+      "description": "Carousel, in the Fineliner style.",
+      "dependencies": [
+        "embla-carousel-react@^8.6.0"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/button",
+        "@fineliner/pen"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/carousel.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/carousel.tsx"
+        }
+      ]
+    },
+    {
+      "name": "chart",
+      "type": "registry:component",
+      "title": "Chart",
+      "description": "Recharts drawn with the page's one pen: drawnBar, drawnCurve, drawnDot and drawnSector draw strokes through the exact data points, and series are told apart by solid, outline, dotted and lined marks rather than colour.",
+      "dependencies": [
+        "recharts@^3.10.1"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/pen"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/chart-context.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/chart-context.ts"
+        },
+        {
+          "path": "src/fineliner/ui/chart-drawn.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/chart-drawn.tsx"
+        },
+        {
+          "path": "src/fineliner/ui/chart-marks.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/chart-marks.tsx"
+        },
+        {
+          "path": "src/fineliner/ui/chart-tooltip.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/chart-tooltip.tsx"
+        },
+        {
+          "path": "src/fineliner/ui/chart.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/chart.tsx"
         }
       ]
     },
@@ -257,6 +458,119 @@
       ]
     },
     {
+      "name": "code-block",
+      "type": "registry:component",
+      "title": "Code Block",
+      "description": "Code Block, in the Fineliner style.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "lucide-react@^1.66.0"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/button",
+        "@fineliner/pen",
+        "@fineliner/use-highlighted-code"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/code-block.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/code-block.tsx"
+        }
+      ]
+    },
+    {
+      "name": "collapsible",
+      "type": "registry:component",
+      "title": "Collapsible",
+      "description": "Collapsible, in the Fineliner style.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/pen"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/collapsible.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/collapsible.tsx"
+        }
+      ]
+    },
+    {
+      "name": "combobox",
+      "type": "registry:component",
+      "title": "Combobox",
+      "description": "Combobox, in the Fineliner style.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "lucide-react@^1.66.0"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/button",
+        "@fineliner/input-group",
+        "@fineliner/pen"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/combobox-chips.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/combobox-chips.tsx"
+        },
+        {
+          "path": "src/fineliner/ui/combobox.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/combobox.tsx"
+        }
+      ]
+    },
+    {
+      "name": "command",
+      "type": "registry:component",
+      "title": "Command",
+      "description": "Command, in the Fineliner style.",
+      "dependencies": [
+        "cmdk@^1.1.1",
+        "lucide-react@^1.66.0"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/dialog",
+        "@fineliner/pen"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/command.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/command.tsx"
+        }
+      ]
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:component",
+      "title": "Context Menu",
+      "description": "Context Menu, in the Fineliner style.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/dropdown-menu"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/context-menu.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/context-menu.tsx"
+        }
+      ]
+    },
+    {
       "name": "dialog",
       "type": "registry:component",
       "title": "Dialog",
@@ -274,6 +588,45 @@
           "path": "src/fineliner/ui/dialog.tsx",
           "type": "registry:file",
           "target": "~/src/fineliner/ui/dialog.tsx"
+        }
+      ]
+    },
+    {
+      "name": "direction",
+      "type": "registry:component",
+      "title": "Direction",
+      "description": "Direction, in the Fineliner style.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0"
+      ],
+      "registryDependencies": [
+        "@fineliner/base"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/direction.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/direction.tsx"
+        }
+      ]
+    },
+    {
+      "name": "drawer",
+      "type": "registry:component",
+      "title": "Drawer",
+      "description": "Drawer, in the Fineliner style.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/pen"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/drawer.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/drawer.tsx"
         }
       ]
     },
@@ -330,6 +683,26 @@
       ]
     },
     {
+      "name": "empty",
+      "type": "registry:component",
+      "title": "Empty",
+      "description": "Empty, in the Fineliner style.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/drawing"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/empty.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/empty.tsx"
+        }
+      ]
+    },
+    {
       "name": "field",
       "type": "registry:component",
       "title": "Field",
@@ -351,6 +724,25 @@
       ]
     },
     {
+      "name": "hover-card",
+      "type": "registry:component",
+      "title": "Hover Card",
+      "description": "Hover Card, in the Fineliner style.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0"
+      ],
+      "registryDependencies": [
+        "@fineliner/base"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/hover-card.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/hover-card.tsx"
+        }
+      ]
+    },
+    {
       "name": "input",
       "type": "registry:component",
       "title": "Input",
@@ -366,6 +758,69 @@
           "path": "src/fineliner/ui/input.tsx",
           "type": "registry:file",
           "target": "~/src/fineliner/ui/input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "input-group",
+      "type": "registry:component",
+      "title": "Input Group",
+      "description": "Input Group, in the Fineliner style.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/button",
+        "@fineliner/input",
+        "@fineliner/textarea"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/input-group.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/input-group.tsx"
+        }
+      ]
+    },
+    {
+      "name": "input-otp",
+      "type": "registry:component",
+      "title": "Input Otp",
+      "description": "Input Otp, in the Fineliner style.",
+      "dependencies": [
+        "input-otp@^1.5.0"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/pen"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/input-otp.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/input-otp.tsx"
+        }
+      ]
+    },
+    {
+      "name": "item",
+      "type": "registry:component",
+      "title": "Item",
+      "description": "Item, in the Fineliner style.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "class-variance-authority@^0.7.1"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/separator"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/item.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/item.tsx"
         }
       ]
     },
@@ -402,6 +857,83 @@
       ]
     },
     {
+      "name": "marker",
+      "type": "registry:component",
+      "title": "Marker",
+      "description": "Marker, in the Fineliner style.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "class-variance-authority@^0.7.1"
+      ],
+      "registryDependencies": [
+        "@fineliner/base"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/marker.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/marker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "menubar",
+      "type": "registry:component",
+      "title": "Menubar",
+      "description": "Menubar, in the Fineliner style.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/dropdown-menu"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/menubar.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/menubar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "message",
+      "type": "registry:component",
+      "title": "Message",
+      "description": "Message, in the Fineliner style.",
+      "registryDependencies": [
+        "@fineliner/base"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/message.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/message.tsx"
+        }
+      ]
+    },
+    {
+      "name": "message-scroller",
+      "type": "registry:component",
+      "title": "Message Scroller",
+      "description": "Message Scroller, in the Fineliner style.",
+      "dependencies": [
+        "@shadcn/react@^0.3.1"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/button",
+        "@fineliner/pen"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/message-scroller.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/message-scroller.tsx"
+        }
+      ]
+    },
+    {
       "name": "native-select",
       "type": "registry:component",
       "title": "Native Select",
@@ -415,6 +947,48 @@
           "path": "src/fineliner/ui/native-select.tsx",
           "type": "registry:file",
           "target": "~/src/fineliner/ui/native-select.tsx"
+        }
+      ]
+    },
+    {
+      "name": "navigation-menu",
+      "type": "registry:component",
+      "title": "Navigation Menu",
+      "description": "Navigation Menu, in the Fineliner style.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "class-variance-authority@^0.7.1"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/pen"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/navigation-menu.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/navigation-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pagination",
+      "type": "registry:component",
+      "title": "Pagination",
+      "description": "Pagination, in the Fineliner style.",
+      "dependencies": [
+        "lucide-react@^1.66.0"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/button",
+        "@fineliner/pen"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/pagination.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/pagination.tsx"
         }
       ]
     },
@@ -528,6 +1102,11 @@
           "target": "~/src/fineliner/pen/pen-marks.ts"
         },
         {
+          "path": "src/fineliner/pen/plot.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/plot.ts"
+        },
+        {
           "path": "src/fineliner/pen/scenes.ts",
           "type": "registry:file",
           "target": "~/src/fineliner/pen/scenes.ts"
@@ -583,6 +1162,33 @@
       ]
     },
     {
+      "name": "questionnaire",
+      "type": "registry:component",
+      "title": "Questionnaire",
+      "description": "Questionnaire, in the Fineliner style.",
+      "dependencies": [
+        "@shadcn/react@^0.3.1"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/button",
+        "@fineliner/kbd",
+        "@fineliner/pen"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/questionnaire-choice.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/questionnaire-choice.tsx"
+        },
+        {
+          "path": "src/fineliner/ui/questionnaire.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/questionnaire.tsx"
+        }
+      ]
+    },
+    {
       "name": "radio-group",
       "type": "registry:component",
       "title": "Radio Group",
@@ -599,6 +1205,45 @@
           "path": "src/fineliner/ui/radio-group.tsx",
           "type": "registry:file",
           "target": "~/src/fineliner/ui/radio-group.tsx"
+        }
+      ]
+    },
+    {
+      "name": "resizable",
+      "type": "registry:component",
+      "title": "Resizable",
+      "description": "Resizable, in the Fineliner style.",
+      "dependencies": [
+        "react-resizable-panels@^4.16.1"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/pen"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/resizable.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/resizable.tsx"
+        }
+      ]
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:component",
+      "title": "Scroll Area",
+      "description": "Scroll Area, in the Fineliner style.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0"
+      ],
+      "registryDependencies": [
+        "@fineliner/base"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/scroll-area.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/scroll-area.tsx"
         }
       ]
     },
@@ -642,6 +1287,70 @@
       ]
     },
     {
+      "name": "sheet",
+      "type": "registry:component",
+      "title": "Sheet",
+      "description": "Sheet, in the Fineliner style.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "lucide-react@^1.66.0"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/button"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/sheet.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/sheet.tsx"
+        }
+      ]
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:component",
+      "title": "Sidebar",
+      "description": "Sidebar, in the Fineliner style.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "class-variance-authority@^0.7.1",
+        "lucide-react@^1.66.0"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/button",
+        "@fineliner/input",
+        "@fineliner/separator",
+        "@fineliner/sheet",
+        "@fineliner/skeleton",
+        "@fineliner/tooltip",
+        "@fineliner/use-mobile"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/sidebar-menu.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/sidebar-menu.tsx"
+        },
+        {
+          "path": "src/fineliner/ui/sidebar-provider.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/sidebar-provider.tsx"
+        },
+        {
+          "path": "src/fineliner/ui/sidebar-sections.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/sidebar-sections.tsx"
+        },
+        {
+          "path": "src/fineliner/ui/sidebar.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/sidebar.tsx"
+        }
+      ]
+    },
+    {
       "name": "skeleton",
       "type": "registry:component",
       "title": "Skeleton",
@@ -673,6 +1382,28 @@
           "path": "src/fineliner/ui/slider.tsx",
           "type": "registry:file",
           "target": "~/src/fineliner/ui/slider.tsx"
+        }
+      ]
+    },
+    {
+      "name": "sonner",
+      "type": "registry:component",
+      "title": "Sonner",
+      "description": "Sonner, in the Fineliner style.",
+      "dependencies": [
+        "sonner@^2.0.8"
+      ],
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/button",
+        "@fineliner/pen",
+        "@fineliner/spinner"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/sonner.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/sonner.tsx"
         }
       ]
     },
@@ -709,6 +1440,23 @@
           "path": "src/fineliner/ui/switch.tsx",
           "type": "registry:file",
           "target": "~/src/fineliner/ui/switch.tsx"
+        }
+      ]
+    },
+    {
+      "name": "table",
+      "type": "registry:component",
+      "title": "Table",
+      "description": "Table, in the Fineliner style.",
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/pen"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/table.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/table.tsx"
         }
       ]
     },
@@ -810,42 +1558,150 @@
       ]
     },
     {
+      "name": "trace",
+      "type": "registry:component",
+      "title": "Trace",
+      "description": "Trace, in the Fineliner style.",
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/collapsible",
+        "@fineliner/pen",
+        "@fineliner/spinner"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/trace.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/trace.tsx"
+        }
+      ]
+    },
+    {
+      "name": "typography",
+      "type": "registry:component",
+      "title": "Typography",
+      "description": "Typography, in the Fineliner style.",
+      "registryDependencies": [
+        "@fineliner/base"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/typography.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/typography.tsx"
+        }
+      ]
+    },
+    {
+      "name": "use-highlighted-code",
+      "type": "registry:component",
+      "title": "Use Highlighted Code",
+      "description": "useHighlightedCode: Shiki loaded lazily, one grammar at a time, with tokens mapped to one pen (bold keywords, italic strings, quiet comments) for CodeBlock.",
+      "dependencies": [
+        "shiki@^4.6.0"
+      ],
+      "registryDependencies": [
+        "@fineliner/base"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/ui/use-highlighted-code.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/ui/use-highlighted-code.tsx"
+        }
+      ]
+    },
+    {
+      "name": "use-mobile",
+      "type": "registry:component",
+      "title": "Use Mobile",
+      "description": "Use Mobile, in the Fineliner style.",
+      "registryDependencies": [
+        "@fineliner/base"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/hooks/use-mobile.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/hooks/use-mobile.ts"
+        }
+      ]
+    },
+    {
       "name": "fineliner",
       "type": "registry:item",
       "title": "Fineliner",
       "description": "Every part of Fineliner: the base, the pen engine and every component. Blocks are sample pages, so they install one at a time.",
       "registryDependencies": [
         "@fineliner/base",
+        "@fineliner/accordion",
         "@fineliner/alert",
         "@fineliner/alert-dialog",
+        "@fineliner/aspect-ratio",
+        "@fineliner/attachment",
         "@fineliner/avatar",
         "@fineliner/badge",
+        "@fineliner/breadcrumb",
+        "@fineliner/bubble",
         "@fineliner/button",
+        "@fineliner/button-group",
+        "@fineliner/calendar",
         "@fineliner/card",
+        "@fineliner/carousel",
+        "@fineliner/chart",
         "@fineliner/checkbox",
+        "@fineliner/code-block",
+        "@fineliner/collapsible",
+        "@fineliner/combobox",
+        "@fineliner/command",
+        "@fineliner/context-menu",
         "@fineliner/dialog",
+        "@fineliner/direction",
+        "@fineliner/drawer",
         "@fineliner/drawing",
         "@fineliner/dropdown-menu",
+        "@fineliner/empty",
         "@fineliner/field",
+        "@fineliner/hover-card",
         "@fineliner/input",
+        "@fineliner/input-group",
+        "@fineliner/input-otp",
+        "@fineliner/item",
         "@fineliner/kbd",
         "@fineliner/label",
+        "@fineliner/marker",
+        "@fineliner/menubar",
+        "@fineliner/message",
+        "@fineliner/message-scroller",
         "@fineliner/native-select",
+        "@fineliner/navigation-menu",
+        "@fineliner/pagination",
         "@fineliner/pen",
         "@fineliner/popover",
         "@fineliner/progress",
+        "@fineliner/questionnaire",
         "@fineliner/radio-group",
+        "@fineliner/resizable",
+        "@fineliner/scroll-area",
         "@fineliner/select",
         "@fineliner/separator",
+        "@fineliner/sheet",
+        "@fineliner/sidebar",
         "@fineliner/skeleton",
         "@fineliner/slider",
+        "@fineliner/sonner",
         "@fineliner/spinner",
         "@fineliner/switch",
+        "@fineliner/table",
         "@fineliner/tabs",
         "@fineliner/textarea",
         "@fineliner/toggle",
         "@fineliner/toggle-group",
-        "@fineliner/tooltip"
+        "@fineliner/tooltip",
+        "@fineliner/trace",
+        "@fineliner/typography",
+        "@fineliner/use-highlighted-code",
+        "@fineliner/use-mobile"
       ],
       "files": []
     }

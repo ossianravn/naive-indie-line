@@ -65,7 +65,9 @@ export function sheet(id: string): Sheet {
         defs += `<mask id="${id}-m${i}" maskUnits="userSpaceOnUse" ${box}><rect ${box} fill="#fff"/><g fill="#000">${holes}</g></mask>`
         body += `<g mask="url(#${id}-m${i})">${paths.join("")}</g>`
       })
-      return `<svg class="fl-drawing" viewBox="0 0 ${width} ${height}" ${name}>${defs ? `<defs>${defs}</defs>` : ""}${body}</svg>`
+      // fl-size-own contains "size-", so shadcn's icon rule ([&_svg:not([class*='size-'])]:size-4) leaves a drawing
+      // or pen mark inside a button or menu item at the size its call site gives it.
+      return `<svg class="fl-drawing fl-size-own" viewBox="0 0 ${width} ${height}" ${name}>${defs ? `<defs>${defs}</defs>` : ""}${body}</svg>`
     },
   }
 }

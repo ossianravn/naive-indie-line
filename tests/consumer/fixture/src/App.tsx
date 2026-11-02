@@ -27,6 +27,27 @@ import {
   SelectValue,
 } from "@/fineliner/ui/select"
 import { ToggleGroup, ToggleGroupItem } from "@/fineliner/ui/toggle-group"
+import { Bar, BarChart, XAxis } from "recharts"
+import {
+  ChartContainer,
+  drawnBar,
+  type ChartConfig,
+} from "@/fineliner/ui/chart"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/fineliner/ui/table"
+
+const SOLD = [
+  { day: "Thu", sold: 18 },
+  { day: "Fri", sold: 12 },
+  { day: "Sat", sold: 21 },
+]
+const SOLD_CONFIG = { sold: { label: "Records sold" } } satisfies ChartConfig
 
 const LENGTHS = [
   { value: "30", label: "Half an hour" },
@@ -65,6 +86,26 @@ export function App() {
           <ToggleGroupItem value="day">Day</ToggleGroupItem>
           <ToggleGroupItem value="night">Night</ToggleGroupItem>
         </ToggleGroup>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Record</TableHead>
+              <TableHead className="text-right">Price</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableCell>Harbour Lights</TableCell>
+              <TableCell className="text-right font-type">320 kr</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+        <ChartContainer config={SOLD_CONFIG} className="h-48 w-full">
+          <BarChart data={SOLD}>
+            <XAxis dataKey="day" />
+            <Bar dataKey="sold" shape={drawnBar} />
+          </BarChart>
+        </ChartContainer>
         <Dialog>
           <DialogTrigger render={<Button className="w-fit" />}>
             Book a session

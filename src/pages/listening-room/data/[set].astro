@@ -22,7 +22,7 @@ export function getStaticPaths() {
 const set = Astro.params.set as Dataset
 ---
 
-<ListeningRoom title="Catalogue">
+<ListeningRoom title="Catalogue" section="catalogue">
   <Catalogue initial={DATASETS[set]} client:load />
   <nav
     aria-label="Demo data"

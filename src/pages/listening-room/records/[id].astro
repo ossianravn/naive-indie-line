@@ -1,0 +1,18 @@
+---
+import ListeningRoom from "@/site/layouts/listening-room.astro"
+import { RELEASES } from "@/site/listening-room/data"
+import { RecordPage } from "@/site/listening-room/record"
+
+export function getStaticPaths() {
+  return RELEASES.map((record) => ({
+    params: { id: record.id.toLowerCase() },
+    props: { record },
+  }))
+}
+
+const { record } = Astro.props
+---
+
+<ListeningRoom title={record.title} section="catalogue">
+  <RecordPage record={record} client:load />
+</ListeningRoom>

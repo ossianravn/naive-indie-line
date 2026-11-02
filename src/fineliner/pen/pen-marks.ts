@@ -71,6 +71,20 @@ export const MARKS = {
       )
     },
   },
+  /** A short straight arrow to the inline end: next, forward, jump to latest. */
+  next: {
+    size: [26, 16],
+    draw(s, p) {
+      s.stroke(p.line([2, 8], [23, 8]))
+      s.stroke(
+        p.path([
+          [16.5, 2.5],
+          [23.5, 8],
+          [16.5, 13.5],
+        ]),
+      )
+    },
+  },
   chevron: {
     size: [14, 10],
     draw: (s, p) =>

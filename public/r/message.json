@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "message",
+  "title": "Message",
+  "description": "Message, in the Fineliner style.",
+  "registryDependencies": [
+    "@fineliner/base"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/message.tsx",
+      "content": "import * as React from \"react\"\nimport { cn } from \"@/fineliner/lib/utils\"\n\n// One turn in a conversation. The header is a byline in the label voice (the author in the full pen, the time quieter\n// beside it), the body reads in the serif, and the footer is a row of quiet actions or a read receipt. The avatar sits\n// level with the byline, so a message reads top-down like a signed note; its portrait may spill past the circle, so\n// the slot never clips.\n\nfunction MessageGroup({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"message-group\"\n      className={cn(\"flex min-w-0 flex-col gap-hair\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction Message({\n  className,\n  align = \"start\",\n  ...props\n}: React.ComponentProps<\"div\"> & { align?: \"start\" | \"end\" }) {\n  return (\n    <div\n      data-slot=\"message\"\n      data-align={align}\n      className={cn(\n        \"group/message relative flex w-full min-w-0 gap-tight font-read text-body leading-lead text-pen data-[align=end]:flex-row-reverse\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction MessageAvatar({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"message-avatar\"\n      className={cn(\n        \"flex w-fit min-w-8 shrink-0 items-start justify-center self-start\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction MessageContent({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"message-content\"\n      className={cn(\n        \"flex w-full min-w-0 flex-col gap-hair wrap-break-word group-data-[align=end]/message:*:data-slot:self-end\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction MessageHeader({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"message-header\"\n      className={cn(\n        \"flex max-w-full min-w-0 flex-wrap items-center gap-x-hair px-tight label text-pen-quiet group-has-data-[slot=message-avatar]/message:min-h-8 group-has-data-[variant=ghost]/message:px-0 [&_b,&_strong]:font-semibold [&_b,&_strong]:text-pen [&_time]:tabular-nums\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction MessageFooter({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"message-footer\"\n      className={cn(\n        \"flex max-w-full min-w-0 items-center gap-1 px-tight label text-pen-quiet group-has-data-[variant=ghost]/message:px-0 group-data-[align=end]/message:justify-end\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nexport {\n  MessageGroup,\n  Message,\n  MessageAvatar,\n  MessageContent,\n  MessageFooter,\n  MessageHeader,\n}\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/message.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

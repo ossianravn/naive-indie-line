@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "scroll-area",
+  "title": "Scroll Area",
+  "description": "Scroll Area, in the Fineliner style.",
+  "dependencies": [
+    "@base-ui/react@^1.9.0"
+  ],
+  "registryDependencies": [
+    "@fineliner/base"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/scroll-area.tsx",
+      "content": "\"use client\"\n\nimport { ScrollArea as ScrollAreaPrimitive } from \"@base-ui/react/scroll-area\"\nimport { cn } from \"@/fineliner/lib/utils\"\n\n// A pencil scrollbar on no track: a thin faint line that firms while the area is hovered or scrolled, and presses\n// harder under the pointer or while dragged. The line is a background on a box wider than itself, so the wobble has\n// room; the bar keeps a 10px hit area and nothing in it moves layout. The bar stands 4px in from the edge, so the\n// pencil never runs into a frame drawn round the area. The viewport takes the page's dashed focus ring.\n\nfunction ScrollArea({\n  className,\n  children,\n  ...props\n}: ScrollAreaPrimitive.Root.Props) {\n  return (\n    <ScrollAreaPrimitive.Root\n      data-slot=\"scroll-area\"\n      className={cn(\"relative\", className)}\n      {...props}\n    >\n      <ScrollAreaPrimitive.Viewport\n        data-slot=\"scroll-area-viewport\"\n        className=\"size-full rounded-[inherit]\"\n      >\n        {children}\n      </ScrollAreaPrimitive.Viewport>\n      <ScrollBar />\n      <ScrollAreaPrimitive.Corner />\n    </ScrollAreaPrimitive.Root>\n  )\n}\n\nfunction ScrollBar({\n  className,\n  orientation = \"vertical\",\n  ...props\n}: ScrollAreaPrimitive.Scrollbar.Props) {\n  return (\n    <ScrollAreaPrimitive.Scrollbar\n      data-slot=\"scroll-area-scrollbar\"\n      data-orientation={orientation}\n      orientation={orientation}\n      className={cn(\n        \"group/scrollbar flex touch-none p-px select-none data-horizontal:mb-1 data-horizontal:h-2.5 data-horizontal:flex-col data-vertical:me-1 data-vertical:h-full data-vertical:w-2.5\",\n        className,\n      )}\n      {...props}\n    >\n      <ScrollAreaPrimitive.Thumb\n        data-slot=\"scroll-area-thumb\"\n        className=\"relative flex-1 text-pen-faint transition-colors duration-150 group-data-hovering/scrollbar:text-pen-quiet group-data-scrolling/scrollbar:text-pen-quiet before:absolute before:inset-0 before:bg-[linear-gradient(currentColor,currentColor)] before:bg-center before:bg-no-repeat before:transition-[background-size] before:duration-150 before:[filter:var(--wob,var(--wob-3))] hover:text-pen active:text-pen data-horizontal:before:bg-size-[100%_2px] data-vertical:before:bg-size-[2px_100%] data-horizontal:hover:before:bg-size-[100%_3px] data-vertical:hover:before:bg-size-[3px_100%] data-horizontal:active:before:bg-size-[100%_3px] data-vertical:active:before:bg-size-[3px_100%]\"\n      />\n    </ScrollAreaPrimitive.Scrollbar>\n  )\n}\n\nexport { ScrollArea, ScrollBar }\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/scroll-area.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

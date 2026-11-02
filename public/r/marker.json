@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "marker",
+  "title": "Marker",
+  "description": "Marker, in the Fineliner style.",
+  "dependencies": [
+    "@base-ui/react@^1.9.0",
+    "class-variance-authority@^0.7.1"
+  ],
+  "registryDependencies": [
+    "@fineliner/base"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/marker.tsx",
+      "content": "import * as React from \"react\"\nimport { mergeProps } from \"@base-ui/react/merge-props\"\nimport { useRender } from \"@base-ui/react/use-render\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\nimport { cn } from \"@/fineliner/lib/utils\"\n\n// A line in the thread that is not a message: a date, where unread messages begin, someone joining. Label text in the\n// quiet pen; the separator variant sits between two pen rules (each through its own wobble, so they never match), the\n// border variant on one rule beneath. Write the whole marker in the full pen (text-pen) to call it out: the rules\n// follow the text.\nconst markerVariants = cva(\n  \"group/marker relative flex min-h-4 w-full items-center gap-hair label text-left text-pen-quiet [&_svg:not([class*='size-'])]:size-4 [a]:underline [a]:decoration-1 [a]:underline-offset-[0.25em] [a]:hover:text-pen\",\n  {\n    variants: {\n      variant: {\n        default: \"\",\n        separator:\n          \"gap-tight before:rule before:min-w-0 before:flex-1 before:[filter:var(--wob-3)] after:rule after:min-w-0 after:flex-1 after:[filter:var(--wob-5)]\",\n        border:\n          \"pb-hair after:rule after:absolute after:inset-x-0 after:-bottom-1.5\",\n      },\n    },\n  },\n)\n\nfunction Marker({\n  className,\n  variant = \"default\",\n  render,\n  ...props\n}: useRender.ComponentProps<\"div\"> & VariantProps<typeof markerVariants>) {\n  return useRender({\n    defaultTagName: \"div\",\n    props: mergeProps<\"div\">(\n      {\n        className: cn(markerVariants({ variant, className })),\n      },\n      props,\n    ),\n    render,\n    state: {\n      slot: \"marker\",\n      variant,\n    },\n  })\n}\n\nfunction MarkerIcon({ className, ...props }: React.ComponentProps<\"span\">) {\n  return (\n    <span\n      data-slot=\"marker-icon\"\n      aria-hidden=\"true\"\n      className={cn(\n        \"flex size-4 shrink-0 items-center justify-center [&_svg:not([class*='size-'])]:size-4\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction MarkerContent({ className, ...props }: React.ComponentProps<\"span\">) {\n  return (\n    <span\n      data-slot=\"marker-content\"\n      className={cn(\n        \"min-w-0 wrap-break-word group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:underline *:[a]:decoration-1 *:[a]:underline-offset-[0.25em] *:[a]:hover:text-pen\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Marker, MarkerIcon, MarkerContent, markerVariants }\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/marker.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

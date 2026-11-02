@@ -14,11 +14,11 @@
     color: var(--pen-quiet);
   }
   /* Hover presses the pen a little harder: a second, inset hairline instead of a wider border, so nothing moves. */
-  &:hover:not(:disabled, [data-disabled]) {
+  &:hover:not(:disabled, [data-disabled]:not([data-disabled="false"])) {
     box-shadow: inset 0 0 0 0.65px var(--input);
   }
   &:disabled,
-  &[data-disabled] {
+  &[data-disabled]:not([data-disabled="false"]) {
     cursor: not-allowed;
     border-style: dashed;
     color: var(--pen-faint);
@@ -71,7 +71,7 @@
 /* Press: the control gives a little under the finger. */
 @utility press {
   transition: scale var(--press) var(--ease-out);
-  &:active:not(:disabled, [data-disabled]) {
+  &:active:not(:disabled, [data-disabled]:not([data-disabled="false"])) {
     scale: 0.97;
   }
 }

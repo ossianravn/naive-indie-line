@@ -2,7 +2,11 @@
 
 import * as React from "react"
 import { Popover as PopoverPrimitive } from "@base-ui/react/popover"
-import { clearOfShadow, frameStyle } from "@/fineliner/lib/frame-style"
+import {
+  clearOfShadow,
+  frameStyle,
+  shadowRoom,
+} from "@/fineliner/lib/frame-style"
 import { cn } from "@/fineliner/lib/utils"
 
 // A small sheet of paper drawn round by the pen, lifted off the page by the cartoonist's shadow: a second line along
@@ -36,6 +40,7 @@ function PopoverContent({
   return (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Positioner
+        collisionPadding={shadowRoom}
         align={align}
         alignOffset={alignOffset}
         side={side}

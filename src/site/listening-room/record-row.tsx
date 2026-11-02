@@ -10,7 +10,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/fineliner/ui/dropdown-menu"
-import { CONDITION_LABEL, STATUS_LABEL, kroner, type Release } from "./data"
+import {
+  CONDITION_LABEL,
+  RELEASES,
+  STATUS_LABEL,
+  kroner,
+  type Release,
+} from "./data"
+
+// Records that have a page of their own; ones added in the demo live in memory only.
+const PAGES = new Set(RELEASES.map((r) => r.id))
 
 const BADGE = {
   racks: "outline",
@@ -56,7 +65,16 @@ export function RecordRow({
       />
       <div className="min-w-0">
         <p className="relative m-0 line-clamp-2 w-fit leading-subhead font-medium wrap-anywhere">
-          {item.title}
+          {PAGES.has(item.id) ? (
+            <a
+              href={`/listening-room/records/${item.id.toLowerCase()}`}
+              className="text-pen no-underline hover:underline"
+            >
+              {item.title}
+            </a>
+          ) : (
+            item.title
+          )}
           {fresh && (
             <PenMark
               name="underline"

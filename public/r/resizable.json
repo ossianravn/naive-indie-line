@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "resizable",
+  "title": "Resizable",
+  "description": "Resizable, in the Fineliner style.",
+  "dependencies": [
+    "react-resizable-panels@^4.16.1"
+  ],
+  "registryDependencies": [
+    "@fineliner/base",
+    "@fineliner/pen"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/resizable.tsx",
+      "content": "\"use client\"\n\nimport * as ResizablePrimitive from \"react-resizable-panels\"\nimport { penMark } from \"@/fineliner/pen/pen-marks\"\nimport { cn } from \"@/fineliner/lib/utils\"\n\n// Panels divided by one pen line. The line is a background on a box wider than itself, so the wobble has room, and\n// that box is also the handle's hit area. The pen presses harder while the line is hovered, focused or dragged.\n// withHandle threads three inked dots on the line, the same dots every time; in a vertical group they turn on their\n// side. Focus is the page's dashed ring. The group fills its parent (react-resizable-panels sets height: 100%\n// inline), so size the parent rather than the group.\nconst GRIP = [0, 1, 2].map((i) => penMark(\"dot\", `resizable-grip-${i}`, \"calm\"))\n\nfunction ResizablePanelGroup({\n  className,\n  ...props\n}: ResizablePrimitive.GroupProps) {\n  return (\n    <ResizablePrimitive.Group\n      data-slot=\"resizable-panel-group\"\n      className={cn(\n        \"flex h-full w-full aria-[orientation=vertical]:flex-col\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction ResizablePanel({ ...props }: ResizablePrimitive.PanelProps) {\n  return <ResizablePrimitive.Panel data-slot=\"resizable-panel\" {...props} />\n}\n\nfunction ResizableHandle({\n  withHandle,\n  className,\n  ...props\n}: ResizablePrimitive.SeparatorProps & {\n  withHandle?: boolean\n}) {\n  return (\n    <ResizablePrimitive.Separator\n      data-slot=\"resizable-handle\"\n      className={cn(\n        \"relative z-10 flex w-px shrink-0 items-center justify-center text-pen\",\n        \"before:absolute before:inset-y-0 before:left-1/2 before:w-3 before:-translate-x-1/2 before:bg-[linear-gradient(currentColor,currentColor)] before:bg-size-[var(--pen-weight)_100%] before:bg-center before:bg-no-repeat before:[filter:var(--wob,var(--wob-3))]\",\n        \"aria-[orientation=horizontal]:h-px aria-[orientation=horizontal]:w-full aria-[orientation=horizontal]:before:inset-x-0 aria-[orientation=horizontal]:before:inset-y-auto aria-[orientation=horizontal]:before:top-1/2 aria-[orientation=horizontal]:before:left-0 aria-[orientation=horizontal]:before:h-3 aria-[orientation=horizontal]:before:w-full aria-[orientation=horizontal]:before:translate-x-0 aria-[orientation=horizontal]:before:-translate-y-1/2 aria-[orientation=horizontal]:before:bg-size-[100%_var(--pen-weight)]\",\n        \"data-[separator=active]:[--pen-weight:var(--pen-weight-pressed)] data-[separator=focus]:[--pen-weight:var(--pen-weight-pressed)] data-[separator=hover]:[--pen-weight:var(--pen-weight-pressed)] [&[aria-orientation=horizontal]>div]:rotate-90\",\n        className,\n      )}\n      {...props}\n    >\n      {withHandle && (\n        <div className=\"z-10 flex shrink-0 flex-col items-center\">\n          {GRIP.map((dot, i) => (\n            <span\n              key={i}\n              aria-hidden=\"true\"\n              className=\"-my-0.5 block size-3 [&>svg]:size-full\"\n              dangerouslySetInnerHTML={{ __html: dot }}\n            />\n          ))}\n        </div>\n      )}\n    </ResizablePrimitive.Separator>\n  )\n}\n\nexport { ResizableHandle, ResizablePanel, ResizablePanelGroup }\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/resizable.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

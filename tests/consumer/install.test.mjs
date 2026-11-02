@@ -25,7 +25,8 @@ const shadcn = path.join(repo, "node_modules/shadcn/dist/index.js")
 // The items whose parts fixture/src/App.tsx imports. base and pen arrive as their item dependencies, which exercises
 // the --base dependency URLs and fails the type-check if an item leaves out one it imports. Not the fineliner
 // umbrella: it lists every item, so it would hide a missing dependency.
-// dialog brings button, field brings label and separator, toggle-group brings toggle, avatar brings drawing.
+// dialog brings button, field brings label and separator, toggle-group brings toggle, avatar brings drawing, and
+// chart brings recharts and the pen's plotting module.
 const items = [
   "drawing",
   "dialog",
@@ -34,6 +35,8 @@ const items = [
   "select",
   "toggle-group",
   "avatar",
+  "table",
+  "chart",
 ]
 
 // The environment for every command. Settings an outer `npm run` exports (npm_config_prefix, npm_package_*) would

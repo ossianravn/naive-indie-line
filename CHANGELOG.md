@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+Phase 3: the rest of shadcn parity.
+
+- 38 more parts, each its own registry item with a docs page: table, pagination, breadcrumb, accordion, collapsible, command, combobox, sheet, drawer, menubar, navigation menu, context menu, hover card, calendar, sonner, sidebar, scroll area, resizable, carousel, input OTP, input group, button group, empty, item, aspect ratio, typography, direction, and the conversation set (message, bubble, message scroller, marker, trace, attachment, code block, questionnaire). Tables rule their rows with hand-drawn lines cheap enough for 200 rows; sheets, drawers and toasts fade and grow, never slide; code is highlighted with one pen.
+- `chart`: Recharts drawn by the pen through the exact data points (`drawnBar`, `drawnCurve`, `drawnDot`, `drawnSector`), series told apart by solid, outline, dotted and lined marks rather than colour.
+- `pen`: `plot()` for strokes through data, and the straight `next` mark.
+- `base`: `shadowRoom` collision padding; `frameStyle` reads words through nested elements; drawings carry `fl-size-own`, so shadcn's icon size rule leaves pen marks alone; the typewriter's italic.
+- Listening Room: a sidebar shell, a page per record, sessions with a booking sheet, and an overview.
+- `test:consumer` also installs `table` and `chart`.
+
 Phase 2: core primitives and Listening Room.
 
 - 28 shadcn primitives on Base UI, each its own registry item with shadcn's names, props, variants and `data-slot`s: button, badge, card, input, textarea, label, field, checkbox, radio group, switch, select, native select, tabs, toggle, toggle group, separator, skeleton, avatar, alert, progress, slider, kbd, tooltip, popover, dialog, alert dialog, dropdown menu and spinner. Fields keep a steady pen line; buttons, boxes and sheets are drawn frames seeded by their own words; the main action and chosen options are pockets of ink; ticks, dots and underlines are pen marks put down; menus, selects, popovers and dialogs float on paper with the cartoonist's shadow and grow from their trigger. Avatar fallbacks are portraits drawn from the name.

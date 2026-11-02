@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "empty",
+  "title": "Empty",
+  "description": "Empty, in the Fineliner style.",
+  "dependencies": [
+    "class-variance-authority@^0.7.1"
+  ],
+  "registryDependencies": [
+    "@fineliner/base",
+    "@fineliner/drawing"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/empty.tsx",
+      "content": "import { cva, type VariantProps } from \"class-variance-authority\"\nimport { Drawing } from \"@/fineliner/drawing/drawing\"\nimport { cn } from \"@/fineliner/lib/utils\"\n\n// A quiet page for when there is nothing to show: a drawing from the library, a serif title, one line on why and one\n// action, centred in a reading column, open on the page. Give EmptyMedia an `object` (and a `seed`) and it draws that\n// object, stroke by stroke, the first time the state comes into view; after that the drawing follows the page's line\n// boil setting. Children of EmptyMedia (any other drawing or picture) take its place. The icon variant sets a Lucide\n// icon in a small tint pocket instead.\n\nfunction Empty({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"empty\"\n      className={cn(\n        \"flex w-full min-w-0 flex-1 flex-col items-center justify-center gap-snug p-line text-center text-balance\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction EmptyHeader({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"empty-header\"\n      className={cn(\n        \"flex max-w-[28rem] flex-col items-center gap-hair\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nconst emptyMediaVariants = cva(\n  \"mb-hair flex shrink-0 items-center justify-center text-pen [&_svg]:pointer-events-none [&_svg]:shrink-0\",\n  {\n    variants: {\n      variant: {\n        default: \"bg-transparent [&>[data-slot=drawing]]:w-32\",\n        icon: cn(\n          \"pocket\",\n          \"size-10 before:bg-tint [&_svg:not([class*='size-'])]:size-5\",\n        ),\n      },\n    },\n    defaultVariants: {\n      variant: \"default\",\n    },\n  },\n)\n\nfunction EmptyMedia({\n  className,\n  variant = \"default\",\n  object,\n  seed,\n  children,\n  ...props\n}: React.ComponentProps<\"div\"> &\n  VariantProps<typeof emptyMediaVariants> & {\n    /** An object from the drawing library (crate, record, turntable…), drawn on the first time it is seen. */\n    object?: string\n    /** Its seed; the object's own name when left out. */\n    seed?: string | number\n  }) {\n  return (\n    <div\n      data-slot=\"empty-icon\"\n      data-variant={variant}\n      className={cn(emptyMediaVariants({ variant, className }))}\n      {...props}\n    >\n      {object ? (\n        <Drawing\n          object={object}\n          seed={seed ?? `empty:${object}`}\n          title=\"\"\n          drawOnView\n        />\n      ) : (\n        children\n      )}\n    </div>\n  )\n}\n\nfunction EmptyTitle({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"empty-title\"\n      className={cn(\n        \"font-read text-lead leading-subhead font-medium text-pen\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction EmptyDescription({ className, ...props }: React.ComponentProps<\"p\">) {\n  return (\n    <div\n      data-slot=\"empty-description\"\n      className={cn(\"text-ui leading-small text-pen-quiet\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction EmptyContent({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"empty-content\"\n      className={cn(\n        \"flex w-full max-w-[28rem] min-w-0 flex-col items-center gap-tight text-small leading-small text-balance\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nexport {\n  Empty,\n  EmptyHeader,\n  EmptyTitle,\n  EmptyDescription,\n  EmptyContent,\n  EmptyMedia,\n}\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/empty.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

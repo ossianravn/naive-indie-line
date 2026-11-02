@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "direction",
+  "title": "Direction",
+  "description": "Direction, in the Fineliner style.",
+  "dependencies": [
+    "@base-ui/react@^1.9.0"
+  ],
+  "registryDependencies": [
+    "@fineliner/base"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/direction.tsx",
+      "content": "\"use client\"\n\n// Base UI's direction provider, unchanged: it tells menus, sliders, tabs and other primitives which way the page\n// reads. Set `dir` on the same element so the layout mirrors with it; the pen's arrows and chevrons turn with `dir`.\nexport {\n  DirectionProvider,\n  useDirection,\n} from \"@base-ui/react/direction-provider\"\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/direction.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

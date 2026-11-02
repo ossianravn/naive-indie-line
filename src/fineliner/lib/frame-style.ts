@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react"
+import { isValidElement, type CSSProperties, type ReactNode } from "react"
 import { frameVars } from "@/fineliner/pen/filters"
 import { seedOf } from "@/fineliner/pen/seed"
 
@@ -13,10 +13,16 @@ type StyleProp<State> =
 export const clearOfShadow = ({ side }: { side: string }) =>
   /^(top|left|inline-start)$/.test(side) ? 11 : 4
 
-/** The words in a control's children: "Add a record" from [<PlusIcon />, " Add a record"]. */
-function wordsOf(node: ReactNode): string {
+/** Room a floating sheet keeps from the viewport's edges (Base UI's collisionPadding): more right and below, where the
+ * pen-shadow falls, so the shadow never pushes a phone page sideways. */
+export const shadowRoom = { top: 5, left: 5, right: 12, bottom: 12 }
+
+/** The words in a node, elements included: "Add a record" from [<PlusIcon />, <span> Add a record</span>]. */
+export function wordsOf(node: ReactNode): string {
   if (typeof node === "string" || typeof node === "number") return String(node)
   if (Array.isArray(node)) return node.map(wordsOf).join("")
+  if (isValidElement<{ children?: ReactNode }>(node))
+    return wordsOf(node.props.children)
   return ""
 }
 

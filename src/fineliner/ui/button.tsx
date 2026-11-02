@@ -31,7 +31,7 @@ const buttonVariants = cva(
       },
       size: {
         default:
-          "h-control gap-tight px-snug has-data-[icon=inline-end]:pr-tight has-data-[icon=inline-start]:pl-tight",
+          "h-control gap-tight px-snug has-data-[icon=inline-end]:pe-tight has-data-[icon=inline-start]:ps-tight",
         xs: "h-7 gap-hair px-tight text-small [&_svg:not([class*='size-'])]:size-3",
         sm: "h-control-compact gap-hair px-tight text-small [&_svg:not([class*='size-'])]:size-3.5",
         lg: "h-12 gap-tight px-line",

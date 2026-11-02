@@ -4,7 +4,7 @@ A shadcn/ui component library drawn with one fine-liner on unbleached paper: a s
 
 <img alt="Four room vignettes in the style: a kitchen where a shirt with nobody in it pours wine, a desk under a window, a balcony at night and a listening corner with a record player." src="docs/style/explorations/scenes.webp">
 
-**Status:** Phase 2 is done: 28 shadcn primitives drawn with one pen, each with a docs page, and Listening Room, a record shop's catalogue, sign-in and settings built from them. Phase 1 brought the pen engine, 55 drawing objects, scenes, lettering, `<Drawing>`, the drawing desk and the shadcn registry. Phase 3, data, navigation and the rest of shadcn parity, is next. The [plan](docs/plan.md) tracks decisions and progress; the [style brief](docs/style.md) owns the style.
+**Status:** Phase 3 is done: shadcn parity drawn with one pen (64 parts, each with a docs page; `form` and `toast` are served by `field` and `sonner`), a chart drawn by the pen through the exact data, and Listening Room, a record shop's catalogue, record pages, sessions, overview, sign-in and settings built from them. Phase 4, Fineliner's own extras, blocks, the home page and the theme studio, is next.
 
 ## Run it
 

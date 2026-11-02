@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "breadcrumb",
+  "title": "Breadcrumb",
+  "description": "Breadcrumb, in the Fineliner style.",
+  "dependencies": [
+    "@base-ui/react@^1.9.0",
+    "lucide-react@^1.66.0"
+  ],
+  "registryDependencies": [
+    "@fineliner/base",
+    "@fineliner/pen"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/breadcrumb.tsx",
+      "content": "import * as React from \"react\"\nimport { mergeProps } from \"@base-ui/react/merge-props\"\nimport { useRender } from \"@base-ui/react/use-render\"\nimport { MoreHorizontalIcon } from \"lucide-react\"\nimport { penMark } from \"@/fineliner/pen/pen-marks\"\nimport { cn } from \"@/fineliner/lib/utils\"\n\n// A trail in the reading voice at small size: the steps back in the quiet pen, the current page in the full pen.\n// Between steps sits a small pen chevron pointing onward, the same stroke each time, turned round in right-to-left\n// text. Links stay plain until hovered, as a trail's convention already says they are links.\nconst CHEVRON = penMark(\"chevron\", \"breadcrumb\", \"calm\")\n\nfunction Breadcrumb({ className, ...props }: React.ComponentProps<\"nav\">) {\n  return (\n    <nav\n      aria-label=\"breadcrumb\"\n      data-slot=\"breadcrumb\"\n      className={cn(className)}\n      {...props}\n    />\n  )\n}\n\nfunction BreadcrumbList({ className, ...props }: React.ComponentProps<\"ol\">) {\n  return (\n    <ol\n      data-slot=\"breadcrumb-list\"\n      className={cn(\n        \"m-0 flex list-none flex-wrap items-center gap-x-hair gap-y-1 p-0 font-ui text-small leading-small wrap-break-word text-pen-quiet\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n\nfunction BreadcrumbItem({ className, ...props }: React.ComponentProps<\"li\">) {\n  return (\n    <li\n      data-slot=\"breadcrumb-item\"\n      className={cn(\"inline-flex items-center gap-1\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction BreadcrumbLink({\n  className,\n  render,\n  ...props\n}: useRender.ComponentProps<\"a\">) {\n  return useRender({\n    defaultTagName: \"a\",\n    props: mergeProps<\"a\">(\n      {\n        className: cn(\n          \"text-pen-quiet no-underline transition-colors hover:text-pen hover:underline\",\n          className,\n        ),\n      },\n      props,\n    ),\n    render,\n    state: {\n      slot: \"breadcrumb-link\",\n    },\n  })\n}\n\nfunction BreadcrumbPage({ className, ...props }: React.ComponentProps<\"span\">) {\n  return (\n    <span\n      data-slot=\"breadcrumb-page\"\n      role=\"link\"\n      aria-disabled=\"true\"\n      aria-current=\"page\"\n      className={cn(\"font-normal text-pen\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction BreadcrumbSeparator({\n  children,\n  className,\n  ...props\n}: React.ComponentProps<\"li\">) {\n  return (\n    <li\n      data-slot=\"breadcrumb-separator\"\n      role=\"presentation\"\n      aria-hidden=\"true\"\n      className={cn(\n        \"inline-flex items-center text-pen-faint [&>svg]:size-3.5\",\n        className,\n      )}\n      {...props}\n    >\n      {children ?? (\n        <span\n          className=\"block h-2 w-[0.7rem] -rotate-90 rtl:rotate-90 [&>svg]:size-full\"\n          dangerouslySetInnerHTML={{ __html: CHEVRON }}\n        />\n      )}\n    </li>\n  )\n}\n\nfunction BreadcrumbEllipsis({\n  className,\n  ...props\n}: React.ComponentProps<\"span\">) {\n  return (\n    <span\n      data-slot=\"breadcrumb-ellipsis\"\n      role=\"presentation\"\n      aria-hidden=\"true\"\n      className={cn(\n        \"flex size-5 items-center justify-center [&>svg]:size-4\",\n        className,\n      )}\n      {...props}\n    >\n      <MoreHorizontalIcon />\n      <span className=\"sr-only\">More</span>\n    </span>\n  )\n}\n\nexport {\n  Breadcrumb,\n  BreadcrumbList,\n  BreadcrumbItem,\n  BreadcrumbLink,\n  BreadcrumbPage,\n  BreadcrumbSeparator,\n  BreadcrumbEllipsis,\n}\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/breadcrumb.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

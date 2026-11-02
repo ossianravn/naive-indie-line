@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-mobile",
+  "title": "Use Mobile",
+  "description": "Use Mobile, in the Fineliner style.",
+  "registryDependencies": [
+    "@fineliner/base"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/hooks/use-mobile.ts",
+      "content": "import * as React from \"react\"\n\nconst MOBILE_BREAKPOINT = 768\nconst QUERY = `(max-width: ${MOBILE_BREAKPOINT - 1}px)`\n\nfunction subscribe(onChange: () => void) {\n  const mql = window.matchMedia(QUERY)\n  mql.addEventListener(\"change\", onChange)\n  return () => mql.removeEventListener(\"change\", onChange)\n}\n\n/**\n * True below 768 px, where the sidebar becomes a sheet. False on the server and during hydration, so the first\n * client render matches the server's; shadcn's hook behaves the same, through an effect instead of a store.\n */\nexport function useIsMobile() {\n  return React.useSyncExternalStore(\n    subscribe,\n    () => window.matchMedia(QUERY).matches,\n    () => false,\n  )\n}\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/hooks/use-mobile.ts"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -2,7 +2,11 @@
 
 import * as React from "react"
 import { Select as SelectPrimitive } from "@base-ui/react/select"
-import { clearOfShadow, frameStyle } from "@/fineliner/lib/frame-style"
+import {
+  clearOfShadow,
+  frameStyle,
+  shadowRoom,
+} from "@/fineliner/lib/frame-style"
 import { penMark } from "@/fineliner/pen/pen-marks"
 import { cn } from "@/fineliner/lib/utils"
 
@@ -91,6 +95,7 @@ function SelectContent({
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Positioner
+        collisionPadding={shadowRoom}
         side={side}
         sideOffset={sideOffset}
         align={align}
@@ -172,7 +177,10 @@ function SelectSeparator({
   return (
     <SelectPrimitive.Separator
       data-slot="select-separator"
-      className={cn("rule pointer-events-none mx-tight", className)}
+      className={cn(
+        "rule pointer-events-none mx-tight text-pen-faint",
+        className,
+      )}
       {...props}
     />
   )

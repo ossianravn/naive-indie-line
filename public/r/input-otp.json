@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "input-otp",
+  "title": "Input Otp",
+  "description": "Input Otp, in the Fineliner style.",
+  "dependencies": [
+    "input-otp@^1.5.0"
+  ],
+  "registryDependencies": [
+    "@fineliner/base",
+    "@fineliner/pen"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/ui/input-otp.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { OTPInput, OTPInputContext } from \"input-otp\"\nimport { frameStyle } from \"@/fineliner/lib/frame-style\"\nimport { penMark } from \"@/fineliner/pen/pen-marks\"\nimport { cn } from \"@/fineliner/lib/utils\"\n\n// One box drawn by the pen per digit, square at control height and seeded by its place, so a row of boxes wobbles\n// box by box. Digits in the typewriter. The box that takes the next keystroke presses harder and carries the page's\n// dashed ring (a little closer, so it clears its neighbours). Invalid boxes draw in the correction pen; disabled ones\n// dim with their digits. Groups are divided by a short pen stroke.\nconst DASH = penMark(\"strike\", \"input-otp\", \"calm\")\n\nfunction InputOTP({\n  className,\n  containerClassName,\n  ...props\n}: React.ComponentProps<typeof OTPInput> & {\n  containerClassName?: string\n}) {\n  return (\n    <OTPInput\n      data-slot=\"input-otp\"\n      containerClassName={cn(\n        \"group/input-otp flex items-center gap-tight has-disabled:cursor-not-allowed\",\n        containerClassName,\n      )}\n      spellCheck={false}\n      className={cn(\"disabled:cursor-not-allowed\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction InputOTPGroup({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"input-otp-group\"\n      className={cn(\"flex items-center gap-hair\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction InputOTPSlot({\n  index,\n  className,\n  style,\n  ...props\n}: React.ComponentProps<\"div\"> & {\n  index: number\n}) {\n  const inputOTPContext = React.useContext(OTPInputContext)\n  const { char, hasFakeCaret, isActive } = inputOTPContext?.slots[index] ?? {}\n\n  return (\n    <div\n      data-slot=\"input-otp-slot\"\n      data-active={isActive}\n      className={cn(\n        \"frame relative flex size-control items-center justify-center font-type text-lead leading-none text-pen tabular-nums [--over:2.5px] calm:[--over:1px]\",\n        \"data-[active=true]:z-10 data-[active=true]:outline-[1.5px] data-[active=true]:outline-offset-[3px] data-[active=true]:outline-pen data-[active=true]:outline-dashed data-[active=true]:[--pen-weight:var(--pen-weight-pressed)]\",\n        \"aria-invalid:text-correction group-has-[input[aria-invalid=true]]/input-otp:text-correction\",\n        \"group-has-disabled/input-otp:text-pen-faint\",\n        className,\n      )}\n      style={frameStyle(`input-otp slot ${index}`, style)}\n      {...props}\n    >\n      {char}\n      {hasFakeCaret && (\n        <div className=\"pointer-events-none absolute inset-0 flex items-center justify-center\">\n          <div className=\"h-[1.1em] w-[1.5px] animate-caret-blink bg-pen duration-1000 motion-reduce:animate-none\" />\n        </div>\n      )}\n    </div>\n  )\n}\n\nfunction InputOTPSeparator({ ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"input-otp-separator\"\n      className=\"flex items-center text-pen-quiet group-has-disabled/input-otp:text-pen-faint\"\n      role=\"separator\"\n      {...props}\n    >\n      <span\n        aria-hidden=\"true\"\n        className=\"block h-2 w-3.5 [&>svg]:size-full\"\n        dangerouslySetInnerHTML={{ __html: DASH }}\n      />\n    </div>\n  )\n}\n\nexport { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/ui/input-otp.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

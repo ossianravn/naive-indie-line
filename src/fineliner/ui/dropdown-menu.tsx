@@ -2,7 +2,11 @@
 
 import * as React from "react"
 import { Menu as MenuPrimitive } from "@base-ui/react/menu"
-import { clearOfShadow, frameStyle } from "@/fineliner/lib/frame-style"
+import {
+  clearOfShadow,
+  frameStyle,
+  shadowRoom,
+} from "@/fineliner/lib/frame-style"
 import { penMark } from "@/fineliner/pen/pen-marks"
 import { cn } from "@/fineliner/lib/utils"
 
@@ -47,6 +51,7 @@ function DropdownMenuContent({
   return (
     <MenuPrimitive.Portal>
       <MenuPrimitive.Positioner
+        collisionPadding={shadowRoom}
         className="isolate z-50"
         align={align}
         alignOffset={alignOffset}
@@ -143,7 +148,7 @@ function DropdownMenuSubTrigger({
       {children}
       <span
         aria-hidden="true"
-        className="ms-auto block h-2.5 w-3.5 -rotate-90 text-pen-quiet rtl:rotate-90 [&>svg]:size-full"
+        className="ms-auto block h-2.5 w-3.5 -rotate-90 text-pen-quiet rtl:rotate-90 [&>svg]:size-full!"
         dangerouslySetInnerHTML={{ __html: CHEVRON }}
       />
     </MenuPrimitive.SubmenuTrigger>
@@ -153,7 +158,7 @@ function DropdownMenuSubTrigger({
 function DropdownMenuSubContent({
   align = "start",
   alignOffset = -4,
-  side = "right",
+  side = "inline-end",
   sideOffset = 0,
   className,
   ...props
