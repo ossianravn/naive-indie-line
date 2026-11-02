@@ -1,0 +1,60 @@
+---
+// The site's page frame: pre-paint appearance, shared filters, header and footer.
+import "@/fineliner/styles/fineliner.css"
+import "@/site/site.css"
+import { FinelinerDefs } from "@/fineliner/defs/fineliner-defs"
+import { appearanceScript } from "@/fineliner/theme/appearance-script"
+import { frameVars, seedOf } from "@/fineliner/pen"
+import { siteAppearance } from "@/site/appearance"
+
+interface Props {
+  title: string
+  description: string
+}
+const { title, description } = Astro.props
+const fullTitle = title === "Fineliner" ? title : `${title} · Fineliner`
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <script is:inline set:html={appearanceScript(siteAppearance)} />
+  </head>
+  <body>
+    <FinelinerDefs />
+    <a
+      class="label absolute -left-[999px] top-2 z-30 bg-pen px-tight py-hair text-paper focus:left-2"
+      href="#main"
+    >
+      Skip to content
+    </a>
+    <header class="mx-auto flex max-w-[76rem] items-center justify-between gap-snug px-snug pt-snug sm:px-line">
+      <a class="text-lead leading-heading no-underline" href="/">
+        Fineliner
+      </a>
+      <span class="label">Specimen Nº 1</span>
+    </header>
+    <div class="mx-auto max-w-[76rem] px-snug sm:px-line">
+      <div
+        class="rule mt-tight"
+        style={frameVars(seedOf("header-rule"))}
+        aria-hidden="true"
+      ></div>
+    </div>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="mx-auto mt-page max-w-[76rem] px-snug pb-line sm:px-line">
+      <div
+        class="rule mb-snug"
+        style={frameVars(seedOf("footer-rule"))}
+        aria-hidden="true"
+      ></div>
+      <p class="label m-0">Fineliner · MIT · drawn with one pen</p>
+    </footer>
+  </body>
+</html>

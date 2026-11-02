@@ -1,0 +1,54 @@
+---
+// The line: frames, rules, a pocket of ink and the drawn shadow, in a calm and a lively hand. Each frame takes its
+// wobble and corner overshoot from its own seed.
+import { frameVars, seedOf } from "@/fineliner/pen"
+import SectionHead from "./section-head.astro"
+
+const f = (seed: string) => frameVars(seedOf(seed))
+const HANDS = [
+  ["calm", "Calm"],
+  ["lively", "Lively"],
+] as const
+---
+
+<section class="mx-auto mt-page max-w-[76rem] px-snug sm:px-line" aria-labelledby="lines">
+  <SectionHead n={3} id="lines" title="The line" />
+  <div class="grid gap-section md:grid-cols-2">
+    {
+      HANDS.map(([hand, title]) => (
+        <div data-hand={hand} class="grid content-start gap-snug">
+          <h3 class="label m-0">{title}</h3>
+          <div class="flex flex-wrap items-center gap-snug">
+            <span class="frame inline-flex h-control w-56 items-center px-tight text-ui" style={f(`${hand}-field`)}>
+              Maya Singh
+            </span>
+            <span class="relative isolate inline-flex h-control items-center px-snug text-ui text-paper">
+              <i class="ink-fill" style={f(`${hand}-fill`)} />
+              Book session
+            </span>
+            <span class="frame inline-flex h-control items-center px-snug text-ui" style={f(`${hand}-button`)}>
+              See availability
+            </span>
+          </div>
+          <div class="rule w-full" style={f(`${hand}-rule`)} aria-hidden="true" />
+          <div class="frame max-w-[22rem] bg-paper p-snug" style={f(`${hand}-sheet`)}>
+            <span class="pen-shadow" aria-hidden="true" />
+            <p class="m-0 text-lead leading-subhead">Take it off the shelf?</p>
+            <p class="m-0 mt-hair text-small">A surface that floats: a frame and the cartoonist's shadow line.</p>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="mt-section grid gap-section md:grid-cols-2">
+    <article class="frame container-frame grid gap-tight p-snug" style={f("card-a")}>
+      <h3 class="m-0 text-lead">Upcoming sessions</h3>
+      <p class="m-0 text-small">Thursday at seven, Thursday at half past eight.</p>
+    </article>
+    <article class="frame container-frame grid gap-tight p-snug" style={f("card-b")}>
+      <h3 class="m-0 text-lead">On the shelf</h3>
+      <p class="m-0 text-small">Pétillant Naturel, Side Streets, Quiet Hours.</p>
+    </article>
+  </div>
+</section>

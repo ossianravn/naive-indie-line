@@ -1,0 +1,105 @@
+/* Fineliner: the Tailwind entry. Import this file once; it brings Tailwind, the tokens, the paper and the frames. */
+@import "tailwindcss";
+@import "./fonts.css";
+@import "./tokens.css";
+@import "./stocks.css";
+@import "./pens.css";
+@import "./textures.generated.css";
+@import "./roles.css";
+@import "./base.css";
+@import "./frames.css";
+
+@custom-variant night (&:where([data-theme="night"], [data-theme="night"] *));
+@custom-variant dark (&:where([data-theme="night"], [data-theme="night"] *));
+/* calm: inside a calm page or region, unless a lively region sits between (the nearest marked ancestor wins). */
+@custom-variant calm (&:where([data-hand="calm"], [data-hand="calm"] *):not(:where([data-hand="calm"] [data-hand="lively"], [data-hand="calm"] [data-hand="lively"] *)));
+
+@theme inline {
+  --default-font-family: var(--face-ui);
+  --font-read: var(--face-read);
+  --font-type: var(--face-type);
+  --font-label: var(--face-label);
+  --font-hand: var(--face-hand);
+  --font-ui: var(--face-ui);
+  --font-serif: var(--face-read);
+  --font-mono: var(--face-type);
+
+  --text-label: var(--type-label);
+  --text-small: var(--type-small);
+  --text-ui: var(--type-ui);
+  --text-body: var(--type-body);
+  --text-lead: var(--type-lead);
+  --text-h2: var(--type-h2);
+  --text-h1: var(--type-h1);
+  --text-title: var(--type-title);
+  --text-display: var(--type-display);
+
+  --leading-body: var(--lh-body);
+  --leading-lead: var(--lh-lead);
+  --leading-small: var(--lh-small);
+  --leading-ui: var(--lh-ui);
+  --leading-heading: var(--lh-heading);
+  --leading-subhead: var(--lh-subhead);
+  --leading-display: var(--lh-display);
+
+  --spacing-hair: var(--space-hair);
+  --spacing-tight: var(--space-tight);
+  --spacing-snug: var(--space-snug);
+  --spacing-line: var(--space-line);
+  --spacing-section: var(--space-section);
+  --spacing-page: var(--space-page);
+  --spacing-control: var(--control-height);
+  --spacing-control-compact: var(--control-height-compact);
+  --container-measure: var(--measure);
+
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-pen: var(--pen);
+  --color-ink: var(--ink);
+  --color-wash: var(--wash);
+  --color-tint: var(--tint);
+  --color-correction: var(--correction);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* The label voice as a utility: font, size, case and tracking all follow data-labels. */
+@utility label {
+  font-family: var(--face-label);
+  font-size: var(--type-label);
+  font-weight: 500;
+  font-variant-caps: var(--label-caps);
+  text-transform: var(--label-case);
+  letter-spacing: var(--label-track);
+  line-height: 1.4;
+}

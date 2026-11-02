@@ -1,0 +1,9 @@
+/* The voices. Each package ships its SIL Open Font License. Newsreader carries its optical sizes (opsz), so large
+   headings get the display cut and small text the text cut from one family. Gaegu loads only its Latin files, not its
+   Korean ones. */
+@import "@fontsource-variable/newsreader/opsz.css";
+@import "@fontsource-variable/newsreader/opsz-italic.css";
+@import "@fontsource/courier-prime/400.css";
+@import "@fontsource/courier-prime/700.css";
+@import "@fontsource/gaegu/latin-400.css";
+@import "@fontsource/gaegu/latin-700.css";

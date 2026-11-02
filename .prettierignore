@@ -1,0 +1,6 @@
+dist/
+.astro/
+node_modules/
+package-lock.json
+src/fineliner/styles/textures.generated.css
+specimen/

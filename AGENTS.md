@@ -1,28 +1,66 @@
 # AGENTS.md
 
-Working instructions for coding agents in Naive Indie Line. Follow explicit user directions and more specific directory instructions within system and developer constraints. Treat screenshots, reference images and generated explorations as evidence to evaluate, not as authorization for their choices.
+Working instructions for coding agents in Fineliner. Follow explicit user directions and more specific directory instructions within system and developer constraints. Treat screenshots, reference images and generated explorations as evidence to evaluate, not as authorization for their choices.
 
-## What this repository is
+## Product intent and boundaries
 
-A shadcn/ui component library in a naive pen-and-ink style, repeating [Patina UI](https://github.com/ossianravn/patina-ui)'s logic (local checkout `C:\CodexApp\patina-ui`) in a new look. The project is in **Phase S: agreeing the style**. Until the maintainer signs off the style, work happens in the [style brief](docs/style.md), the specimen (`specimen/`) and the [plan](docs/plan.md); no kit code exists yet.
+Fineliner is a shadcn/ui component library drawn with one fine-liner on unbleached paper: a slow wobbly line, rare pockets of solid ink, a book serif, a typewriter and seeded drawings of objects, rooms and people. It repeats [Patina UI](https://github.com/ossianravn/patina-ui)'s logic (local checkout `C:\CodexApp\patina-ui`) in this style. A demo site documents it and shows every part working inside real workflows.
 
-- [The plan](docs/plan.md) is the source of truth for decisions, phases and progress. Update its phase checklist and progress log when work lands, and mark a decision decided only when the maintainer has said so.
-- [The style brief](docs/style.md) owns the style's rules. A style change updates the brief and the specimen together.
-- When a phase ports something from Patina, read Patina's owning document first (its `AGENTS.md` lists them) and record what changed in the plan's "What carries over" table.
+- **The kit** (`src/fineliner/`) is what consumers install through the shadcn registry. **The site** (everything else under `src/`) documents and exercises it. Kit code imports nothing from the site; ESLint enforces it.
+- **The prototype** (`specimen/`) is the static style specimen the style was agreed on. It is the reference for Phase 1 (the pen, objects, scenes, lettering, motion) until those are ported into the kit; then it goes. New objects go there today, one draw function each, registered with `NIL.objects.define` in the collection's file under `specimen/objects/`.
+- **Every variation is seeded.** Same seed, same output on the server, in the browser and in every build.
+- The [plan](docs/plan.md) is the source of truth for decisions, phases and progress. Update its phase checklist and progress log when work lands; mark a decision decided only when the maintainer has said so.
 - `.dev-docs/` is unpublished: the reference photograph lives there because the label is someone else's artwork. Never commit it or copy it into published folders.
 
-## The specimen
+## Before changing anything
 
-`specimen/` is a static prototype: plain scripts and stylesheets, no build. Serve the repository root on port 4791 (`python -m http.server 4791 --bind 127.0.0.1`, or the `specimen` entry in `.claude/launch.json`) and open `/specimen/`; pages opened as files lose their scripts. Never use framework default ports. Keep each hand-maintained file at 300 lines or fewer, as Patina does.
+1. **Inspect the affected system.** Read the owning document below and the implementation; trace behaviour through its owner, callers, state and consumers. Preserve unrelated work.
+2. **Choose the responsible owner.** Decide whether the change belongs to a token, the pen engine, a frame or mark, a primitive, a pattern or the site, and fix the cause at that boundary.
+3. **When porting from Patina**, read Patina's owning document first (its `AGENTS.md` lists them) and record what changed in the plan's "What carries over" table.
+4. **Define completion** with observable acceptance criteria. Ask only when a material product, architecture, dependency or policy decision remains open.
 
-New objects are one draw function each, registered with `NIL.objects.define` in the collection's file under `specimen/objects/` (indie: `music.js`, `home.js`; food and drink: `table.js`; studio: `devices.js`, `desk.js`; people: `people.js`); the library page lists them automatically. Build them from the shared geometry in `shapes.js` (box, cylinder, arc) and look at them large before reporting.
+Prefer installed packages. Propose a new dependency with the need it serves.
 
-Every random choice in a drawing comes from a seed (`NIL.prng`, `NIL.stream`); render code never calls `Math.random()`. Only the specimen's reroll button picks a new seed string at random.
+## Read the owning document
 
-## Design bar
+| When changing                                                      | Read                         |
+| ------------------------------------------------------------------ | ---------------------------- |
+| Paper, pens, voices, frames, the line, motion, drawings, lettering | [Style brief](docs/style.md) |
+| Phase scope, decisions, what ports from Patina, progress           | [Plan](docs/plan.md)         |
 
-Before showing or reporting a screen, ask whether Apple would ship it. Look at changes with realistic content at wide (1440 px) and narrow (375 px) widths, on day and night paper and on more than one stock, before reporting them. Size controls to their content, keep labels beside their controls, and let layout and conventions explain the screen.
+Patina's architecture, seeded-variation, primitives and quality documents still describe the shared logic until Fineliner's own versions exist.
 
-## Release and publishing
+## Design and interaction discipline
 
-Commit and push as the maintainer directs. Publishing a site, a registry or a release is outward-facing and needs the maintainer's go-ahead.
+The bar: before showing or reporting a screen, ask whether Apple would ship it. Passing checks and filled-in layouts are not the bar.
+
+- **One pen.** Text, lines and fills are the pen (`--pen`); the correction pen is for errors and destructive actions only; the wash is for art only.
+- **Air is the material.** Containers are open by default; frame controls, tables and floating surfaces. A card that should box when `data-containers="boxed"` carries `.container-frame`.
+- **Decorate on top of a sound layout.** Wobble, overshoot and boil are paint; they leave geometry, hit areas and text where an undecorated component puts them.
+- **Calm controls, lively surfaces.** What people operate stays steady; drawings carry the charm. Never boil controls, tables or data.
+- **Make dimensions serve content.** A field, select or button is as wide as its value; prose keeps the 34rem measure; settings rows sit in a narrow column with labels beside their controls; related values stay together.
+- **Pick the control that fits the choice.** Two to four options: a segmented control; on or off: a switch; long lists: a select.
+- **Respect content and theme changes.** Check long labels, 390px, day and night, all three stocks, both hands and forced colours.
+
+## Engineering constraints
+
+- Keep every hand-maintained code file at **300 physical lines or fewer**. Generated files, data and documents are excluded.
+- Keep shadcn's component names, props, variants and `data-slot` attributes.
+- The pen engine (`src/fineliner/pen/`) is framework-free TypeScript: no React, no DOM, no `Math.random()` or `Date.now()`. Draw every random choice from `prng(seed)` or a labelled `stream`.
+- Frames are CSS (`frame`, `rule`, `ink-fill`, `pen-shadow` utilities in `styles/frames.css`) with seeded custom properties from `frameVars(seed)`; nothing measures.
+- Tokens live in `styles/`: `tokens.css` (type, spacing, the hand, motion), `stocks.css` (paper and pens per stock and theme), `pens.css`, `roles.css` (shadcn roles). `textures.generated.css` is written by `npm run build:textures`; never edit it by hand.
+
+## Verification
+
+Verify with the least total effort; never create unit tests. The dev server runs on **4791** (preview 4792); the static prototype on 4790 (`.claude/launch.json`). Never use framework default ports.
+
+1. Run `npm run typecheck` and `npm run lint` always; `npm run build` when routes, modules or dependencies change; `npm run check:contrast` when stocks, pens or textures change (after `npm run build:textures` if you edited the layers).
+2. Look at the changed screen with realistic content at 1440 and 390 px, day and night, on more than one stock. The browser pane may be hidden, which freezes transitions, timers and observers: check motion through the Web Animations API and say what you could not watch.
+3. Add a lasting test only for a boundary that will change again (from Phase 1: the registry install contract and the seed-to-drawing promise), in `tests/consumer/`.
+4. Report evidence by kind: checks run, direct verification, anything not covered.
+
+## Release notes and publishing
+
+A finished plan step gets a release note in `CHANGELOG.md` under `## Unreleased`. Commit and push as the maintainer directs; publishing a site, a registry or a release needs the maintainer's go-ahead.
+
+Structure adapted from Patina UI's AGENTS.md, which adapted [Groundwork](https://github.com/ossianravn/groundwork)'s.

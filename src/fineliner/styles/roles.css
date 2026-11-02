@@ -1,0 +1,37 @@
+/* shadcn's semantic roles, mapped from Fineliner's raw tokens so shadcn-shaped code works unchanged. One pen means
+   most roles are the pen or the paper; charts tell series apart by mark (solid, outline, dotted), not by colour. */
+
+:root {
+  --background: var(--paper);
+  --foreground: var(--pen);
+  --card: var(--paper);
+  --card-foreground: var(--pen);
+  --popover: var(--paper);
+  --popover-foreground: var(--pen);
+  --primary: var(--pen);
+  --primary-foreground: var(--paper);
+  --secondary: var(--tint);
+  --secondary-foreground: var(--pen);
+  --muted: var(--paper-2);
+  --muted-foreground: var(--pen);
+  --accent: var(--tint);
+  --accent-foreground: var(--pen);
+  --destructive: var(--correction);
+  --border: var(--pen);
+  --input: var(--pen);
+  --ring: var(--pen);
+  --chart-1: var(--pen);
+  --chart-2: var(--wash);
+  --chart-3: var(--pen);
+  --chart-4: var(--wash);
+  --chart-5: var(--correction);
+  --sidebar: var(--paper);
+  --sidebar-foreground: var(--pen);
+  --sidebar-primary: var(--pen);
+  --sidebar-primary-foreground: var(--paper);
+  --sidebar-accent: var(--tint);
+  --sidebar-accent-foreground: var(--pen);
+  --sidebar-border: var(--pen);
+  --sidebar-ring: var(--pen);
+  --radius: 2px;
+}

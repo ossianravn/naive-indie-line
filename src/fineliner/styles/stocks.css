@@ -1,0 +1,62 @@
+/* Stocks: the paper, and each pen as it reads on that paper. Night is a dark card drawn on with a light gel pen, not an
+   inverted page. tools/check-contrast.mjs reads these blocks, so keep one declaration per line. */
+
+:root,
+:root[data-stock="recycled"] {
+  --paper: #ece2ca;
+  --paper-2: #e3d7bb;
+  --pen-navy: #263152;
+  --pen-black: #262421;
+  --pen-sepia: #4a3020;
+  --pen-forest: #23412f;
+  --pen-oxblood: #5c2430;
+  /* Each pen thinned: art fills only (a pot, a picture, a wash shape); never text or the only carrier of meaning. */
+  --wash-navy: #5b72a8;
+  --wash-black: #8d8780;
+  --wash-sepia: #a47d5c;
+  --wash-forest: #6f9279;
+  --wash-oxblood: #a9636e;
+  /* The correction pen: errors and destructive actions only. */
+  --correction: #962a23;
+}
+
+/* Kraft is the darkest stock, so its lighter pens are mixed a little darker to keep 4.5:1 on the textured recess. */
+:root[data-stock="kraft"] {
+  --paper: #cdb48f;
+  --paper-2: #c4a985;
+  --pen-sepia: #3e2718;
+  --pen-forest: #1b3524;
+  --pen-oxblood: #4d1e28;
+  --correction: #5e1612;
+}
+
+:root[data-stock="bond"] {
+  --paper: #f4f0e6;
+  --paper-2: #ebe5d7;
+}
+
+:root[data-theme="night"] {
+  --paper: #1c2131;
+  --paper-2: #242b3e;
+  --pen-navy: #dde3f2;
+  --pen-black: #efe9dc;
+  --pen-sepia: #eedcc6;
+  --pen-forest: #d6e8d9;
+  --pen-oxblood: #f2d6da;
+  --wash-navy: #4f659c;
+  --wash-black: #6b6760;
+  --wash-sepia: #7d5d43;
+  --wash-forest: #4d6a55;
+  --wash-oxblood: #7f4650;
+  --correction: #f28b80;
+}
+
+:root[data-stock="kraft"][data-theme="night"] {
+  --paper: #2a2119;
+  --paper-2: #342920;
+}
+
+:root[data-stock="bond"][data-theme="night"] {
+  --paper: #1b1b1a;
+  --paper-2: #252523;
+}

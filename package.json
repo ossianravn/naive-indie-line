@@ -1,0 +1,55 @@
+{
+  "name": "fineliner",
+  "private": true,
+  "version": "0.0.0",
+  "description": "A shadcn/ui component library drawn with one fine-liner on unbleached paper: a slow wobbly line, rare pockets of ink and seeded drawings.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ossianravn/naive-indie-line.git"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "npm@11.17.0",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1",
+    "typecheck": "astro check",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check:contrast": "node tools/check-contrast.mjs",
+    "build:textures": "node tools/paper/build-textures.mjs"
+  },
+  "dependencies": {
+    "@astrojs/react": "^7.1.2",
+    "@fontsource-variable/newsreader": "^5.3.0",
+    "@fontsource/courier-prime": "^5.3.0",
+    "@fontsource/gaegu": "^5.3.0",
+    "astro": "^7.4.4",
+    "cn": "^0.5.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@eslint/js": "^10.0.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "eslint": "^10.14.0",
+    "eslint-plugin-astro": "^3.2.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.14.0",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.2",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.1"
+  }
+}

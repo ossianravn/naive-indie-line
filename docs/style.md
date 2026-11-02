@@ -1,6 +1,6 @@
 # Style brief
 
-Status: direction approved by the maintainer, 2026-11-02; second round folded in (open containers, a typewriter voice, our own letters, people with faces, a larger object library). Choices still open are marked in the [plan](plan.md#decisions). Once agreed, this brief becomes `docs/design-language.md` (Patina's equivalent) and the specimen's values become the kit's tokens.
+Status: built into the kit as Fineliner's tokens (Phase 0, `src/fineliner/styles/`), 2026-11-02; direction approved by the maintainer; second round folded in (open containers, a typewriter voice, our own letters, people with faces, a larger object library). Choices still open are marked in the [plan](plan.md#decisions). Once agreed, this brief becomes `docs/design-language.md` (Patina's equivalent) and the specimen's values become the kit's tokens.
 
 The live specimen (`specimen/`, served by `python -m http.server 4791` from the repository root, then `http://127.0.0.1:4791/specimen/`) shows every proposal below and switches between the options still open.
 
@@ -36,11 +36,11 @@ Facts from the label, which the rules below generalize:
 
 ## Paper
 
-| Stock              | Day       | Night     | Character                               |
-| ------------------ | --------- | --------- | --------------------------------------- |
-| Recycled (default) | `#ece2ca` | `#1c2131` | Cream unbleached; navy card at night    |
-| Kraft              | `#cdb48f` | `#2a2119` | Brown wrapping paper; dark kraft        |
-| Bond               | `#f4f0e6` | `#1b1b1a` | Bright cotton paper; black card         |
+| Stock              | Day       | Night     | Character                            |
+| ------------------ | --------- | --------- | ------------------------------------ |
+| Recycled (default) | `#ece2ca` | `#1c2131` | Cream unbleached; navy card at night |
+| Kraft              | `#cdb48f` | `#2a2119` | Brown wrapping paper; dark kraft     |
+| Bond               | `#f4f0e6` | `#1b1b1a` | Bright cotton paper; black card      |
 
 Night is a dark card drawn on with a light gel pen, not an inverted page. The texture is generated like Patina's: seamless SVG tiles of clouding, tooth, fibres and flecks from fixed seeds (the specimen has a quick version in `specimen/paper.js`; Phase 0 ports Patina's six-layer generator). Recycled stock carries more and darker flecks than Patina's papers, because flecks are part of this look.
 
@@ -55,9 +55,9 @@ One pen inks the whole interface; choosing a pen re-inks everything.
 | Sepia          | `#4a3020` | `#eedcc6`   | 9.4:1       |
 | Forest         | `#23412f` | `#d6e8d9`   | 8.7:1       |
 | Oxblood        | `#5c2430` | `#f2d6da`   | 9.3:1       |
-| Correction     | `#a3302a` | `#f28b80`   | 5.4:1       |
+| Correction     | `#962a23` | `#f28b80`   | 6.0:1       |
 
-Kraft darkens the correction pen to `#7d211c` to keep 4.5:1. Every pen passes AA as text on every flat stock; the textured check (Patina's `check:contrast`) comes with Phase 0.
+Kraft carries its own darker pens: sepia `#3e2718`, forest `#1b3524`, oxblood `#4d1e28` and correction `#5e1612`. `npm run check:contrast` holds every pen to 4.5:1 against the darkest 1 % of each textured stock and its recess, day and night; the flat-paper ratios above are the starting point, not the test.
 
 **The wash** is each pen thinned (navy `#5b72a8`), the reference's soil colour. It fills art only: a pot, a picture, a highlight shape. It is never text and never the only carrier of meaning (3.7:1 on recycled).
 
@@ -65,38 +65,38 @@ Kraft darkens the correction pen to `#7d211c` to keep 4.5:1. Every pen passes AA
 
 How the rules land on controls (see the specimen's Interface section):
 
-| Part                  | Treatment                                                                                                  |
-| --------------------- | ---------------------------------------------------------------------------------------------------------- |
-| Containers            | Open by default: cards and sections sit on the page, grouped by space and their heading. Boxed: a drawn frame round every card |
-| Frames (field, button, boxed card) | Four separate pen strokes whose ends cross or fall short at the corners, as on the label's border |
-| Primary button        | A pocket of solid ink with paper text: the one place on a form the eye should land                          |
-| Secondary button      | A drawn frame                                                                                               |
-| Destructive button    | A frame in the correction pen                                                                               |
-| Hover                 | The pen presses harder: the frame thickens to 2 px                                                          |
-| Focus                 | A dashed pen outline 4 px outside, in the pen colour                                                        |
-| Selected option       | A pocket of ink inset from the frame (segmented controls), a solid dot (radio), a tick that overshoots the box (checkbox) |
-| Switch                | A drawn pill; the knob fills with ink when on                                                               |
-| Tabs                  | A hand underline under the current tab                                                                      |
-| Badge                 | A word circled by the pen, or a small solid pocket for the rare loud one                                    |
-| Table                 | Hand-drawn rules between rows, no boxes                                                                     |
-| Elevation (dialog, menu) | A drawn frame on paper, plus a second line offset along the right and bottom: the cartoonist's shadow, no blur |
-| Invalid               | The field's frame and a message under it in the correction pen                                              |
-| Disabled              | A thinner, faded pen                                                                                        |
-| Empty state           | A drawing from the object library (an empty crate) above a serif line and one action                        |
-| Avatar                | Initials in serif italic inside a drawn ring, or a seeded object from the library                           |
+| Part                               | Treatment                                                                                                                      |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Containers                         | Open by default: cards and sections sit on the page, grouped by space and their heading. Boxed: a drawn frame round every card |
+| Frames (field, button, boxed card) | Four separate pen strokes whose ends cross or fall short at the corners, as on the label's border                              |
+| Primary button                     | A pocket of solid ink with paper text: the one place on a form the eye should land                                             |
+| Secondary button                   | A drawn frame                                                                                                                  |
+| Destructive button                 | A frame in the correction pen                                                                                                  |
+| Hover                              | The pen presses harder: the frame thickens to 2 px                                                                             |
+| Focus                              | A dashed pen outline 4 px outside, in the pen colour                                                                           |
+| Selected option                    | A pocket of ink inset from the frame (segmented controls), a solid dot (radio), a tick that overshoots the box (checkbox)      |
+| Switch                             | A drawn pill; the knob fills with ink when on                                                                                  |
+| Tabs                               | A hand underline under the current tab                                                                                         |
+| Badge                              | A word circled by the pen, or a small solid pocket for the rare loud one                                                       |
+| Table                              | Hand-drawn rules between rows, no boxes                                                                                        |
+| Elevation (dialog, menu)           | A drawn frame on paper, plus a second line offset along the right and bottom: the cartoonist's shadow, no blur                 |
+| Invalid                            | The field's frame and a message under it in the correction pen                                                                 |
+| Disabled                           | A thinner, faded pen                                                                                                           |
+| Empty state                        | A drawing from the object library (an empty crate) above a serif line and one action                                           |
+| Avatar                             | Initials in serif italic inside a drawn ring, or a seeded object from the library                                              |
 
 Calm controls, lively surfaces, as in Patina: what people operate wobbles less than what they look at.
 
 ## Voices
 
-| Voice | Proposal                                    | Job                                         |
-| ----- | ------------------------------------------- | ------------------------------------------- |
-| Read  | Newsreader (variable, optical sizes); alternatives EB Garamond, Libre Caslon Text | Headings, body and interface text |
-| Type  | Courier Prime; alternative Cutive Mono (thinner, closer to a fine-liner) | Menus, prices, receipts, order numbers: the restaurant's typewriter |
-| Label | The reading serif in tracked small caps, or the typewriter in capitals (a theme setting) | Field labels, metadata, kickers |
-| Display | Our own letters: Liner, Stilt, Ribbon, Tramline (below) | Wordmarks, headlines, signs, covers |
-| Hand  | Gaegu; alternatives Patrick Hand, Shadows Into Light Two | Asides and annotations only     |
-| Spine | The reading serif set vertically, bottom to top | Edition marks and page spines, after the label |
+| Voice   | Proposal                                                                                 | Job                                                                 |
+| ------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Read    | Newsreader (variable, optical sizes); alternatives EB Garamond, Libre Caslon Text        | Headings, body and interface text                                   |
+| Type    | Courier Prime; alternative Cutive Mono (thinner, closer to a fine-liner)                 | Menus, prices, receipts, order numbers: the restaurant's typewriter |
+| Label   | The reading serif in tracked small caps, or the typewriter in capitals (a theme setting) | Field labels, metadata, kickers                                     |
+| Display | Our own letters: Liner, Stilt, Ribbon, Tramline (below)                                  | Wordmarks, headlines, signs, covers                                 |
+| Hand    | Gaegu; alternatives Patrick Hand, Shadows Into Light Two                                 | Asides and annotations only                                         |
+| Spine   | The reading serif set vertically, bottom to top                                          | Edition marks and page spines, after the label                      |
 
 The typewriter replaces Patina's code mono: restaurants that use this style print their menus in it. Labels default to the serif's small caps, as on the reference label, and switch to typewriter capitals with `data-labels="type"`.
 
@@ -119,11 +119,11 @@ Each letter takes a small seeded tilt and lift, so a word reads as hand-lettered
 
 **Line boil** is the signature, and an option. A drawing is drawn three times from the same seed with a different pen each time (a labelled fork, `take:1`, `take:2`, so the composition never changes) and the takes cycle, as hand-drawn animation does when every frame is traced again. Rerolling to a new seed shows the opposite: everything changes at once, which reads as rough; boil keeps the thing still and lets only the line breathe.
 
-| Setting (`data-boil`) | What boils                                                        |
-| --------------------- | ----------------------------------------------------------------- |
-| `off`                 | Nothing                                                           |
-| `hover` (default)     | A drawing while the pointer is over it (fine pointers only)       |
-| `art`                 | Every drawing, lettering and scene on screen, all the time        |
+| Setting (`data-boil`) | What boils                                                  |
+| --------------------- | ----------------------------------------------------------- |
+| `off`                 | Nothing                                                     |
+| `hover` (default)     | A drawing while the pointer is over it (fine pointers only) |
+| `art`                 | Every drawing, lettering and scene on screen, all the time  |
 
 Any element can set `data-boil` for its subtree, and the nearest one wins (the choice travels as inherited custom properties), so a hero or an empty state can boil all the time inside a hover page, or a dense screen can switch it off. Heroes and empty states boil on hover like everything else for now; always-on for them can become a setting.
 
@@ -131,13 +131,13 @@ Never boiling: controls, frames round fields, tables and anything a person reads
 
 Values (proposed): three takes, 120 ms each (about 8 drawings a second, "on threes" at 24 fps); the takes swap by `opacity` in `steps(1, end)`, so nothing reflows. The other moments, from the motion sweep of 2 November 2026:
 
-| Moment                         | Motion                                                                                                   |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------- |
-| Reroll, scene or face change   | The new drawing settles: its three takes play once at 60 ms each (180 ms), then rest on the first       |
-| Tick, radio dot, tab underline, chosen segment | The pen puts the mark down: `clip-path: inset(0 100% 0 0)` to `inset(0)`, 140 ms `cubic-bezier(0.23, 1, 0.32, 1)`; removal is instant |
-| Press                          | `scale: 0.97`, 160 ms on the same curve                                                                   |
-| Dialogs and popovers           | `opacity: 0; scale: 0.97` to settled, 200 ms on the same curve via `@starting-style`; popovers grow from their trigger (`--transform-origin`), dialogs stay centred; the shadow line follows 40 ms later |
-| Empty states, first run, heroes | The pen draws the picture: strokes draw on with `pathLength="1"` dash offsets, 240 ms each, staggered 18 ms, once per page view |
+| Moment                                         | Motion                                                                                                                                                                                                   |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Reroll, scene or face change                   | The new drawing settles: its three takes play once at 60 ms each (180 ms), then rest on the first                                                                                                        |
+| Tick, radio dot, tab underline, chosen segment | The pen puts the mark down: `clip-path: inset(0 100% 0 0)` to `inset(0)`, 140 ms `cubic-bezier(0.23, 1, 0.32, 1)`; removal is instant                                                                    |
+| Press                                          | `scale: 0.97`, 160 ms on the same curve                                                                                                                                                                  |
+| Dialogs and popovers                           | `opacity: 0; scale: 0.97` to settled, 200 ms on the same curve via `@starting-style`; popovers grow from their trigger (`--transform-origin`), dialogs stay centred; the shadow line follows 40 ms later |
+| Empty states, first run, heroes                | The pen draws the picture: strokes draw on with `pathLength="1"` dash offsets, 240 ms each, staggered 18 ms, once per page view                                                                          |
 
 Reduced motion: no boil and no draw-on; marks appear with a 100 ms fade; dialogs fade without scale.
 

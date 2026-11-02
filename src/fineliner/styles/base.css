@@ -1,0 +1,132 @@
+/* Page-level defaults: the paper, the reading voice, links, focus, scrollbars and the accessibility fallbacks. */
+
+/* The paper's layers stack at their own tile sizes, which share no factors, so the paper never visibly repeats. */
+:root {
+  --paper-texture:
+    var(--tex-flecks), var(--tex-fibres), var(--tex-tooth), var(--tex-relief),
+    var(--tex-mottle);
+  --paper-texture-size: 719px, 613px, 353px, 541px, 1201px;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    background-color: var(--paper);
+  }
+
+  body {
+    margin: 0;
+    color: var(--pen);
+    background-color: var(--paper);
+    background-image: var(--paper-texture);
+    background-size: var(--paper-texture-size);
+    font-family: var(--face-ui);
+    font-size: var(--type-body);
+    line-height: var(--lh-body);
+    font-optical-sizing: auto;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Headings are quiet, like the words on a label: regular weight, set tight. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--face-read);
+    font-weight: 400;
+    line-height: var(--lh-heading);
+    letter-spacing: -0.012em;
+    text-wrap: balance;
+  }
+
+  h3,
+  h4 {
+    font-weight: 500;
+    line-height: var(--lh-subhead);
+  }
+
+  p,
+  li {
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+    text-decoration-line: underline;
+    text-decoration-color: color-mix(in srgb, var(--pen) 45%, transparent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+  a:hover {
+    text-decoration-color: var(--pen);
+  }
+
+  :focus-visible {
+    outline: 1.5px dashed var(--pen);
+    outline-offset: 4px;
+  }
+
+  ::selection {
+    background: var(--pen);
+    color: var(--paper);
+  }
+
+  /* Scrollbars in pencil: a narrow thumb on no track that firms while hovered, the page's own included. */
+  @supports not selector(::-webkit-scrollbar) {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(
+          --scrollbar-thumb,
+          color-mix(in srgb, var(--pen) 55%, transparent)
+        )
+        transparent;
+    }
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background: var(
+        --scrollbar-thumb,
+        color-mix(in srgb, var(--pen) 55%, transparent)
+      )
+      padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb, var(--pen));
+  }
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  svg {
+    flex: none;
+  }
+}
+
+/* More contrast asked for: flat paper and steady lines. */
+@media (prefers-contrast: more) {
+  :root {
+    --paper-texture: none;
+    --over: 0px;
+    --wob-1: none;
+    --wob-2: none;
+    --wob-3: none;
+    --wob-4: none;
+    --wob-5: none;
+    --wob-6: none;
+  }
+}
+
+/* Forced colours: the paper gives way to system colours, and frames to plain borders. */
+@media (forced-colors: active) {
+  :root {
+    --paper-texture: none;
+  }
+}

@@ -1,0 +1,14 @@
+---
+// A specimen section heading: the number in the label voice above the title.
+interface Props {
+  n: number
+  id: string
+  title: string
+}
+const { n, id, title } = Astro.props
+---
+
+<header class="mb-line grid gap-hair">
+  <span class="label">{String(n).padStart(2, "0")}</span>
+  <h2 id={id} class="m-0 text-h2">{title}</h2>
+</header>

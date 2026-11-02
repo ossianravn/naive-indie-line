@@ -1,0 +1,97 @@
+/* Site-only pieces: the specimen's segmented settings and pen swatches. Phase 2's toggle group replaces them. */
+
+.segmented {
+  display: inline-flex;
+  padding: 3px;
+}
+.segmented label {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  height: calc(var(--control-height-compact) - 6px);
+  padding: 0 0.75rem;
+  font-size: var(--type-small);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  /* The text turns to paper as the ink wipes in under it, so it never vanishes against half-laid ink. */
+  transition:
+    scale var(--press) var(--ease-out),
+    color var(--put-down) var(--ease-out);
+}
+.segmented label:active {
+  scale: 0.97;
+}
+.segmented label + label::before {
+  content: "";
+  position: absolute;
+  inset: -3px auto -3px -3px;
+  width: 6px;
+  background: linear-gradient(currentColor, currentColor) center /
+    var(--pen-weight) 100% no-repeat;
+  filter: var(--wob-5);
+}
+/* The pen puts the fill down: a left-to-right reveal as it is chosen, gone at once when it is not. */
+.segmented .ink-fill {
+  inset: 0;
+  clip-path: inset(-40% 100% -40% -40%);
+}
+.segmented label:has(input:checked) {
+  color: var(--paper);
+}
+.segmented label:has(input:checked) .ink-fill {
+  clip-path: inset(-40%);
+  transition: clip-path var(--put-down) var(--ease-out);
+}
+.segmented label:has(input:focus-visible) {
+  outline: 1.5px dashed var(--pen);
+  outline-offset: 5px;
+}
+
+.swatch {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: scale var(--press) var(--ease-out);
+}
+.swatch:active {
+  scale: 0.94;
+}
+.swatch-chip {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: var(--pen);
+  filter: var(--wob-2);
+}
+.swatch::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border: var(--pen-weight) solid var(--pen);
+  border-radius: 50%;
+  filter: var(--wob-3);
+  clip-path: inset(-20% 100% -20% -20%);
+}
+.swatch:has(input:checked)::after {
+  clip-path: inset(-20%);
+  transition: clip-path var(--put-down) var(--ease-out);
+}
+.swatch:has(input:focus-visible) {
+  outline: 1.5px dashed var(--pen);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .segmented label,
+  .swatch,
+  .segmented label:has(input:checked) .ink-fill,
+  .swatch:has(input:checked)::after {
+    transition: none;
+  }
+}

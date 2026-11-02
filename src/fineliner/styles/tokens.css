@@ -1,0 +1,101 @@
+/* Fineliner's raw tokens: voices, type scale, leading, spacing, the pen's hand and motion. Paper and pen colours live
+   in stocks.css and pens.css.
+
+   Type and spacing follow Golden Ratio Typography: body f = 18px in Newsreader (measured μ 2.498, x 0.636, ratio
+   x-correction), measure w = 34rem (544px, about 75 characters). Sizes are f·φ^(n/2); spacing is the primary line
+   height (29.5px) times φ^n, rounded to half pixels. Exceptions are marked where they are set. */
+:root {
+  --face-read: "Newsreader Variable", "Iowan Old Style", Georgia, serif;
+  --face-type: "Courier Prime", "Courier New", monospace;
+  --face-hand: "Gaegu", "Segoe Print", "Bradley Hand", cursive;
+  --face-ui: var(--face-read);
+
+  /* Labels: the reading serif in tracked small caps, as on the reference label. data-labels="type" switches them to
+     typewriter capitals. */
+  --face-label: var(--face-read);
+  --label-caps: all-small-caps;
+  --label-case: none;
+  --label-track: 0.09em;
+  --type-label: 0.884rem; /* n −1, 14.2px: small caps sit at x-height, so they read as small labels */
+
+  --type-small: 0.884rem; /* n −1, 14.2px: compact text, metadata */
+  --type-ui: 1rem; /* exception: 16px controls, the size below which iOS zooms inputs */
+  --type-body: 1.125rem; /* n 0, 18px */
+  --type-lead: 1.431rem; /* n 1, 22.9px: h3, lead paragraphs, handwriting */
+  --type-h2: 1.82rem; /* n 2, 29.1px */
+  --type-h1: 2.315rem; /* n 3, 37.1px */
+  --type-title: 2.945rem; /* n 4, 47.1px */
+  --type-display: clamp(2.315rem, 1.6rem + 3vw, 3.746rem); /* n 3 → n 5 */
+
+  /* Tuned leading at 544px. Headings are set tight on purpose: they run one to three balanced lines. */
+  --lh-body: 1.64;
+  --lh-lead: 1.59;
+  --lh-small: 1.7;
+  --lh-ui: 1.4;
+  --lh-heading: 1.12;
+  --lh-subhead: 1.3;
+  --lh-display: 1.05;
+  --lh-hand: 1.1;
+  --measure: 34rem;
+
+  --space-hair: 0.4375rem; /* 7px */
+  --space-tight: 0.719rem; /* 11.5px */
+  --space-snug: 1.125rem; /* 18px */
+  --space-line: 1.844rem; /* 29.5px */
+  --space-section: 2.969rem; /* 47.5px */
+  --space-page: 4.813rem; /* 77px */
+
+  /* Exceptions: touch targets and shadcn convention rather than spacing units. */
+  --control-height: 2.75rem;
+  --control-height-compact: 2.25rem;
+
+  /* The pen. One weight for every line; it presses harder under the pointer. */
+  --pen-weight: 1.35px;
+  --pen-weight-pressed: 2px;
+  /* The hand: how far edges run past their corners, and which wobble filters frames use. */
+  --over: 4px;
+  --wob-1: url(#fl-wob-1);
+  --wob-2: url(#fl-wob-2);
+  --wob-3: url(#fl-wob-3);
+  --wob-4: url(#fl-wob-4);
+  --wob-5: url(#fl-wob-5);
+  --wob-6: url(#fl-wob-6);
+
+  /* Motion is drawing: one curve; quick on controls. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --take: 120ms;
+  --put-down: 140ms;
+  --press: 160ms;
+  --overlay: 200ms;
+}
+
+[data-hand="calm"] {
+  --over: 1.2px;
+  --wob-1: url(#fl-wob-calm-1);
+  --wob-2: url(#fl-wob-calm-2);
+  --wob-3: url(#fl-wob-calm-3);
+  --wob-4: url(#fl-wob-calm-4);
+  --wob-5: url(#fl-wob-calm-5);
+  --wob-6: url(#fl-wob-calm-6);
+}
+
+/* Typewriter labels: capitals at 12px, an exception like Patina's button labels; at 11px they read too small. */
+[data-labels="type"] {
+  --face-label: var(--face-type);
+  --label-caps: normal;
+  --label-case: uppercase;
+  --label-track: 0.07em;
+  --type-label: 0.75rem;
+}
+
+/* Compact density: every spacing unit half a step down the φ^(n/2) progression (× 0.786); type stays. */
+[data-density="compact"] {
+  --space-hair: 0.344rem; /* 5.5px */
+  --space-tight: 0.563rem; /* 9px */
+  --space-snug: 0.906rem; /* 14.5px */
+  --space-line: 1.438rem; /* 23px */
+  --space-section: 2.344rem; /* 37.5px */
+  --space-page: 3.781rem; /* 60.5px */
+  --control-height: 2.25rem;
+  --control-height-compact: 1.875rem;
+}

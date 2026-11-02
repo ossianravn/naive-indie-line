@@ -1,0 +1,77 @@
+/* Lines the pen draws round things, in CSS so they render on the server with no script (decision S6). */
+
+/* A frame: top and bottom edges on ::before, sides on ::after. Each edge runs past its corners by a seeded fraction
+   of the hand's --over (frameVars() in the pen engine sets --o1…4 and --wob), then a wobble filter bends it. */
+@utility frame {
+  position: relative;
+  isolation: isolate;
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+    border: 0 solid currentColor;
+    filter: var(--wob, var(--wob-1));
+  }
+  &::before {
+    inset: 0 calc(var(--o2, 0.5) * var(--over) * -1) 0
+      calc(var(--o4, 0.5) * var(--over) * -1);
+    border-block-width: var(--pen-weight);
+  }
+  &::after {
+    inset: calc(var(--o1, 0.5) * var(--over) * -1) 0
+      calc(var(--o3, 0.5) * var(--over) * -1) 0;
+    border-inline-width: var(--pen-weight);
+  }
+}
+
+/* Containers: open by default (groups sit on the page, aligned with it), boxed on request (a frame round every
+   card). Mark a card's frame with .container-frame so it follows the setting. */
+:root[data-containers="open"] .container-frame {
+  padding: 0;
+}
+:root[data-containers="open"] .container-frame::before,
+:root[data-containers="open"] .container-frame::after {
+  display: none;
+}
+
+/* A rule: one pen line across its box. The box is taller than the line, or the wobble would be clipped. */
+@utility rule {
+  height: 0.75rem;
+  background: linear-gradient(currentColor, currentColor) center / 100%
+    var(--pen-weight) no-repeat;
+  filter: var(--wob, var(--wob-3));
+}
+
+/* A pocket of ink: the solid fill behind the one thing to press or the chosen option. */
+@utility ink-fill {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--pen);
+  filter: var(--wob, var(--wob-2));
+  border-radius: 1px;
+}
+
+/* The cartoonist's shadow for surfaces that float: a second line along the right and bottom, no blur. It is a child
+   element (<span class="pen-shadow" aria-hidden>), because a frame already uses both pseudo-elements. */
+@utility pen-shadow {
+  position: absolute;
+  inset: 7px -7px -7px 7px;
+  z-index: -2;
+  border-right: var(--pen-weight) solid currentColor;
+  border-bottom: var(--pen-weight) solid currentColor;
+  filter: var(--wob-4);
+  pointer-events: none;
+}
+
+@media (forced-colors: active) {
+  .frame::before,
+  .frame::after,
+  .rule,
+  .ink-fill,
+  .pen-shadow {
+    filter: none;
+  }
+}

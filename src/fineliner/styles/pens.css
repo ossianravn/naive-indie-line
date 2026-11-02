@@ -1,0 +1,30 @@
+/* One pen inks the whole document: text, lines and the rare solid fills. data-pen chooses it; any element can choose
+   its own for its subtree. --ink is the reading ink, which is always the pen. */
+
+:root,
+[data-pen="navy"] {
+  --pen: var(--pen-navy);
+  --wash: var(--wash-navy);
+}
+[data-pen="black"] {
+  --pen: var(--pen-black);
+  --wash: var(--wash-black);
+}
+[data-pen="sepia"] {
+  --pen: var(--pen-sepia);
+  --wash: var(--wash-sepia);
+}
+[data-pen="forest"] {
+  --pen: var(--pen-forest);
+  --wash: var(--wash-forest);
+}
+[data-pen="oxblood"] {
+  --pen: var(--pen-oxblood);
+  --wash: var(--wash-oxblood);
+}
+
+:root {
+  --ink: var(--pen);
+  /* A flat tint of the pen for hover and recessed wells: ink thinned to almost nothing. */
+  --tint: color-mix(in srgb, var(--pen) 9%, var(--paper));
+}
