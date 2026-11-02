@@ -58,8 +58,8 @@
     </ul>
     <div class="avatars" aria-label="Regulars">
       <span class="avatar" title="Maya Singh"><span data-mark="ring-avatar"></span>MS</span>
-      <span class="avatar" title="Jordan Lee"><span data-mark="ring-avatar"></span>JL</span>
-      <span class="avatar" title="Sam Rivera"><span data-mark="ring-avatar"></span><span class="face" data-mark="avatar-object"></span></span>
+      <span class="avatar" title="Jordan Lee"><span class="face" data-mark="avatar-portrait"></span><span data-mark="ring-avatar"></span></span>
+      <span class="avatar" title="Sam Rivera"><span class="face" data-mark="avatar-portrait"></span><span data-mark="ring-avatar"></span></span>
     </div>
   </article>`
 

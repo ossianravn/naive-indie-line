@@ -18,6 +18,19 @@
 .card.plain {
   padding: 0.5rem 1rem 1rem 0;
 }
+/* Open containers: groups sit on the page, held together by space and their heading; only controls, tables
+   and floating surfaces keep their lines. Boxed draws a frame round every card. */
+[data-containers="open"] .ui-grid {
+  gap: 4.5rem 4rem;
+}
+[data-containers="open"] .card {
+  padding: 0;
+}
+[data-containers="open"] .card.frame::before,
+[data-containers="open"] .card.frame::after,
+[data-containers="open"] .card > .pen-frame {
+  display: none;
+}
 .form-grid {
   display: flex;
   flex-wrap: wrap;

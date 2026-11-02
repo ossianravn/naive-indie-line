@@ -34,7 +34,14 @@
   --wob-6: url(#wob-6);
 
   --face-read: "Newsreader", Georgia, serif;
+  --face-type: "Courier Prime", "Courier New", monospace;
   --face-hand: "Gaegu", cursive;
+  /* Labels: the reading serif in tracked small caps, or the typewriter in capitals. */
+  --face-label: var(--face-read);
+  --label-caps: all-small-caps;
+  --label-case: none;
+  --label-track: 0.09em;
+  --label-size: 0.95rem;
   --hand-size: 1.45rem;
   --hand-weight: 400;
 
@@ -44,7 +51,6 @@
   --t-body: 1.125rem;
   --t-ui: 1rem;
   --t-small: 0.875rem;
-  --t-label: 0.95rem;
 
   --measure: 37.5rem;
   --control: 2.75rem;
@@ -118,6 +124,16 @@
 }
 [data-read="caslon"] {
   --face-read: "Libre Caslon Text", Georgia, serif;
+}
+[data-type="cutive"] {
+  --face-type: "Cutive Mono", "Courier New", monospace;
+}
+[data-labels="type"] {
+  --face-label: var(--face-type);
+  --label-caps: normal;
+  --label-case: uppercase;
+  --label-track: 0.07em;
+  --label-size: 0.8rem;
 }
 [data-script="patrick"] {
   --face-hand: "Patrick Hand", cursive;

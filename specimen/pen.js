@@ -176,6 +176,8 @@
       fill: add("ink"),
       wash: add("wash"),
       paper: add("sheet-fill"),
+      /** Markup the helpers above cannot express, such as an even-odd ring. */
+      raw: (markup) => layers[layers.length - 1].push(markup),
       blank(d) {
         if (layers.every((l) => !l.length)) return
         blanks.push(d)

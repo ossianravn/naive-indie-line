@@ -11,6 +11,9 @@
     hand: [["calm", "Calm"], ["lively", "Lively"]],
     read: [["newsreader", "Newsreader"], ["garamond", "Garamond"], ["caslon", "Caslon"]],
     script: [["gaegu", "Gaegu"], ["patrick", "Patrick"], ["shadows", "Shadows"]],
+    type: [["courier", "Courier Prime"], ["cutive", "Cutive Mono"]],
+    labels: [["caps", "Small caps"], ["type", "Typewriter"]],
+    containers: [["open", "Open"], ["boxed", "Boxed"]],
     frames: [["pen", "Drawn"], ["css", "Filtered"]],
   }
   const FACES = {
@@ -20,6 +23,8 @@
     gaegu: "Gaegu",
     patrick: "Patrick Hand",
     shadows: "Shadows Into Light Two",
+    courier: "Courier Prime",
+    cutive: "Cutive Mono",
   }
   const WORDS = ["corner-shop", "side-b", "late-bus", "quiet-hours", "window-seat", "last-call", "slow-dance", "back-room", "first-press", "low-light"]
 
@@ -51,15 +56,15 @@
       s.fill(NIL.pen(seed, hand).disc([10, 10], [8.4, 0], [0, 8.4]))
       return s.svg(20, 20)
     },
-    "avatar-object"(seed, hand) {
+    "avatar-portrait"(seed, hand) {
       const s = NIL.sheet()
-      NIL.things.glass(s, NIL.pen(seed, hand), NIL.stream(NIL.seedOf(seed), "shape"), [16, 30], 0.42)
-      return s.svg(32, 32)
+      NIL.people.portrait(s, NIL.pen(seed, hand), NIL.stream(NIL.seedOf(seed), "shape"), [50, 50], 1.05)
+      return s.svg(100, 100)
     },
     "empty-crate"(seed, hand) {
       const s = NIL.sheet()
       const p = NIL.pen(seed, hand)
-      const T = NIL.things
+      const T = NIL.shapes
       const b = T.box(s, p, T.depth(NIL.stream(NIL.seedOf(seed), "shape")), [18, 104], 112, 48, 60)
       s.stroke(p.line(b.front(0, 0.5), b.front(1, 0.5)))
       s.stroke(p.edges([b.front(0.4, 0.64), b.front(0.6, 0.64), b.front(0.6, 0.84), b.front(0.4, 0.84)]))
@@ -185,18 +190,46 @@
       .join("")
   }
 
+  let sceneName = "room"
   function scene() {
-    document.getElementById("scene").innerHTML = NIL.room(document.getElementById("scene-seed").value || "corner-shop", state.hand)
+    const [, draw] = NIL.scenes[sceneName]
+    document.getElementById("scene").innerHTML = draw(document.getElementById("scene-seed").value || "corner-shop", state.hand)
+  }
+
+  function sceneChoices() {
+    const group = document.getElementById("scene-pick")
+    group.classList.add("frame")
+    group.dataset.seed = "scene-pick"
+    group.innerHTML = Object.entries(NIL.scenes)
+      .map(([key, [label]]) => `<label><input class="visually-hidden" type="radio" name="scene" value="${key}"${key === sceneName ? " checked" : ""}><i class="ink-fill"></i>${label}</label>`)
+      .join("")
+    group.addEventListener("change", (e) => {
+      sceneName = e.target.value
+      scene()
+    })
   }
 
   function library() {
-    document.getElementById("library").innerHTML = NIL.library(librarySeed, state.hand)
-      .map(({ name, svg }) => `<figure>${svg}<figcaption class="label">${name}</figcaption></figure>`)
+    document.getElementById("library").innerHTML = NIL.objects.COLLECTIONS.map(([key, title]) => {
+      const tiles = NIL.objects
+        .list(key)
+        .map((o) => `<figure>${NIL.objects.tile(o, librarySeed, state.hand)}<figcaption class="label">${o.name}</figcaption></figure>`)
+        .join("")
+      return `<h3 class="collection">${title}</h3><div class="library-grid">${tiles}</div>`
+    }).join("")
+  }
+
+  const SAMPLES = { liner: "Listening room", stilt: "Pét-nat · Side B", ribbon: "Open 10–6", tramline: "Studio 2026" }
+  function letters() {
+    const own = document.getElementById("letters-text").value.trim()
+    document.getElementById("letters").innerHTML = Object.entries(NIL.lettering.FACES)
+      .map(([key, face]) => `<figure>${NIL.lettering.draw(own || SAMPLES[key], { face: key, hand: state.hand })}<figcaption class="label">${face.name}</figcaption></figure>`)
       .join("")
   }
 
   function drawAll() {
     scene()
+    letters()
     library()
     lineDemo()
     swatches()
@@ -206,7 +239,7 @@
 
   function update(key) {
     if (key === "hand") drawAll()
-    else if (key === "frames") drawFrames()
+    else if (key === "frames" || key === "containers") drawFrames()
     else if (key === "theme" || key === "stock" || key === "pen") swatches(), decorate()
   }
 
@@ -216,10 +249,12 @@
   root.style.setProperty("--texture-night", NIL.paper.tile(true))
   document.getElementById("ui").innerHTML = NIL.ui.html()
   settings()
+  sceneChoices()
   drawAll()
   document.querySelectorAll(".frame").forEach((el) => frames.observe(el))
 
   document.getElementById("scene-seed").addEventListener("input", scene)
+  document.getElementById("letters-text").addEventListener("input", letters)
   document.addEventListener("click", (e) => {
     const which = e.target.closest("[data-reroll]")?.dataset.reroll
     if (which === "scene") {

@@ -38,7 +38,8 @@
 }
 .avatar .face {
   position: absolute;
-  inset: 0.35rem;
+  inset: 0;
+  clip-path: circle(46%);
 }
 
 .rule-line,
@@ -54,10 +55,12 @@
 }
 .ledger th {
   padding: 0 1rem 0.6rem 0;
-  font-size: var(--t-label);
+  font-family: var(--face-label);
+  font-size: var(--label-size);
   font-weight: 500;
-  font-variant-caps: all-small-caps;
-  letter-spacing: 0.09em;
+  font-variant-caps: var(--label-caps);
+  text-transform: var(--label-case);
+  letter-spacing: var(--label-track);
   text-align: left;
 }
 .ledger td {

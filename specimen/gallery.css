@@ -59,6 +59,32 @@
   font-size: 1.15rem;
   margin-bottom: 1.25rem;
 }
+.menu {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
+  font-family: var(--face-type);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.menu li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.menu li::after {
+  content: "";
+  order: 1;
+  flex: 1;
+  border-bottom: 1.5px dotted currentColor;
+  translate: 0 -0.3em;
+}
+.menu .price {
+  order: 2;
+  font-variant-numeric: tabular-nums;
+}
 .hand,
 .hand-sample {
   font-family: var(--face-hand);
@@ -72,6 +98,13 @@
 }
 
 .library {
+  display: grid;
+  gap: 1.5rem;
+}
+.collection {
+  margin-top: 1.5rem;
+}
+.library-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
   gap: 2.5rem 2rem;
@@ -87,6 +120,25 @@
   max-height: 11rem;
   width: auto;
   max-width: 100%;
+}
+
+.letters {
+  display: grid;
+  gap: 2.25rem;
+}
+.letters figure {
+  margin: 0;
+  display: grid;
+  gap: 0.6rem;
+  justify-items: start;
+}
+.letters svg {
+  width: auto;
+  max-width: 100%;
+  height: 5.75rem;
+}
+.letters-field {
+  width: 14rem;
 }
 
 .explorations {

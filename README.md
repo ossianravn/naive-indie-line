@@ -4,7 +4,7 @@ A shadcn/ui component library in the style of a natural-wine label: one fine-lin
 
 <img alt="Four room vignettes in the style: a kitchen where a shirt with nobody in it pours wine, a desk under a window, a balcony at night and a listening corner with a record player." src="docs/style/explorations/scenes.webp">
 
-**Status:** agreeing the style. The [style brief](docs/style.md) states the proposal and the [plan](docs/plan.md) tracks decisions and progress. The kit itself repeats [Patina UI](https://github.com/ossianravn/patina-ui)'s logic once the style is agreed.
+**Status:** agreeing the style; the direction is approved and the second round (open containers, a typewriter voice, our own letters, people with faces, 55 objects) is in the specimen. The [style brief](docs/style.md) states the proposal and the [plan](docs/plan.md) tracks decisions and progress. The kit itself repeats [Patina UI](https://github.com/ossianravn/patina-ui)'s logic once the style is agreed.
 
 ## See the specimen
 

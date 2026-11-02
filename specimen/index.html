@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="day" data-stock="recycled" data-pen="navy" data-hand="lively" data-read="newsreader" data-script="gaegu" data-frames="pen">
+<html lang="en" data-theme="day" data-stock="recycled" data-pen="navy" data-hand="lively" data-read="newsreader" data-script="gaegu" data-type="courier" data-labels="caps" data-containers="open" data-frames="pen">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Patrick+Hand&family=Gaegu:wght@300;400;700&family=Shadows+Into+Light+Two&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Patrick+Hand&family=Gaegu:wght@300;400;700&family=Shadows+Into+Light+Two&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Cutive+Mono&display=swap"
     />
     <link rel="stylesheet" href="tokens.css" />
     <link rel="stylesheet" href="specimen.css" />
@@ -50,6 +50,18 @@
             <span class="label" id="l-script">Hand face</span>
             <div class="segmented" role="radiogroup" aria-labelledby="l-script"></div>
           </div>
+          <div class="setting" data-setting="type">
+            <span class="label" id="l-type">Typewriter</span>
+            <div class="segmented" role="radiogroup" aria-labelledby="l-type"></div>
+          </div>
+          <div class="setting" data-setting="labels">
+            <span class="label" id="l-labels">Labels</span>
+            <div class="segmented" role="radiogroup" aria-labelledby="l-labels"></div>
+          </div>
+          <div class="setting" data-setting="containers">
+            <span class="label" id="l-containers">Containers</span>
+            <div class="segmented" role="radiogroup" aria-labelledby="l-containers"></div>
+          </div>
           <div class="setting" data-setting="frames">
             <span class="label" id="l-frames">Frames</span>
             <div class="segmented" role="radiogroup" aria-labelledby="l-frames"></div>
@@ -71,9 +83,12 @@
           <div class="section-head">
             <h2 id="h-scene">A drawing from a seed</h2>
             <div class="seed-row">
-              <label class="label" for="scene-seed">Seed</label>
-              <span class="field frame seed-field"><input id="scene-seed" value="corner-shop" spellcheck="false" /></span>
-              <button class="btn frame" type="button" data-reroll="scene">Reroll</button>
+              <div class="segmented" id="scene-pick" role="radiogroup" aria-label="Scene"></div>
+              <span class="seed-group">
+                <label class="label" for="scene-seed">Seed</label>
+                <span class="field frame seed-field"><input id="scene-seed" value="corner-shop" spellcheck="false" /></span>
+                <button class="btn frame" type="button" data-reroll="scene">Reroll</button>
+              </span>
             </div>
           </div>
           <figure class="scene" id="scene"></figure>
@@ -87,8 +102,8 @@
             <li><b>Ink is rare.</b> Solid fill marks the few places the eye should land: a record, a tile, the one button to press.</li>
             <li><b>A slow hand.</b> Lines wobble gently and run a little past their corners; nothing is ruled.</li>
             <li><b>Flattened perspective.</b> Objects tip toward you, and neighbours disagree a little about where the vanishing point is.</li>
-            <li><b>Air is the material.</b> Most of the sheet stays empty paper; space groups things before boxes do.</li>
-            <li><b>Quiet type.</b> A book serif set small, like the words on a label. A hand only for asides.</li>
+            <li><b>Air is the material.</b> Most of the sheet stays empty paper. Space and headings group things; lines are for controls, tables and what floats.</li>
+            <li><b>Quiet type.</b> A book serif set small, like the words on a label; a typewriter for menus, prices and labels; a hand only for asides.</li>
             <li><b>Quietly strange.</b> Everyday things, and people who are only their clothes.</li>
           </ol>
         </section>
@@ -118,10 +133,28 @@
             <div>
               <p class="label">Label</p>
               <p class="label-sample">Side A · 33⅓ rpm · Nº 0412</p>
+              <p class="label">Type</p>
+              <ul class="menu">
+                <li>Bread, cultured butter<span class="price">45</span></li>
+                <li>Smoked trout, rye, dill<span class="price">95</span></li>
+                <li>Pét-nat by the glass<span class="price">80</span></li>
+              </ul>
               <p class="label">Hand</p>
               <p class="hand-sample">the good chairs are by the window</p>
             </div>
           </div>
+        </section>
+
+        <section aria-labelledby="h-letters">
+          <div class="section-head">
+            <h2 id="h-letters">Our own letters</h2>
+            <div class="seed-row">
+              <label class="label" for="letters-text">Words</label>
+              <span class="field frame letters-field"><input id="letters-text" placeholder="Your own words" spellcheck="false" /></span>
+            </div>
+          </div>
+          <div class="letters" id="letters"></div>
+          <p class="note">One skeleton alphabet stroked four ways, drawn by the pen. The same skeleton can build real font files.</p>
         </section>
 
         <section aria-labelledby="h-ui">
@@ -151,9 +184,18 @@
     </div>
 
     <script src="pen.js"></script>
-    <script src="things.js"></script>
-    <script src="living.js"></script>
+    <script src="shapes.js"></script>
+    <script src="objects.js"></script>
+    <script src="objects/music.js"></script>
+    <script src="objects/home.js"></script>
+    <script src="objects/table.js"></script>
+    <script src="objects/devices.js"></script>
+    <script src="objects/desk.js"></script>
+    <script src="objects/people.js"></script>
     <script src="scene.js"></script>
+    <script src="lettering/glyphs.js"></script>
+    <script src="lettering/lettering.js"></script>
+    <script src="marks.js"></script>
     <script src="paper.js"></script>
     <script src="ui.js"></script>
     <script src="specimen.js"></script>

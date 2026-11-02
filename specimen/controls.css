@@ -164,6 +164,3 @@
   gap: 0.45rem;
   justify-items: start;
 }
-.form-row > .label {
-  font-size: var(--t-small);
-}

@@ -1,12 +1,12 @@
 # Style brief
 
-Status: proposal for agreement, 2026-11-02. Nothing here is decided until the [plan](plan.md#decisions) says so. Once agreed, this brief becomes `docs/design-language.md` (Patina's equivalent) and the specimen's values become the kit's tokens.
+Status: direction approved by the maintainer, 2026-11-02; second round folded in (open containers, a typewriter voice, our own letters, people with faces, a larger object library). Choices still open are marked in the [plan](plan.md#decisions). Once agreed, this brief becomes `docs/design-language.md` (Patina's equivalent) and the specimen's values become the kit's tokens.
 
 The live specimen (`specimen/`, served by `python -m http.server 4791` from the repository root, then `http://127.0.0.1:4791/specimen/`) shows every proposal below and switches between the options still open.
 
 ## The style in one line
 
-**One fine-liner on unbleached paper.** A single thin pen in dark navy, wobbling gently and running a little past its corners; flattened, slightly wonky perspective; no tone at all, only empty paper and a few small pockets of solid ink; everyday things, and people who are only their clothes.
+**One fine-liner on unbleached paper.** A single thin pen in dark navy, wobbling gently and running a little past its corners; flattened, slightly wonky perspective; no tone at all, only empty paper and a few small pockets of solid ink; everyday things, and people (some with faces, some only their clothes).
 
 It comes from natural-wine labels and indie record sleeves (zine culture, underground comix, outsider art). The reference is a photographed label for a record shop's pét-nat: a room corner with a disco ball, a turntable on a shelf of records, a potted sunflower, a pinned drawing of a treehouse, and three headless figures. The photograph is kept unpublished in `.dev-docs/reference/`, because the label is someone else's artwork.
 
@@ -30,9 +30,9 @@ Facts from the label, which the rules below generalize:
 3. **Ink is rare.** Solid fill marks the few places the eye should land: a record, a tile, the selected option, the one button to press.
 4. **A slow hand.** Lines wobble gently and run past their corners; nothing is ruled. Operated controls get a steadier hand than drawings.
 5. **Flattened perspective.** Objects tip toward the viewer in an oblique view, and neighbours disagree a little about depth.
-6. **Air is the material.** Most of the sheet stays empty paper. Space groups things before boxes do; frame only what you would frame on paper (a card, a field, a button).
-7. **Quiet type.** A book serif set small, like the words on a label. A hand only for asides.
-8. **Quietly strange.** Everyday things, and people who are only their clothes. Whimsy stays deadpan: no faces, no mascots, no jokes in the interface copy.
+6. **Air is the material.** Most of the sheet stays empty paper. Space and headings group things; lines belong to controls, tables and surfaces that float. Containers are **open** by default, with a **boxed** option that frames every card for those who want it.
+7. **Quiet type.** A book serif set small, like the words on a label; a typewriter for menus, prices and labels; our own drawn letters for display; a hand only for asides.
+8. **Quietly strange.** Everyday things, and people drawn as simply as the things: dot eyes and a line for a mouth, or no head at all. Whimsy stays deadpan: no mascots, no jokes in the interface copy.
 
 ## Paper
 
@@ -67,7 +67,8 @@ How the rules land on controls (see the specimen's Interface section):
 
 | Part                  | Treatment                                                                                                  |
 | --------------------- | ---------------------------------------------------------------------------------------------------------- |
-| Frames (card, field)  | Four separate pen strokes whose ends cross or fall short at the corners, as on the label's border           |
+| Containers            | Open by default: cards and sections sit on the page, grouped by space and their heading. Boxed: a drawn frame round every card |
+| Frames (field, button, boxed card) | Four separate pen strokes whose ends cross or fall short at the corners, as on the label's border |
 | Primary button        | A pocket of solid ink with paper text: the one place on a form the eye should land                          |
 | Secondary button      | A drawn frame                                                                                               |
 | Destructive button    | A frame in the correction pen                                                                               |
@@ -91,11 +92,26 @@ Calm controls, lively surfaces, as in Patina: what people operate wobbles less t
 | Voice | Proposal                                    | Job                                         |
 | ----- | ------------------------------------------- | ------------------------------------------- |
 | Read  | Newsreader (variable, optical sizes); alternatives EB Garamond, Libre Caslon Text | Headings, body and interface text |
-| Label | The reading serif in tracked small caps     | Field labels, metadata, kickers. No mono face |
+| Type  | Courier Prime; alternative Cutive Mono (thinner, closer to a fine-liner) | Menus, prices, receipts, order numbers: the restaurant's typewriter |
+| Label | The reading serif in tracked small caps, or the typewriter in capitals (a theme setting) | Field labels, metadata, kickers |
+| Display | Our own letters: Liner, Stilt, Ribbon, Tramline (below) | Wordmarks, headlines, signs, covers |
 | Hand  | Gaegu; alternatives Patrick Hand, Shadows Into Light Two | Asides and annotations only     |
 | Spine | The reading serif set vertically, bottom to top | Edition marks and page spines, after the label |
 
-Two families instead of Patina's three: the label voice is the serif in small caps, which is what the reference does, and it keeps this kit visibly apart from Patina's mono labels.
+The typewriter replaces Patina's code mono: restaurants that use this style print their menus in it. Labels default to the serif's small caps, as on the reference label, and switch to typewriter capitals with `data-labels="type"`.
+
+## Our own letters
+
+Four display faces drawn by the pen from **one skeleton alphabet** (`specimen/lettering/`): every capital, digit, accent (Æ Ø Å Ä Ö Ü É Ï) and common mark as centre-line strokes at cap height 100. The faces differ only in how they stroke the skeleton:
+
+| Face     | Stroke                                                        | Inspired by (not copied from) |
+| -------- | ------------------------------------------------------------- | ----------------------------- |
+| Liner    | One monoline, with a short serif across every free stroke end | A naive monoline serif        |
+| Stilt    | Liner condensed to just over half its width: tall and narrow  | A condensed hand-drawn serif  |
+| Ribbon   | Two outlines a stroke-width apart, filled with the pen's wash | An inline sans                |
+| Tramline | Three parallel lines, no serifs                               | A multi-line deco sans        |
+
+Each letter takes a small seeded tilt and lift, so a word reads as hand-lettered and still renders the same every time. Today they draw as SVG, named by their text for screen readers. The same skeleton can build real font files: expand the strokes to outlines, then compile OTF and WOFF2 with a few alternates per letter that cycle, as handwriting fonts do. Ribbon needs two layers (outline and fill) or a colour font.
 
 ## Drawings (the signature)
 
@@ -103,16 +119,20 @@ Patina's signature is seeded riso **prints** of abstract motifs. This kit's is s
 
 - **The pen** (`specimen/pen.js`): a seeded stroke engine. Each stroke is resampled every 3 px and offset along its normal by slow eased noise (wavelength about 40 px) plus a faint tremor; open strokes run past or stop short of their ends; drawn circles go a little past where they started. Every line has the same screen weight (`vector-effect: non-scaling-stroke`), so a 40 px avatar and a 600 px scene are drawn with one pen.
 - **Blanks**: an object in front hides lines behind it with a mask, so the paper's texture still shows through the gap.
-- **Objects** (`things.js`, `living.js`): turntable, speaker, record shelf, disco ball, sunflower, house plant, pinned picture (treehouse, moon or hills), bottle, glass and the visitor (a shirt and trousers, standing, walking or holding a record). Each draws its own depth angle from the seed.
-- **Scenes** (`scene.js`): a room corner composed back to front inside the drawn border.
+- **The library** (`objects.js`, `objects/`): a registry where each object is one draw function filed in a collection, so the library page, scenes and the kit's future `<Drawing>` find objects the same way. It is meant to keep growing, now and release after release. 55 objects today:
+  - **Indie** (17): turntable, speaker, record shelf, disco ball, record, cassette, radio, guitar, record crate, sunflower, house plant, cactus, pinned picture, chair, armchair, floor lamp, window.
+  - **Food & drink** (15): wine bottle, wine glass, carafe, coffee, teapot, plate (fish, toast, pasta or salad), bowl, bread, lemons, candle, moka pot, fork and knife, menu card, bistro table, pendant lamp.
+  - **Studio** (16), a creative freelancer's world: laptop, monitor, website, keyboard and mouse, phone, tablet and pen, headphones, camera, desk, office chair, desk lamp, books, sketchbook, sticky notes, mug, coffee to go. Screens show a website wireframe, code, a design canvas or an app.
+  - **People** (7): a person with a face (standing, waving or holding a mug), a portrait for avatars, the visitor who is only clothes (standing, walking, holding a record), and a cat. Hair (bob, crop, short, bun, curls, long, bald), glasses, beards, shirts or sweaters, trousers or skirts all come from the seed.
+- **Scenes** (`scene.js`): a listening room, a freelancer's studio and a bistro table for two, each composed back to front inside the drawn border.
 
 The generated explorations in `docs/style/explorations/` (gpt-image, from the label photograph) show where the library can grow: kitchen, desk, balcony at night, chair, lamp, teapot, radio, window, cassette. They are direction, not assets: everything the kit ships is drawn by code from a seed.
 
 ## Open choices
 
-These are the style decisions to agree before Phase 0; the plan tracks them as decisions S1–S8.
+The plan tracks these as decisions; the direction itself (S1) is agreed.
 
-1. Is the direction right: one pen, rare ink, oblique drawings of rooms and absent people?
+1. Typewriter face: Courier Prime or Cutive Mono; labels in small caps or typewriter by default.
 2. Default pen: navy, as in the reference.
 3. Reading face: Newsreader, EB Garamond or Libre Caslon Text.
 4. Hand face: Gaegu, Patrick Hand or Shadows Into Light Two, or no hand voice at all.
@@ -120,3 +140,4 @@ These are the style decisions to agree before Phase 0; the plan tracks them as d
 6. Frames: drawn by the pen at measured size (truest to the reference; needs a small script per frame, so no server rendering) or filtered CSS borders (no script, server-rendered). In the specimen the filtered frames read nearly as well, so the recommendation is filtered frames for anything that resizes and the pen only where a shape is fixed.
 7. The correction pen as the only second colour.
 8. The wash as an art-only second tone.
+9. Our own letters: which of the four faces to keep, and whether to build them as font files now.

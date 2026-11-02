@@ -1,6 +1,6 @@
 # Plan
 
-Status: Phase S (style agreement) in progress, 2026-11-02. The style proposal and its specimen are ready for review; nothing below is decided until a row in [Decisions](#decisions) says so. This file is the progress record: update a phase's checklist and the [log](#progress-log) as work lands.
+Status: Phase S (style agreement), second round, 2026-11-02. The maintainer approved the direction (S1) and asked for open containers, a typewriter voice, our own letters, people with faces and a much larger object library; all five are in the specimen. Rows in [Decisions](#decisions) marked open or proposed still wait for the maintainer. This file is the progress record: update a phase's checklist and the [log](#progress-log) as work lands.
 
 ## What this is
 
@@ -12,18 +12,19 @@ It repeats [Patina UI](https://github.com/ossianravn/patina-ui) (`C:\CodexApp\pa
 
 1. **The style, agreed and specified**: rules, tokens and a specimen the maintainer signs off before any kit code is written (Phase S).
 2. **shadcn parity**: every `registry:ui` item in the current shadcn release, restyled, with shadcn's names, props, variants and `data-slot` attributes, built on Base UI, as Patina did.
-3. **Seeded drawings as a system**: the pen engine, an object library, scene composition and formats (spot, scene, avatar, border), used in empty states, avatars, covers, headers and share images, with a playground to explore seeds.
-4. **Extras the style suggests**: label cards with a spine, record sleeves, track lists, hand notes with arrows, circled words, price tags and the drawn border.
-5. **A demo site**: home, component docs, the playground, a theme studio and a demo product used end to end.
-6. **Installable** through the shadcn CLI into fresh Vite and Next.js apps.
-7. **Quality**: WCAG 2.2 AA on every stock in day and night, and the "would Apple ship this" bar.
+3. **Seeded drawings as a system**: the pen engine, an object library that keeps growing (indie, food and drink, a creative freelancer's studio, people), scene composition and formats (spot, scene, avatar, border), used in empty states, avatars, covers, headers and share images, with a playground to explore seeds.
+4. **Our own letters**: display faces drawn from one skeleton alphabet (Liner, Stilt, Ribbon, Tramline), first as SVG lettering, then as font files.
+5. **Extras the style suggests**: label cards with a spine, record sleeves, track lists, hand notes with arrows, circled words, price tags and the drawn border.
+6. **A demo site**: home, component docs, the playground, a theme studio and a demo product used end to end.
+7. **Installable** through the shadcn CLI into fresh Vite and Next.js apps.
+8. **Quality**: WCAG 2.2 AA on every stock in day and night, and the "would Apple ship this" bar.
 
 ## Non-goals for v1
 
 - A copy of the reference label or of anyone's illustrations. The reference teaches the rules; the drawings are our own code.
 - Raster illustration assets. Generated images are direction only; everything the kit ships is drawn by code from a seed.
 - A hand-drawn interface typeface. Interface text stays in a proven book serif.
-- Faces, mascots or stickers. The people in drawings are their clothes.
+- Mascots or stickers. People are drawn as plainly as the objects.
 - Backend services in the demo, and ports to other frameworks (the pen engine stays framework-free so a port remains possible).
 
 ## How it differs from Patina UI and Looseleaf
@@ -32,17 +33,17 @@ It repeats [Patina UI](https://github.com/ossianravn/patina-ui) (`C:\CodexApp\pa
 | -------------- | ------------------------------------ | -------------------------------------------- | -------------------------------------------------------- |
 | Metaphor       | Pen on paper, stickers, a mascot     | Riso print shop and field notebook           | A natural-wine label: one fine-liner on recycled paper   |
 | Colour         | Several                              | Seven drums, three per print, overprinted    | One pen; a red correction pen; the pen's wash for art    |
-| Type           | One hand-drawn face                  | Serif to read, mono to label, hand to annotate | A book serif to read and label (small caps); hand for asides |
-| Signature art  | Seeded strokes                       | Abstract seeded riso prints                  | Figurative seeded drawings: objects, rooms, absent people |
-| Surfaces       | Drawn boxes                          | Cut, tilted, aged paper sheets with shadows  | Flat paper and drawn frames; no shadows, no wear         |
+| Type           | One hand-drawn face                  | Serif to read, mono to label, hand to annotate | A book serif to read; a typewriter for menus and labels; our own drawn display letters; hand for asides |
+| Signature art  | Seeded strokes                       | Abstract seeded riso prints                  | Figurative seeded drawings: objects, rooms and people     |
+| Surfaces       | Drawn boxes                          | Cut, tilted, aged paper sheets with shadows  | Open: content on the page, lines only for controls and floating surfaces; boxed on request |
 
 ## Decisions
 
-Style decisions (S) wait for the maintainer; the [Style brief](style.md#open-choices) explains each one.
+Style decisions (S) are the maintainer's; the [Style brief](style.md#open-choices) explains each one.
 
 | #   | Decision                                                                                                   | Status   | Notes                                                                                                                            |
 | --- | ---------------------------------------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| S1  | **Direction**: one pen, rare solid ink, oblique drawings of rooms and absent people                        | proposed | The specimen shows it on controls and drawings                                                                                   |
+| S1  | **Direction**: one pen, rare solid ink, oblique drawings of rooms and people                               | decided 2026-11-02 | "I love the style"                                                                                                       |
 | S2  | **Pens**: navy (default), soft black, sepia, forest, oxblood, each with a night gel pen                    | proposed | All pass AA as text on every flat stock                                                                                          |
 | S3  | **Reading face**: Newsreader                                                                               | open     | Recommended for its optical sizes and screen legibility; EB Garamond is closest to the label but small at UI sizes; Libre Caslon Text is sturdier |
 | S4  | **Hand face**: Gaegu                                                                                       | open     | Recommended: a monoline, naive hand that matches a fine-liner; Patrick Hand is plainer, Shadows Into Light Two quicker and thinner |
@@ -50,9 +51,14 @@ Style decisions (S) wait for the maintainer; the [Style brief](style.md#open-cho
 | S6  | **Frames**: filtered CSS borders for controls and cards; the pen draws drawings, marks and fixed-shape borders | open  | Recommended. Pen-drawn frames are truer at the corners but need a script to measure each box, so they cannot render on the server; in the specimen the filtered frames read nearly as well |
 | S7  | **Correction pen** (red) as the only second colour, for errors and destructive actions                     | proposed |                                                                                                                                  |
 | S8  | **The wash**: each pen thinned, for art fills only                                                         | proposed | From the soil in the reference's pot; never text or sole meaning                                                                  |
-| S9  | **Two type families**: labels are the serif in tracked small caps, no mono                                 | proposed | Matches the label; keeps the kit visibly apart from Patina                                                                       |
+| S9  | **Labels**: the serif in tracked small caps by default, typewriter capitals as a theme setting             | proposed | Small caps match the label; the typewriter matches menus                                                                         |
 | S10 | **Library name** and wordmark                                                                              | open     | "Naive Indie Line" is the style's name; the kit may want its own                                                                 |
-| S11 | **Demo product**                                                                                           | open     | Proposal: a small record shop's listening room (catalogue, listening-session bookings, Thursday events, a wine list, settings)   |
+| S11 | **Demo product**                                                                                           | open     | Proposal: a small record shop's listening room (catalogue, listening-session bookings, Thursday events, a wine list, settings). The studio collection also makes a freelancer's portfolio site possible |
+| S12 | **Containers**: open by default (no frames on cards and sections); boxed as an option                      | decided 2026-11-02 | The maintainer: the style fits better integrated into the page; some people will want to box more. `data-containers` is `open` or `boxed` |
+| S13 | **Typewriter voice** for menus, prices and labels                                                          | decided 2026-11-02 | Asked for by the maintainer. Face open: Courier Prime (recommended, sturdier at small sizes) or Cutive Mono (thinner, closer to the pen) |
+| S14 | **Our own letters**: Liner, Stilt, Ribbon, Tramline from one skeleton alphabet                             | proposed | Inspired by the maintainer's references, not copied. Open: which faces to keep, and when to build font files |
+| S15 | **People with faces** alongside the headless visitors                                                      | decided 2026-11-02 | Dot eyes, a line nose, a short mouth; seeded hair, glasses and beards                                                           |
+| S16 | **A growing object library** in collections: indie, food and drink, studio, people                         | decided 2026-11-02 | The maintainer: objects are where the kit expands most, now and over time. 55 objects in the specimen                           |
 
 Logic decisions (L) follow Patina's, carried over by request; each still needs the maintainer's confirmation where Patina's did.
 
@@ -83,6 +89,7 @@ Logic decisions (L) follow Patina's, carried over by request; each still needs t
 | `marks/`                                       | Frame, underline, ring (circled word), strike, arrow note, tick | No highlighter, tape or stamp: they rely on tone or colour                                  |
 | `tools/paper/`, `tools/check-contrast.mjs`, `tools/registry/`, `tests/consumer/` | Same | New stocks and surfaces                                                                       |
 | Site: specimen, Press, docs, studio, Fieldbook | Specimen, the drawing desk, docs, studio, the demo product    | Desk rerolls drawings instead of prints                                                      |
+| (none)                                         | Lettering: skeleton alphabet and four faces                   | New. Later a font build: stroke expansion, then OTF and WOFF2 with alternates                |
 
 ## Phases
 
@@ -96,7 +103,14 @@ Each phase ships kit parts with the site pages and demo screens that use them, a
 - [x] Write the [style brief](style.md)
 - [x] Build the specimen (`specimen/`): pen engine, ten objects, a seeded room, an interface sampler, paper, pens and voices, with switches for every open choice
 - [x] Check the specimen in day and night, on recycled and kraft, at 1440, 800 and 375 px
-- [ ] Maintainer review: agree S1–S11, or redirect
+- [x] Maintainer review, round 1: direction approved (S1); asked for open containers, a typewriter voice, our own fonts, faces and many more objects
+- [x] Fix the rules list, which set one word per line (each list item was a grid, so the sentence fell into the number's column)
+- [x] Containers: open by default, boxed as a setting (S12)
+- [x] Typewriter voice: Courier Prime and Cutive Mono, a menu sample, and labels in small caps or typewriter (S13)
+- [x] Object registry with collections; 55 objects across indie, food and drink, studio and people; people with faces and portraits for avatars (S15, S16)
+- [x] Scenes: listening room, studio and bistro, chosen in the specimen
+- [x] Lettering: skeleton alphabet with Æ Ø Å and accents, four faces, a field to try your own words (S14)
+- [ ] Maintainer review, round 2: S2–S11, S13's face, S14's faces and font build
 - [ ] Fold the agreed choices into the specimen and the brief; drop the losing options
 
 Exit: the maintainer signs off the specimen as the style.
@@ -109,9 +123,13 @@ Exit: the specimen page renders from the kit on every stock, day and night, at 1
 
 ### Phase 1: the pen and the drawings (the signature)
 
-Port the pen into the framework-free engine with labelled forks per object part, snapped inputs and no `**` or `Math.pow` (Patina's cross-engine rules). Object library v1: the specimen's ten plus ten from the explorations (chair, armchair, lamp, teapot, cup, radio, window, cassette, crate, cactus). Scene composition, formats (spot, scene, avatar, border), `<Drawing>` and `drawing()`. Marks: frame, underline, circled word, strike, tick, arrow note, chevron, pill. The drawing desk playground (seed, object or scene, hand, reroll, copy, download SVG). First registry build and install test.
+Port the pen into the framework-free engine with labelled forks per object part, snapped inputs and no `**` or `Math.pow` (Patina's cross-engine rules). Object library v1: the specimen's 55 objects in their collections, each with tags, a default tile and a curated pose list; the registry stays open for new objects in every later phase. Scene composition, formats (spot, scene, avatar, border), `<Drawing>` and `drawing()`. Marks: frame, underline, circled word, strike, tick, arrow note, chevron, pill. The drawing desk playground (seed, object or scene, hand, reroll, copy, download SVG). First registry build and install test.
 
 Exit: server and browser render identical SVG for the same seed; the desk rerolls; `base` and `drawing` install into a scratch Vite app that builds.
+
+### Phase 1b: letters as fonts
+
+If the maintainer wants installable fonts (S14): expand the skeleton's strokes to outlines, compile Liner, Stilt and Tramline to OTF and WOFF2 with three alternates per letter that cycle (`calt`), and Ribbon as two layered fonts or a colour font. Exit: the faces install as font files, set real text in a browser and in a design tool, and match the SVG lettering.
 
 ### Phase 2: core primitives and the demo product's first screens
 
@@ -144,15 +162,19 @@ Docs complete, changelog, share images drawn by the pen, consumer installs into 
 | Handwriting is hard to read                                            | Hand voice for asides only, at 1.3 rem or larger; everything essential exists in the serif                                               |
 | Too close to Patina or Looseleaf                                       | One pen, figurative drawings and an editorial serif; the comparison table above                                                          |
 | Pen-drawn frames need measuring (S6)                                   | Filtered CSS frames for anything that resizes; the pen only where the shape is fixed                                                     |
+| A large object library drifts in quality and style                     | One draw function per object on shared geometry (box, cylinder, arc); a library page that shows every object at once; review per collection |
+| Our own fonts take longer than expected                                 | Ship the SVG lettering first; the font build is its own phase (1b) and can wait                                                          |
 
 ## Progress log
 
 - **2026-11-02**: Repository initialised. Read Patina's plan, design language, seeded variation and architecture. Three gpt-image explorations (objects, scenes, an imagined listening-room interface) all held the style closely. Built the specimen: a monoline pen with slow eased wobble, corner overshoot and circle loops; blanks as masks; ten objects; a seeded room; paper tiles; the interface sampler with drawn and filtered frames. The first scene with one nested mask per blank timed out the browser's screenshot; one mask per depth layer fixed it. Checked day and night, recycled and kraft, at 1440, 800 and 375 px, with no horizontal scroll. Waiting on the maintainer for S1–S11.
+- **2026-11-02, round 2**: the maintainer approved the direction and asked for less boxing, a typewriter voice, our own fonts, faces and many more objects. Fixed the rules list (one word per line). Added the containers, typewriter and labels settings. Rebuilt the library as a registry with collections and drew 45 new objects (55 in all), people with faces and seeded hair, portraits (now the avatar fallback in the sampler) and two new scenes. A rotation bug (radians passed where degrees were expected) kept every arm down until the people were checked large. Drew a skeleton alphabet and four lettering faces from it. Checked at 800 and 375 px, day and night; no horizontal scroll.
 
 ## Open questions for the maintainer
 
-1. Does the specimen capture the style (S1)? What should change first?
-2. Reading face (S3) and hand face (S4).
-3. Frames (S6): filtered CSS frames everywhere they resize, as recommended?
-4. Library name (S10) and demo product (S11).
-5. License (L9): MIT, as Patina?
+1. Which of the four lettering faces to keep, and should Phase 1b build them as font files (S14)?
+2. Typewriter face (S13): Courier Prime or Cutive Mono? Labels in small caps or typewriter by default (S9)?
+3. Reading face (S3) and hand face (S4).
+4. Frames (S6): filtered CSS frames everywhere they resize, as recommended?
+5. Library name (S10) and demo product (S11).
+6. License (L9): MIT, as Patina?

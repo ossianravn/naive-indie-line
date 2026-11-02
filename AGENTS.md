@@ -15,6 +15,8 @@ A shadcn/ui component library in a naive pen-and-ink style, repeating [Patina UI
 
 `specimen/` is a static prototype: plain scripts and stylesheets, no build. Serve the repository root on port 4791 (`python -m http.server 4791 --bind 127.0.0.1`, or the `specimen` entry in `.claude/launch.json`) and open `/specimen/`; pages opened as files lose their scripts. Never use framework default ports. Keep each hand-maintained file at 300 lines or fewer, as Patina does.
 
+New objects are one draw function each, registered with `NIL.objects.define` in the collection's file under `specimen/objects/` (indie: `music.js`, `home.js`; food and drink: `table.js`; studio: `devices.js`, `desk.js`; people: `people.js`); the library page lists them automatically. Build them from the shared geometry in `shapes.js` (box, cylinder, arc) and look at them large before reporting.
+
 Every random choice in a drawing comes from a seed (`NIL.prng`, `NIL.stream`); render code never calls `Math.random()`. Only the specimen's reroll button picks a new seed string at random.
 
 ## Design bar
