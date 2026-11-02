@@ -10,6 +10,7 @@ Phase 5: the release.
 - `test:consumer` installs into a Next.js 16 App Router app as well as Vite, and fails if a kit file a server component imports uses hooks without `"use client"`.
 - Accessibility: drawings with `title=""` are hidden from assistive tech (they were named three times); calendar days are named by weekday and date; the combobox chevron, the sidebar trigger's state, command and item separators and the sign-in block's autocomplete fixed; kraft's quiet pen reaches 4.5:1. See `docs/accessibility-review.md`.
 - Performance: a docs page loads only its own demo (129 KB of JavaScript gzipped instead of 566 KB). See `docs/quality.md`.
+- The site and registry are live at https://naiveindieline.com (Dokploy, rebuilt on push to `main`).
 - Docs: the README for installing and using the kit, `docs/quality.md` and `docs/accessibility-review.md`.
 
 Phase 4: extras, blocks, the theme studio and the home page.

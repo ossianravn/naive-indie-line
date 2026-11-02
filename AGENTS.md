@@ -67,6 +67,6 @@ Verify with the least total effort; never create unit tests. The dev server runs
 
 ## Release notes and publishing
 
-A finished plan step gets a release note in `CHANGELOG.md` under `## Unreleased`. Commit and push as the maintainer directs; publishing a site, a registry or a release needs the maintainer's go-ahead.
+A finished plan step gets a release note in `CHANGELOG.md` under `## Unreleased`. Commit and push as the maintainer directs. A push to `main` redeploys https://naiveindieline.com (see [Architecture](docs/architecture.md#deployment)); a new release or another host needs the maintainer's go-ahead.
 
 Structure adapted from Patina UI's AGENTS.md, which adapted [Groundwork](https://github.com/ossianravn/groundwork)'s.

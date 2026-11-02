@@ -4,7 +4,7 @@ A shadcn/ui component library drawn with one fine-liner on unbleached paper: a s
 
 <img alt="Four room vignettes in the style: a kitchen where a shirt with nobody in it pours wine, a desk under a window, a balcony at night and a listening corner with a record player." src="docs/style/explorations/scenes.webp">
 
-**Status:** v0.1. All of shadcn/ui's parts (64, keeping shadcn's names, props and `data-slot`s; `form` and `toast` are served by `field` and `sonner`), twelve parts of Fineliner's own (label cards, record sleeves, track lists, price tags, hand notes and more), seven blocks, a chart drawn by the pen through the exact data, the pen engine with 55 drawings, three scenes and four lettering faces, a theme studio, and Listening Room, a record shop built only from the kit.
+**Status:** v0.1, live at [naiveindieline.com](https://naiveindieline.com). All of shadcn/ui's parts (64, keeping shadcn's names, props and `data-slot`s; `form` and `toast` are served by `field` and `sonner`), twelve parts of Fineliner's own (label cards, record sleeves, track lists, price tags, hand notes and more), seven blocks, a chart drawn by the pen through the exact data, the pen engine with 55 drawings, three scenes and four lettering faces, a theme studio, and Listening Room, a record shop built only from the kit.
 
 ## What is in it
 

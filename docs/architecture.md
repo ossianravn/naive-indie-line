@@ -63,3 +63,7 @@ JavaScript engines may differ in the last bit of `Math.sin`, `Math.cos`, `Math.h
 ## Theme runtime
 
 As Patina's, with Fineliner's attributes on `<html>`: `data-theme` (and `data-theme-preference`), `data-stock` (recycled, kraft, bond), `data-pen` (navy, black, sepia, forest, oxblood), `data-hand`, `data-boil` (off, hover, art), `data-containers` (open, boxed), `data-labels` (caps, type) and `data-density`. `appearanceScript()` applies the saved choice before first paint; `useAppearance()` reads and writes it. Any element can set `data-pen`, `data-hand`, `data-boil` or `data-labels` for its subtree.
+
+## Deployment
+
+The `Dockerfile` builds the static site and serves it with nginx (`deploy/nginx.conf`) as the `frontend` app of the Fineliner project in Dokploy, on the ByteHosting server (109.71.252.137), rebuilt on every push to `main`, at https://naiveindieline.com. `www` redirects to the apex; Traefik issues the certificates, and the domain is proxied by Cloudflare (the server only admits Cloudflare on 80 and 443). The registry JSON ships with the site under `/r/`, readable from any origin, and the share images under `/og/`. nginx serves each page at one URL without a trailing slash, as Astro builds them, and `404.html` for anything missing; hashed assets under `/_astro/` cache for a year. `astro.config.mjs` sets the canonical URL; the `SITE_URL` build argument overrides it.
