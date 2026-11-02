@@ -1,0 +1,144 @@
+/* Specimen galleries: swatches, line demo, voices, library, explorations and the doodle classes. */
+
+.swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  gap: 2rem 1.5rem;
+}
+.swatch {
+  display: grid;
+  gap: 0.2rem;
+  font-size: var(--t-small);
+  line-height: 1.45;
+}
+.swatch .chip {
+  width: 3.25rem;
+  height: 3.25rem;
+  margin-bottom: 0.5rem;
+}
+.swatch .num {
+  font-variant-numeric: tabular-nums;
+}
+
+.line-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+  gap: 2rem 1.5rem;
+}
+.line-grid figure {
+  margin: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+.line-grid figure svg {
+  height: 4.5rem;
+}
+.line-grid .row-label {
+  grid-column: 1 / -1;
+  margin-top: 0.5rem;
+}
+
+.voices {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 2rem 4rem;
+}
+.voices > div {
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+  max-width: var(--measure);
+}
+.voice-title {
+  font-size: var(--t-h3);
+  line-height: 1.3;
+}
+.label-sample {
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.12em;
+  font-size: 1.15rem;
+  margin-bottom: 1.25rem;
+}
+.hand,
+.hand-sample {
+  font-family: var(--face-hand);
+  font-size: var(--hand-size);
+  font-weight: var(--hand-weight);
+  line-height: 1.1;
+}
+.hand-sample {
+  rotate: -1.5deg;
+  transform-origin: left;
+}
+
+.library {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  gap: 2.5rem 2rem;
+  align-items: end;
+}
+.library figure {
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+  justify-items: center;
+}
+.library svg {
+  max-height: 11rem;
+  width: auto;
+  max-width: 100%;
+}
+
+.explorations {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+  gap: 2.5rem 2rem;
+  margin-top: 1.75rem;
+}
+.explorations figure {
+  margin: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+.explorations img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.explorations figcaption {
+  font-size: var(--t-small);
+}
+
+.doodle {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.doodle .ln {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--pen-weight);
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.doodle .ink {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: var(--pen-weight);
+  vector-effect: non-scaling-stroke;
+  stroke-linejoin: round;
+}
+.doodle .wash {
+  fill: var(--wash);
+}
+.doodle .sheet-fill {
+  fill: var(--paper);
+}
+
+@media (max-width: 60rem) {
+  .voices {
+    grid-template-columns: 1fr;
+  }
+}

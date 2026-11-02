@@ -1,0 +1,224 @@
+/* Choice controls: segmented, swatches, check, radio, switch, slider and tabs. */
+
+.segmented {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  padding: 3px;
+}
+.segmented label {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  height: calc(2.25rem - 6px);
+  padding: 0 0.75rem;
+  font-size: var(--t-small);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.segmented label + label::before {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: -3px;
+  bottom: -3px;
+  width: 6px;
+  background: linear-gradient(currentColor, currentColor) center / var(--pen-weight) 100% no-repeat;
+  filter: var(--wob-5);
+}
+.segmented .ink-fill {
+  display: none;
+}
+.segmented label:has(input:checked) {
+  color: var(--paper);
+}
+.segmented label:has(input:checked) .ink-fill {
+  display: block;
+}
+.segmented label:has(input:focus-visible) {
+  outline: 1.5px dashed var(--pen);
+  outline-offset: 5px;
+}
+
+.swatches {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.swatches label {
+  position: relative;
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.swatches .chip {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+.swatches .ring {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+.swatches label:has(input:checked) .ring {
+  opacity: 1;
+}
+.swatches label:has(input:focus-visible) {
+  outline: 1.5px dashed var(--pen);
+  outline-offset: 2px;
+}
+.swatches output {
+  font-size: var(--t-small);
+  margin-left: 0.4rem;
+}
+
+.check,
+.radio,
+.switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 1.75rem;
+  font-size: var(--t-ui);
+  cursor: pointer;
+}
+.check input,
+.radio input,
+.switch input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.check .box {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex: none;
+}
+.check .tick {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+.check input:checked + .box .tick,
+.radio input:checked + .disc .dot {
+  opacity: 1;
+}
+.radio .disc {
+  position: relative;
+  width: 1.3rem;
+  height: 1.3rem;
+  flex: none;
+}
+.radio .disc > * {
+  position: absolute;
+  inset: 0;
+}
+.radio .dot {
+  opacity: 0;
+}
+:is(.check, .radio, .switch) input:focus-visible + * {
+  outline: 1.5px dashed var(--pen);
+  outline-offset: 4px;
+}
+
+.switch .track {
+  position: relative;
+  width: 2.75rem;
+  height: 1.5rem;
+  flex: none;
+}
+.switch .track > [data-mark] {
+  position: absolute;
+  inset: 0;
+}
+.switch .knob {
+  position: absolute;
+  top: 0.2rem;
+  left: 0.2rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  transition: translate 180ms cubic-bezier(0.3, 0.7, 0.4, 1);
+}
+.switch .knob > * {
+  position: absolute;
+  inset: 0;
+}
+.switch .knob .dot {
+  opacity: 0;
+  scale: 2.2;
+}
+.switch input:checked + .track .knob {
+  translate: 1.25rem 0;
+}
+.switch input:checked + .track .knob .dot {
+  opacity: 1;
+}
+
+.slider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 13rem;
+  height: 2rem;
+}
+.slider .track {
+  position: absolute;
+  inset: 50% 0 auto;
+  height: 0.6rem;
+  translate: 0 -50%;
+}
+.slider input {
+  position: relative;
+  width: 100%;
+  height: 2rem;
+  margin: 0;
+  appearance: none;
+  background: none;
+  cursor: pointer;
+}
+.slider input::-webkit-slider-thumb {
+  appearance: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: var(--pen);
+}
+.slider input::-moz-range-thumb {
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--pen);
+}
+
+.tabs {
+  display: flex;
+  gap: 1.75rem;
+}
+.tab {
+  position: relative;
+  padding: 0.35rem 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: var(--t-ui);
+  cursor: pointer;
+}
+.tab .uline {
+  position: absolute;
+  left: -0.2rem;
+  right: -0.2rem;
+  bottom: -0.35rem;
+  height: 0.55rem;
+  opacity: 0;
+}
+.tab[aria-selected="true"] .uline {
+  opacity: 1;
+}

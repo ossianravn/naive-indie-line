@@ -1,0 +1,199 @@
+/* Specimen layout and type. */
+
+* {
+  box-sizing: border-box;
+}
+html {
+  background: var(--paper);
+}
+body {
+  margin: 0;
+  background-color: var(--paper);
+  background-image: var(--texture-day);
+  color: var(--pen);
+  font-family: var(--face-read);
+  font-size: var(--t-body);
+  line-height: 1.6;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 200ms ease;
+}
+[data-theme="night"] body {
+  background-image: var(--texture-night);
+}
+::selection {
+  background: var(--pen);
+  color: var(--paper);
+}
+
+.page {
+  display: grid;
+  grid-template-columns: 16.5rem minmax(0, 1fr);
+  gap: 4.5rem;
+  max-width: 78rem;
+  margin: 0 auto;
+  padding: 3rem 2.5rem 7rem;
+}
+.panel {
+  align-self: start;
+}
+@media (min-height: 44rem) {
+  .panel {
+    position: sticky;
+    top: 2.5rem;
+  }
+}
+.wordmark {
+  font-size: 1.45rem;
+  line-height: 1.2;
+  margin: 0 0 0.25rem;
+}
+.label {
+  font-size: var(--t-label);
+  font-weight: 500;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.09em;
+  line-height: 1.4;
+  margin: 0;
+}
+.settings {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 2.25rem;
+}
+.setting {
+  display: grid;
+  gap: 0.5rem;
+  justify-items: start;
+}
+
+main {
+  min-width: 0;
+}
+section {
+  margin-top: 6rem;
+}
+h1 {
+  font-size: var(--t-display);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0;
+  max-width: 15ch;
+  text-wrap: balance;
+}
+h2 {
+  font-size: var(--t-h2);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 1.75rem;
+}
+h3 {
+  font-size: var(--t-h3);
+  font-weight: 500;
+  line-height: 1.3;
+  margin: 0;
+}
+p {
+  margin: 0;
+}
+.lead {
+  font-size: 1.3rem;
+  line-height: 1.55;
+  max-width: var(--measure);
+  margin-top: 1.75rem;
+}
+.note {
+  font-size: var(--t-small);
+  margin-top: 1rem;
+  max-width: var(--measure);
+}
+.hero {
+  position: relative;
+  padding-right: 3.5rem;
+}
+.spine {
+  position: absolute;
+  top: 0.4rem;
+  right: 0;
+  writing-mode: vertical-rl;
+  rotate: 180deg;
+  font-size: 1.05rem;
+  letter-spacing: 0.05em;
+}
+
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-bottom: 1.75rem;
+}
+.section-head h2 {
+  margin: 0;
+}
+.seed-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.seed-field {
+  width: 11rem;
+}
+
+.scene {
+  margin: 0;
+  max-width: 52rem;
+}
+
+.rules {
+  list-style: none;
+  counter-reset: rule;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1.1rem;
+  max-width: var(--measure);
+}
+.rules li {
+  counter-increment: rule;
+  display: grid;
+  grid-template-columns: 2.25rem 1fr;
+}
+.rules li::before {
+  content: counter(rule);
+  font-variant-numeric: oldstyle-nums;
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+.rules b {
+  font-weight: 600;
+}
+
+@media (max-width: 60rem) {
+  .page {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding: 1.5rem 1rem 5rem;
+  }
+  .panel {
+    position: static;
+  }
+  .settings {
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  }
+  section {
+    margin-top: 4.5rem;
+  }
+  .hero {
+    padding-right: 2.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}

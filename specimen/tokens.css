@@ -1,0 +1,129 @@
+/* Naive Indie Line specimen: paper, pens, voices and the hand. Proposed values for agreement, not final tokens. */
+
+:root {
+  /* Pens: one carries the whole interface. Day values are the ink on cream; night values are gel pen on dark card. */
+  --pen-navy: #263152;
+  --pen-black: #262421;
+  --pen-sepia: #4a3020;
+  --pen-forest: #23412f;
+  --pen-oxblood: #5c2430;
+  /* Each pen's wash: the same ink thinned, for the rare second tone in a drawing (the soil in the reference's pot). */
+  --wash-navy: #5b72a8;
+  --wash-black: #8d8780;
+  --wash-sepia: #a47d5c;
+  --wash-forest: #6f9279;
+  --wash-oxblood: #a9636e;
+  /* The correction pen: errors and destructive actions only. */
+  --correction: #a3302a;
+
+  --paper: #ece2ca;
+  --paper-2: #e3d7bb;
+
+  --pen: var(--pen-navy);
+  --wash: var(--wash-navy);
+  --pen-weight: 1.35px;
+  --tint: color-mix(in srgb, var(--pen) 9%, var(--paper));
+
+  /* The hand: how far lines wobble and run past their corners. Calm keeps them close. */
+  --over: 4px;
+  --wob-1: url(#wob-1);
+  --wob-2: url(#wob-2);
+  --wob-3: url(#wob-3);
+  --wob-4: url(#wob-4);
+  --wob-5: url(#wob-5);
+  --wob-6: url(#wob-6);
+
+  --face-read: "Newsreader", Georgia, serif;
+  --face-hand: "Gaegu", cursive;
+  --hand-size: 1.45rem;
+  --hand-weight: 400;
+
+  --t-display: clamp(2.6rem, 6vw, 4.2rem);
+  --t-h2: 1.85rem;
+  --t-h3: 1.3rem;
+  --t-body: 1.125rem;
+  --t-ui: 1rem;
+  --t-small: 0.875rem;
+  --t-label: 0.95rem;
+
+  --measure: 37.5rem;
+  --control: 2.75rem;
+  color-scheme: light;
+}
+
+[data-stock="kraft"] {
+  --paper: #cdb48f;
+  --paper-2: #c4a985;
+  --correction: #7d211c;
+}
+[data-stock="bond"] {
+  --paper: #f4f0e6;
+  --paper-2: #ebe5d7;
+}
+
+[data-theme="night"] {
+  --pen-navy: #dde3f2;
+  --pen-black: #efe9dc;
+  --pen-sepia: #eedcc6;
+  --pen-forest: #d6e8d9;
+  --pen-oxblood: #f2d6da;
+  --wash-navy: #4f659c;
+  --wash-black: #6b6760;
+  --wash-sepia: #7d5d43;
+  --wash-forest: #4d6a55;
+  --wash-oxblood: #7f4650;
+  --correction: #f28b80;
+  --paper: #1c2131;
+  --paper-2: #242b3e;
+  color-scheme: dark;
+}
+[data-theme="night"][data-stock="kraft"] {
+  --paper: #2a2119;
+  --paper-2: #342920;
+}
+[data-theme="night"][data-stock="bond"] {
+  --paper: #1b1b1a;
+  --paper-2: #252523;
+}
+
+[data-pen="black"] {
+  --pen: var(--pen-black);
+  --wash: var(--wash-black);
+}
+[data-pen="sepia"] {
+  --pen: var(--pen-sepia);
+  --wash: var(--wash-sepia);
+}
+[data-pen="forest"] {
+  --pen: var(--pen-forest);
+  --wash: var(--wash-forest);
+}
+[data-pen="oxblood"] {
+  --pen: var(--pen-oxblood);
+  --wash: var(--wash-oxblood);
+}
+
+[data-hand="calm"] {
+  --over: 1.2px;
+  --wob-1: url(#wobc-1);
+  --wob-2: url(#wobc-2);
+  --wob-3: url(#wobc-3);
+  --wob-4: url(#wobc-4);
+  --wob-5: url(#wobc-5);
+  --wob-6: url(#wobc-6);
+}
+
+[data-read="garamond"] {
+  --face-read: "EB Garamond", Georgia, serif;
+}
+[data-read="caslon"] {
+  --face-read: "Libre Caslon Text", Georgia, serif;
+}
+[data-script="patrick"] {
+  --face-hand: "Patrick Hand", cursive;
+  --hand-size: 1.3rem;
+}
+[data-script="shadows"] {
+  --face-hand: "Shadows Into Light Two", cursive;
+  --hand-size: 1.3rem;
+}

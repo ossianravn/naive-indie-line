@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en" data-theme="day" data-stock="recycled" data-pen="navy" data-hand="lively" data-read="newsreader" data-script="gaegu" data-frames="pen">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Naive Indie Line specimen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Patrick+Hand&family=Gaegu:wght@300;400;700&family=Shadows+Into+Light+Two&display=swap"
+    />
+    <link rel="stylesheet" href="tokens.css" />
+    <link rel="stylesheet" href="specimen.css" />
+    <link rel="stylesheet" href="gallery.css" />
+    <link rel="stylesheet" href="controls.css" />
+    <link rel="stylesheet" href="choices.css" />
+    <link rel="stylesheet" href="marks.css" />
+    <link rel="stylesheet" href="sampler.css" />
+  </head>
+  <body>
+    <svg id="filters" width="0" height="0" aria-hidden="true" style="position: absolute"></svg>
+
+    <div class="page">
+      <aside class="panel" aria-label="Appearance">
+        <p class="wordmark">Naïve Indie Line</p>
+        <p class="label">Style proposal · 2 Nov 2026</p>
+        <div class="settings">
+          <div class="setting" data-setting="theme">
+            <span class="label" id="l-theme">Light</span>
+            <div class="segmented" role="radiogroup" aria-labelledby="l-theme"></div>
+          </div>
+          <div class="setting" data-setting="stock">
+            <span class="label" id="l-stock">Paper</span>
+            <div class="segmented" role="radiogroup" aria-labelledby="l-stock"></div>
+          </div>
+          <div class="setting" data-setting="pen">
+            <span class="label" id="l-pen">Pen</span>
+            <div class="swatches" role="radiogroup" aria-labelledby="l-pen"></div>
+          </div>
+          <div class="setting" data-setting="hand">
+            <span class="label" id="l-hand">Hand</span>
+            <div class="segmented" role="radiogroup" aria-labelledby="l-hand"></div>
+          </div>
+          <div class="setting" data-setting="read">
+            <span class="label" id="l-read">Reading face</span>
+            <div class="segmented" role="radiogroup" aria-labelledby="l-read"></div>
+          </div>
+          <div class="setting" data-setting="script">
+            <span class="label" id="l-script">Hand face</span>
+            <div class="segmented" role="radiogroup" aria-labelledby="l-script"></div>
+          </div>
+          <div class="setting" data-setting="frames">
+            <span class="label" id="l-frames">Frames</span>
+            <div class="segmented" role="radiogroup" aria-labelledby="l-frames"></div>
+          </div>
+        </div>
+      </aside>
+
+      <main>
+        <header class="hero">
+          <h1>One pen, cream paper, and a room that is quietly a little strange.</h1>
+          <p class="lead">
+            Naïve Indie Line is a shadcn/ui kit drawn the way a natural-wine label is: a single fine-liner with a slow
+            wobble, flattened perspective, no shading, and small pockets of solid ink where the eye should land.
+          </p>
+          <p class="spine" aria-hidden="true">Pétillant Naturel · Specimen Nº 1</p>
+        </header>
+
+        <section aria-labelledby="h-scene">
+          <div class="section-head">
+            <h2 id="h-scene">A drawing from a seed</h2>
+            <div class="seed-row">
+              <label class="label" for="scene-seed">Seed</label>
+              <span class="field frame seed-field"><input id="scene-seed" value="corner-shop" spellcheck="false" /></span>
+              <button class="btn frame" type="button" data-reroll="scene">Reroll</button>
+            </div>
+          </div>
+          <figure class="scene" id="scene"></figure>
+        </section>
+
+        <section aria-labelledby="h-rules">
+          <h2 id="h-rules">The rules</h2>
+          <ol class="rules">
+            <li><b>One pen, one weight.</b> Every line is the same thin monoline, in one ink. A second pen, red, only corrects.</li>
+            <li><b>Contours, not tone.</b> No gradients, no hatching, no shadows. Things are their outlines.</li>
+            <li><b>Ink is rare.</b> Solid fill marks the few places the eye should land: a record, a tile, the one button to press.</li>
+            <li><b>A slow hand.</b> Lines wobble gently and run a little past their corners; nothing is ruled.</li>
+            <li><b>Flattened perspective.</b> Objects tip toward you, and neighbours disagree a little about where the vanishing point is.</li>
+            <li><b>Air is the material.</b> Most of the sheet stays empty paper; space groups things before boxes do.</li>
+            <li><b>Quiet type.</b> A book serif set small, like the words on a label. A hand only for asides.</li>
+            <li><b>Quietly strange.</b> Everyday things, and people who are only their clothes.</li>
+          </ol>
+        </section>
+
+        <section aria-labelledby="h-paper">
+          <h2 id="h-paper">Paper and pen</h2>
+          <div class="swatch-grid" id="pen-swatches"></div>
+          <p class="note">Ratios are each pen against the current paper. Text needs 4.5:1.</p>
+        </section>
+
+        <section aria-labelledby="h-line">
+          <h2 id="h-line">The line</h2>
+          <div class="line-grid" id="line-demo"></div>
+        </section>
+
+        <section aria-labelledby="h-voices">
+          <h2 id="h-voices">Voices</h2>
+          <div class="voices">
+            <div>
+              <p class="label">Read</p>
+              <p class="voice-title">Listening room, Thursday evenings</p>
+              <p>
+                Bring a record you love and one you have never played. We put them on in the order they arrive, with
+                the lights low and the windows open, and nobody talks over the second side.
+              </p>
+            </div>
+            <div>
+              <p class="label">Label</p>
+              <p class="label-sample">Side A · 33⅓ rpm · Nº 0412</p>
+              <p class="label">Hand</p>
+              <p class="hand-sample">the good chairs are by the window</p>
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="h-ui">
+          <h2 id="h-ui">Interface</h2>
+          <div class="ui-grid" id="ui"></div>
+        </section>
+
+        <section aria-labelledby="h-library">
+          <div class="section-head">
+            <h2 id="h-library">The object library</h2>
+            <button class="btn frame" type="button" data-reroll="library">Reroll all</button>
+          </div>
+          <div class="library" id="library"></div>
+        </section>
+
+        <section aria-labelledby="h-explore">
+          <h2 id="h-explore">Generated explorations</h2>
+          <p class="note">Made with gpt-image from the label photograph, as direction for the drawings above. They are not assets.</p>
+          <div class="explorations">
+            <figure><img src="../docs/style/explorations/scenes.webp" alt="Four room vignettes in the style: a kitchen, a desk, a balcony at night and a listening corner" loading="lazy" /><figcaption>Scenes</figcaption></figure>
+            <figure><img src="../docs/style/explorations/objects.webp" alt="Twenty objects drawn in the style, from a record player to a cassette" loading="lazy" /><figcaption>Objects</figcaption></figure>
+            <figure><img src="../docs/style/explorations/ui-listening-room.webp" alt="A listening room booking screen drawn in the style" loading="lazy" /><figcaption>An interface, imagined</figcaption></figure>
+            <figure class="reference"><img src="../.dev-docs/reference/wine-label.webp" alt="The reference: a pen-and-ink wine label of a room with a disco ball and headless figures" loading="lazy" onerror="this.closest('figure').remove()" /><figcaption>The reference label (kept local)</figcaption></figure>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="pen.js"></script>
+    <script src="things.js"></script>
+    <script src="living.js"></script>
+    <script src="scene.js"></script>
+    <script src="paper.js"></script>
+    <script src="ui.js"></script>
+    <script src="specimen.js"></script>
+  </body>
+</html>
