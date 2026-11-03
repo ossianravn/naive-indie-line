@@ -4,7 +4,7 @@ A shadcn/ui component library drawn with one fine-liner on unbleached paper: a s
 
 <img alt="The kit's four scenes, drawn by its pen: a record shop floor with browser bins and a counter, a freelancer's studio, a bistro table for two and someone at work at a desk under a window." src="docs/style/scenes.webp">
 
-**Status:** v0.1, live at [naiveindieline.com](https://naiveindieline.com). All of shadcn/ui's parts (64, keeping shadcn's names, props and `data-slot`s; `form` and `toast` are served by `field` and `sonner`), twelve parts of Fineliner's own (label cards, record sleeves, track lists, price tags, hand notes and more), seven blocks, a chart drawn by the pen through the exact data, the pen engine with 62 drawings and four scenes, Naïve Indie Line Sans, Inline and Tramline (our own fonts), a theme studio, and Listening Room, a record shop built only from the kit.
+**Status:** v0.1, live at [naiveindieline.com](https://naiveindieline.com). All of shadcn/ui's parts (64, keeping shadcn's names, props and `data-slot`s; `form` and `toast` are served by `field` and `sonner`), twelve parts of Fineliner's own (label cards, record sleeves, track lists, price tags, hand notes and more), seven blocks, a chart drawn by the pen through the exact data, the pen engine with 85 drawings and four scenes, Naïve Indie Line Sans, Inline and Tramline (our own fonts), a theme studio, and Listening Room, a record shop built only from the kit.
 
 ## What is in it
 
@@ -44,7 +44,7 @@ Make `src/fineliner/styles/fineliner.css` your Tailwind entry (`@import "./finel
 
 ## More drawings: the drawing skill
 
-The kit draws 62 objects and four scenes; your project will want its own: a bicycle for a repair shop's empty state, your bakery's counter, someone walking a dog on the sign-up page. The drawing skill teaches your coding agent (Claude Code, Codex, or any agent that reads skills) to draw them in the kit's style, from a seed, in your own code.
+The kit draws 85 objects and four scenes; your project will want its own: a bicycle for a repair shop's empty state, your bakery's counter, someone walking a dog on the sign-up page. The drawing skill teaches your coding agent (Claude Code, Codex, or any agent that reads skills) to draw them in the kit's style, from a seed, in your own code.
 
 Install it from the registry, next to the kit:
 
@@ -52,7 +52,7 @@ Install it from the registry, next to the kit:
 npx shadcn add @fineliner/drawing-skill
 ```
 
-That puts the skill in `.claude/skills/fineliner-drawings` and `.agents/skills/fineliner-drawings`; it is also in this repository under [`skills/fineliner-drawings`](skills/fineliner-drawings) to copy by hand. Then ask your agent for the drawing you need.
+That puts the skill in `.claude/skills/fineliner-drawings` and `.agents/skills/fineliner-drawings`; it is also in this repository under [`skills/fineliner-drawings`](skills/fineliner-drawings) to copy by hand. Then ask your agent for the drawing you need. The skill's page, [naiveindieline.com/drawings/skill](https://naiveindieline.com/drawings/skill), shows what it draws and has the whole skill to read.
 
 What the agent does with it:
 

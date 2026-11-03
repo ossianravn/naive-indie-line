@@ -64,8 +64,11 @@ if (!createJiti) {
   )
   process.exit(1)
 }
+// No file cache: it would write into node_modules/.cache, which a sandboxed agent may not be allowed to touch (a linked
+// node_modules in a worktree), and the engine transpiles in well under a second.
 const jiti = createJiti(pathToFileURL(path.join(root, "render.mjs")).href, {
   alias: { "@/": `${src.replaceAll("\\", "/")}/` },
+  fsCache: false,
 })
 const pen = await jiti.import(kit)
 if (mod) await jiti.import(path.resolve(root, mod))

@@ -10,6 +10,7 @@ export const COLLECTIONS = [
   ["food", "Food & drink"],
   ["studio", "Studio"],
   ["people", "People"],
+  ["everyday", "Everyday"],
 ] as const
 
 /** One of the kit's collections, or any name a project files its own objects under. */

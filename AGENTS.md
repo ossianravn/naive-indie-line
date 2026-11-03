@@ -65,6 +65,15 @@ Verify with the least total effort; never create unit tests. The dev server runs
 3. Add a lasting test only for a boundary that will change again (from Phase 1: the registry install contract and the seed-to-drawing promise), in `tests/consumer/`.
 4. Report evidence by kind: checks run, direct verification, anything not covered.
 
+## Delegating to Codex
+
+Hand clearly defined implementation tasks to Codex through the Codex plugin (`codex:codex-rescue` in its own
+worktree); keep user-facing behavior and wording, the look of drawings, and architecture with Claude. Use
+`gpt-6.1-sol`: `xhigh` for drawings, `high` for multi-file work with clear acceptance checks. Decide contracts first;
+parallel tasks never share files. Codex leaves changes uncommitted and does not build; review the diff, look at every
+drawing large, build, and rerun the proving check before committing. Read `docs/codex-delegation.md` for this
+project's traps, and log each refused command in its tally.
+
 ## Release notes and publishing
 
 A finished plan step gets a release note in `CHANGELOG.md` under `## Unreleased`. Commit and push as the maintainer directs. A push to `main` redeploys https://naiveindieline.com (see [Architecture](docs/architecture.md#deployment)); a new release or another host needs the maintainer's go-ahead.

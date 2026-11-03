@@ -67,5 +67,7 @@ export default defineConfig({
   build: { format: "directory" },
   integrations: [react()],
   devToolbar: { enabled: false },
+  // The drawing skill's Markdown is set in the pen by Typography; Shiki's theme colours would fight it.
+  markdown: { syntaxHighlight: false },
   vite: { plugins: [tailwindcss(), touchNewFiles, lineSansFromFile] },
 })

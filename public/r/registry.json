@@ -1321,14 +1321,29 @@
           "target": "~/src/fineliner/pen/objects/home.ts"
         },
         {
+          "path": "src/fineliner/pen/objects/household.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/household.ts"
+        },
+        {
           "path": "src/fineliner/pen/objects/index.ts",
           "type": "registry:file",
           "target": "~/src/fineliner/pen/objects/index.ts"
         },
         {
+          "path": "src/fineliner/pen/objects/market.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/market.ts"
+        },
+        {
           "path": "src/fineliner/pen/objects/music.ts",
           "type": "registry:file",
           "target": "~/src/fineliner/pen/objects/music.ts"
+        },
+        {
+          "path": "src/fineliner/pen/objects/pantry.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/pantry.ts"
         },
         {
           "path": "src/fineliner/pen/objects/people.ts",
@@ -1339,6 +1354,11 @@
           "path": "src/fineliner/pen/objects/plants.ts",
           "type": "registry:file",
           "target": "~/src/fineliner/pen/objects/plants.ts"
+        },
+        {
+          "path": "src/fineliner/pen/objects/post.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/post.ts"
         },
         {
           "path": "src/fineliner/pen/objects/seated.ts",

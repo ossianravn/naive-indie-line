@@ -1,0 +1,232 @@
+---
+// The drawing skill: what it lets a project's coding agent draw, how to install it, and the skill itself to read. The
+// worked example's drawings are drawn ahead by tools/render-skill-examples.mjs, so they never join the kit's library;
+// the skill's Markdown is set by Typography on the server. The page ships no script of its own.
+import Base from "@/site/layouts/base.astro"
+import PageHeader from "@/site/layouts/page-header.astro"
+import { InstallCommand } from "@/site/docs/install-command"
+import { Typography } from "@/fineliner/ui/typography"
+import { listObjects } from "@/fineliner/pen"
+import examples from "@/site/skill/examples.generated.json"
+import * as skill from "../../../skills/fineliner-drawings/SKILL.md"
+import * as style from "../../../skills/fineliner-drawings/references/style.md"
+import * as engine from "../../../skills/fineliner-drawings/references/engine.md"
+import * as people from "../../../skills/fineliner-drawings/references/people.md"
+import * as scenes from "../../../skills/fineliner-drawings/references/scenes.md"
+
+const REPO =
+  "https://github.com/ossianravn/naive-indie-line/blob/main/skills/fineliner-drawings"
+/** A Markdown file as HTML for Typography: its own h1 dropped (the page names it) and relative links sent to GitHub. */
+async function prose(
+  md: { compiledContent: () => string | Promise<string> },
+  dir = "",
+) {
+  const html = await md.compiledContent()
+  return html
+    .replace(/^\s*<h1[^>]*>.*?<\/h1>/s, "")
+    .replace(
+      /href="(?!https?:|#|mailto:)([^"]+)"/g,
+      (_, href: string) => `href="${REPO}/${dir}${href}"`,
+    )
+}
+
+const kit = listObjects().length
+const ASKS = [
+  {
+    ask: "Our booking app has no bicycle drawing. Add one in the same style for the empty state, above ‘No bookings yet’.",
+    get: "An object",
+    use: '<Drawing object="bicycle" />',
+  },
+  {
+    ask: "One of those Fineliner people, but walking a dog on a lead. It has to look like the kit’s other people, not clip art.",
+    get: "A person in a new pose",
+    use: '<Drawing object="dog-walker" />',
+  },
+  {
+    ask: "A header drawing of our little roastery: a drum roaster, a few sacks of beans, a scale, somebody working there.",
+    get: "A scene",
+    use: '<Drawing scene="roastery" />',
+  },
+]
+const DOES = [
+  [
+    "Draws in your module, not the kit’s",
+    "New drawings go in src/drawings, registered with define() and defineScene(), so updating the kit never loses them.",
+  ],
+  [
+    "Builds from the kit’s parts",
+    "Boxes, rounds and cylinders; people from the kit’s clothes and hair; scenes on the kit’s stage, walls and drawn border.",
+  ],
+  [
+    "Follows the style",
+    "One line, calm 3/4 views, corners that meet, a few pockets of ink, and every choice taken from the seed.",
+  ],
+  [
+    "Looks before it reports",
+    "It renders a contact sheet at several seeds and both hands, and checks it against the list the kit’s own drawings were reviewed with.",
+  ],
+]
+const REFERENCES = [
+  [
+    "references/style.md",
+    "The look: the rules, and the mistakes that make a new drawing stand out",
+    await prose(style, "references/"),
+  ],
+  [
+    "references/engine.md",
+    "The pen engine: coordinates, the sheet, the pen, shapes and seeds",
+    await prose(engine, "references/"),
+  ],
+  [
+    "references/people.md",
+    "People: clothes, hair, poses and what they hold",
+    await prose(people, "references/"),
+  ],
+  [
+    "references/scenes.md",
+    "Scenes: the stage, walls and placing objects in a room",
+    await prose(scenes, "references/"),
+  ],
+] as const
+const skillHtml = await prose(skill)
+---
+
+<Base
+  title="Drawing skill"
+  description="A skill for your coding agent: it draws new objects, people and scenes for your project in Fineliner's pen, from a seed, in your own code."
+>
+  <PageHeader title="Drawing skill">
+    <Fragment slot="kicker">
+      <a href="/drawings">Drawings</a> · For your coding agent
+    </Fragment>
+    The kit draws {kit} objects; your project will want ones it doesn’t have.
+    The drawing skill teaches your coding agent to draw them in the same pen,
+    from a seed, in your own code.
+  </PageHeader>
+  <div class="mx-auto max-w-[76rem] px-snug pb-page sm:px-line">
+    <figure class="m-0 mt-section">
+      <div class="grid items-end gap-line md:grid-cols-[minmax(0,40rem)_auto]">
+        <span class="fl-takes" set:html={examples.scene.svg} />
+        <ul class="m-0 flex list-none items-end gap-line p-0">
+          {examples.objects.map((o) => (
+            <li class="grid justify-items-center gap-tight">
+              <span
+                class="fl-takes max-w-full"
+                style={`width: ${o.width}px`}
+                set:html={o.svg}
+              />
+              <span class="label text-pen-quiet">{o.name}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <figcaption class="mt-snug max-w-measure text-small leading-small text-pen-quiet">
+        The skill’s worked example: a plant shop, a watering can and someone
+        carrying a parcel. None of them is in the kit; the skill draws them in a
+        project’s own module, from the kit’s parts.
+      </figcaption>
+    </figure>
+
+    <section class="mt-page" aria-labelledby="install">
+      <h2 id="install" class="m-0 text-h2">
+        Install
+      </h2>
+      <p class="m-0 mt-tight max-w-measure">
+        Next to the kit, from the same registry. It lands in{" "}
+        <code class="font-type text-[0.86em]">.claude/skills</code> and{" "}
+        <code class="font-type text-[0.86em]">.agents/skills</code>, for Claude
+        Code, Codex and any agent that reads skills.
+      </p>
+      <InstallCommand
+        command="npx shadcn add @fineliner/drawing-skill"
+        className="mt-snug"
+      />
+      <p class="m-0 mt-snug max-w-measure">
+        Or copy it from{" "}
+        <a href={REPO.replace("/blob/", "/tree/")}>the repository</a>. Then ask
+        your agent for the drawing you need.
+      </p>
+    </section>
+
+    <section class="mt-page" aria-labelledby="ask">
+      <h2 id="ask" class="m-0 text-h2">
+        Ask in your own words
+      </h2>
+      <ul class="m-0 mt-line grid list-none gap-x-line gap-y-section p-0 lg:grid-cols-3">
+        {ASKS.map(({ ask, get, use }) => (
+          <li class="grid max-w-measure content-start gap-tight">
+            <p class="m-0 font-read italic">“{ask}”</p>
+            <p class="label m-0 text-pen-quiet">{get}</p>
+            <code class="font-type text-small">{use}</code>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="mt-page" aria-labelledby="does">
+      <h2 id="does" class="m-0 text-h2">
+        What your agent does with it
+      </h2>
+      <dl class="m-0 mt-line grid gap-x-line gap-y-line md:grid-cols-2">
+        {DOES.map(([term, detail]) => (
+          <div class="max-w-measure">
+            <dt class="font-read text-lead leading-subhead">{term}</dt>
+            <dd class="m-0 mt-hair text-pen-quiet">{detail}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="mt-page" aria-labelledby="read">
+      <p class="label m-0 text-pen-quiet">SKILL.md</p>
+      <h2 id="read" class="m-0 mt-hair text-h2">
+        The skill, in full
+      </h2>
+      <Typography
+        className="mt-line"
+        dangerouslySetInnerHTML={{ __html: skillHtml }}
+      />
+      <div class="mt-section grid max-w-measure gap-snug">
+        {REFERENCES.map(([file, about, html]) => (
+          <details class="skill-file">
+            <summary class="grid cursor-pointer gap-hair">
+              <span class="font-type text-small">{file}</span>
+              <span class="text-pen-quiet">{about}</span>
+            </summary>
+            <Typography
+              className="mt-line"
+              dangerouslySetInnerHTML={{ __html: html }}
+            />
+          </details>
+        ))}
+      </div>
+      <p class="m-0 mt-section max-w-measure">
+        Also in the skill:{" "}
+        <a href={`${REPO}/scripts/render.mjs`}>scripts/render.mjs</a>, which
+        draws the contact sheet;{" "}
+        <a href={`${REPO}/assets/example-drawings.ts`}>the worked example</a>{" "}
+        above; and{" "}
+        <a href={REPO.replace("/blob/", "/tree/") + "/evals"}>
+          three test prompts
+        </a>
+        .
+      </p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .skill-file > summary {
+    list-style: none;
+  }
+  .skill-file > summary::-webkit-details-marker {
+    display: none;
+  }
+  .skill-file > summary > :first-child::after {
+    content: " +";
+    color: var(--pen-quiet);
+  }
+  .skill-file[open] > summary > :first-child::after {
+    content: " −";
+  }
+</style>

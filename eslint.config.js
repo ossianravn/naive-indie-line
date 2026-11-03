@@ -14,6 +14,8 @@ export default defineConfig(
       ".artifacts/**",
       ".dev-docs/**",
       "specimen/**",
+      // Agent worktrees: full copies of the repository.
+      ".claude/**",
     ],
   },
   {

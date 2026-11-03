@@ -8,7 +8,7 @@ description: Draw new objects, people and scenes for a project that uses Finelin
 Fineliner's drawings are not image files. Each one is a small TypeScript function that tells a seeded pen where to go: the
 same seed draws the same picture on the server and in the browser, and a different seed draws a sibling with its own
 small differences. A project grows the library by writing more of these functions in its own files and registering them,
-the same way the kit registers its 57 objects and four scenes.
+the same way the kit registers its own objects and scenes.
 
 Your job is to draw what the project needs so that it sits on the page next to the kit's own drawings as if the same
 person had drawn it: one thin wobbly line, calm 3/4 views, corners that meet, a few pockets of solid ink, nothing more.
