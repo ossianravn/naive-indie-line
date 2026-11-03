@@ -29,6 +29,11 @@
           "target": "~/src/fineliner/lib/frame-style.ts"
         },
         {
+          "path": "src/fineliner/lib/own-ids.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/lib/own-ids.ts"
+        },
+        {
           "path": "src/fineliner/lib/svg-ids.ts",
           "type": "registry:file",
           "target": "~/src/fineliner/lib/svg-ids.ts"
@@ -734,6 +739,11 @@
           "path": "src/fineliner/drawing/drawing-motion.ts",
           "type": "registry:file",
           "target": "~/src/fineliner/drawing/drawing-motion.ts"
+        },
+        {
+          "path": "src/fineliner/drawing/drawing-takes.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/drawing/drawing-takes.ts"
         },
         {
           "path": "src/fineliner/drawing/drawing.tsx",

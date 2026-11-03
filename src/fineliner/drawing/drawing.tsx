@@ -11,6 +11,7 @@ import {
 import { drawing, type DrawingOptions } from "@/fineliner/pen"
 import { cn } from "@/fineliner/lib/utils"
 import { drawWhenSeen } from "./drawing-motion"
+import { boilTakes } from "./drawing-takes"
 import { useOwnIds } from "@/fineliner/lib/svg-ids"
 
 export interface DrawingProps
@@ -26,9 +27,10 @@ export interface DrawingProps
 const never = () => () => {}
 
 /**
- * A seeded drawing from the object library, or a scene. Same seed, same drawing on the server and in the browser. It
- * renders three takes, which line boil cycles where data-boil allows; the first is named by `title` (or the object's
- * own name), and title="" makes it decorative.
+ * A seeded drawing from the object library, or a scene. Same seed, same drawing on the server and in the browser. Its
+ * first take is named by `title` (or the object's own name), and title="" makes it decorative. Line boil cycles three
+ * takes where data-boil allows: the server sends the first, and the browser draws the other two where boil can show
+ * them (drawing-takes.ts); a drawing drawn in the browser, as after a reroll, has all three at once.
  */
 export function Drawing({
   object,
@@ -66,7 +68,7 @@ export function Drawing({
       seed,
       hand,
       title,
-      takes: still ? 1 : 3,
+      takes: still || typeof window === "undefined" ? 1 : 3,
     })
     // A drawing that is drawn on waits undrawn from the first paint, so the server's copy never flashes first.
     return svg
@@ -82,6 +84,9 @@ export function Drawing({
     const el = inner.current
     return drawOnView && el ? drawWhenSeen(el) : undefined
   }, [drawOnView, html])
+  useEffect(() => {
+    if (!still && inner.current) boilTakes(inner.current)
+  }, [still])
   return (
     <span
       // A caller's ref is kept beside the drawing's own, which drawOnView needs.
@@ -93,6 +98,9 @@ export function Drawing({
       data-slot="drawing"
       data-object={object}
       data-scene={scene}
+      // What the browser needs to draw the other takes (drawing-takes.ts).
+      data-seed={still ? undefined : String(seed)}
+      data-hand={hand}
       className={cn("fl-takes", className)}
       // Kept markup is left as the server sent it: React does not compare inner HTML when it hydrates.
       dangerouslySetInnerHTML={{ __html: own(html) }}

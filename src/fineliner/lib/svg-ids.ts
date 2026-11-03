@@ -1,4 +1,5 @@
 import { useCallback, useId } from "react"
+import { ownIds } from "./own-ids"
 
 /**
  * Pen markup names its masks from the seed, so two copies of the same drawing on one page share ids, and when the
@@ -7,17 +8,5 @@ import { useCallback, useId } from "react"
  */
 export function useOwnIds(): (markup: string) => string {
   const suffix = useId().replace(/[^\w-]/g, "")
-  return useCallback(
-    (markup: string) => {
-      const ids = [...markup.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1])
-      if (ids.length === 0) return markup
-      const own = new Set(ids)
-      return markup.replace(
-        /(\sid="|url\(#|href="#)([^")]+)/g,
-        (match, lead: string, id: string) =>
-          own.has(id) ? `${lead}${id}-${suffix}` : match,
-      )
-    },
-    [suffix],
-  )
+  return useCallback((markup: string) => ownIds(markup, suffix), [suffix])
 }

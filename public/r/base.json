@@ -26,8 +26,14 @@
       "target": "~/src/fineliner/lib/frame-style.ts"
     },
     {
+      "path": "src/fineliner/lib/own-ids.ts",
+      "content": "// No React here: drawing-takes.ts uses this on pages that run no React.\n\n/** Every id the markup declares, and every reference to one, with `-suffix` added. */\nexport function ownIds(markup: string, suffix: string) {\n  const ids = [...markup.matchAll(/\\sid=\"([^\"]+)\"/g)].map((m) => m[1])\n  if (ids.length === 0) return markup\n  const own = new Set(ids)\n  return markup.replace(\n    /(\\sid=\"|url\\(#|href=\"#)([^\")]+)/g,\n    (match, lead: string, id: string) =>\n      own.has(id) ? `${lead}${id}-${suffix}` : match,\n  )\n}\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/lib/own-ids.ts"
+    },
+    {
       "path": "src/fineliner/lib/svg-ids.ts",
-      "content": "import { useCallback, useId } from \"react\"\n\n/**\n * Pen markup names its masks from the seed, so two copies of the same drawing on one page share ids, and when the\n * first copy is hidden (display: none) the second loses its masks. This gives every id the markup declares a suffix\n * of this instance's own, and points its references at it.\n */\nexport function useOwnIds(): (markup: string) => string {\n  const suffix = useId().replace(/[^\\w-]/g, \"\")\n  return useCallback(\n    (markup: string) => {\n      const ids = [...markup.matchAll(/\\sid=\"([^\"]+)\"/g)].map((m) => m[1])\n      if (ids.length === 0) return markup\n      const own = new Set(ids)\n      return markup.replace(\n        /(\\sid=\"|url\\(#|href=\"#)([^\")]+)/g,\n        (match, lead: string, id: string) =>\n          own.has(id) ? `${lead}${id}-${suffix}` : match,\n      )\n    },\n    [suffix],\n  )\n}\n",
+      "content": "import { useCallback, useId } from \"react\"\nimport { ownIds } from \"./own-ids\"\n\n/**\n * Pen markup names its masks from the seed, so two copies of the same drawing on one page share ids, and when the\n * first copy is hidden (display: none) the second loses its masks. This gives every id the markup declares a suffix\n * of this instance's own, and points its references at it.\n */\nexport function useOwnIds(): (markup: string) => string {\n  const suffix = useId().replace(/[^\\w-]/g, \"\")\n  return useCallback((markup: string) => ownIds(markup, suffix), [suffix])\n}\n",
       "type": "registry:file",
       "target": "~/src/fineliner/lib/svg-ids.ts"
     },

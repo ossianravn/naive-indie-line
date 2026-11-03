@@ -58,5 +58,10 @@ const shareImage = new URL("/og/listening-room.png", Astro.site ?? Astro.url)
         <slot />
       </main>
     )}
+    <script>
+      // Drawings rendered at build time carry their first take; this draws the others where line boil shows them.
+      import { boilTakesIn } from "@/fineliner/drawing/drawing-takes"
+      boilTakesIn()
+    </script>
   </body>
 </html>

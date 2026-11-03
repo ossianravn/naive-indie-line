@@ -1,6 +1,6 @@
 // drawing(): an object or a scene as SVG, once or as several takes. Takes are the same composition drawn with another
-// pen each (line boil and settling); CSS cycles them, so a server-rendered page boils without a script. Only the
-// first take is named for screen readers; the others are decorative copies.
+// pen each (line boil and settling); CSS cycles them. Only the first take is named for screen readers; the others are
+// decorative copies, which a page can draw later, where boil shows them (`from`).
 import { getObject, tile } from "./library"
 import { SCENES, type SceneName } from "./scenes"
 import type { HandName } from "./stroke"
@@ -15,6 +15,8 @@ export interface DrawingOptions {
   hand?: HandName
   /** 1 for a still drawing; 3 for line boil and settling. */
   takes?: number
+  /** The first take to draw, to add the others to a drawing that has its first. */
+  from?: number
   /** The accessible name. Defaults to the object's or scene's own; pass "" for a decorative drawing. */
   title?: string
 }
@@ -26,11 +28,12 @@ export function drawing({
   seed,
   hand = "lively",
   takes = 1,
+  from = 0,
   title,
 }: DrawingOptions): string[] {
   const key = String(seed)
   const out: string[] = []
-  for (let take = 0; take < Math.max(1, takes); take++) {
+  for (let take = from; take < Math.max(1, takes); take++) {
     const named = take === 0 ? title : ""
     if (scene) {
       const sc = SCENES[scene]

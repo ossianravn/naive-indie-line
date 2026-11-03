@@ -22,25 +22,25 @@ Target: WCAG 2.2 AA for every component and every shipped workflow, on every sto
 
 ## Performance
 
-The kit renders on the server and hydrates only what moves or is chosen. Drawings are inline SVG drawn at build time; line boil swaps three takes by opacity in CSS, so nothing redraws in script, and a hydrating drawing keeps the server's markup. The paper's filtered grain lies on a fixed layer of its own, so nothing on the page repaints it.
+The kit renders on the server and hydrates only what moves or is chosen. Drawings are inline SVG drawn at build time; line boil swaps three takes by opacity in CSS; the page carries each drawing's first take, and the browser draws the other two only where boil can show them. A hydrating drawing keeps the server's markup. The paper's filtered grain lies on a fixed layer of its own, so nothing on the page repaints it.
 
 Measured 2026-11-03: sizes gzipped (unpacked in brackets), speed in Chrome.
 
 | Measure                            | Result                                                                                                       |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | A component docs page's JavaScript | 129 KB for the island runtime and host, plus the page's own demo chunk (was 566 KB, every demo, before v0.1) |
-| Components index                   | 84 KB of HTML (653 KB), no JavaScript                                                                        |
-| Home page                          | 120 KB of HTML (915 KB; 3.9 MB before masks took only the blanks that reach them)                            |
-| Specimen                           | 238 KB of HTML (1.8 MB; was 8 MB); about 0.5–0.75 s blocking at 4× CPU, mostly parsing                       |
-| Theme studio                       | 82 KB of HTML (637 KB)                                                                                       |
-| Listening Room catalogue           | 67 KB of HTML (415 KB)                                                                                       |
-| The drawing library                | 198 KB of HTML (1.4 MB, 57 objects in three takes), no JavaScript                                            |
+| Components index                   | 72 KB of HTML (579 KB), no JavaScript                                                                        |
+| Home page                          | 55 KB of HTML (423 KB; was 3.9 MB, before masks took only the blanks that reach them and pages one take)     |
+| Specimen                           | 103 KB of HTML (704 KB; was 8 MB)                                                                            |
+| Theme studio                       | 39 KB of HTML (289 KB)                                                                                       |
+| Listening Room catalogue           | 33 KB of HTML (215 KB)                                                                                       |
+| The drawing library                | 75 KB of HTML (485 KB, 57 objects), plus the pen engine (23 KB) where boil shows the other takes             |
 | Stylesheet                         | 51 KB with the paper textures; Line Sans loads beside it from `/fonts/` (74 KB, preloaded)                   |
 | A collapsible opening              | No frame over 17 ms in Chrome with the GPU (one frame in three took 100 ms while the paper repainted)        |
 | A 200-row table                    | No frame over 20 ms while scrolling at 1× CPU; two or three 33 ms frames at 4× (headless Chromium)           |
 | Share images                       | 91 PNGs at 1200 × 630, about 31 KB each, drawn at build time                                                 |
 
-Known heavy pages: the record sleeve and room header docs pages (201 KB and 213 KB of HTML), whose demos draw many large drawings in three takes. A drawing that never boils can pass `still` to ship one take instead of three; most of what the long pages still weigh is the second and third takes, which only line boil shows.
+Known heavy pages: the record sleeve and room header docs pages (83 KB and 79 KB of HTML), whose demos draw many large drawings. A drawing that never boils can pass `still`, so the browser never draws its other takes.
 
 ## Where v0.1 stands
 

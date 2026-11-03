@@ -103,5 +103,10 @@ const NAV = [
       ></div>
       <p class="label m-0">Fineliner · MIT · drawn with one pen</p>
     </footer>
+    <script>
+      // Drawings rendered at build time carry their first take; this draws the others where line boil shows them.
+      import { boilTakesIn } from "@/fineliner/drawing/drawing-takes"
+      boilTakesIn()
+    </script>
   </body>
 </html>

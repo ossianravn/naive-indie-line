@@ -38,7 +38,7 @@ tests/consumer/           # the registry install contract
 
 ### Takes
 
-A take is the same drawing with another pen: the pen forks by `take:n` while the composition streams stay put, so takes differ only in the line. `<Drawing>` renders three takes stacked in a `.fl-takes` span; `styles/drawing.css` cycles them for line boil (`data-boil`, nearest element wins) and `settleDrawing()` plays them once after a reroll. Only the first take is named for screen readers.
+A take is the same drawing with another pen: the pen forks by `take:n` while the composition streams stay put, so takes differ only in the line. Three takes stack in a `.fl-takes` span; `styles/drawing.css` cycles them for line boil (`data-boil`, nearest element wins) and `settleDrawing()` plays them once after a reroll. Only the first take is named for screen readers. The server sends only the first take, so a page carries each drawing once (decided 2026-11-03: the other two were most of what the long pages weighed). `drawing-takes.ts` draws the second and third in the browser where boil can show them: in idle time, one take at a time, for drawings in view when boil runs always or on hover (the default) with a pointer that can hover, and both at once under the pointer. With boil off, under reduced motion, or on a phone without hover they are never drawn, and the pen engine (23 KB gzipped) never loads. `<Drawing>` registers itself; a page whose drawings render without React in the browser calls `boilTakesIn()` once (the site's layouts do). The `<span>` carries `data-seed`, `data-object` or `data-scene`, and `data-hand` for this; `still` leaves the seed off. A drawing drawn in the browser, as after a reroll, has all three takes at once.
 
 ### Determinism rules
 
