@@ -3,8 +3,8 @@
 
 /* The drawing's box is a default the call site sizes (w-20, [&>svg]:h-6), so it sits in a layer below utilities. */
 @layer components {
-  /* Lettering set in Naïve Indie Line Sans: display lines sit close. A caller's leading-* still wins (no specificity). */
-  :where([data-slot="lettering"]:is([data-face="line"], [data-face="inline"])) {
+  /* Lettering in the pen's typefaces: display lines sit close. A caller's leading-* still wins (no specificity). */
+  :where([data-slot="lettering"]) {
     line-height: 1.1;
   }
   /* Naïve Indie Inline: the outlines in the pen, its Fill font laid under them in the wash. Both fonts shape a line

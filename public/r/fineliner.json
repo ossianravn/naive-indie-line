@@ -37,6 +37,7 @@
     "@fineliner/empty",
     "@fineliner/field",
     "@fineliner/font-inline",
+    "@fineliner/font-tramline",
     "@fineliner/hand-note",
     "@fineliner/hover-card",
     "@fineliner/input",

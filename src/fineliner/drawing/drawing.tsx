@@ -1,6 +1,13 @@
 "use client"
 
-import { useEffect, useMemo, useRef, type ComponentProps } from "react"
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ComponentProps,
+} from "react"
 import { drawing, type DrawingOptions } from "@/fineliner/pen"
 import { cn } from "@/fineliner/lib/utils"
 import { drawWhenSeen } from "./drawing-motion"
@@ -15,6 +22,8 @@ export interface DrawingProps
   /** Draw it on, stroke by stroke, the first time it comes into view. For rare moments: a hero, an empty state. */
   drawOnView?: boolean
 }
+
+const never = () => () => {}
 
 /**
  * A seeded drawing from the object library, or a scene. Same seed, same drawing on the server and in the browser. It
@@ -34,7 +43,23 @@ export function Drawing({
   ...props
 }: DrawingProps) {
   const own = useOwnIds()
+  // True on the server and while React hydrates the server's markup; false in a browser render.
+  const hydrating = useSyncExternalStore(
+    never,
+    () => false,
+    () => true,
+  )
+  // The server's markup is already this drawing, so hydration keeps it instead of drawing every take again (a scene
+  // is a few hundred milliseconds of work on a phone). The pen draws in the browser once a prop changes.
+  const asked = [object, scene, seed, hand, title, still, drawOnView].join("|")
+  const [served] = useState(() =>
+    hydrating && typeof window !== "undefined" ? asked : null,
+  )
+  const [moved, setMoved] = useState(false)
+  if (served !== null && asked !== served && !moved) setMoved(true)
+  const keep = !moved && asked === served
   const html = useMemo(() => {
+    if (keep) return ""
     const svg = drawing({
       object,
       scene,
@@ -51,7 +76,7 @@ export function Drawing({
           : s,
       )
       .join("")
-  }, [object, scene, seed, hand, title, still, drawOnView])
+  }, [keep, object, scene, seed, hand, title, still, drawOnView])
   const inner = useRef<HTMLSpanElement | null>(null)
   useEffect(() => {
     const el = inner.current
@@ -69,7 +94,9 @@ export function Drawing({
       data-object={object}
       data-scene={scene}
       className={cn("fl-takes", className)}
+      // Kept markup is left as the server sent it: React does not compare inner HTML when it hydrates.
       dangerouslySetInnerHTML={{ __html: own(html) }}
+      suppressHydrationWarning
       {...props}
     />
   )

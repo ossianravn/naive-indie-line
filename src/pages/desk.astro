@@ -3,9 +3,9 @@
 import Base from "@/site/layouts/base.astro"
 import PageHeader from "@/site/layouts/page-header.astro"
 import { Desk } from "@/site/desk/desk"
-import { FACES, SCENES, listObjects } from "@/fineliner/pen"
+import { SCENES, listObjects } from "@/fineliner/pen"
 
-const counts = `${listObjects().length} objects, ${Object.keys(SCENES).length} scenes, ${Object.keys(FACES).length} faces`
+const counts = `${listObjects().length} objects, ${Object.keys(SCENES).length} scenes and lettering`
 ---
 
 <Base

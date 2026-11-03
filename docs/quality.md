@@ -22,21 +22,25 @@ Target: WCAG 2.2 AA for every component and every shipped workflow, on every sto
 
 ## Performance
 
-The kit renders on the server and hydrates only what moves or is chosen. Drawings are inline SVG drawn at build time; line boil swaps three takes by opacity in CSS, so nothing redraws in script.
+The kit renders on the server and hydrates only what moves or is chosen. Drawings are inline SVG drawn at build time; line boil swaps three takes by opacity in CSS, so nothing redraws in script, and a hydrating drawing keeps the server's markup. The paper's filtered grain lies on a fixed layer of its own, so nothing on the page repaints it.
 
-| Measure (v0.1 build, gzipped)      | Result                                                                                                       |
+Measured 2026-11-03: sizes gzipped (unpacked in brackets), speed in Chrome.
+
+| Measure                            | Result                                                                                                       |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | A component docs page's JavaScript | 129 KB for the island runtime and host, plus the page's own demo chunk (was 566 KB, every demo, before v0.1) |
-| Components index                   | 161 KB of HTML (a server-rendered preview of each of 76 parts), no JavaScript; was 17 KB as a list           |
-| Home page                          | 197 KB of HTML (the hero scene, a shelf of drawings and the index, three takes each), 258 KB of JavaScript   |
-| Theme studio                       | 133 KB of HTML, 264 KB of JavaScript                                                                         |
-| Listening Room catalogue           | 115 KB of HTML, 213 KB of JavaScript                                                                         |
-| The drawing library                | 294 KB of HTML (165 drawings, three takes each), no JavaScript                                               |
-| Stylesheet                         | 50 KB, including the generated paper textures                                                                |
+| Components index                   | 84 KB of HTML (653 KB), no JavaScript                                                                        |
+| Home page                          | 120 KB of HTML (915 KB; 3.9 MB before masks took only the blanks that reach them)                            |
+| Specimen                           | 238 KB of HTML (1.8 MB; was 8 MB); about 0.5–0.75 s blocking at 4× CPU, mostly parsing                       |
+| Theme studio                       | 82 KB of HTML (637 KB)                                                                                       |
+| Listening Room catalogue           | 67 KB of HTML (415 KB)                                                                                       |
+| The drawing library                | 198 KB of HTML (1.4 MB, 57 objects in three takes), no JavaScript                                            |
+| Stylesheet                         | 51 KB with the paper textures; Line Sans loads beside it from `/fonts/` (74 KB, preloaded)                   |
+| A collapsible opening              | No frame over 17 ms in Chrome with the GPU (one frame in three took 100 ms while the paper repainted)        |
 | A 200-row table                    | No frame over 20 ms while scrolling at 1× CPU; two or three 33 ms frames at 4× (headless Chromium)           |
 | Share images                       | 91 PNGs at 1200 × 630, about 31 KB each, drawn at build time                                                 |
 
-Known heavy pages: the record sleeve and room header docs pages (648 KB and 440 KB of HTML), whose demos draw many large drawings in three takes. A drawing that never boils can pass `still` to ship one take instead of three.
+Known heavy pages: the record sleeve and room header docs pages (201 KB and 213 KB of HTML), whose demos draw many large drawings in three takes. A drawing that never boils can pass `still` to ship one take instead of three; most of what the long pages still weigh is the second and third takes, which only line boil shows.
 
 ## Where v0.1 stands
 

@@ -13,6 +13,7 @@
   /* Naïve Indie Inline and its tint, from inline.generated.css, which a project imports when it uses the face. */
   --face-inline: "Naïve Indie Inline", var(--face-line);
   --face-inline-fill: "Naïve Indie Inline Fill";
+  --face-tramline: "Naïve Indie Tramline", var(--face-line);
   --face-ui: var(--face-read);
 
   /* Labels: the reading serif in tracked small caps, as on the reference label. data-labels="type" switches them to

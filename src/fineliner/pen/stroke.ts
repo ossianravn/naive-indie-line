@@ -2,6 +2,7 @@
 // draws the same line. Ported from the prototype in specimen/pen.js, with Patina's cross-engine rules: inputs are
 // snapped before they decide a count or a random draw, and no ** or Math.pow.
 import { dist, last, length, snap, type Point } from "./geometry"
+import { pathOf } from "./path"
 import { fork, prng, seedOf } from "./seed"
 
 export type HandName = "calm" | "lively"
@@ -14,8 +15,6 @@ export const HANDS = {
   calm: { amp: 0.35, wave: 60, tremor: 0.08, over: 1.2, loop: 0.12 },
   lively: { amp: 1.1, wave: 40, tremor: 0.18, over: 4.5, loop: 0.45 },
 } as const
-
-const r1 = (n: number) => Math.round(n * 10) / 10
 
 /** Slow 1D noise along a line: random offsets at knots `wave` apart, eased between them. */
 export function noise(
@@ -57,13 +56,6 @@ export function resample(points: Point[], step: number): Sample[] {
     s += len
   }
   return out
-}
-
-function toPath(points: Point[], closed = false) {
-  const d = points
-    .map(([x, y], i) => `${i ? "L" : "M"}${r1(x)} ${r1(y)}`)
-    .join("")
-  return closed ? `${d}Z` : d
 }
 
 export interface Pen {
@@ -158,13 +150,13 @@ export function pen(
   return {
     hand: handName,
     next: rand,
-    line: (a, b) => toPath(trace(overshoot([a, b]))),
-    path: (points) => toPath(trace(overshoot(points))),
+    line: (a, b) => pathOf(trace(overshoot([a, b]))),
+    path: (points) => pathOf(trace(overshoot(points))),
     edges(points, closed = true) {
       const ring = closed ? [...points, points[0] as Point] : points
       let d = ""
       for (let i = 1; i < ring.length; i++)
-        d += toPath(trace(overshoot([ring[i - 1] as Point, ring[i] as Point])))
+        d += pathOf(trace(overshoot([ring[i - 1] as Point, ring[i] as Point])))
       return d
     },
     // The loop starts and ends halfway along its first edge: started in a corner, the two ends would be pushed off
@@ -173,16 +165,16 @@ export function pen(
       const first = points[0] as Point
       const [a, b] = [first, (points[1] ?? first) as Point]
       const mid: Point = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]
-      return toPath(trace([mid, ...points.slice(1), first, mid], true), true)
+      return pathOf(trace([mid, ...points.slice(1), first, mid], true), true)
     },
     ring(c, u, v = [0, u[0]]) {
       const from = between(0, Math.PI * 2)
       const turn = Math.PI * 2 + between(0.3, 1) * hand.loop
-      return toPath(trace(round(c, u, v, from, turn)))
+      return pathOf(trace(round(c, u, v, from, turn)))
     },
     disc(c, u, v = [0, u[0]]) {
       const pts = round(c, u, v, between(0, Math.PI * 2), Math.PI * 2)
-      return toPath(trace([...pts.slice(0, -1), pts[0] as Point], true), true)
+      return pathOf(trace([...pts.slice(0, -1), pts[0] as Point], true), true)
     },
     round,
   }

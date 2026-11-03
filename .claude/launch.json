@@ -8,6 +8,12 @@
       "port": 4791
     },
     {
+      "name": "preview",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "preview", "--", "--port", "4792"],
+      "port": 4792
+    },
+    {
       "name": "prototype",
       "runtimeExecutable": "python",
       "runtimeArgs": ["-m", "http.server", "4790", "--bind", "127.0.0.1"],

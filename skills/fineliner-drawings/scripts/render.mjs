@@ -206,11 +206,12 @@ function outside(svg) {
   const body = svg.replace(/<defs>[\s\S]*?<\/defs>/, "")
   const xs = []
   const ys = []
-  for (const [, d] of body.matchAll(/ d="([^"]+)"/g))
-    for (const [, x, y] of d.matchAll(/[ML](-?[\d.]+) (-?[\d.]+)/g)) {
-      xs.push(Number(x))
-      ys.push(Number(y))
-    }
+  for (const [, d] of body.matchAll(/ d="([^"]+)"/g)) {
+    const box = pen.pathBox(d)
+    if (!box) continue
+    xs.push(box[0], box[2])
+    ys.push(box[1], box[3])
+  }
   if (!xs.length) return ""
   const box = [
     Math.min(...xs),

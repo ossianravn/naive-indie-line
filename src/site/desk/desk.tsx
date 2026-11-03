@@ -1,11 +1,11 @@
 "use client"
 
 // The drawing desk: choose an object, a scene or a line of lettering, reroll its seed until it is right, then take
-// the seed, the JSX or the SVG. The seed travels in the URL, so a drawing can be shared.
+// the seed, the code or the SVG. The seed travels in the URL, so a drawing can be shared. Lettering here is drawn by
+// the pen from its seed (lettering() in the engine), not set in the Tramline font.
 import { useEffect, useRef, useState } from "react"
 import { Drawing } from "@/fineliner/drawing/drawing"
 import { settleDrawing } from "@/fineliner/drawing/drawing-motion"
-import { Lettering } from "@/fineliner/drawing/lettering"
 import { PenMark } from "@/fineliner/drawing/pen-mark"
 import {
   COLLECTIONS,
@@ -75,7 +75,7 @@ export function Desk() {
         }))[0] ?? ""
   const jsx =
     kind === "lettering"
-      ? `<Lettering text="${text}" face="tramline" seed="${seed}" />`
+      ? `lettering(${JSON.stringify(text)}, { seed: "${seed}" })`
       : kind === "scene"
         ? `<Drawing scene="${scene}" seed="${seed}" />`
         : `<Drawing object="${object}" seed="${seed}" />`
@@ -86,12 +86,12 @@ export function Desk() {
   const neighbours = [1, 2, 3, 4].map((n) => `${seed}-${n}`)
   const show = (s: string, className = "") =>
     kind === "lettering" ? (
-      <Lettering
-        text={text}
-        face="tramline"
-        seed={s}
-        hand={hand}
-        className={className}
+      // The first take names itself by the text.
+      <span
+        className={`fl-takes ${className}`}
+        dangerouslySetInnerHTML={{
+          __html: lettering(text, { seed: s, hand, takes: 3 }).join(""),
+        }}
       />
     ) : (
       <Drawing
@@ -234,9 +234,9 @@ export function Desk() {
               type="button"
               className="frame h-control px-tight text-small"
               style={frame("desk-copy-jsx")}
-              onClick={() => copy("JSX", jsx)}
+              onClick={() => copy(kind === "lettering" ? "code" : "JSX", jsx)}
             >
-              Copy JSX
+              {kind === "lettering" ? "Copy code" : "Copy JSX"}
             </button>
             <button
               type="button"

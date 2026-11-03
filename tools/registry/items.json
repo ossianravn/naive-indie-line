@@ -1,6 +1,7 @@
 {
   "groups": {
     "font-inline": ["styles/inline.generated.css"],
+    "font-tramline": ["styles/tramline.generated.css"],
     "base": [
       "lib/",
       "styles/",
@@ -32,6 +33,7 @@
     "pen": "The pen engine, framework-free: seeded strokes, shapes and sheets, the object library with every collection, scenes, lettering and pen marks, as SVG strings on a server, at build time or in the browser.",
     "drawing": "Drawing, Lettering and PenMark: objects, scenes, words and marks drawn by the pen from their seeds as inline SVG, with line boil and draw-on.",
     "font-inline": "Naïve Indie Inline and its Fill, embedded in one stylesheet: import it once (@import \"./fineliner/styles/inline.generated.css\") to letter with <Lettering face=\"inline\">.",
+    "font-tramline": "Naïve Indie Tramline, embedded in one stylesheet: import it once (@import \"./fineliner/styles/tramline.generated.css\") to letter with <Lettering face=\"tramline\">.",
     "drawing-skill": "A skill for your coding agent (Claude Code, Codex and others): it draws new objects, people and scenes for your project in the pen's style, registers them from your own module, and renders them large to check them. Installs into .claude/skills and .agents/skills.",
     "fineliner": "Every part of Fineliner: the base, the pen engine and every component. Blocks are sample pages, so they install one at a time.",
     "chart": "Recharts drawn with the page's one pen: drawnBar, drawnCurve, drawnDot and drawnSector draw strokes through the exact data points, and series are told apart by solid, outline, dotted and lined marks rather than colour.",

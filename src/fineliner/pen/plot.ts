@@ -2,10 +2,9 @@
 // exactly on its value, so here the wobble fades to nothing at each point and lives only on the stretch between two:
 // the pen still draws the line, and the data does not move. Same cross-engine rules as the stroke engine.
 import { dist, snap, type Point } from "./geometry"
+import { pathOf } from "./path"
 import { fork, prng, seedOf } from "./seed"
 import { HANDS, noise, resample, type HandName } from "./stroke"
-
-const r1 = (n: number) => Math.round(n * 10) / 10
 
 export interface Plot {
   /**
@@ -43,9 +42,6 @@ export function plot(seed: string | number, handName: HandName = "calm"): Plot {
     })
   }
 
-  const toPath = (points: Point[]) =>
-    points.map(([x, y], i) => `${i ? "L" : "M"}${r1(x)} ${r1(y)}`).join("")
-
   function through(runs: Point[][]): Point[] {
     const out: Point[] = []
     for (const points of runs) {
@@ -58,7 +54,7 @@ export function plot(seed: string | number, handName: HandName = "calm"): Plot {
 
   return {
     through,
-    path: (runs) => toPath(through(runs)),
+    path: (runs) => pathOf(through(runs)),
     edges(corners, closed = true) {
       const ring = closed ? [...corners, corners[0] as Point] : corners
       let d = ""
@@ -73,7 +69,7 @@ export function plot(seed: string | number, handName: HandName = "calm"): Plot {
             from[1] + ((from[1] - to[1]) / len) * o,
           ]
         }
-        d += toPath([past(a, b), ...run([a, b]), past(b, a)])
+        d += pathOf([past(a, b), ...run([a, b]), past(b, a)])
       }
       return d
     },

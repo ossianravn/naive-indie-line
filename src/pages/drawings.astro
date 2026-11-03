@@ -1,5 +1,6 @@
 ---
-// The object library: every drawing object by collection, rendered at build time. Hover one to see it boil.
+// The object library: every drawing object by collection, rendered at build time. Hover one to see it boil; each opens
+// at the desk with the same seed, so the desk starts from the drawing that was chosen.
 // Each row of a collection's grid is two shared tracks, drawings then names: the drawings stand on one line and the
 // names start on the next, whatever each drawing's height or each name's length.
 import Base from "@/site/layouts/base.astro"
@@ -30,14 +31,21 @@ const total = listObjects().length
         </h2>
         <ul class="m-0 grid list-none grid-cols-3 gap-x-snug gap-y-line p-0 sm:grid-cols-[repeat(auto-fill,minmax(9rem,1fr))] sm:gap-x-line">
           {listObjects(key).map((o) => (
-            <li class="row-span-2 grid grid-rows-subgrid justify-items-center gap-y-tight">
-              <Drawing
-                object={o.id}
-                seed={seed}
-                title=""
-                className="w-full self-end [&>svg]:max-h-44"
-              />
-              <span class="label self-start text-center">{o.name}</span>
+            <li class="row-span-2 grid grid-rows-subgrid">
+              <a
+                href={`/desk?seed=${seed}&object=${o.id}`}
+                class="group row-span-2 grid grid-rows-subgrid justify-items-center gap-y-tight no-underline"
+              >
+                <Drawing
+                  object={o.id}
+                  seed={seed}
+                  title=""
+                  className="w-full self-end [&>svg]:max-h-44"
+                />
+                <span class="label self-start text-center decoration-1 underline-offset-[0.2em] group-hover:underline">
+                  {o.name}
+                </span>
+              </a>
             </li>
           ))}
         </ul>

@@ -52,14 +52,14 @@ export interface RecordSleeveProps extends Omit<
 > {
   title: string
   artist: string
-  /** The catalogue number, set up the spine. It seeds the cover, the letters and the disc. */
+  /** The catalogue number, set up the spine. It seeds the cover and the disc. */
   catalogue: string
   size?: keyof typeof SIZES
   /** The cover's drawing; the catalogue number picks one when left out. */
   object?: string
   /** A whole scene on the cover in place of an object. */
   scene?: SceneName
-  /** The title's face: "line" (Naïve Indie Line Sans, as text, the default) or "tramline" (drawn by the pen). */
+  /** The title's face: "line" (Naïve Indie Line Sans, the default), "inline" or "tramline" (import their stylesheets once). */
   face?: LetteringFace
   /** The pen's hand. Left out, the sleeve follows the page's hand. */
   hand?: HandName
@@ -128,23 +128,8 @@ export function RecordSleeve({
     <span className="line-clamp-3 font-read text-[0.8125rem] leading-tight tracking-[0.04em] uppercase group-data-[size=lg]/record-sleeve:text-body group-data-[size=md]/record-sleeve:text-small">
       {title}
     </span>
-  ) : letters === "line" ? (
-    <Lettering text={title} className="text-balance" />
   ) : (
-    <>
-      <span className="sr-only">{title}</span>
-      {words.map((w, i) => (
-        <Lettering
-          key={`${w}:${i}`}
-          aria-hidden="true"
-          text={w}
-          face={letters}
-          seed={`${key}:${i}`}
-          hand={hand}
-          className="h-(--word) max-w-full [&>svg]:h-full [&>svg]:w-auto [&>svg]:max-w-full"
-        />
-      ))}
-    </>
+    <Lettering text={title} face={letters} className="text-balance" />
   )
   const titleClass =
     "flex min-w-0 flex-wrap items-center gap-x-[0.3em] gap-y-[0.15em] text-(length:--word)"

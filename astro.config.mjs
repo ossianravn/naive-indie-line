@@ -36,6 +36,25 @@ const touchNewFiles = {
   },
 }
 
+/**
+ * Build only. The kit embeds Naïve Indie Line Sans in its stylesheet so an install needs no font files; the site serves
+ * the file instead (preloaded in the layouts), so 74 KB of font loads beside the stylesheet rather than inside it, where
+ * it would hold back the first paint.
+ * @type {import("vite").Plugin}
+ */
+const lineSansFromFile = {
+  name: "fineliner:line-sans-from-file",
+  apply: "build",
+  generateBundle(_, bundle) {
+    for (const file of Object.values(bundle))
+      if (file.type === "asset" && file.fileName.endsWith(".css"))
+        file.source = String(file.source).replace(
+          /(font-family:\s*"?Naïve Indie Line Sans"?;[^}]*?)url\(data:font\/woff2;base64,[^)]+\)/,
+          '$1url("/fonts/naive-indie-line-sans.woff2")',
+        )
+  },
+}
+
 export default defineConfig({
   // The canonical URL, for absolute share-image links and the registry address; SITE_URL overrides it.
   site: process.env.SITE_URL || "https://naiveindieline.com",
@@ -48,5 +67,5 @@ export default defineConfig({
   build: { format: "directory" },
   integrations: [react()],
   devToolbar: { enabled: false },
-  vite: { plugins: [tailwindcss(), touchNewFiles] },
+  vite: { plugins: [tailwindcss(), touchNewFiles, lineSansFromFile] },
 })

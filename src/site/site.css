@@ -1,6 +1,6 @@
-/* Site-only pieces: the drawing desk's segmented settings, from before the kit had a toggle group, and the Inline
-   fonts from their files, so a page that does not use them does not load them. A project using the kit imports
-   styles/inline.generated.css, which carries them inside it, instead. */
+/* Site-only pieces: the drawing desk's segmented settings, from before the kit had a toggle group, and the Inline and
+   Tramline fonts from their files, so a page that does not use them does not load them. A project using the kit
+   imports styles/inline.generated.css and styles/tramline.generated.css, which carry them inside, instead. */
 
 @font-face {
   font-family: "Naïve Indie Inline";
@@ -11,6 +11,11 @@
   font-family: "Naïve Indie Inline Fill";
   font-display: swap;
   src: url("/fonts/naive-indie-inline-fill.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Naïve Indie Tramline";
+  font-display: swap;
+  src: url("/fonts/naive-indie-tramline.woff2") format("woff2");
 }
 
 .segmented {

@@ -1,26 +1,48 @@
 /* Page-level defaults: the paper, the reading voice, links, focus, scrollbars and the accessibility fallbacks. */
 
-/* The paper's layers stack at their own tile sizes, which share no factors, so the paper never visibly repeats. */
+/* The paper's layers stack at their own tile sizes, which share no factors, so the paper never visibly repeats. The
+   page lays them in two parts: the grain (tooth, relief, mottle), whose filters are slow to paint, lies still on a
+   layer of its own under the page, painted once rather than wherever something on the page changes; the specks
+   (flecks, fibres) lie over it on the body and travel with the page. Small surfaces (menus, a sticky table head) take
+   the whole stack. */
 :root {
-  --paper-texture:
-    var(--tex-flecks), var(--tex-fibres), var(--tex-tooth), var(--tex-relief),
-    var(--tex-mottle);
-  --paper-texture-size: 719px, 613px, 353px, 541px, 1201px;
+  --paper-specks: var(--tex-flecks), var(--tex-fibres);
+  --paper-specks-size: 719px, 613px;
+  --paper-grain: var(--tex-tooth), var(--tex-relief), var(--tex-mottle);
+  --paper-grain-size: 353px, 541px, 1201px;
+  --paper-texture: var(--paper-specks), var(--paper-grain);
+  --paper-texture-size: var(--paper-specks-size), var(--paper-grain-size);
 }
 
 @layer base {
-  /* The paper lies on the root, so it fills the whole window however short the page; the stable gutter keeps the
-     page from shifting sideways between pages that scroll and pages that don't. */
+  /* The paper's colour lies on the root, so it fills the whole window however short the page; the stable gutter keeps
+     the page from shifting sideways between pages that scroll and pages that don't. */
   html {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
     scrollbar-gutter: stable;
     background-color: var(--paper);
-    background-image: var(--paper-texture);
-    background-size: var(--paper-texture-size);
+  }
+  /* The grain, as tall as the largest viewport, so a phone's toolbar sliding away never resizes it. */
+  html::before {
+    content: "";
+    position: fixed;
+    inset: 0 0 auto;
+    height: 100vh;
+    height: 100lvh;
+    z-index: -1;
+    pointer-events: none;
+    background-image: var(--paper-grain);
+    background-size: var(--paper-grain-size);
+    will-change: transform;
   }
 
+  /* The specks, at least a window tall, so they reach the bottom of a short page. */
   body {
+    min-height: 100vh;
+    min-height: 100svh;
+    background-image: var(--paper-specks);
+    background-size: var(--paper-specks-size);
     margin: 0;
     color: var(--pen);
     font-family: var(--face-ui);
@@ -115,7 +137,8 @@
 /* More contrast asked for: flat paper and steady lines. */
 @media (prefers-contrast: more) {
   :root {
-    --paper-texture: none;
+    --paper-specks: none;
+    --paper-grain: none;
     --over: 0px;
     --wob-1: none;
     --wob-2: none;
@@ -129,6 +152,7 @@
 /* Forced colours: the paper gives way to system colours, and frames to plain borders. */
 @media (forced-colors: active) {
   :root {
-    --paper-texture: none;
+    --paper-specks: none;
+    --paper-grain: none;
   }
 }

@@ -43,11 +43,11 @@ export interface LabelCardProps extends Omit<ComponentProps<"div">, "title"> {
   scene?: SceneName
   /** A picture of your own in place of a drawing, or false for a label without one. */
   art?: ReactNode | false
-  /** Letter the title: "line" sets it in Naïve Indie Line Sans, "tramline" draws it; the reading face when left out. */
+  /** Letter the title in Naïve Indie Line Sans ("line"), Inline or Tramline; the reading face when left out. */
   face?: LetteringFace
-  /** Same seed, same drawing, border and letters. Defaults to the title's words. */
+  /** Same seed, same drawing and border. Defaults to the title's words. */
   seed?: string | number
-  /** The pen's hand for the drawing and the letters. */
+  /** The pen's hand for the drawing. */
   hand?: HandName
   /** Makes the whole label a link to this address. */
   href?: string
@@ -94,33 +94,16 @@ export function LabelCard({
       </div>
     )
   const heading =
-    face === "line" && words ? (
-      <Lettering text={words} className="text-balance" />
-    ) : face && words ? (
-      <>
-        <span className="sr-only">{words}</span>
-        {words.split(/\s+/).map((word, i) => (
-          <Lettering
-            key={`${word}:${i}`}
-            aria-hidden="true"
-            text={word}
-            face={face}
-            seed={`${key}:${i}`}
-            hand={hand}
-            className="h-[1em] max-w-full [&>svg]:h-full [&>svg]:w-auto [&>svg]:max-w-full"
-          />
-        ))}
-      </>
+    face && words ? (
+      <Lettering text={words} face={face} className="text-balance" />
     ) : (
       title
     )
 
   const titleLayout =
-    face === "line" && words
+    face && words
       ? "py-[0.1em] text-[2rem]"
-      : face && words
-        ? "flex flex-wrap items-center gap-x-[0.3em] gap-y-[0.2em] py-[0.1em] text-[2rem] leading-none"
-        : "font-read text-lead leading-subhead font-medium text-balance wrap-anywhere"
+      : "font-read text-lead leading-subhead font-medium text-balance wrap-anywhere"
 
   return (
     <div

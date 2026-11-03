@@ -884,6 +884,22 @@
       ]
     },
     {
+      "name": "font-tramline",
+      "type": "registry:component",
+      "title": "Font Tramline",
+      "description": "Naïve Indie Tramline, embedded in one stylesheet: import it once (@import \"./fineliner/styles/tramline.generated.css\") to letter with <Lettering face=\"tramline\">.",
+      "registryDependencies": [
+        "@fineliner/base"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/styles/tramline.generated.css",
+          "type": "registry:file",
+          "target": "~/src/fineliner/styles/tramline.generated.css"
+        }
+      ]
+    },
+    {
       "name": "hand-note",
       "type": "registry:component",
       "title": "Hand Note",
@@ -1328,6 +1344,11 @@
           "path": "src/fineliner/pen/objects/visitors.ts",
           "type": "registry:file",
           "target": "~/src/fineliner/pen/objects/visitors.ts"
+        },
+        {
+          "path": "src/fineliner/pen/path.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/path.ts"
         },
         {
           "path": "src/fineliner/pen/pen-marks.ts",
@@ -2102,6 +2123,7 @@
         "@fineliner/empty",
         "@fineliner/field",
         "@fineliner/font-inline",
+        "@fineliner/font-tramline",
         "@fineliner/hand-note",
         "@fineliner/hover-card",
         "@fineliner/input",

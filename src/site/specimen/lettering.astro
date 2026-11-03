@@ -1,7 +1,7 @@
 ---
 // Lettering: Naïve Indie Line Sans, the pen as a real typeface, shown at size with its whole character set and a line
-// in several languages; Naïve Indie Inline, its contrasted serif with the tint; then Tramline, drawn by the pen. Titles come from the shop's racks,
-// so the section hands on to the records in use at the end of the sheet.
+// in several languages; Naïve Indie Inline, its contrasted serif with the tint; then Naïve Indie Tramline, three lines
+// to a stroke. Titles come from the shop's racks, so the section hands on to the records in use at the end of the sheet.
 import { Lettering } from "@/fineliner/drawing/lettering"
 import SheetSection from "./sheet-section.astro"
 
@@ -62,18 +62,19 @@ const EUROPE = "Blåbærsyltetøy · Zażółć gęślą jaźń · Árvíztűrő
     </div>
     <Lettering text={SET[3]?.[1] ?? ""} face="inline" className="block max-w-[56rem] text-[2rem] leading-[1.35] wrap-anywhere" />
     <div class="grid items-end gap-x-line gap-y-tight lg:grid-cols-9">
-      <Lettering
-        text="Pétillant"
-        face="tramline"
-        seed="sheet-tramline"
-        className="block h-14 max-w-full lg:col-span-6 [&>svg]:h-full [&>svg]:w-auto [&>svg]:max-w-full"
-      />
+      <Lettering text="Pétillant" face="tramline" className="block text-[clamp(3rem,9vw,5.5rem)] lg:col-span-6" />
       <div class="lg:col-span-3">
-        <p class="m-0 text-lead leading-subhead">Tramline</p>
+        <p class="m-0 text-lead leading-subhead">Naïve Indie Tramline</p>
         <p class="m-0 text-small leading-small text-pen-quiet">
-          Drawn by the pen from the skeleton alphabet: three parallel lines, each word leaning by its seed.
+          Every stroke drawn three times side by side, the lines running past their ends where they meet, and each
+          letter leaning a little its own way.
+        </p>
+        <p class="m-0 mt-tight text-small leading-small">
+          <a href="/fonts/naive-indie-tramline.otf" download>OTF</a> ·{" "}
+          <a href="/fonts/naive-indie-tramline.woff2" download>WOFF2</a> · MIT
         </p>
       </div>
     </div>
+    <Lettering text={SET[0]?.[1] ?? ""} face="tramline" className="block max-w-[56rem] text-[2rem] leading-[1.35] wrap-anywhere" />
   </div>
 </SheetSection>

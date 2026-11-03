@@ -3,6 +3,7 @@
 //   Naïve Indie Line Sans   the pen as a typeface: round-ended monoline
 //   Naïve Indie Inline      a contrasted serif: thick strokes as two outlines, thin strokes as one line
 //   Naïve Indie Inline Fill the tint between Inline's outlines, to set under it in a second colour
+//   Naïve Indie Tramline    the drawn Tramline: every stroke three parallel lines in a fine pen
 // Writes public/fonts/<file>.otf and .woff2 (for download and design tools) and the kit's styles/*.generated.css,
 // which carry the WOFF2 inside them so an install needs no font files. The same sources build the same bytes.
 //
@@ -15,6 +16,7 @@ import { glyphSet } from "./glyphset.mjs"
 import { buildFamily, fontFace, toPath } from "./family.mjs"
 import { inlineGlyph } from "./inline.mjs"
 import { outline, wobble } from "./outline.mjs"
+import { tramlineGlyph } from "./tramline.mjs"
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..")
 const { prng, seedOf } = await createJiti(import.meta.url).import(
@@ -136,4 +138,42 @@ const css = (file, about, faces) =>
     fontFace(lineFamily, lines),
     fontFace(fillFamily, fill),
   ])
+}
+
+// Naïve Indie Tramline: three lines 32 units apart, swept by a pen 13 units wide, so the paper shows between them.
+{
+  const PEN = 6.5
+  const FACE = {
+    gap: 4.6,
+    over: 4.5,
+    tilt: 2.2,
+    lift: 2,
+    dot: 3.4,
+    hand: { wave: 260, amp: 5, tremor: 0 },
+  }
+  const SIDE = 103
+  const toFont = ([x, y]) => [x * SCALE + SIDE, (100 - y) * SCALE]
+  const family = "Naïve Indie Tramline"
+  const woff2 = await write({
+    family,
+    file: "naive-indie-tramline",
+    postScript: "NaiveIndieTramline-Regular",
+    description:
+      "The Fineliner pen's Tramline lettering as a typeface: every stroke three parallel lines, three takes per letter.",
+    advance: (c) => Math.round(drawn[c].w * SCALE + 2 * SIDE),
+    path: (c, take) => {
+      const { strokes, dots } = tramlineGlyph(
+        drawn[c],
+        prng(seedOf(`naive-indie-tramline:${c}:${take}`)),
+        toFont,
+        FACE,
+      )
+      return toPath(outline(strokes, dots, PEN))
+    },
+  })
+  css(
+    "tramline.generated.css",
+    `${family}, the pen's tramlines as a typeface`,
+    [fontFace(family, woff2)],
+  )
 }

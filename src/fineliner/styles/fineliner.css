@@ -80,6 +80,7 @@
   --font-hand: var(--face-hand);
   --font-line: var(--face-line);
   --font-inline: var(--face-inline);
+  --font-tramline: var(--face-tramline);
   --font-ui: var(--face-ui);
   --font-serif: var(--face-read);
   --font-mono: var(--face-type);

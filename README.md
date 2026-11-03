@@ -4,7 +4,7 @@ A shadcn/ui component library drawn with one fine-liner on unbleached paper: a s
 
 <img alt="Four room vignettes in the style: a kitchen where a shirt with nobody in it pours wine, a desk under a window, a balcony at night and a listening corner with a record player." src="docs/style/explorations/scenes.webp">
 
-**Status:** v0.1, live at [naiveindieline.com](https://naiveindieline.com). All of shadcn/ui's parts (64, keeping shadcn's names, props and `data-slot`s; `form` and `toast` are served by `field` and `sonner`), twelve parts of Fineliner's own (label cards, record sleeves, track lists, price tags, hand notes and more), seven blocks, a chart drawn by the pen through the exact data, the pen engine with 57 drawings and four scenes, Naïve Indie Line Sans and Inline (our own fonts) and Tramline lettering, a theme studio, and Listening Room, a record shop built only from the kit.
+**Status:** v0.1, live at [naiveindieline.com](https://naiveindieline.com). All of shadcn/ui's parts (64, keeping shadcn's names, props and `data-slot`s; `form` and `toast` are served by `field` and `sonner`), twelve parts of Fineliner's own (label cards, record sleeves, track lists, price tags, hand notes and more), seven blocks, a chart drawn by the pen through the exact data, the pen engine with 57 drawings and four scenes, Naïve Indie Line Sans, Inline and Tramline (our own fonts), a theme studio, and Listening Room, a record shop built only from the kit.
 
 ## What is in it
 
@@ -12,6 +12,7 @@ A shadcn/ui component library drawn with one fine-liner on unbleached paper: a s
 - **Drawings** (`drawing`): `<Drawing object="turntable" seed="…" />`, `<Lettering>`, `<PenMark>`, `<Circled>`.
 - **Naïve Indie Line Sans**: our own font, the pen as a typeface: round-ended monoline capitals for every Latin-script European language, three takes per letter that take turns. `<Lettering text="…" />` sets it as real text, so search engines read it; the kit's stylesheet carries it, and the [OTF](public/fonts/naive-indie-line-sans.otf) is there for design tools. MIT.
 - **Naïve Indie Inline**: its contrasted serif: thick strokes drawn as two lines with the wash between them, thin strokes as one. Two fonts set one over the other (Inline and Inline Fill); `<Lettering face="inline" />` layers them for you once you add `@fineliner/font-inline` and import its stylesheet. [Inline](public/fonts/naive-indie-inline.otf) and [Fill](public/fonts/naive-indie-inline-fill.otf) OTFs, MIT.
+- **Naïve Indie Tramline**: every stroke three parallel lines that cross where they meet, each letter leaning a little its own way. `<Lettering face="tramline" />` sets it once you add `@fineliner/font-tramline` and import its stylesheet. [OTF](public/fonts/naive-indie-tramline.otf), MIT.
 - **A drawing skill** for your coding agent, to draw your own objects, people and scenes in the same style ([below](#more-drawings-the-drawing-skill)).
 - **Components**: every shadcn part on Base UI, drawn: steady fields, frames that run past their corners, ink pockets, marks the pen puts down, sheets with the cartoonist's shadow, tables ruled by hand, charts drawn through the data.
 - **Extras and blocks**: Fineliner's own parts and whole sections (sign-in, settings, dashboard, pricing, article, empty states, hero).

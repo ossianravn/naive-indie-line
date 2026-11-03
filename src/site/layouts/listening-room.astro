@@ -21,6 +21,14 @@ const shareImage = new URL("/og/listening-room.png", Astro.site ?? Astro.url)
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Every page letters something in Line Sans; the build serves it as a file (astro.config.mjs). -->
+    <link
+      rel="preload"
+      href="/fonts/naive-indie-line-sans.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <title>{title} · Listening Room</title>
     <meta
       name="description"

@@ -30,7 +30,7 @@ export const meta = {
 export interface Hero01Props {
   /** The product's name, lettered by the pen and read as the page's heading. */
   product?: string
-  /** The wordmark's face: "line" (Naïve Indie Line Sans, as text) or "tramline" (drawn by the pen). */
+  /** The wordmark's face: "line" (Naïve Indie Line Sans), "inline" or "tramline" (import their stylesheets once). */
   face?: LetteringFace
   /** A line in the label voice above the name. */
   kicker?: ReactNode
@@ -140,23 +140,11 @@ export function Hero01({
             <p className="label m-0 mb-snug text-pen-quiet">{kicker}</p>
           )}
           <h1 id={titleId} className="m-0">
-            {face === "line" ? (
-              <Lettering
-                text={product}
-                className="block text-[clamp(3.25rem,13cqi,6.5rem)]"
-              />
-            ) : (
-              <>
-                <span className="sr-only">{product}</span>
-                <Lettering
-                  aria-hidden="true"
-                  text={product}
-                  face={face}
-                  seed={`wordmark:${product}`}
-                  className="w-full max-w-[26rem]"
-                />
-              </>
-            )}
+            <Lettering
+              text={product}
+              face={face}
+              className="block text-[clamp(3.25rem,13cqi,6.5rem)]"
+            />
           </h1>
           {copy && (
             <p className="m-0 mt-line max-w-measure text-body leading-body @min-[40rem]:text-lead @min-[40rem]:leading-lead">

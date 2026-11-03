@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { pathOf, pathPoints } from "@/fineliner/pen/path"
 import { pen } from "@/fineliner/pen/stroke"
 import { cn } from "@/fineliner/lib/utils"
 
@@ -24,11 +25,15 @@ const RULE_H = 6
  * paints it 12px tall, so the hand's wobble reads at twice its drawn height while the stroke keeps the pen's width.
  */
 function ruleMask(seed: string) {
-  const d = pen(`table-rule:${seed}`, "lively")
-    .line([6, RULE_H / 2], [RULE_W - 6, RULE_H / 2])
-    .split("L")
-    .filter((_, i, all) => i % 2 === 0 || i === all.length - 1)
-    .join("L")
+  const line = pen(`table-rule:${seed}`, "lively").line(
+    [6, RULE_H / 2],
+    [RULE_W - 6, RULE_H / 2],
+  )
+  const d = pathOf(
+    (pathPoints(line) ?? []).filter(
+      (_, i, all) => i % 2 === 0 || i === all.length - 1,
+    ),
+  )
   // The stroke width is the pen's (--pen-weight); a mask image cannot read custom properties.
   const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 ${RULE_W} ${RULE_H}' preserveAspectRatio='none'><path d='${d}' fill='none' stroke='black' stroke-width='1.35' stroke-linecap='round' vector-effect='non-scaling-stroke'/></svg>`
   return `url("data:image/svg+xml,${svg.replace(/</g, "%3C").replace(/>/g, "%3E")}")`

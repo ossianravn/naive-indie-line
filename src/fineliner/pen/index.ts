@@ -11,6 +11,7 @@ export * from "./geometry"
 export { pen, HANDS, type Pen, type HandName } from "./stroke"
 export { plot, type Plot } from "./plot"
 export { sheet, type Sheet } from "./layers"
+export { pathOf, pathPoints, pathBox } from "./path"
 export {
   banded,
   box,
