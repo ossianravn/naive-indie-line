@@ -80,6 +80,15 @@
 }
 .fl-takes > * {
   grid-area: 1 / 1;
+}
+/* Takes cycle only once all three are there: each shows for a third of the cycle, so a drawing still waiting for its
+   other takes (the server sends one) would blink out for the other two thirds. :where() keeps this as weak as
+   `.fl-takes > *`, so the hover, delay and settling rules below still win. */
+.fl-takes
+  > :where(
+    :first-child:nth-last-child(n + 3),
+    :first-child:nth-last-child(n + 3) ~ *
+  ) {
   animation: fl-take calc(var(--take) * 3) steps(1, end) infinite;
   animation-play-state: var(--boil, paused);
 }

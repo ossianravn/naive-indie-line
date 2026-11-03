@@ -9,6 +9,7 @@
 - An appearance panel on every page: the header's Appearance button (its dot in the current pen) opens a sheet from the right with the studio's presets and every setting. The page stays undimmed and scrolls, so a change shows in place, and the choice follows you to every page. Listening Room has it in its own header; MÅLTID keeps its fixed look.
 - A custom pen: pick Custom in the pen row, start from one of six directions (indigo, teal, moss, ochre, rust, plum) and tune its hue and strength. Each paper sets how dark text must be and how much colour any hue may take, in OKLCH, so every hue passes 4.5:1 by day and turns a pale gel pen at night, with a wash to match. `useAppearance` gains `penHue` and `penStrength`; the studio exports the result. The pen row is its own registry item, `appearance-pen`.
 - The paper's flecks and fibres are drawn larger on phones, and so fewer to a screen, so they stay visible at arm's length.
+- Drawings no longer blink while they load. Line boil cycled whatever takes a drawing had, each for a third of the cycle, so a scene with only the server's take blanked out two thirds of the time under the pointer (or everywhere with boil always on) until the browser had drawn the other two, and a drawing that never gets more takes, like the drawing skill's example, blinked for as long as it was hovered. Takes now cycle only once all three are there.
 
 A review round after 0.1.0, from the maintainer's notes on the live site and a full design review.
 
