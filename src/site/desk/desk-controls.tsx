@@ -1,6 +1,7 @@
 "use client"
 
 // The desk's segmented rows: a label above a drawn frame of options, the chosen one filled with ink.
+import "@/fineliner/pen/objects"
 import type { CSSProperties } from "react"
 import { frameVars, seedOf } from "@/fineliner/pen"
 

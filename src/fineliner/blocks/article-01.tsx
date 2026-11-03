@@ -1,5 +1,6 @@
 "use client"
 
+import "@/fineliner/pen/objects/rooms"
 import { useRef, type ReactNode } from "react"
 import { GradingStory } from "@/fineliner/blocks/article-01-story"
 import { EditionNumber } from "@/fineliner/extras/edition-number"

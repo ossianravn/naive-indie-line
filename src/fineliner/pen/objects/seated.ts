@@ -6,7 +6,7 @@ import { define, type Draw, objectsIn } from "../library"
 import type { Sheet } from "../layers"
 import type { Pen } from "../stroke"
 import { TOPS } from "./clothes"
-import { HAIR } from "./people"
+import { HAIR } from "./faces"
 
 type Place = (u: number, v: number) => Point
 const pts = (P: Place, list: [number, number][]) =>

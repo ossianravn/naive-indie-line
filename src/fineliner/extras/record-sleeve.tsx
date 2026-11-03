@@ -1,5 +1,9 @@
 "use client"
 
+import "@/fineliner/pen/objects/indie"
+import "@/fineliner/pen/objects/food"
+import "@/fineliner/pen/objects/people"
+import "@/fineliner/pen/objects/studio"
 import { useMemo, type ComponentProps, type CSSProperties } from "react"
 import { Drawing } from "@/fineliner/drawing/drawing"
 import { Lettering, type LetteringFace } from "@/fineliner/drawing/lettering"
@@ -57,7 +61,7 @@ export interface RecordSleeveProps extends Omit<
   size?: keyof typeof SIZES
   /** The cover's drawing; the catalogue number picks one when left out. */
   object?: string
-  /** A whole scene on the cover in place of an object. */
+  /** A whole scene on the cover in place of an object; import "@/fineliner/pen/objects/rooms" for the kit's. */
   scene?: SceneName
   /** The title's face: "line" (Naïve Indie Line Sans, the default), "inline" or "tramline" (import their stylesheets once). */
   face?: LetteringFace

@@ -1,3 +1,4 @@
+import "@/fineliner/pen/objects"
 import { useState } from "react"
 import { Drawing } from "@/fineliner/drawing/drawing"
 import { Badge } from "@/fineliner/ui/badge"

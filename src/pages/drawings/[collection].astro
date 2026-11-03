@@ -1,0 +1,67 @@
+---
+// One collection of the object library: every drawing in it, the other collections beside it, and how a project adds
+// it (each collection is its own registry item, registered by importing its module).
+import Base from "@/site/layouts/base.astro"
+import PageHeader from "@/site/layouts/page-header.astro"
+import ObjectGrid from "@/site/drawings/object-grid.astro"
+import { InstallCommand } from "@/site/docs/install-command"
+import { COLLECTION_PAGES } from "@/site/drawings/collections"
+
+export function getStaticPaths() {
+  return COLLECTION_PAGES.map((c) => ({ params: { collection: c.key } }))
+}
+
+const c = COLLECTION_PAGES.find((p) => p.key === Astro.params.collection)!
+const seed = "library"
+---
+
+<Base
+  title={`${c.title} drawings`}
+  description={`Fineliner's ${c.title.toLowerCase()} drawings: ${c.lead}`}
+>
+  <PageHeader title={c.title}>
+    <Fragment slot="kicker">
+      <a href="/drawings">Drawings</a> · {c.objects.length} objects
+    </Fragment>
+    {c.lead}
+  </PageHeader>
+  <div class="mx-auto max-w-[76rem] px-snug pb-page sm:px-line">
+    <nav aria-label="Collections" class="mt-line">
+      <ul class="m-0 flex list-none flex-wrap gap-x-snug gap-y-hair p-0">
+        {COLLECTION_PAGES.map((p) => (
+          <li>
+            <a
+              href={p.href}
+              class="text-small no-underline aria-[current=page]:underline"
+              aria-current={p.key === c.key ? "page" : undefined}
+            >
+              {p.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <div class="mt-section">
+      <ObjectGrid objects={c.objects} seed={seed} />
+    </div>
+    <section class="mt-page" aria-labelledby="add">
+      <h2 id="add" class="m-0 text-h2">
+        Add them to your project
+      </h2>
+      <p class="m-0 mt-tight max-w-measure">
+        Each collection installs on its own, so your project carries only the
+        drawings it shows.
+      </p>
+      <InstallCommand
+        command={`npx shadcn add ${c.item}`}
+        className="mt-snug"
+      />
+      <p class="m-0 mt-snug max-w-measure">
+        Then import <code class="font-type text-[0.86em]">"{c.module}"</code> in
+        the file that renders them, and{" "}
+        <code class="font-type text-[0.86em]">{`<Drawing object="${c.objects[0]?.id}" />`}</code>{" "}
+        draws one.
+      </p>
+    </section>
+  </div>
+</Base>

@@ -1,5 +1,6 @@
 "use client"
 
+import "@/fineliner/pen/objects/indie"
 import { useRef, useState, type ReactNode } from "react"
 import { CalendarPlusIcon, PlusIcon, SearchIcon } from "lucide-react"
 import { cn } from "@/fineliner/lib/utils"

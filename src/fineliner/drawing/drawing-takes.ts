@@ -11,6 +11,8 @@ const watched = new WeakSet<HTMLElement>()
 const inView = new Set<HTMLElement>()
 const waiting: HTMLElement[] = []
 let engine: Promise<typeof import("@/fineliner/pen")> | undefined
+let loadDrawings: (() => Promise<unknown>) | undefined
+let drawings: Promise<unknown> | undefined
 let seen: IntersectionObserver | undefined
 let made = 0
 let busy = false
@@ -37,17 +39,25 @@ async function grow(el: HTMLElement, all = false) {
     setTimeout(() => queue(el), 1500)
     return false
   }
-  const { drawing } = await (engine ??= import("@/fineliner/pen"))
+  const [{ drawing }] = await Promise.all([
+    (engine ??= import("@/fineliner/pen")),
+    (drawings ??= loadDrawings?.()),
+  ])
   // A reroll may have redrawn it, takes and all, while the engine loaded.
   if (el.dataset.seed !== seed || el.children.length !== has) return false
-  const takes = drawing({
-    object,
-    scene: scene as SceneName | undefined,
-    seed,
-    hand: hand === "calm" ? "calm" : "lively",
-    takes: all ? TAKES : has + 1,
-    from: has,
-  })
+  let takes: string[]
+  try {
+    takes = drawing({
+      object,
+      scene: scene as SceneName | undefined,
+      seed,
+      hand: hand === "calm" ? "calm" : "lively",
+      takes: all ? TAKES : has + 1,
+      from: has,
+    })
+  } catch {
+    return false
+  }
   el.insertAdjacentHTML("beforeend", ownIds(takes.join(""), `t${++made}`))
   return el.children.length < TAKES
 }
@@ -105,7 +115,15 @@ export function boilTakes(el: HTMLElement) {
   seen?.observe(el)
 }
 
-/** Every drawing under `root` that carries one take, for pages whose drawings render without React in the browser. */
-export function boilTakesIn(root: ParentNode = document) {
+/**
+ * Every drawing under `root` that carries one take, for pages whose drawings render without React in the browser.
+ * `load` registers the page's drawings once, before drawing the first take. A later loader replaces an unused one.
+ * For example: `boilTakesIn(document, () => import("@/fineliner/pen/objects"))`.
+ */
+export function boilTakesIn(
+  root: ParentNode = document,
+  load?: () => Promise<unknown>,
+) {
+  if (load && !drawings) loadDrawings = load
   root.querySelectorAll<HTMLElement>(".fl-takes[data-seed]").forEach(boilTakes)
 }

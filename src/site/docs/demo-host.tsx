@@ -1,3 +1,5 @@
+import "@/fineliner/pen/objects"
+import "@/fineliner/pen/objects/rooms"
 import { lazy, Suspense, type ComponentType } from "react"
 import { TooltipProvider } from "@/fineliner/ui/tooltip"
 

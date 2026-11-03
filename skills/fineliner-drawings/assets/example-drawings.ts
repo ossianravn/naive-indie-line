@@ -2,25 +2,31 @@
 // src/drawings/index.ts, replace the examples with what the project needs, and import "@/drawings" in every file that
 // renders <Drawing> with one of these ids. Everything registers when the module runs.
 import {
-  HAIR,
-  TOPS,
   add,
   arc,
   box,
-  clothes,
   cylinder,
   define,
   defineScene,
   depth,
   dot,
-  hairBehind,
-  head,
   objectsIn,
   stage,
   type Draw,
   type HandName,
   type Point,
 } from "@/fineliner/pen"
+
+import {
+  HAIR,
+  TOPS,
+  clothes,
+  hairBehind,
+  head,
+} from "@/fineliner/pen/objects/people"
+import "@/fineliner/pen/objects/indie"
+import "@/fineliner/pen/objects/food"
+import "@/fineliner/pen/objects/people"
 
 /** A watering can, its spout to the right. `at` is the middle of its base; u runs right and v up, in its own units. */
 export const wateringCan: Draw = (s, p, r, at, k = 1) => {

@@ -1,5 +1,6 @@
 "use client"
 
+import "@/fineliner/pen/objects/rooms"
 import { useEffect, useRef, useState, type SyntheticEvent } from "react"
 import { EyeIcon, EyeOffIcon } from "lucide-react"
 import { Drawing } from "@/fineliner/drawing/drawing"

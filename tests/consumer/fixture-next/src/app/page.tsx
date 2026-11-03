@@ -1,3 +1,4 @@
+import "@/fineliner/pen/objects/indie"
 import { FinelinerDefs } from "@/fineliner/defs/fineliner-defs"
 import { Drawing } from "@/fineliner/drawing/drawing"
 import { Lettering } from "@/fineliner/drawing/lettering"

@@ -1,3 +1,5 @@
+import "@/fineliner/pen/objects"
+import "@/fineliner/pen/objects/rooms"
 import { TooltipProvider } from "@/fineliner/ui/tooltip"
 import { BLOCKS } from "./blocks"
 

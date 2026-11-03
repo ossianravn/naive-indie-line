@@ -1,3 +1,4 @@
+import "@/fineliner/pen/objects"
 import { useMemo, useState } from "react"
 import { toast } from "sonner"
 import { Badge } from "@/fineliner/ui/badge"

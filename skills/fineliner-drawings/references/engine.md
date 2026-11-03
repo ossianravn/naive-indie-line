@@ -124,7 +124,7 @@ define(T("croissant", "Croissant", [140, 90], [20, 78], 1, croissant, [
 `T(id, name, size, at, k, draw, tags)`: the id is what `<Drawing object="croissant">` takes; the name is its accessible
 name; `size` is the tile `[width, height]` in px; `at` and `k` are where and how large the object draws on its tile.
 Defining an id again replaces it (handy with hot reload). Ids are global: prefix yours if they could clash with a kit id
-(`listObjects()` lists them all).
+(`listObjects()` lists every registered one: the kit collections you imported and your own).
 
 ## Placing objects inside other drawings
 

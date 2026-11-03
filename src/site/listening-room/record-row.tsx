@@ -1,3 +1,4 @@
+import "@/fineliner/pen/objects"
 import { MoreHorizontalIcon } from "lucide-react"
 import { Drawing } from "@/fineliner/drawing/drawing"
 import { PenMark } from "@/fineliner/drawing/pen-mark"

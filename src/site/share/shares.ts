@@ -26,6 +26,24 @@ const PAGES: Share[] = [
     object: "sketchbook",
   },
   {
+    slug: "drawings-skill",
+    title: "Drawing skill",
+    kicker: "Fineliner",
+    object: "sketchbook",
+  },
+  ...[
+    ["indie", "Indie", "turntable"],
+    ["food", "Food & drink", "bottle"],
+    ["studio", "Studio", "laptop"],
+    ["people", "People", "person-wave"],
+    ["everyday", "Everyday", "paper-plane"],
+  ].map(([key, title, object]) => ({
+    slug: `drawings-${key}`,
+    title: title!,
+    kicker: "Fineliner drawings",
+    object,
+  })),
+  {
     slug: "desk",
     title: "Drawing desk",
     kicker: "Fineliner",

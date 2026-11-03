@@ -1,3 +1,4 @@
+import "@/fineliner/pen/objects"
 import type { ReactNode } from "react"
 import {
   CalendarDaysIcon,

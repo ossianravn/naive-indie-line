@@ -1,5 +1,6 @@
 "use client"
 
+import "@/fineliner/pen/objects/rooms"
 import type { ComponentProps, ReactNode } from "react"
 import { Drawing } from "@/fineliner/drawing/drawing"
 import { Lettering, type LetteringFace } from "@/fineliner/drawing/lettering"

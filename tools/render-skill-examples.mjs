@@ -12,6 +12,8 @@ const jiti = createJiti(import.meta.url, {
   alias: { "@": path.join(root, "src") },
 })
 const pen = await jiti.import(path.join(root, "src/fineliner/pen/index.ts"))
+await jiti.import(path.join(root, "src/fineliner/pen/objects/index.ts"))
+await jiti.import(path.join(root, "src/fineliner/pen/objects/rooms.ts"))
 await jiti.import(
   path.join(root, "skills/fineliner-drawings/assets/example-drawings.ts"),
 )

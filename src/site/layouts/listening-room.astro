@@ -1,6 +1,8 @@
 ---
 // Listening Room's own frame: a product, not the docs. Its sections in a sidebar, its person, a quiet link back to
 // Fineliner.
+import "@/fineliner/pen/objects"
+import "@/fineliner/pen/objects/rooms"
 import "@/fineliner/styles/fineliner.css"
 import { FinelinerDefs } from "@/fineliner/defs/fineliner-defs"
 import { appearanceScript } from "@/fineliner/theme/appearance-script"
@@ -61,7 +63,12 @@ const shareImage = new URL("/og/listening-room.png", Astro.site ?? Astro.url)
     <script>
       // Drawings rendered at build time carry their first take; this draws the others where line boil shows them.
       import { boilTakesIn } from "@/fineliner/drawing/drawing-takes"
-      boilTakesIn()
+      boilTakesIn(document, () =>
+        Promise.all([
+          import("@/fineliner/pen/objects"),
+          import("@/fineliner/pen/objects/rooms"),
+        ]),
+      )
     </script>
   </body>
 </html>

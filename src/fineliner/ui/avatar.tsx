@@ -1,5 +1,6 @@
 "use client"
 
+import "@/fineliner/pen/objects/people"
 import * as React from "react"
 import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar"
 import { Drawing } from "@/fineliner/drawing/drawing"

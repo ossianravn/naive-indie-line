@@ -1,5 +1,6 @@
-// The pen engine: framework-free, so it runs at build time, in share-image rendering and in the browser. Importing it
-// registers every object in the library.
+// The framework-free pen engine: importing it registers no drawings. Import a collection such as
+// "@/fineliner/pen/objects/indie", every collection with "@/fineliner/pen/objects", and the kit's scenes with
+// "@/fineliner/pen/objects/rooms" where you draw them.
 export { seedOf, prng, fork, stream, type Stream } from "./seed"
 export {
   WOBBLE_VARIANTS,
@@ -54,7 +55,3 @@ export {
   type LetteringOptions,
 } from "./lettering-svg"
 export { MARKS, penMark, penBorder, type MarkName } from "./pen-marks"
-// Building blocks for people, so a project can draw new poses in the same clothes and hair.
-export { clothes, TOPS, type Outfit } from "./objects/clothes"
-export { HAIR, hairBehind, head } from "./objects/people"
-import "./objects"

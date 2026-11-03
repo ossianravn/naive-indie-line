@@ -1,5 +1,6 @@
 "use client"
 
+import "@/fineliner/pen/objects/rooms"
 import { useEffect, useId, useRef, useState, type ReactNode } from "react"
 import { DicesIcon } from "lucide-react"
 import { Drawing } from "@/fineliner/drawing/drawing"

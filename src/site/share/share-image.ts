@@ -1,3 +1,5 @@
+import "@/fineliner/pen/objects"
+import "@/fineliner/pen/objects/rooms"
 import { drawing, pen, stream, seedOf, type SceneName } from "@/fineliner/pen"
 import { lineSans } from "./line-sans"
 

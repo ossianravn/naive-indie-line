@@ -3,7 +3,7 @@
 // own units (`units.ts`), back to front with blanks.
 import { deg, dot, type Point } from "../geometry"
 import { define, type Draw, objectsIn } from "../library"
-import { pot } from "./plants"
+import { pot } from "./parts"
 import { ell, outline, place, pts, type Map } from "./units"
 
 /** Three tomatoes joined by a gently curving vine; `at` is bottom centre. */

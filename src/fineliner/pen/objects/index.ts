@@ -1,19 +1,7 @@
-// Every collection registers its objects when imported. Add a collection file here; its objects then appear in
-// drawing(), the scenes and the docs.
-import "./hifi"
-import "./music"
-import "./shop"
-import "./plants"
-import "./home"
-import "./bistro"
+// Every collection registers its drawings when imported, in the library's display order.
+// Import one collection entry instead when a page draws only that collection.
+import "./indie"
 import "./food"
-import "./devices"
-import "./gear"
-import "./desk"
-import "./people"
-import "./visitors"
-import "./seated"
-import "./household"
-import "./post"
-import "./pantry"
-import "./market"
+import "./studio"
+export * from "./people"
+import "./everyday"

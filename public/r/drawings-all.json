@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "drawings-all",
+  "title": "Drawings All",
+  "description": "Every drawing collection at once. Import @/fineliner/pen/objects to register them all.",
+  "registryDependencies": [
+    "@fineliner/base",
+    "@fineliner/drawings-everyday",
+    "@fineliner/drawings-food",
+    "@fineliner/drawings-indie",
+    "@fineliner/drawings-people",
+    "@fineliner/drawings-studio"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/pen/objects/index.ts",
+      "content": "// Every collection registers its drawings when imported, in the library's display order.\n// Import one collection entry instead when a page draws only that collection.\nimport \"./indie\"\nimport \"./food\"\nimport \"./studio\"\nexport * from \"./people\"\nimport \"./everyday\"\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/pen/objects/index.ts"
+    }
+  ],
+  "type": "registry:component"
+}

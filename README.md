@@ -40,7 +40,9 @@ npx shadcn add @fineliner/fineliner
 npx shadcn add @fineliner/record-sleeve
 ```
 
-Make `src/fineliner/styles/fineliner.css` your Tailwind entry (`@import "./fineliner/styles/fineliner.css";`), render `<FinelinerDefs />` once near the top of the page (the shared wobble filters), and run `appearanceScript()` in the document head before paint so the paper and pen are right on the first frame. The install contract is tested: `npm run test:consumer` installs items into a fresh Vite app and a Next.js App Router app offline, and type-checks and builds both.
+Make `src/fineliner/styles/fineliner.css` your Tailwind entry (`@import "./fineliner/styles/fineliner.css";`), render `<FinelinerDefs />` once near the top of the page (the shared wobble filters), and run `appearanceScript()` in the document head before paint so the paper and pen are right on the first frame.
+
+Drawings come in collections, each its own item, so a project carries only the ones it shows: `drawings-indie`, `drawings-food`, `drawings-studio`, `drawings-people`, `drawings-everyday`, all of them as `drawings-all`, and the kit's four rooms as `scenes`. Import a collection where you draw from it (`import "@/fineliner/pen/objects/indie"`, then `<Drawing object="turntable" />`); every collection's page on [naiveindieline.com/drawings](https://naiveindieline.com/drawings) has its command. The blocks, extras and avatar bring the drawings they use. In Next.js, importing a collection in a server component is enough to render; import it in a client component too if the browser should redraw (rerolls, line boil's later takes). The install contract is tested: `npm run test:consumer` installs items into a fresh Vite app and a Next.js App Router app offline, and type-checks and builds both.
 
 ## More drawings: the drawing skill
 

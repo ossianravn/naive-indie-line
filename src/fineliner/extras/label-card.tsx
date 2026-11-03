@@ -1,3 +1,5 @@
+import "@/fineliner/pen/objects/indie"
+import "@/fineliner/pen/objects/food"
 import type { ComponentProps, ReactNode } from "react"
 import { Drawing } from "@/fineliner/drawing/drawing"
 import { Lettering, type LetteringFace } from "@/fineliner/drawing/lettering"
@@ -39,7 +41,8 @@ export interface LabelCardProps extends Omit<ComponentProps<"div">, "title"> {
   spine?: ReactNode
   /** An object from the drawing library; the seed picks one when neither object, scene nor art is given. */
   object?: string
-  /** A whole scene (room, studio or bistro) in place of an object; it brings its own border. */
+  /** A whole scene (room, studio or bistro) in place of an object; it brings its own border. Import
+   * "@/fineliner/pen/objects/rooms" to draw the kit's. */
   scene?: SceneName
   /** A picture of your own in place of a drawing, or false for a label without one. */
   art?: ReactNode | false

@@ -1,3 +1,4 @@
+import "@/fineliner/pen/objects"
 import { useMemo, useState } from "react"
 import { SearchIcon } from "lucide-react"
 import { Drawing } from "@/fineliner/drawing/drawing"

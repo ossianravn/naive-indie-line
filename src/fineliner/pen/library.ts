@@ -73,7 +73,10 @@ export const objectsIn =
     tags: string[],
   ): DrawingObject => ({ id, name, collection, size, at, k, draw, tags })
 
-const all: DrawingObject[] = []
+// One library per JavaScript realm, not per copy of this module: a framework may load the engine more than once (Next.js
+// renders server and client components from separate copies), and a collection registered by one must draw in the other.
+const shared = globalThis as { [key: symbol]: unknown }
+const all = (shared[Symbol.for("fineliner.library")] ??= []) as DrawingObject[]
 
 /** Register objects. Defining an id again replaces it in place, so an edited collection shows up on hot reload. */
 export function define(...objects: DrawingObject[]) {

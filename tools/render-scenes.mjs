@@ -7,9 +7,13 @@ import { createJiti } from "jiti"
 import sharp from "sharp"
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
-const { drawing } = await createJiti(import.meta.url).import(
+const jiti = createJiti(import.meta.url)
+const { drawing } = await jiti.import(
   path.join(root, "src/fineliner/pen/index.ts"),
 )
+
+await jiti.import(path.join(root, "src/fineliner/pen/objects/index.ts"))
+await jiti.import(path.join(root, "src/fineliner/pen/objects/rooms.ts"))
 
 // Bond paper and the navy pen and wash (src/fineliner/styles/stocks.css).
 const [PAPER, PEN, WASH] = ["#f4f0e6", "#263152", "#5b72a8"]

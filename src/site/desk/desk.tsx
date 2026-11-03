@@ -3,6 +3,8 @@
 // The drawing desk: choose an object, a scene or a line of lettering, reroll its seed until it is right, then take
 // the seed, the code or the SVG. The seed travels in the URL, so a drawing can be shared. Lettering here is drawn by
 // the pen from its seed (lettering() in the engine), not set in the Tramline font.
+import "@/fineliner/pen/objects"
+import "@/fineliner/pen/objects/rooms"
 import { useEffect, useRef, useState } from "react"
 import { Drawing } from "@/fineliner/drawing/drawing"
 import { settleDrawing } from "@/fineliner/drawing/drawing-motion"

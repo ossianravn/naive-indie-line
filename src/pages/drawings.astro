@@ -1,15 +1,13 @@
 ---
-// The object library: every drawing object by collection, rendered at build time. Hover one to see it boil; each opens
-// at the desk with the same seed, so the desk starts from the drawing that was chosen.
-// Each row of a collection's grid is two shared tracks, drawings then names: the drawings stand on one line and the
-// names start on the next, whatever each drawing's height or each name's length.
+// The object library's front page: each collection with six of its drawings and a way into the rest. A collection's
+// own page (drawings/[collection].astro) shows all of it, so no page draws the whole library at once.
 import Base from "@/site/layouts/base.astro"
 import PageHeader from "@/site/layouts/page-header.astro"
-import { Drawing } from "@/fineliner/drawing/drawing"
-import { COLLECTIONS, listObjects } from "@/fineliner/pen"
+import ObjectGrid from "@/site/drawings/object-grid.astro"
+import { COLLECTION_PAGES } from "@/site/drawings/collections"
 
 const seed = "library"
-const total = listObjects().length
+const total = COLLECTION_PAGES.reduce((n, c) => n + c.objects.length, 0)
 ---
 
 <Base
@@ -18,39 +16,33 @@ const total = listObjects().length
 >
   <PageHeader title="Drawings">
     <Fragment slot="kicker">
-      Fineliner · {total} objects in {COLLECTIONS.length} collections
+      Fineliner · {total} objects in {COLLECTION_PAGES.length} collections
     </Fragment>
     Every object the pen draws, by collection, each from a seed. The library
     keeps growing; the <a href="/desk">desk</a> rerolls any of them, and the{" "}
     <a href="/drawings/skill">drawing skill</a> draws the ones your project
     needs.
   </PageHeader>
-  <div class="mx-auto max-w-[76rem] px-snug sm:px-line">
-    {COLLECTIONS.map(([key, title]) => (
-      <section class="mt-page" aria-labelledby={`c-${key}`}>
-        <h2 id={`c-${key}`} class="m-0 mb-line text-h2">
-          {title}
+  <div class="mx-auto max-w-[76rem] px-snug pb-page sm:px-line">
+    {COLLECTION_PAGES.map((c) => (
+      <section class="mt-page" aria-labelledby={`c-${c.key}`}>
+        <h2 id={`c-${c.key}`} class="m-0 text-h2">
+          <a href={c.href} class="no-underline hover:underline">
+            {c.title}
+          </a>
         </h2>
-        <ul class="m-0 grid list-none grid-cols-3 gap-x-snug gap-y-line p-0 sm:grid-cols-[repeat(auto-fill,minmax(9rem,1fr))] sm:gap-x-line">
-          {listObjects(key).map((o) => (
-            <li class="row-span-2 grid grid-rows-subgrid">
-              <a
-                href={`/desk?seed=${seed}&object=${o.id}`}
-                class="group row-span-2 grid grid-rows-subgrid justify-items-center gap-y-tight no-underline"
-              >
-                <Drawing
-                  object={o.id}
-                  seed={seed}
-                  title=""
-                  className="w-full self-end [&>svg]:max-h-44"
-                />
-                <span class="label self-start text-center decoration-1 underline-offset-[0.2em] group-hover:underline">
-                  {o.name}
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
+        <p class="m-0 mt-tight max-w-measure text-pen-quiet">{c.lead}</p>
+        <div class="mt-line">
+          <ObjectGrid
+            objects={c.objects.filter((o) => c.picks.includes(o.id))}
+            seed={seed}
+          />
+        </div>
+        <p class="m-0 mt-line">
+          <a href={c.href}>
+            All {c.objects.length} {c.title.toLowerCase()} drawings
+          </a>
+        </p>
       </section>
     ))}
   </div>

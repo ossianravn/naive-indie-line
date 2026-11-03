@@ -36,9 +36,10 @@ const shadcn = path.join(repo, "node_modules/shadcn/dist/index.js")
 // umbrella: it lists every item, so it would hide a missing dependency.
 // dialog brings button, field brings label and separator, toggle-group brings toggle, avatar brings drawing, and
 // chart brings recharts and the pen's plotting module; record-sleeve is an extra and sign-in-01 a block, which
-// installs with its own item dependencies. drawing-skill is the coding agents' skill, outside the kit.
+// installs with its own item dependencies. drawings-indie supplies the turntable; drawing-skill is the agents' skill.
 const items = [
   "drawing",
+  "drawings-indie",
   "dialog",
   "field",
   "input",

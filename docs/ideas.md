@@ -97,6 +97,6 @@ In the order they would serve the most sites:
 
 ## Before the library triples
 
-Open for the maintainer: every collection ships in the one `pen` registry item, so each object adds to every consumer's
-install, and `/drawings` renders all of them on one page (83 KB gzipped at 62 objects). Before it passes about 120
-objects, collections should become separate registry items and the drawings page should load one collection at a time.
+Decided 2026-11-03 and done at 85 objects: each collection is its own registry item, so an object adds only to the
+installs of projects that show its collection, and /drawings shows each collection in brief with a page of its own
+(the single page had reached 112 KB of HTML gzipped).

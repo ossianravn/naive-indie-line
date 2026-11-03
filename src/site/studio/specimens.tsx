@@ -1,3 +1,5 @@
+import "@/fineliner/pen/objects"
+import "@/fineliner/pen/objects/rooms"
 import { Drawing } from "@/fineliner/drawing/drawing"
 import { Circled } from "@/fineliner/drawing/pen-mark"
 import { Badge } from "@/fineliner/ui/badge"

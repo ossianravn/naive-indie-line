@@ -10,6 +10,41 @@
       "pen/seed.ts",
       "pen/filters.ts"
     ],
+    "drawings-indie": [
+      "pen/objects/hifi.ts",
+      "pen/objects/music.ts",
+      "pen/objects/shop.ts",
+      "pen/objects/plants.ts",
+      "pen/objects/home.ts",
+      "pen/objects/indie.ts"
+    ],
+    "drawings-food": [
+      "pen/objects/bistro.ts",
+      "pen/objects/cafe.ts",
+      "pen/objects/pantry.ts",
+      "pen/objects/market.ts",
+      "pen/objects/food.ts"
+    ],
+    "drawings-studio": [
+      "pen/objects/devices.ts",
+      "pen/objects/gear.ts",
+      "pen/objects/desk.ts",
+      "pen/objects/studio.ts"
+    ],
+    "drawings-people": [
+      "pen/objects/clothes.ts",
+      "pen/objects/faces.ts",
+      "pen/objects/visitors.ts",
+      "pen/objects/seated.ts",
+      "pen/objects/people.ts"
+    ],
+    "drawings-everyday": [
+      "pen/objects/household.ts",
+      "pen/objects/post.ts",
+      "pen/objects/everyday.ts"
+    ],
+    "drawings-all": ["pen/objects/index.ts"],
+    "scenes": ["pen/objects/rooms.ts"],
     "pen": ["pen/"],
     "drawing": ["drawing/"],
     "chart": [
@@ -30,7 +65,7 @@
   },
   "descriptions": {
     "base": "Tokens, paper stocks, pens, frames, the appearance runtime, FinelinerDefs, cn and the pen's seed and filters. Every other item builds on it; make src/fineliner/styles/fineliner.css your Tailwind entry.",
-    "pen": "The pen engine, framework-free: seeded strokes, shapes and sheets, the object library with every collection, scenes, lettering and pen marks, as SVG strings on a server, at build time or in the browser.",
+    "pen": "The pen engine, framework-free: seeded strokes, shapes and sheets, the object library's registry, scenes' stage, lettering and pen marks, as SVG strings on a server, at build time or in the browser. It draws no objects by itself: add the collections you use.",
     "drawing": "Drawing, Lettering and PenMark: objects, scenes, words and marks drawn by the pen from their seeds as inline SVG, with line boil and draw-on.",
     "font-inline": "Naïve Indie Inline and its Fill, embedded in one stylesheet: import it once (@import \"./fineliner/styles/inline.generated.css\") to letter with <Lettering face=\"inline\">.",
     "font-tramline": "Naïve Indie Tramline, embedded in one stylesheet: import it once (@import \"./fineliner/styles/tramline.generated.css\") to letter with <Lettering face=\"tramline\">.",
@@ -56,7 +91,14 @@
     "appearance-control": "Every appearance setting (light, paper, pen, hand, line boil, containers, labels, density) as segmented controls and pen swatches.",
     "settings-01": "A narrow settings column: profile, every appearance setting through AppearanceControl, notifications as switches, and closing the account behind an alert dialog.",
     "article-01": "A journal post: a lettered RoomHeader with the issue's EditionNumber, prose in Typography with a drop cap, a PullQuote, a HandNote in the margin and ReadingProgress.",
-    "hero-01": "A lettered wordmark beside a scene the visitor can reroll, one line of copy, the install command in a code block and two actions."
+    "hero-01": "A lettered wordmark beside a scene the visitor can reroll, one line of copy, the install command in a code block and two actions.",
+    "drawings-indie": "Indie drawings: a record shop and a living room. Turntable, speaker, records, crates and bins, guitar, radio, plants, chair, armchair, lamps, window. Import @/fineliner/pen/objects/indie where you draw them.",
+    "drawings-food": "Food & drink drawings: a bistro table, a café and a kitchen. Wine, glasses, carafe, coffee, teapot, plates, bread, lemons, olive oil, cheese, produce, fish. Import @/fineliner/pen/objects/food where you draw them.",
+    "drawings-studio": "Studio drawings: a creative freelancer's desk. Laptop, monitor, phone, tablet, keyboard, camera, headphones, desk, chair, lamp, books, sketchbook, notes, mug. Import @/fineliner/pen/objects/studio where you draw them.",
+    "drawings-people": "People: figures with faces, portraits for avatars, visitors who are only their clothes, someone at work, and a cat, with the clothes and hair to draw new poses. Import @/fineliner/pen/objects/people where you draw them.",
+    "drawings-everyday": "Everyday drawings for the moments every site has: an open door, a basket, an hourglass, a padlock, keys, a magnifier, an envelope, a parcel, a paper plane, a telephone, a checklist. Import @/fineliner/pen/objects/everyday where you draw them.",
+    "drawings-all": "Every drawing collection at once. Import @/fineliner/pen/objects to register them all.",
+    "scenes": "The kit's four rooms: a record shop floor, a studio, a bistro table and someone at work. Import @/fineliner/pen/objects/rooms to draw <Drawing scene=\"room\" />."
   },
   "requires": {
     "code-block": ["use-highlighted-code"]

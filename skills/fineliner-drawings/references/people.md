@@ -9,7 +9,8 @@ Reuse the kit's pieces rather than drawing bodies from scratch, so a new figure 
 
 ## The pieces
 
-All exported from `@/fineliner/pen`.
+All exported from `@/fineliner/pen/objects/people`, which also registers the kit's people (on a kit from before the
+collections split, from `@/fineliner/pen`).
 
 ```ts
 clothes(s, p, r, at, k, { pose, top, bottom, stride, nobody }) // → { hands: [left, right], neck }

@@ -4,7 +4,8 @@
 import { add, arc, deg, dist, dot, lerp, rect, roundRect } from "../geometry"
 import { times, turn, type Point } from "../geometry"
 import { define, type Draw, objectsIn } from "../library"
-import { box, cylinder, depth, handle, scribble } from "../shapes"
+import { box, depth, scribble } from "../shapes"
+import { mug } from "./parts"
 import type { Sheet } from "../layers"
 import type { Pen } from "../stroke"
 
@@ -215,18 +216,6 @@ export const stickyNotes: Draw = (s, p, r, at, k = 1) => {
     s.fill(p.disc(...dot(turn([c[0], c[1] - 15 * k], c, tilt), 2 * k)))
     scribble(s, p, r, c[0] - 13 * k, c[1] - 4 * k, 26 * k, 3, 7 * k)
   }
-}
-
-/** A full mug with a heart or a scribble on it. People hold one too. */
-export const mug: Draw = (s, p, r, at, k = 1) => {
-  const [x, y] = at
-  const cup = cylinder(s, p, [x, y - 44 * k], 20 * k, 6 * k, 40 * k)
-  handle(s, p, x + 20 * k, y - 36 * k, y - 14 * k, 11 * k)
-  s.fill(p.disc(cup.top, [16.5 * k, 0], [0, 4.4 * k]))
-  const m: Point = [x - 2 * k, y - 22 * k]
-  const heart = pairs([0, 6, -7, -1, -4, -6, 0, -3, 4, -6, 7, -1])
-  if (r.chance(0.5)) s.fill(p.shape(heart.map((d) => add(m, d, k))))
-  else scribble(s, p, r, x - 12 * k, y - 26 * k, 22 * k, 2, 6 * k)
 }
 
 /** A paper cup seen a little from above: the cup, a sleeve round it with a logo, and a lid with a sip hole. */

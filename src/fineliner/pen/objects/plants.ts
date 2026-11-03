@@ -4,63 +4,8 @@ import { add, arc, deg, dot, type Point } from "../geometry"
 import { define, type Draw, objectsIn } from "../library"
 import type { Sheet } from "../layers"
 import type { Stream } from "../seed"
-import { drum } from "../shapes"
+import { leaf, pot } from "./parts"
 import type { Pen } from "../stroke"
-
-/** A leaf from its base along `angle` (0 = straight up, in radians), drooping as it goes: one closed outline and a rib. */
-export function leaf(
-  s: Sheet,
-  p: Pen,
-  base: Point,
-  angle: number,
-  len: number,
-) {
-  const dir: Point = [Math.sin(angle), -Math.cos(angle)]
-  const nrm: Point = [-dir[1], dir[0]]
-  const [width, sag] = [len * 0.36, len * 0.28]
-  // t * (1.25 - 0.25 * t) stands in for t to the power 0.8, which engines do not round alike.
-  const at = (t: number, side: number): Point => {
-    const swell = Math.sin(Math.PI * (t * (1.25 - 0.25 * t)))
-    const pt = add(add(base, dir, len * t), nrm, side * width * swell)
-    return [pt[0], pt[1] + sag * t * t]
-  }
-  const outline = [
-    ...Array.from({ length: 11 }, (_, i) => at(i / 10, 1)),
-    ...Array.from({ length: 9 }, (_, i) => at(0.9 - i / 10, -1)),
-  ]
-  s.blank(p.shape(outline))
-  s.stroke(p.shape(outline))
-  s.stroke(p.path(Array.from({ length: 5 }, (_, i) => at(0.06 + i * 0.17, 0))))
-}
-
-/**
- * A flowerpot standing at `at` (bottom centre): the open top with the soil inside, a rim band in the wash and a
- * tapering body. `grow` draws what stands in the soil. Returns the centre of the opening; stems start just below it.
- */
-export function pot(
-  s: Sheet,
-  p: Pen,
-  at: Point,
-  k: number,
-  grow?: () => void,
-): Point {
-  const [x, y] = at
-  const top: Point = [x, y - 36 * k]
-  const soil = arc(add(top, [0, 1.6 * k]), 21 * k, 3.6 * k, 205, 335, 8)
-  const body: Point[] = [
-    [x - 21 * k, y - 29 * k],
-    ...arc([x, y - 3 * k], 16 * k, 3 * k, 180, 0, 10),
-    [x + 21 * k, y - 29 * k],
-  ]
-  const fill = () => {
-    s.stroke(p.path(soil))
-    grow?.()
-    s.blank(p.shape(body))
-    s.stroke(p.shape(body))
-  }
-  drum(s, p, top, [25 * k, 24 * k, 7 * k, 5 * k], fill, true)
-  return top
-}
 
 /** A quadratic curve from a through the pull of b to c, as n + 1 points. */
 const bend = (a: Point, b: Point, c: Point, n = 6) =>

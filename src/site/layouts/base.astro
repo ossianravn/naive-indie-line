@@ -1,5 +1,7 @@
 ---
 // The site's page frame: pre-paint appearance, shared filters, header and footer.
+import "@/fineliner/pen/objects"
+import "@/fineliner/pen/objects/rooms"
 import "@/fineliner/styles/fineliner.css"
 import "@/site/site.css"
 import { FinelinerDefs } from "@/fineliner/defs/fineliner-defs"
@@ -106,7 +108,12 @@ const NAV = [
     <script>
       // Drawings rendered at build time carry their first take; this draws the others where line boil shows them.
       import { boilTakesIn } from "@/fineliner/drawing/drawing-takes"
-      boilTakesIn()
+      boilTakesIn(document, () =>
+        Promise.all([
+          import("@/fineliner/pen/objects"),
+          import("@/fineliner/pen/objects/rooms"),
+        ]),
+      )
     </script>
   </body>
 </html>

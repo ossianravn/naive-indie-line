@@ -16,10 +16,10 @@ person had drawn it: one thin wobbly line, calm 3/4 views, corners that meet, a 
 ## Before you draw
 
 1. **Find the kit.** It lives in `src/fineliner/` (installed by `shadcn add`); the engine is `src/fineliner/pen/`. Look
-   at `src/fineliner/pen/objects/*.ts`: every kit object is there, and the closest one to what you're asked for is your
+   at `src/fineliner/pen/objects/*.ts`: every kit object is there (on an older kit, before the collections split), and the closest one to what you're asked for is your
    best guide (a bicycle starts from how the chair and desk lamp are built; a bakery counter from the desk and the bistro
    table). Read `references/style.md` once, before the first drawing of a session.
-2. **Check it doesn't exist.** `listObjects()` from `@/fineliner/pen`, or the ids in `objects/*.ts`. Sometimes the answer
+2. **Check it doesn't exist.** The ids in `objects/*.ts`, or `listObjects()` once the collections are imported. Sometimes the answer
    is an existing object with an option (`window` takes `view`, `plate` takes `dish`, `person` takes `pose` and `hair`).
 3. **Decide what it is.** An object (one thing on its own tile, placed in scenes too), a person in a new pose, or a
    scene (a room composed from objects inside the drawn border). Know where it will appear and how big: a 48 px empty-state
@@ -35,9 +35,16 @@ src/drawings/index.ts   ← your objects and scenes, registered on import
 ```
 
 Import that module (`import "@/drawings"`) at the top of every file that renders `<Drawing>` with one of your ids, or
-calls `drawing()` with one. Registration happens when the module runs, and in frameworks with separate server and client
-bundles (Next.js) both bundles need it; importing it next to the `<Drawing>` that uses it covers both. A wrong or missing
+calls `drawing()` with one. Registration happens when the module runs, into one library per JavaScript realm, so a Next.js server component
+that imports it covers the server render of a client `<Drawing>` too. The browser needs it only to draw there (a reroll,
+line boil's later takes): import it in a client component as well for those. A wrong or missing
 import shows up as the error `No drawing object "your-id"`.
+
+The kit's own drawings register the same way, one collection at a time: `@/fineliner/pen` is the engine only. Import
+the collections your module places or your pages show (`import "@/fineliner/pen/objects/indie"`, or every one with
+`@/fineliner/pen/objects`, and the kit's scenes with `@/fineliner/pen/objects/rooms`), and install them if the project
+lacks them (`npx shadcn add @fineliner/drawings-indie`). A kit without `src/fineliner/pen/objects/indie.ts` predates the
+split: there the engine registers everything itself.
 
 `assets/example-drawings.ts` is a complete, working module (a watering can, a person carrying a parcel, and a shop
 counter scene). Copy its shape.

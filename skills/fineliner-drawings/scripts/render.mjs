@@ -71,6 +71,10 @@ const jiti = createJiti(pathToFileURL(path.join(root, "render.mjs")).href, {
   fsCache: false,
 })
 const pen = await jiti.import(kit)
+for (const entry of ["objects/index.ts", "objects/rooms.ts"]) {
+  const file = path.join(path.dirname(kit), entry)
+  if (fs.existsSync(file)) await jiti.import(file)
+}
 if (mod) await jiti.import(path.resolve(root, mod))
 
 const PEN = "#263152"

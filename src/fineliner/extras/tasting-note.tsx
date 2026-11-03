@@ -1,3 +1,4 @@
+import "@/fineliner/pen/objects/food"
 import { Fragment, type ComponentProps, type ReactNode } from "react"
 import { Drawing } from "@/fineliner/drawing/drawing"
 import { PenMark } from "@/fineliner/drawing/pen-mark"

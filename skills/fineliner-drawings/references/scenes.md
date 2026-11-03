@@ -1,7 +1,9 @@
 # Scenes
 
 A scene is a room drawn inside the hand-drawn border, composed back to front from objects. The kit's four (`room`,
-`studio`, `bistro`, `work`) are in `src/fineliner/pen/scenes.ts`; read one before writing your own.
+`studio`, `bistro`, `work`) are in `src/fineliner/pen/objects/rooms.ts` (`pen/scenes.ts` on an older kit); read one before
+writing your own. A scene places objects by id, so import the collections it uses at the top of your module
+(`import "@/fineliner/pen/objects/indie"` for the window, say).
 
 ## Adding a scene
 
