@@ -1,149 +1,86 @@
 // People with faces, and portraits for avatars. `at` is where they stand (bottom-centre) unless a function says
 // otherwise; `k` is their scale. Composition comes from `r` (the shape stream), never from the pen, so takes agree.
-import { add, arc, dot, length, turn, type Point } from "../geometry"
+import { add, arc, dot, roundRect, type Point } from "../geometry"
 import { define, type Draw, objectsIn } from "../library"
 import type { Sheet } from "../layers"
-import type { Stream } from "../seed"
 import type { Pen } from "../stroke"
+import { clothes, TOPS } from "./clothes"
 import { mug } from "./desk"
 
-export const HAIR = ["bob", "crop", "short", "bun", "curls", "long", "bald"]
+/** Hair is a pocket of ink: drawn as an outline it reads as grey. */
+export const HAIR = [
+  "bob",
+  "crop",
+  "fringe",
+  "bun",
+  "curls",
+  "long",
+  "ponytail",
+  "waves",
+]
 
-/** A sleeve hanging from shoulder S, swung by a degrees; returns its outline and where the hand goes. */
-function sleeve(S: Point, side: number, k: number, a: number) {
-  const cut: Point[] = [
-    [8, 27],
-    [11, 51],
-    [1, 53],
-    [-5, 23],
-  ]
-  const pts = cut.map(([u, v]) =>
-    turn([S[0] + side * u * k, S[1] + v * k], S, a),
-  )
-  const [a0, a1, a2, a3] = pts as [Point, Point, Point, Point]
-  const cuff: Point = [(a1[0] + a2[0]) / 2, (a1[1] + a2[1]) / 2]
-  const out: Point = [
-    cuff[0] - (a0[0] + a3[0]) / 2,
-    cuff[1] - (a0[1] + a3[1]) / 2,
-  ]
-  const len = length(out) || 1
-  return { outline: [S, ...pts], hand: add(cuff, out, (4.5 * k) / len) }
-}
+/** Points on a head centred at `c`: u across, v down, both scaled by k. */
+const onHead = (c: Point, k: number) => ({
+  P: (u: number, v: number): Point => [c[0] + u * k, c[1] + v * k],
+  A: (rx: number, ry: number, a0: number, a1: number, n = 14, dy = 0) =>
+    arc([0, dy], rx, ry, a0, a1, n).map(([u, v]): Point => [
+      c[0] + u * k,
+      c[1] + v * k,
+    ]),
+})
 
-/** What someone wears: a pose, a top, a bottom, how far apart the feet are, and whether anybody is inside. */
-export interface Outfit {
-  pose?: string
-  top?: string
-  bottom?: string
-  stride?: number
-  nobody?: boolean
-}
-
-/** Shirt or sweater and trousers or skirt; returns the hands and the neck. */
-export function clothes(
+/** The hair that falls behind the head and shoulders: long hair, a ponytail, a fringe's back. Draw before the clothes. */
+export function hairBehind(
   s: Sheet,
   p: Pen,
-  r: Stream,
-  at: Point,
+  c: Point,
   k: number,
-  {
-    pose = "stand",
-    top = "shirt",
-    bottom = "trousers",
-    stride = 0,
-    nobody = false,
-  }: Outfit = {},
+  hair: string,
 ) {
-  const [x, y] = at
-  const P = (u: number, v: number): Point => [x + u * k, y + v * k]
-  const legs =
-    bottom === "skirt"
-      ? [P(-16, -90), P(-24, -40), P(24, -40), P(16, -90)]
-      : [
-          P(-16, -90),
-          P(-15 - stride, -4),
-          P(-4 - stride, -4),
-          P(0, -58),
-          P(4 + stride, -4),
-          P(15 + stride, -4),
-          P(16, -90),
-        ]
-  if (bottom === "skirt")
-    for (const side of [-1, 1])
-      for (const dx of [5, 11])
-        s.stroke(p.line(P(side * dx, -40), P(side * dx, -5)))
-  if (!nobody)
-    for (const side of [-1, 1])
-      s.fill(p.disc(P(side * (9.5 + stride), -2.5), [7 * k, 0], [0, 3 * k]))
-  s.blank(p.shape(legs))
-  s.stroke(p.path(legs))
-  const body = [
-    P(-8, -163),
-    P(-22, -155),
-    P(-17, -132),
-    P(-20, -88),
-    P(20, -88),
-    P(17, -132),
-    P(22, -155),
-    P(8, -163),
-  ]
-  s.blank(p.shape(body))
-  s.stroke(p.path(body))
-  if (top === "shirt") {
-    s.stroke(p.path([P(-8, -162), P(-3, -152), P(0, -158)]))
-    s.stroke(p.path([P(8, -162), P(3, -152), P(0, -158)]))
-    s.stroke(p.line(P(0, -156), P(0, -90)))
-  } else {
-    s.stroke(p.path(arc([0, -163], 8, 4, 0, 180, 8).map(([u, v]) => P(u, v))))
-    s.stroke(p.line(P(-19.5, -95), P(19.5, -95)))
-  }
-  // Every pose's swing is drawn, in this order, whichever pose is used, so the draws after it stay put.
-  const stand: Point = [r.signed() * 5, r.signed() * 5]
-  const swings: Record<string, Point> = {
-    stand,
-    wave: [r.signed() * 5, -155],
-    mug: [r.signed() * 5, 52],
-    walk: [14, -12],
-  }
-  const swing = swings[pose] ?? stand
-  const hands = [-1, 1].map((side, i) => {
-    const sl = sleeve(P(side * 22, -155), side, k, swing[i] as number)
-    s.blank(p.shape(sl.outline))
-    s.stroke(p.path([...sl.outline, sl.outline[0] as Point]))
-    return sl.hand
-  })
-  for (const h of nobody ? [] : hands) {
-    s.blank(p.disc(...dot(h, 3.6 * k)))
-    s.stroke(p.ring(...dot(h, 3.6 * k)))
-  }
-  return { hands, neck: P(0, -163) }
+  const { P, A } = onHead(c, k)
+  const fall = ({ long: 32, fringe: 13 } as Record<string, number>)[hair]
+  if (fall)
+    s.fill(p.shape([P(-15, fall), ...A(15.5, 19, 160, 380, 18), P(15, fall)]))
+  if (hair === "ponytail")
+    s.fill(
+      p.shape([
+        P(7, -12),
+        P(17, -10),
+        P(22, 2),
+        P(20, 22),
+        P(16, 12),
+        P(12, 0),
+      ]),
+    )
 }
 
-/** A head centred at `at`: face, ears, features and hair, all from the seed unless given. */
+/** A face centred at `c` with its hair in front: ears, features, glasses and a beard, all from the seed unless given. */
 export const head: Draw = (
   s,
   p,
   r,
   c,
   k = 1,
-  { hair = r.pick(HAIR), glasses = r.chance(0.3), beard = r.chance(0.2) } = {},
+  { hair = r.pick(HAIR), glasses = r.chance(0.3), beard = r.chance(0.15) } = {},
 ) => {
-  const P = (u: number, v: number): Point => [c[0] + u * k, c[1] + v * k]
-  const A = (rx: number, ry: number, a0: number, a1: number, n = 14, dy = 0) =>
-    arc([0, dy], rx, ry, a0, a1, n).map(([u, v]) => P(u, v))
-  if (hair === "long") {
-    const back = [P(-15, 30), ...A(15.5, 19, 160, 380, 18), P(15, 30)]
-    s.blank(p.shape(back))
-    s.stroke(p.path(back))
-  }
-  s.stroke(p.line(P(-4, 13), P(-4, 21)))
-  s.stroke(p.line(P(4, 13), P(4, 21)))
+  const { P, A } = onHead(c, k)
+  s.stroke(p.line(P(-4, 12), P(-4, 15.5)))
+  s.stroke(p.line(P(4, 12), P(4, 15.5)))
   s.blank(p.disc(c, [12 * k, 0], [0, 15 * k]))
   s.stroke(p.ring(c, [12 * k, 0], [0, 15 * k]))
-  if (!["bob", "long"].includes(hair)) {
-    s.stroke(p.path(A(3, 4, 270, 450, 6).map((pt) => add(pt, [12 * k, 2 * k]))))
-    s.stroke(p.path(A(3, 4, 90, 270, 6).map((pt) => add(pt, [-12 * k, 2 * k]))))
+  if (["crop", "bun", "ponytail", "waves"].includes(hair)) {
+    s.stroke(
+      p.path(A(2.6, 3.6, 270, 450, 6).map((pt) => add(pt, [12 * k, 2 * k]))),
+    )
+    s.stroke(
+      p.path(A(2.6, 3.6, 90, 270, 6).map((pt) => add(pt, [-12 * k, 2 * k]))),
+    )
   }
+  // A cap of hair over the crown, its hairline given as points from the right temple to the left.
+  const cap = (rx: number, ry: number, line: [number, number][]) =>
+    s.fill(
+      p.shape([...A(rx, ry, 180, 360, 14), ...line.map(([u, v]) => P(u, v))]),
+    )
   if (hair === "bob")
     s.fill(
       p.shape([
@@ -157,33 +94,84 @@ export const head: Draw = (
       ]),
     )
   else if (hair === "crop")
+    cap(13, 16.5, [
+      [12.6, -3],
+      [9, -7],
+      [4, -5],
+      [-2, -8],
+      [-8, -5],
+      [-12.6, -3],
+    ])
+  else if (hair === "bun" || hair === "ponytail") {
+    cap(13, 16.3, [
+      [12.8, -1],
+      [7, -6.5],
+      [0, -8],
+      [-7, -6.5],
+      [-12.8, -1],
+    ])
+    if (hair === "bun") s.fill(p.disc(...dot(P(1, -19), 6 * k)))
+  } else if (hair === "waves") {
+    // Short and a little tousled: the crown's outline swells and dips.
+    const crown = Array.from({ length: 13 }, (_, i): Point => {
+      const [f, a] = [i % 2 ? 1.07 : 1, 190 + (i * 160) / 12]
+      return A(14 * f, 18.5 * f, a, a, 1)[0] as Point
+    })
     s.fill(
       p.shape([
-        ...A(13, 16.5, 175, 365, 14),
-        P(9, -7),
-        P(4, -5),
-        P(-2, -8),
-        P(-8, -5),
-        P(-12.5, -3),
+        ...crown,
+        P(12.6, -2),
+        P(7, -8),
+        P(1, -6),
+        P(-5, -9),
+        P(-12.6, -1),
       ]),
     )
-  else if (hair === "short" || hair === "bun") {
-    s.stroke(p.path([P(-12, -2), ...A(13.5, 17, 190, 350, 12), P(12, -2)]))
-    s.stroke(p.path([P(-6, -14), P(-2, -8), P(3, -13)]))
-    if (hair === "bun") s.fill(p.disc(...dot(P(0, -20), 5.5 * k)))
-  } else if (hair === "curls")
-    for (let a = 165; a <= 375; a += 26)
-      s.stroke(p.ring(...dot(A(14, 17, a, a, 1)[0] as Point, 4.2 * k)))
-  else if (hair === "long")
-    s.stroke(p.path([P(-12, 4), ...A(13, 16, 190, 350, 12), P(12, 4)]))
+  } else if (hair === "curls") {
+    cap(13, 16, [
+      [12.5, -1],
+      [6, -6],
+      [-6, -6],
+      [-12.5, -1],
+    ])
+    for (let a = 170; a <= 370; a += 25)
+      s.fill(p.disc(...dot(A(13.5, 16.5, a, a, 1)[0] as Point, 5 * k)))
+  } else if (hair === "long" || hair === "fringe") {
+    // Parted: each side falls from the crown past the cheeks.
+    const low = hair === "long" ? 12 : 9
+    s.fill(
+      p.shape([
+        P(-12.8, low),
+        ...A(13.5, 16.5, 180, 360, 14),
+        P(12.8, low),
+        P(10.6, low - 1),
+        P(10, -3),
+        P(4, -8.5),
+        P(0, -11),
+        P(-4, -8.5),
+        P(-10, -3),
+        P(-10.6, low - 1),
+      ]),
+    )
+  }
   if (glasses) {
     for (const side of [-1, 1])
-      s.stroke(p.ring(...dot(P(side * 5, 1), 3.8 * k)))
-    s.stroke(p.line(P(-1.2, 0.5), P(1.2, 0.5)))
+      s.stroke(
+        p.shape(
+          roundRect(
+            c[0] + (side * 5.2 - 4.4) * k,
+            c[1] - 2.6 * k,
+            8.8 * k,
+            7.2 * k,
+            2.6 * k,
+          ),
+        ),
+      )
+    s.stroke(p.line(P(-0.9, 0.4), P(0.9, 0.4)))
   }
   for (const side of [-1, 1]) s.fill(p.disc(...dot(P(side * 5, 1), 1.15 * k)))
   s.stroke(p.path([P(0.6, 2), P(-1.4, 7.2), P(1.4, 7.6)]))
-  if (beard && hair !== "long")
+  if (beard && !["long", "bob", "fringe"].includes(hair))
     s.fill(
       p.shape([
         P(-12, 3),
@@ -196,7 +184,7 @@ export const head: Draw = (
   else s.stroke(p.path(A(3.4, 1.8, 20, 160, 6, 10.5)))
 }
 
-/** A person standing, waving or holding a mug; long hair is drawn behind the clothes. */
+/** A person standing, waving or holding a mug, in everyday clothes. */
 export const person: Draw = (
   s,
   p,
@@ -210,17 +198,19 @@ export const person: Draw = (
     beard,
   } = {},
 ) => {
-  const top = r.pick(["shirt", "sweater"])
+  const picked = r.pick(TOPS)
+  // A hood would sit over long hair.
+  const top = picked === "hoodie" && hair === "long" ? "sweater" : picked
   const bottom = r.chance(0.3) ? "skirt" : "trousers"
   const c: Point = [at[0], at[1] - 178 * k]
-  if (hair === "long") head(s, p, r, c, k, { hair, glasses, beard })
+  hairBehind(s, p, c, k, hair)
   const { hands } = clothes(s, p, r, at, k, {
     pose,
     top,
     bottom,
     stride: r.signed() * 2,
   })
-  if (hair !== "long") head(s, p, r, c, k, { hair, glasses, beard })
+  head(s, p, r, c, k, { hair, glasses, beard })
   if (pose === "mug")
     mug(s, p, r, add(hands[1] as Point, [-3 * k, 4 * k]), 0.45 * k, {})
 }
@@ -234,6 +224,8 @@ export const personMug: Draw = (s, p, r, at, k) =>
 /** Head and shoulders, for avatars: `at` is the centre of the tile. */
 export const portrait: Draw = (s, p, r, at, k = 1, options = {}) => {
   const P = (u: number, v: number): Point => [at[0] + u * k, at[1] + v * k]
+  const hair = options.hair ?? r.pick(HAIR)
+  const top = r.pick(TOPS)
   const shoulders = [
     P(-36, 46),
     P(-31, 26),
@@ -242,15 +234,27 @@ export const portrait: Draw = (s, p, r, at, k = 1, options = {}) => {
     P(31, 26),
     P(36, 46),
   ]
+  hairBehind(s, p, P(0, 1), k, hair)
+  if (top === "hoodie")
+    s.stroke(p.path(arc([0, 20], 17, 8, 200, 340, 8).map(([u, v]) => P(u, v))))
+  // Long hair falls behind the shoulders, not over the chest.
+  s.blank(p.shape(shoulders))
   s.stroke(p.path(shoulders))
-  s.stroke(
-    p.path(
-      r.chance(0.5)
-        ? [P(-7, 16), P(0, 25), P(7, 16)]
-        : arc([0, 16], 8, 5, 0, 180, 8).map(([u, v]) => P(u, v)),
-    ),
-  )
-  head(s, p, r, P(0, -6), k, options)
+  s.stroke(p.path(arc([0, 16], 8, 5, 0, 180, 8).map(([u, v]) => P(u, v))))
+  if (top === "overshirt")
+    for (const side of [-1, 1])
+      s.stroke(
+        p.path([
+          P(side * 8, 17),
+          P(side * 15, 30),
+          P(side * 6, 33),
+          P(side * 7, 46),
+        ]),
+      )
+  if (top === "hoodie")
+    for (const side of [-1, 1])
+      s.stroke(p.line(P(side * 3.5, 21), P(side * 4.5, 40)))
+  head(s, p, r, P(0, 1), k, { ...options, hair })
 }
 
 const T = objectsIn("people")

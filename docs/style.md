@@ -19,7 +19,7 @@ Facts from the label, which the rules below generalize:
 - **A second tone**: the soil in the pot is a lighter, brighter blue than the line, the one place the ink looks thinned.
 - **Perspective**: oblique and intuitive. The shelf, turntable and speakers tip toward the viewer, and each object has its own idea of depth.
 - **Composition**: a hand-drawn rectangular border inset from the paper's edge; a picture within the picture (the pinned treehouse); a sweeping floor curve; plenty of empty wall.
-- **Subjects**: domestic objects (records, speakers, a plant) and absent people: a shirt and trousers with nobody in them, a collar ring where a head would be.
+- **Subjects**: domestic objects (records, speakers, a plant) and absent people: a sweater and wide trousers with nobody in them, a collar ring where a head would be. People are young and dressed for everyday: loose sweaters, hoodies, open overshirts and tees, wide trousers with rolled hems, trainers, and hair as a pocket of ink (drawn as an outline, hair reads as grey).
 - **Type**: a classical book serif in the same ink, small and quiet, set vertically up the right edge ("Pétillant Naturel") and as a tiny credit at the bottom left.
 - **Paper**: cream unbleached stock with dark flecks and fibres.
 
@@ -149,12 +149,12 @@ Patina's signature is seeded riso **prints** of abstract motifs. This kit's is s
 
 - **The pen** (`specimen/pen.js`): a seeded stroke engine. Each stroke is resampled every 3 px and offset along its normal by slow eased noise (wavelength about 40 px) plus a faint tremor; open strokes run past or stop short of their ends; drawn circles go a little past where they started. Every line has the same screen weight (`vector-effect: non-scaling-stroke`), so a 40 px avatar and a 600 px scene are drawn with one pen.
 - **Blanks**: an object in front hides lines behind it with a mask, so the paper's texture still shows through the gap.
-- **The library** (`objects.js`, `objects/`): a registry where each object is one draw function filed in a collection, so the library page, scenes and the kit's future `<Drawing>` find objects the same way. It is meant to keep growing, now and release after release. 55 objects today:
+- **The library** (`objects.js`, `objects/`): a registry where each object is one draw function filed in a collection, so the library page, scenes and the kit's future `<Drawing>` find objects the same way. It is meant to keep growing, now and release after release. 57 objects today:
   - **Indie** (17): turntable, speaker, record shelf, disco ball, record, cassette, radio, guitar, record crate, sunflower, house plant, cactus, pinned picture, chair, armchair, floor lamp, window.
   - **Food & drink** (15): wine bottle, wine glass, carafe, coffee, teapot, plate (fish, toast, pasta or salad), bowl, bread, lemons, candle, moka pot, fork and knife, menu card, bistro table, pendant lamp.
   - **Studio** (16), a creative freelancer's world: laptop, monitor, website, keyboard and mouse, phone, tablet and pen, headphones, camera, desk, office chair, desk lamp, books, sketchbook, sticky notes, mug, coffee to go. Screens show a website wireframe, code, a design canvas or an app.
-  - **People** (7): a person with a face (standing, waving or holding a mug), a portrait for avatars, the visitor who is only clothes (standing, walking, holding a record), and a cat. Hair (bob, crop, short, bun, curls, long, bald), glasses, beards, shirts or sweaters, trousers or skirts all come from the seed.
-- **Scenes** (`scene.js`): a listening room, a freelancer's studio and a bistro table for two, each composed back to front inside the drawn border.
+  - **People** (9): a person with a face (standing, waving or holding a mug), a portrait for avatars, the visitor who is only clothes (standing, walking, holding a record), someone at work seen from behind on an office chair (as a visitor, or with the back of their head), and a cat. Hair (bob, crop, fringe, bun, curls, long, ponytail, waves), glasses, beards, the top (sweater, hoodie, overshirt or tee) and trousers or a short skirt all come from the seed.
+- **Scenes** (`scene.js`): a listening room, a freelancer's studio, a bistro table for two and someone at work at a desk under a window, each composed back to front inside the drawn border.
 
 The generated explorations in `docs/style/explorations/` (gpt-image, from the label photograph) show where the library can grow: kitchen, desk, balcony at night, chair, lamp, teapot, radio, window, cassette. They are direction, not assets: everything the kit ships is drawn by code from a seed.
 

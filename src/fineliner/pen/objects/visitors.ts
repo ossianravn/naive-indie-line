@@ -2,16 +2,17 @@
 // scale. Composition comes from `r` (the shape stream), never from the pen, so takes agree.
 import { add, arc, dot, type Point } from "../geometry"
 import { define, type Draw, objectsIn } from "../library"
-import { clothes } from "./people"
+import { clothes } from "./clothes"
 
 /**
- * A shirt and trousers with nobody in them. On its own the visitor stands empty-handed; scenes may ask for "walk" or
- * "record" (carrying a sleeve, which is also its own object, the visitor with a record).
+ * A sweater, hoodie or open shirt and wide trousers with nobody in them. On its own the visitor stands empty-handed;
+ * scenes may ask for "walk" or "record" (carrying a sleeve, which is also its own object, the visitor with a record).
  */
 export const visitor: Draw = (s, p, r, at, k = 1, { pose = "stand" } = {}) => {
   const P = (u: number, v: number): Point => [at[0] + u * k, at[1] + v * k]
   const { hands } = clothes(s, p, r, at, k, {
     pose: pose === "record" ? "mug" : pose,
+    top: r.pick(["sweater", "hoodie", "overshirt"]),
     stride: pose === "walk" ? 9 : r.signed() * 2,
     nobody: true,
   })

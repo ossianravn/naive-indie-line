@@ -1239,6 +1239,11 @@
           "target": "~/src/fineliner/pen/objects/bistro.ts"
         },
         {
+          "path": "src/fineliner/pen/objects/clothes.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/clothes.ts"
+        },
+        {
           "path": "src/fineliner/pen/objects/desk.ts",
           "type": "registry:file",
           "target": "~/src/fineliner/pen/objects/desk.ts"
@@ -1287,6 +1292,16 @@
           "path": "src/fineliner/pen/objects/plants.ts",
           "type": "registry:file",
           "target": "~/src/fineliner/pen/objects/plants.ts"
+        },
+        {
+          "path": "src/fineliner/pen/objects/seated.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/seated.ts"
+        },
+        {
+          "path": "src/fineliner/pen/objects/units.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/units.ts"
         },
         {
           "path": "src/fineliner/pen/objects/visitors.ts",

@@ -4,14 +4,15 @@ import {
   add,
   arc,
   deg,
+  dist,
+  dot,
   lerp,
-  rect,
   roundRect,
   times,
   type Point,
 } from "../geometry"
 import { define, type Draw, objectsIn } from "../library"
-import { box } from "../shapes"
+import { banded, box } from "../shapes"
 
 /** Key widths per row, front (space bar) to back, in key units; every row is 10 units. Few, large keys, so the
  * keyboard still reads as one at the size of a library tile. */
@@ -84,65 +85,97 @@ export const keyboard: Draw = (s, p, r, at, k = 1) => {
   s.fill(p.disc(add(top, v, -0.45), [1.3 * k, 0], times(o, 4 * k)))
 }
 
-/** A drawing tablet with a sketch on it and its pen lying across. */
+/**
+ * A drawing tablet face on, a sketch on its screen and its pen drawing the last stroke. The sketch's last stroke runs
+ * along the pen, so its end goes on under the pen; the pen is one closed shape with a rounded end and a solid nib.
+ */
 export const tablet: Draw = (s, p, _r, at, k = 1) => {
   const [x, y] = at
   const P = (u: number, v: number): Point => [x + u * k, y - v * k]
-  const body = rect(x, y - 84 * k, 124 * k, 84 * k)
+  const body = roundRect(x, y - 84 * k, 124 * k, 84 * k, 6 * k)
   s.blank(p.shape(body))
-  s.stroke(p.edges(body))
-  s.stroke(p.edges([P(7, 77), P(117, 77), P(117, 7), P(7, 7)]))
-  s.stroke(p.path([P(16, 22), P(36, 46), P(52, 30), P(70, 52), P(92, 26)]))
-  s.stroke(p.ring(P(92, 60), [7 * k, 0], [0, 7 * k]))
-  const tip = P(70, 40)
-  const end = P(132, 96)
-  const side: Point = [3 * k, 0]
+  s.stroke(p.shape(body))
+  s.stroke(p.shape(roundRect(x + 8 * k, y - 77 * k, 108 * k, 70 * k, 3 * k)))
+  s.fill(p.disc(...dot(P(4, 42), 1 * k)))
+  const tip = P(74, 40)
+  s.stroke(p.path([P(18, 22), P(33, 46), P(47, 31), P(60, 26), tip]))
+  s.stroke(p.ring(P(38, 64), [7 * k, 0], [0, 7 * k]))
+  const end = P(130, 96)
+  const len = dist(tip, end)
+  const along = times([end[0] - tip[0], end[1] - tip[1]], 1 / len)
+  const side = times([-along[1], along[0]], 3 * k)
+  const cone = lerp(tip, end, 0.1)
+  const cap = Array.from({ length: 5 }, (_, i) => {
+    const t = ((i + 1) * Math.PI) / 6
+    return add(add(end, side, Math.cos(t)), along, 3 * k * Math.sin(t))
+  })
   const stylus = [
-    add(tip, [0, 0]),
-    add(lerp(tip, end, 0.12), side),
+    tip,
+    add(cone, side),
     add(end, side),
+    ...cap,
     add(end, side, -1),
-    add(lerp(tip, end, 0.12), side, -1),
+    add(cone, side, -1),
   ]
   s.blank(p.shape(stylus))
-  s.stroke(p.path([...stylus, stylus[0] as Point]))
-  s.fill(
-    p.shape([
-      tip,
-      add(lerp(tip, end, 0.06), [1.5 * k, 0]),
-      add(lerp(tip, end, 0.06), [-1.5 * k, 0]),
-    ]),
-  )
+  s.stroke(p.shape(stylus))
+  const nib = lerp(tip, end, 0.05)
+  s.fill(p.shape([tip, add(nib, side, 0.5), add(nib, side, -0.5)]))
 }
 
-/** Over-ear headphones; `at` is bottom-centre. */
+/**
+ * Over-ear headphones face on; `at` is bottom-centre. The band and its two sliders are one closed stroke; each slider
+ * holds a yoke that cradles the top of its cup, pinned to the cup at both ends, and the cushions show on the inside.
+ */
 export const headphones: Draw = (s, p, _r, at, k = 1) => {
-  const c: Point = [at[0], at[1] - 34 * k]
-  s.stroke(p.path(arc(c, 40 * k, 44 * k, 195, 345, 18)))
-  s.stroke(p.path(arc(c, 34 * k, 38 * k, 198, 342, 18)))
+  const [x, y] = at
+  const P = (u: number, v: number): Point => [x + u * k, y - v * k]
+  const [cx, cy, rx, ry, gap] = [36, 22, 9, 15, 3.5]
+  const top = cy + ry + gap
+  const c = P(0, 46)
+  const [ox, oy, ix, iy] = [cx + 3, 28, cx - 3, 22]
+  s.stroke(
+    p.shape([
+      P(-ox, top),
+      ...arc(c, ox * k, oy * k, 180, 360, 18),
+      P(ox, top),
+      P(ix, top),
+      ...arc(c, ix * k, iy * k, 360, 180, 14),
+      P(-ix, top),
+    ]),
+  )
   for (const side of [-1, 1]) {
-    const cup = add(c, [side * 39 * k, 14 * k])
-    s.blank(p.disc(cup, [10 * k, 0], [0, 17 * k]))
-    s.stroke(p.ring(cup, [10 * k, 0], [0, 17 * k]))
-    s.fill(p.disc(add(cup, [side * 3 * k, 0]), [5 * k, 0], [0, 12 * k]))
+    const cup = P(side * cx, cy)
+    const [yx, yy] = [(rx + gap) * k, (ry + gap) * k]
+    s.stroke(p.path(arc(cup, yx, yy, 208, 332, 12)))
+    s.fill(p.disc(add(cup, [-side * 8 * k, 0]), [5.5 * k, 0], [0, 12 * k]))
+    s.blank(p.disc(cup, [rx * k, 0], [0, ry * k]))
+    s.stroke(p.ring(cup, [rx * k, 0], [0, ry * k]))
+    for (const a of [200, 340]) {
+      const pin = arc(cup, (rx + gap / 2) * k, (ry + gap / 2) * k, a, a, 1)
+      s.fill(p.disc(...dot(pin[0] as Point, 2 * k)))
+    }
   }
 }
 
+/**
+ * A camera face on: the body is cut across by its top band (one closed stroke) above the grip (one run), the prism and
+ * the shutter button stand on top with their feet hidden in the body, and the lens covers the band where they meet.
+ */
 export const camera: Draw = (s, p, _r, at, k = 1) => {
   const [x, y] = at
   const P = (u: number, v: number): Point => [x + u * k, y - v * k]
-  s.stroke(p.edges([P(12, 58), P(18, 68), P(40, 68), P(46, 58)], false))
-  s.stroke(p.edges(rect(x + 70 * k, y - 63 * k, 12 * k, 5 * k)))
-  const body = roundRect(x, y - 58 * k, 96 * k, 58 * k, 5 * k)
-  s.blank(p.shape(body))
-  s.stroke(p.shape(body))
-  s.stroke(p.line(P(0, 44), P(96, 44)))
+  s.stroke(p.path([P(10, 55), P(18, 68), P(40, 68), P(48, 55)]))
+  s.stroke(p.shape(roundRect(x + 70 * k, y - 63 * k, 12 * k, 9 * k, 1.5 * k)))
+  s.blank(p.shape(roundRect(x, y - 58 * k, 96 * k, 58 * k, 5 * k)))
+  banded(s, p, x, y - 58 * k, 96 * k, 58 * k, 5 * k, 14 * k)
+  s.stroke(p.shape(roundRect(x + 74 * k, y - 55 * k, 14 * k, 8 * k, 2 * k)))
   const lens = P(50, 26)
-  s.stroke(p.ring(lens, [22 * k, 0], [0, 22 * k]))
-  s.stroke(p.ring(lens, [15 * k, 0], [0, 15 * k]))
-  s.fill(p.disc(lens, [9 * k, 0], [0, 9 * k]))
-  s.paper(p.disc(add(lens, [-3 * k, -3 * k]), [2 * k, 0], [0, 2 * k]))
-  s.stroke(p.edges(rect(x + 76 * k, y - 40 * k, 12 * k, 8 * k)))
+  s.blank(p.disc(...dot(lens, 22 * k)))
+  s.stroke(p.ring(...dot(lens, 22 * k)))
+  s.stroke(p.ring(...dot(lens, 15 * k)))
+  s.fill(p.disc(...dot(lens, 9 * k)))
+  s.paper(p.disc(...dot(add(lens, [-3 * k, -3 * k]), 2 * k)))
 }
 
 const T = objectsIn("studio")

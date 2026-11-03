@@ -199,6 +199,33 @@ function bistro(seed: string, hand: HandName, take: number) {
   return s
 }
 
+function work(seed: string, hand: HandName, take: number) {
+  const { s, r, put, floor, walls, border } = stage(seed, hand, take, "work")
+  walls()
+  put("window", "window", [r.between(0.27, 0.32) * W, floor - 124], 0.85)
+  put("picture", "picture", [r.between(0.8, 0.84) * W, H * 0.22], 0.7)
+  const x = r.between(0.27, 0.31) * W
+  const top = put("desk", "desk", [x, floor + 62], 1, {
+    w: 300,
+    d: 70,
+    legs: 84,
+  }) as Box
+  // Back to front: the cactus stands behind the books, clear of the screen.
+  put("cactus", "plant", top.top(0.15, 0.9), 0.5)
+  put("books", "books", top.top(0.02, 0.45), 0.58)
+  if (r.chance(0.65)) put("monitor", "screen", top.top(0.5, 0.6), 0.95)
+  else put("laptop", "screen", top.top(0.36, 0.3), 0.8)
+  put("mug", "mug", top.top(0.72, 0.2), 0.55)
+  put("desk-lamp", "lamp", top.top(0.9, 0.65), 0.75)
+  // Someone at work, seen from behind on an office chair, as in the label's rooms: only their clothes.
+  put("visitor-seated", "worker", [x + r.between(130, 160), H - M - 20], 1.55)
+  if (r.chance(0.5))
+    put("cat", "cat", [r.between(0.84, 0.9) * W, H - M - 18], 0.85)
+  else put("house-plant", "floor", [r.between(0.86, 0.9) * W, H - M - 6], 1.1)
+  border()
+  return s
+}
+
 export interface Scene {
   name: string
   /** The accessible name of a drawing of this scene. */
@@ -227,6 +254,13 @@ export const SCENES = {
       "A bistro table for two with wine, a candle and a plate, under a pendant lamp",
     size: [W, H],
     compose: bistro,
+  },
+  work: {
+    name: "At work",
+    label:
+      "Someone at work at a desk under a window, seen from behind on an office chair",
+    size: [W, H],
+    compose: work,
   },
 } satisfies Record<string, Scene>
 

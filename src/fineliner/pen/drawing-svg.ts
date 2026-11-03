@@ -8,7 +8,7 @@ import type { HandName } from "./stroke"
 export interface DrawingOptions {
   /** An object id from the library, such as "turntable". */
   object?: string
-  /** A scene: "room", "studio" or "bistro". */
+  /** A scene: "room", "studio", "bistro" or "work". */
   scene?: SceneName
   /** Same seed, same drawing, on the server, in the browser and in every build. */
   seed: string | number

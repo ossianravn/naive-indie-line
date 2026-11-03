@@ -1,9 +1,19 @@
 // Studio: the freelancer's screens, and what is on them (a website, code, a design canvas or an app). `at` is
 // bottom-left unless a function says otherwise. Composition comes from `r` (the shape stream), never from the pen,
-// so takes agree.
-import { add, dot, lerp, rect, roundRect, turn, type Point } from "../geometry"
+// so takes agree. Outlines are closed shapes, so their corners meet; a line that has to meet an outline either ends
+// in the air or carries on along it, so its overshoot never pokes through.
+import {
+  add,
+  deg,
+  dot,
+  lerp,
+  rect,
+  roundRect,
+  turn,
+  type Point,
+} from "../geometry"
 import { define, type Draw, objectsIn } from "../library"
-import { box, depth } from "../shapes"
+import { banded, box, depth } from "../shapes"
 import type { Sheet } from "../layers"
 import type { Stream } from "../seed"
 import type { Pen } from "../stroke"
@@ -14,6 +24,10 @@ function quad(corners: Point[]) {
   return (u: number, v: number) => lerp(lerp(A, B, u), lerp(D, C, u), v)
 }
 
+/** Move a screen's corners in by `a` at the sides and top and by `b` at the bottom (top-left first, clockwise). */
+const inset = (corners: Point[], a: number, b = a): Point[] =>
+  corners.map((pt, i) => add(pt, [i === 0 || i === 3 ? a : -a, i < 2 ? a : -b]))
+
 /** What a screen shows: "site", "code", "canvas" or "app"; the first three are drawn from the seed. */
 export function screen(
   s: Sheet,
@@ -23,129 +37,132 @@ export function screen(
   kind: string = r.pick(["site", "code", "canvas"]),
 ) {
   const q = quad(corners)
-  const box4 = (u0: number, v0: number, u1: number, v1: number) => [
-    q(u0, v0),
-    q(u1, v0),
-    q(u1, v1),
-    q(u0, v1),
-  ]
+  const frame = (u0: number, v0: number, u1: number, v1: number) =>
+    p.shape([q(u0, v0), q(u1, v0), q(u1, v1), q(u0, v1)])
+  const mark = (u: number, v: number, rad: number) =>
+    p.disc(q(u, v), [rad, 0], [0, rad])
   if (kind === "site") {
-    s.stroke(p.line(q(0, 0.16), q(1, 0.16)))
-    s.fill(p.disc(q(0.08, 0.08), [2, 0], [0, 2]))
+    s.stroke(p.line(q(0.03, 0.16), q(0.97, 0.16)))
+    s.fill(mark(0.08, 0.07, 2))
     for (let i = 0; i < 3; i++)
-      s.stroke(p.line(q(0.6 + i * 0.12, 0.08), q(0.68 + i * 0.12, 0.08)))
-    s.stroke(p.edges(box4(0.08, 0.24, 0.92, 0.6)))
+      s.stroke(p.line(q(0.6 + i * 0.12, 0.07), q(0.67 + i * 0.12, 0.07)))
+    s.stroke(frame(0.08, 0.26, 0.92, 0.6))
     s.stroke(
       p.path([
-        q(0.12, 0.56),
-        q(0.32, 0.36),
+        q(0.14, 0.55),
+        q(0.32, 0.37),
         q(0.46, 0.5),
-        q(0.58, 0.42),
-        q(0.88, 0.56),
+        q(0.58, 0.43),
+        q(0.86, 0.55),
       ]),
     )
-    s.stroke(p.ring(q(0.76, 0.33), [3, 0], [0, 3]))
+    s.stroke(mark(0.76, 0.35, 3))
     s.stroke(p.line(q(0.08, 0.69), q(0.6, 0.69)))
     s.stroke(p.line(q(0.08, 0.77), q(0.82, 0.77)))
-    s.fill(p.shape(box4(0.08, 0.85, 0.3, 0.94)))
+    s.fill(frame(0.08, 0.85, 0.3, 0.94))
   } else if (kind === "code") {
     let indent = 0
     for (let v = 0.12; v < 0.92; v += 0.1) {
       indent = Math.max(0, Math.min(3, indent + Math.round(r.signed() * 1.2)))
       const u0 = 0.14 + indent * 0.08
-      s.stroke(p.line(q(0.05, v), q(0.08, v)))
+      s.fill(mark(0.06, v, 1))
       s.stroke(
         p.line(q(u0, v), q(Math.min(0.94, u0 + r.between(0.15, 0.55)), v)),
       )
     }
   } else if (kind === "canvas") {
-    s.stroke(p.line(q(0.2, 0), q(0.2, 1)))
-    s.stroke(p.line(q(0.8, 0), q(0.8, 1)))
+    s.stroke(p.line(q(0.2, 0.04), q(0.2, 0.96)))
+    s.stroke(p.line(q(0.8, 0.04), q(0.8, 0.96)))
     for (let v = 0.12; v < 0.6; v += 0.12)
-      s.stroke(p.line(q(0.04, v), q(0.15, v)))
-    s.stroke(p.edges(box4(0.3, 0.18, 0.7, 0.82)))
-    s.stroke(p.ring(q(0.43, 0.42), [7, 0], [0, 7]))
-    s.fill(p.shape(box4(0.5, 0.5, 0.62, 0.7)))
+      s.stroke(p.line(q(0.05, v), q(0.14, v)))
+    s.stroke(frame(0.3, 0.18, 0.7, 0.82))
+    s.stroke(p.ring(q(0.43, 0.4), [7, 0], [0, 7]))
+    s.fill(frame(0.5, 0.52, 0.62, 0.72))
     for (let v = 0.14; v < 0.5; v += 0.1)
-      s.stroke(p.line(q(0.84, v), q(0.96, v)))
+      s.stroke(p.line(q(0.86, v), q(0.95, v)))
   } else {
     s.stroke(p.line(q(0.1, 0.1), q(0.6, 0.1)))
     for (const v of [0.2, 0.46]) {
-      s.stroke(p.edges(box4(0.1, v, 0.9, v + 0.2)))
+      s.stroke(frame(0.1, v, 0.9, v + 0.2))
       s.stroke(p.line(q(0.18, v + 0.07), q(0.7, v + 0.07)))
       s.stroke(p.line(q(0.18, v + 0.13), q(0.5, v + 0.13)))
     }
-    for (let i = 0; i < 4; i++)
-      s.fill(p.disc(q(0.2 + i * 0.2, 0.88), [1.5, 0], [0, 1.5]))
+    for (let i = 0; i < 4; i++) s.fill(mark(0.2 + i * 0.2, 0.88, 1.5))
   }
 }
 
+/** Laptop keys per row, front (space bar) to back, in key units; every row is 10 units. */
+const KEYS = [
+  [1.5, 1, 5, 1, 1.5],
+  [2.25, 1, 1, 1, 1, 1, 1, 1.75],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+]
+
+/**
+ * An open laptop: the deck is a thin box with rows of keys and a touchpad on top, each a closed shape; the lid stands
+ * on the deck's back edge, its foot hidden by the deck, with the screen inset in it. Seen a little steeper than most
+ * objects, so the keys have room.
+ */
 export const laptop: Draw = (s, p, r, at, k = 1, { kind } = {}) => {
-  const o = depth(r)
+  const a = (40 + r.signed() * 6) * deg
+  const o: Point = [Math.cos(a) * 0.6, -Math.sin(a) * 0.6]
   const [x, y] = at
-  const [w, d, h] = [124 * k, 64 * k, 80 * k]
-  const back = (u: number) => add([x + w * u, y - 4 * k], o, d)
-  const lean: Point = [o[0] * 8 * k, -h]
-  const lid: [Point, Point, Point, Point] = [
-    add(back(0), lean),
-    add(back(1), lean),
-    back(1),
-    back(0),
+  const [w, d, h] = [124 * k, 64 * k, 76 * k]
+  const hinge = (u: number) => add([x + w * u, y - 4 * k], o, d)
+  const lean = add([0, -h], o, 6 * k)
+  const sunk: Point = [0, 3 * k]
+  const lid = [
+    add(hinge(0), lean),
+    add(hinge(1), lean),
+    add(hinge(1), sunk),
+    add(hinge(0), sunk),
   ]
   s.blank(p.shape(lid))
-  s.stroke(p.edges(lid))
-  const inset = (pt: Point, u: number, v: number) => add(pt, [u * k, v * k])
-  screen(
-    s,
-    p,
-    r,
-    [
-      inset(lid[0], 6, 6),
-      inset(lid[1], -6, 6),
-      inset(lid[2], -6, -6),
-      inset(lid[3], 6, -6),
-    ],
-    kind,
-  )
+  s.stroke(p.shape(lid))
+  const glass = inset([lid[0], lid[1], hinge(1), hinge(0)] as Point[], 6 * k)
+  s.stroke(p.shape(glass))
+  screen(s, p, r, inset(glass, 4 * k), kind)
   const deck = box(s, p, o, at, w, 4 * k, d)
-  const keys = (u0: number, v0: number, u1: number, v1: number) => [
-    deck.top(u0, v0),
-    deck.top(u1, v0),
-    deck.top(u1, v1),
-    deck.top(u0, v1),
-  ]
-  s.stroke(p.edges(keys(0.08, 0.38, 0.92, 0.9)))
-  for (const v of [0.55, 0.72])
-    s.stroke(p.line(deck.top(0.08, v), deck.top(0.92, v)))
-  s.stroke(p.edges(keys(0.38, 0.08, 0.62, 0.3)))
+  const pad = (u0: number, v0: number, u1: number, v1: number) =>
+    p.shape([
+      deck.top(u0, v0),
+      deck.top(u1, v0),
+      deck.top(u1, v1),
+      deck.top(u0, v1),
+    ])
+  KEYS.forEach((row, i) => {
+    const v0 = 0.5 + i * 0.15
+    let u0 = 0.07
+    for (const units of row) {
+      const u1 = u0 + (units * 0.86) / 10
+      s.stroke(pad(u0 + 0.008, v0, u1 - 0.008, v0 + 0.11))
+      u0 = u1
+    }
+  })
+  s.stroke(pad(0.37, 0.1, 0.63, 0.38))
 }
 
-/** A monitor on its stand; `at` is the centre of the stand's foot. */
+/**
+ * A monitor on its stand; `at` is the centre of the stand's foot. The screen is a shallow box; the stand's neck rises
+ * from the middle of the foot behind it, so the box hides its top, and the foot is a plate seen from above.
+ */
 export const monitor: Draw = (s, p, r, at, k = 1, { kind } = {}) => {
+  const o = depth(r)
   const [x, y] = at
-  const [w, h] = [150 * k, 96 * k]
-  const top = y - 30 * k - h
-  s.stroke(p.ring([x, y - 3 * k], [26 * k, 0], [0, 5 * k]))
-  s.stroke(p.line([x - 4 * k, y - 4 * k], [x - 4 * k, y - 30 * k]))
-  s.stroke(p.line([x + 4 * k, y - 4 * k], [x + 4 * k, y - 30 * k]))
-  const outer = rect(x - w / 2, top, w, h)
-  s.blank(p.shape(outer))
-  s.stroke(p.edges(outer))
-  const inner = rect(x - w / 2 + 6 * k, top + 6 * k, w - 12 * k, h - 14 * k)
-  s.stroke(p.edges(inner))
-  const pad: Point[] = [
-    [4, 4],
-    [-4, 4],
-    [-4, -4],
-    [4, -4],
-  ]
-  screen(
-    s,
-    p,
-    r,
-    inner.map((pt, i) => add(pt, pad[i] as Point, k)),
-    kind,
-  )
+  const [w, h, d] = [150 * k, 96 * k, 12 * k]
+  const neck = 5 * k
+  const foot: Point = [x, y - 4 * k]
+  s.stroke(p.disc(foot, [26 * k, 0], [0, 5.5 * k]))
+  const post = rect(x - neck, y - 40 * k, 2 * neck, 36 * k)
+  s.blank(p.shape(post))
+  s.stroke(p.shape(post))
+  const front = add([x - w / 2, y - 30 * k], o, -(d + 8 * k))
+  const b = box(s, p, o, front, w, h, d)
+  const glass = [b.front(0, 1), b.front(1, 1), b.front(1, 0), b.front(0, 0)]
+  const inner = inset(glass, 6 * k, 9 * k)
+  s.stroke(p.shape(inner))
+  s.fill(p.disc(...dot(add(b.front(0.5, 0), [0, -4.5 * k]), 1.2 * k)))
+  screen(s, p, r, inset(inner, 4 * k), kind)
 }
 
 /**
@@ -177,26 +194,26 @@ export const phone: Draw = (s, p, r, at, k = 1) => {
     s.fill(p.shape(tri))
 }
 
-/** A browser window showing a website, with the pointer on it. */
+/**
+ * A browser window showing a website, with the pointer on it: the tab bar is the window's top band, with three
+ * buttons and an address field, each a closed shape.
+ */
 export const website: Draw = (s, p, r, at, k = 1) => {
   const [x, y] = at
   const [w, h] = [172 * k, 124 * k]
-  const win = rect(x, y - h, w, h)
-  s.blank(p.shape(win))
-  s.stroke(p.edges(win))
-  s.stroke(p.line([x, y - h + 16 * k], [x + w, y - h + 16 * k]))
+  const top = y - h
+  s.blank(p.shape(roundRect(x, top, w, h, 5 * k)))
+  banded(s, p, x, top, w, h, 5 * k, 16 * k)
   for (let i = 0; i < 3; i++)
-    s.stroke(
-      p.ring([x + (10 + i * 9) * k, y - h + 8 * k], [2.6 * k, 0], [0, 2.6 * k]),
-    )
-  s.stroke(p.edges(rect(x + 44 * k, y - h + 4 * k, 96 * k, 8 * k)))
+    s.stroke(p.disc(...dot([x + (10 + i * 9) * k, top + 8 * k], 2.6 * k)))
+  s.stroke(p.shape(roundRect(x + 44 * k, top + 4 * k, 96 * k, 8 * k, 4 * k)))
   screen(
     s,
     p,
     r,
     [
-      [x + 6 * k, y - h + 22 * k],
-      [x + w - 6 * k, y - h + 22 * k],
+      [x + 6 * k, top + 22 * k],
+      [x + w - 6 * k, top + 22 * k],
       [x + w - 6 * k, y - 6 * k],
       [x + 6 * k, y - 6 * k],
     ],
