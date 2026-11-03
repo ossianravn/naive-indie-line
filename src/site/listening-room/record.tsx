@@ -2,14 +2,6 @@ import { useState } from "react"
 import { CalendarDaysIcon } from "lucide-react"
 import { Drawing } from "@/fineliner/drawing/drawing"
 import { Badge } from "@/fineliner/ui/badge"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/fineliner/ui/breadcrumb"
 import { Button } from "@/fineliner/ui/button"
 import {
   Item,
@@ -25,13 +17,17 @@ import {
   type Release,
   type Status,
 } from "./data"
+import { PageHeader, ShellPage } from "./page"
 import { RecordThread } from "./record-thread"
 import { SESSIONS, SESSION_STATUS, endOf, shortDay } from "./sessions-data"
 import { THREADS } from "./threads"
 
 const BADGE = { racks: "outline", held: "default", sold: "secondary" } as const
 
-/** One record's page: the sleeve drawn large, its details, what to do with it, who asked for it and what they said. */
+/**
+ * One record's page: the sleeve drawn large, its details, what to do with it, who asked for it and what they said.
+ * The top bar's crumb is the way back to the catalogue.
+ */
 export function RecordPage({ record }: { record: Release }) {
   const [status, setStatus] = useState<Status>(record.status)
   const [said, setSaid] = useState("")
@@ -49,20 +45,14 @@ export function RecordPage({ record }: { record: Release }) {
   }
 
   return (
-    <div className="mx-auto w-full max-w-[60rem] px-snug pt-snug pb-page sm:px-line">
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/listening-room">Catalogue</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>{record.title}</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+    <ShellPage>
+      <PageHeader
+        kicker={`${record.id} · ${record.genre}`}
+        title={record.title}
+        lede={record.artist}
+      />
 
-      <div className="mt-line grid gap-x-section gap-y-line md:grid-cols-[14rem_minmax(0,1fr)]">
+      <div className="mt-line grid max-w-[60rem] gap-x-section gap-y-line md:grid-cols-[14rem_minmax(0,1fr)]">
         <Drawing
           object="record"
           seed={record.id}
@@ -70,11 +60,7 @@ export function RecordPage({ record }: { record: Release }) {
           className="w-40 md:w-full"
         />
         <div className="min-w-0">
-          <h1 className="m-0 text-h1 wrap-anywhere">{record.title}</h1>
-          <p className="m-0 mt-hair text-lead leading-subhead text-pen-quiet">
-            {record.artist}
-          </p>
-          <div className="mt-snug flex flex-wrap items-center gap-snug">
+          <div className="flex flex-wrap items-center gap-snug">
             <span
               className={
                 status === "sold"
@@ -134,7 +120,7 @@ export function RecordPage({ record }: { record: Release }) {
               <h2 id="record-sessions" className="label m-0 text-pen-quiet">
                 Asked for in the room
               </h2>
-              <ItemGroup className="mt-tight max-w-[34rem]">
+              <ItemGroup className="mt-tight -ms-tight w-auto max-w-[34rem]">
                 {sessions.map((s) => (
                   // A list may own only list items, and the row is a link, so each sits in its own list item.
                   <div key={s.id} role="listitem">
@@ -163,6 +149,6 @@ export function RecordPage({ record }: { record: Release }) {
           <RecordThread notes={THREADS[record.id] ?? []} />
         </div>
       </div>
-    </div>
+    </ShellPage>
   )
 }

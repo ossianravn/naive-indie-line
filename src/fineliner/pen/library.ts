@@ -73,8 +73,13 @@ export const objectsIn =
 
 const all: DrawingObject[] = []
 
+/** Register objects. Defining an id again replaces it in place, so an edited collection shows up on hot reload. */
 export function define(...objects: DrawingObject[]) {
-  for (const o of objects) if (!all.some((x) => x.id === o.id)) all.push(o)
+  for (const o of objects) {
+    const i = all.findIndex((x) => x.id === o.id)
+    if (i < 0) all.push(o)
+    else all[i] = o
+  }
 }
 
 export const getObject = (id: string) => all.find((o) => o.id === id)

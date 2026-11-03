@@ -16,7 +16,6 @@ const WEEK = [
   { day: "Thu", lp: 11, single: 4, twelve: 3 },
   { day: "Fri", lp: 8, single: 3, twelve: 1 },
   { day: "Sat", lp: 14, single: 4, twelve: 3 },
-  { day: "Sun", lp: 6, single: 1, twelve: 1 },
 ]
 const CONFIG = {
   lp: { label: "LP" },

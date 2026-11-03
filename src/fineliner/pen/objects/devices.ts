@@ -1,7 +1,7 @@
 // Studio: the freelancer's screens, and what is on them (a website, code, a design canvas or an app). `at` is
 // bottom-left unless a function says otherwise. Composition comes from `r` (the shape stream), never from the pen,
 // so takes agree.
-import { add, lerp, rect, turn, type Point } from "../geometry"
+import { add, dot, lerp, rect, roundRect, turn, type Point } from "../geometry"
 import { define, type Draw, objectsIn } from "../library"
 import { box, depth } from "../shapes"
 import type { Sheet } from "../layers"
@@ -148,23 +148,33 @@ export const monitor: Draw = (s, p, r, at, k = 1, { kind } = {}) => {
   )
 }
 
+/**
+ * A phone face on: a rounded body drawn in one loop, the screen inset with its own corners, and a record playing on
+ * it (cover, title, progress and the three controls). Small marks are solid shapes, which the pen does not overshoot.
+ */
 export const phone: Draw = (s, p, r, at, k = 1) => {
   const [x, y] = at
   const P = (u: number, v: number): Point => [x + u * k, y - v * k]
-  const body = [
-    P(4, 0),
-    P(38, 0),
-    P(42, 4),
-    P(42, 82),
-    P(38, 86),
-    P(4, 86),
-    P(0, 82),
-    P(0, 4),
-  ]
+  const R = (u: number, v: number, w: number, h: number, rad: number) =>
+    roundRect(x + u * k, y - (v + h) * k, w * k, h * k, rad * k)
+  const body = R(0, 0, 42, 86, 7)
   s.blank(p.shape(body))
-  s.stroke(p.edges(body))
-  s.fill(p.shape([P(16, 80), P(26, 80), P(26, 77.5), P(16, 77.5)]))
-  screen(s, p, r, [P(5, 72), P(37, 72), P(37, 8), P(5, 8)], "app")
+  s.stroke(p.shape(body))
+  s.stroke(p.shape(R(3, 3, 36, 80, 4.5)))
+  s.fill(p.shape(R(16.5, 77.5, 9, 3, 1.5)))
+  s.fill(p.shape(rect(x + 8 * k, y - 72 * k, 26 * k, 26 * k)))
+  s.paper(p.disc(...dot(P(21, 59), 7.5 * k)))
+  s.fill(p.disc(...dot(P(21, 59), 1.6 * k)))
+  s.stroke(p.line(P(9, 39), P(r.between(26, 31), 39)))
+  s.stroke(p.line(P(9, 34), P(r.between(16, 21), 34)))
+  s.stroke(p.line(P(9, 25), P(33, 25)))
+  s.fill(p.disc(...dot(P(r.between(13, 27), 25), 1.7 * k)))
+  for (const tri of [
+    [P(18.5, 18), P(18.5, 8), P(26, 13)],
+    [P(13, 16.5), P(13, 9.5), P(8, 13)],
+    [P(29, 16.5), P(29, 9.5), P(34, 13)],
+  ])
+    s.fill(p.shape(tri))
 }
 
 /** A browser window showing a website, with the pointer on it. */
@@ -224,5 +234,9 @@ define(
     "browser",
     "launch",
   ]),
-  T("phone", "Phone", [60, 100], [9, 94], 1, phone, ["mobile", "app", "call"]),
+  T("phone", "Phone", [80, 132], [10.5, 126], 1.4, phone, [
+    "mobile",
+    "app",
+    "call",
+  ]),
 )

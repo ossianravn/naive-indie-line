@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+A review round after 0.1.0, from the maintainer's notes on the live site and a full design review.
+
+- Paper: bond is the default stock. The paper's low-frequency clouding (mottle and relief) is at a fifth of its old strength, so it reads as paper rather than grease or marble; the flecks and fibres stay. The paper lies on the root, so it fills the window on short pages, and the scrollbar gutter is stable. Wells and hovers (`--tint`) are the paper's own darker tone instead of a grey.
+- Drawings: armchair, record crate, phone, keyboard and mouse, teapot, moka pot, chair, window, cassette, camera, desk, cactus and cat redrawn or repaired to the object sheet's standard; `visitor` stands empty-handed (`visitor-record` holds the sleeve); every figure in a scene is only their clothes. The pen starts a closed shape mid-edge (no spike at the seam) and centres its wobble; scene masks are named per scene and hand. A sized drawing (`h-28 [&>svg]:h-full`) fits its height.
+- Kit: pen markup gets instance-unique SVG ids (`useOwnIds`), so a hidden copy of the same drawing no longer breaks another's masks (a record sleeve's disc covered its cover). A record title too long to letter readably is set in small capitals. The chart tooltip follows the pointer at once instead of gliding for 400 ms. Settings-01 has one label column and `bare` and `appearance` props; pricing-01's "Most chosen" stamp sits with its plan.
+- Site: the specimen is one composed sheet; the components index shows a preview of every part; docs pages share one header, a component nav and previous/next, with even demo rows and one copy affordance; block previews take their block's full height; the studio's panel no longer clips; the desk puts its controls under the drawing on phones; /drawings separates its collections and aligns its labels. Listening Room shares one page frame, Maya is staff throughout, sessions stack on phones, the overview shows every day, and badges count what the pages show. The home page's hold demo is one card with Jonas's request.
+
 ## 0.1.0 (2026-11-02)
 
 The first release: shadcn parity drawn with one pen, Fineliner's own extras and blocks, the pen engine and its drawings, the theme studio and Listening Room.

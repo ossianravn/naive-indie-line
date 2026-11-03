@@ -37,7 +37,7 @@ export function PresetPicker({
       <h2 id="studio-presets" className="label m-0 text-pen-quiet">
         Presets
       </h2>
-      <ul className="m-0 mt-tight grid list-none grid-cols-2 gap-tight p-0">
+      <ul className="m-0 mt-tight grid list-none grid-cols-2 gap-tight p-0 md:grid-cols-3 xl:grid-cols-5">
         {PRESETS.map((preset) => {
           const on = preset === current
           return (

@@ -62,7 +62,7 @@ JavaScript engines may differ in the last bit of `Math.sin`, `Math.cos`, `Math.h
 
 ## Theme runtime
 
-As Patina's, with Fineliner's attributes on `<html>`: `data-theme` (and `data-theme-preference`), `data-stock` (recycled, kraft, bond), `data-pen` (navy, black, sepia, forest, oxblood), `data-hand`, `data-boil` (off, hover, art), `data-containers` (open, boxed), `data-labels` (caps, type) and `data-density`. `appearanceScript()` applies the saved choice before first paint; `useAppearance()` reads and writes it. Any element can set `data-pen`, `data-hand`, `data-boil` or `data-labels` for its subtree.
+As Patina's, with Fineliner's attributes on `<html>`: `data-theme` (and `data-theme-preference`), `data-stock` (bond, the default; recycled, kraft), `data-pen` (navy, black, sepia, forest, oxblood), `data-hand`, `data-boil` (off, hover, art), `data-containers` (open, boxed), `data-labels` (caps, type) and `data-density`. `appearanceScript()` applies the saved choice before first paint; `useAppearance()` reads and writes it. Any element can set `data-pen`, `data-hand`, `data-boil` or `data-labels` for its subtree.
 
 ## Deployment
 

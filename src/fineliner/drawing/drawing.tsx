@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, type ComponentProps } from "react"
 import { drawing, type DrawingOptions } from "@/fineliner/pen"
 import { cn } from "@/fineliner/lib/utils"
 import { drawWhenSeen } from "./drawing-motion"
+import { useOwnIds } from "@/fineliner/lib/svg-ids"
 
 export interface DrawingProps
   extends
@@ -32,6 +33,7 @@ export function Drawing({
   ref: outer,
   ...props
 }: DrawingProps) {
+  const own = useOwnIds()
   const html = useMemo(() => {
     const svg = drawing({
       object,
@@ -67,7 +69,7 @@ export function Drawing({
       data-object={object}
       data-scene={scene}
       className={cn("fl-takes", className)}
-      dangerouslySetInnerHTML={{ __html: html }}
+      dangerouslySetInnerHTML={{ __html: own(html) }}
       {...props}
     />
   )

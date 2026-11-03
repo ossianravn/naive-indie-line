@@ -1,0 +1,69 @@
+---
+// The end of a component's docs page: a pen rule, then the previous and next components in the nav's order, so a
+// reader can walk the whole kit page by page. The first page has no previous and the last no next.
+import { PenMark } from "@/fineliner/drawing/pen-mark"
+import { frameVars, seedOf } from "@/fineliner/pen"
+import { COMPONENTS } from "./catalogue"
+
+interface Props {
+  current: string
+}
+const { current } = Astro.props
+const at = COMPONENTS.findIndex((c) => c.name === current)
+const prev = at > 0 ? COMPONENTS[at - 1] : undefined
+const next = at >= 0 ? COMPONENTS[at + 1] : undefined
+---
+
+<nav aria-label="Previous and next" class="mt-page">
+  <div
+    class="rule mb-snug"
+    style={frameVars(seedOf(`pager ${current}`))}
+    aria-hidden="true"
+  ></div>
+  <ul class="m-0 grid list-none grid-cols-2 gap-x-line p-0">
+    <li>
+      {prev && (
+        <a
+          href={`/docs/components/${prev.name}`}
+          rel="prev"
+          class="group grid justify-items-start gap-hair no-underline"
+        >
+          <span class="label inline-flex items-center gap-hair text-pen-quiet">
+            <PenMark
+              name="next"
+              seed={`prev ${prev.name}`}
+              hand="calm"
+              className="h-3 w-4 -scale-x-100 rtl:scale-x-100"
+            />
+            Previous
+          </span>
+          <span class="text-lead leading-subhead group-hover:underline">
+            {prev.title}
+          </span>
+        </a>
+      )}
+    </li>
+    <li class="justify-self-end">
+      {next && (
+        <a
+          href={`/docs/components/${next.name}`}
+          rel="next"
+          class="group grid justify-items-end gap-hair text-end no-underline"
+        >
+          <span class="label inline-flex items-center gap-hair text-pen-quiet">
+            Next
+            <PenMark
+              name="next"
+              seed={`next ${next.name}`}
+              hand="calm"
+              className="h-3 w-4 rtl:-scale-x-100"
+            />
+          </span>
+          <span class="text-lead leading-subhead group-hover:underline">
+            {next.title}
+          </span>
+        </a>
+      )}
+    </li>
+  </ul>
+</nav>

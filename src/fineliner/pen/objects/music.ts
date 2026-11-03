@@ -141,34 +141,49 @@ export const guitar: Draw = (s, p, r, at, k = 1) => {
   s.stroke(p.edges([P(-9, -24), P(9, -24), P(9, -19), P(-9, -19)]))
 }
 
-/** A crate of records: sleeves standing in rows behind its front, drawn back to front. */
+/**
+ * An open wooden crate of records, built back to front: the back and left rims, the sleeves standing in rows from
+ * the back, then the front and right walls, which hide the sleeves' lower halves. A hand-hole in the right wall.
+ */
 export const crate: Draw = (s, p, r, at, k = 1) => {
   const o = depth(r)
-  const [w, h, d] = [100 * k, 52 * k, 50 * k]
-  const lip = (u: number, v: number) =>
-    add([at[0] + w * u, at[1] - h], o, d * v)
-  for (let v = 0.85; v > 0.1; v -= 0.12 + r.next() * 0.05) {
+  const [w, h, d, t] = [100 * k, 50 * k, 54 * k, 4 * k]
+  const tv = t / d
+  /** A point inside the crate: u across, v from front to back, z up from the floor. */
+  const Q = (u: number, v: number, z = h): Point =>
+    add([at[0] + w * u, at[1] - z], o, d * v)
+  const inner = (u: number, v: number) => Q(t / w + u * (1 - (2 * t) / w), v)
+  s.stroke(p.edges([Q(0, 0), Q(0, 1), Q(1, 1)], false))
+  s.stroke(p.edges([inner(0, tv), inner(0, 1 - tv), inner(1, 1 - tv)], false))
+  // Sleeves start halfway down, out of sight behind the front wall, so no overshoot pokes out below the crate.
+  for (let v = 0.86; v > 0.12; v -= r.between(0.1, 0.15)) {
     const lean = r.signed() * 3 * k
-    const rise = (16 + r.next() * 12) * k
+    const rise = h + r.between(14, 26) * k
+    const [u0, u1] = [0.07, 0.93]
     const sleeve = [
-      lip(0.06, v),
-      lip(0.94, v),
-      add(lip(0.94, v), [lean, -rise]),
-      add(lip(0.06, v), [lean, -rise]),
+      Q(u0, v, h * 0.45),
+      Q(u1, v, h * 0.45),
+      add(Q(u1, v, rise), [lean, 0]),
+      add(Q(u0, v, rise), [lean, 0]),
     ]
     s.blank(p.shape(sleeve))
     s.stroke(p.edges(sleeve))
   }
-  const b = box(s, p, o, at, w, h, d)
-  s.stroke(p.line(b.front(0, 0.5), b.front(1, 0.5)))
-  s.stroke(
-    p.edges([
-      b.front(0.38, 0.66),
-      b.front(0.62, 0.66),
-      b.front(0.62, 0.84),
-      b.front(0.38, 0.84),
-    ]),
+  const ring = [inner(1, 1 - tv), inner(1, tv), inner(0, tv)]
+  s.blank(
+    p.shape([Q(0, 0, 0), Q(1, 0, 0), Q(1, 1, 0), Q(1, 1), ...ring, Q(0, 0)]),
   )
+  s.stroke(p.edges([Q(0, 0, 0), Q(1, 0, 0), Q(1, 0), Q(0, 0)]))
+  s.stroke(p.edges([Q(1, 0, 0), Q(1, 1, 0), Q(1, 1), Q(1, 0)], false))
+  s.stroke(p.edges(ring, false))
+  s.stroke(p.line(Q(0, 0, h * 0.5), Q(1, 0, h * 0.5)))
+  s.stroke(p.path([Q(1, 0, h * 0.5), Q(1, 1, h * 0.5)]))
+  // The hand-hole: a slot with round ends in the right wall.
+  const slot = [
+    ...arc([0.36, 0.78], 0.08, 0.1, 90, 270, 6),
+    ...arc([0.64, 0.78], 0.08, 0.1, -90, 90, 6),
+  ].map(([v, z]) => Q(1, v, z * h))
+  s.fill(p.shape(slot))
 }
 
 const T = objectsIn("indie")

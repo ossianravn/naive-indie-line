@@ -27,6 +27,7 @@ The kit renders on the server and hydrates only what moves or is chosen. Drawing
 | Measure (v0.1 build, gzipped)      | Result                                                                                                       |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | A component docs page's JavaScript | 129 KB for the island runtime and host, plus the page's own demo chunk (was 566 KB, every demo, before v0.1) |
+| Components index                   | 161 KB of HTML (a server-rendered preview of each of 76 parts), no JavaScript; was 17 KB as a list           |
 | Home page                          | 197 KB of HTML (the hero scene, a shelf of drawings and the index, three takes each), 258 KB of JavaScript   |
 | Theme studio                       | 133 KB of HTML, 264 KB of JavaScript                                                                         |
 | Listening Room catalogue           | 115 KB of HTML, 213 KB of JavaScript                                                                         |

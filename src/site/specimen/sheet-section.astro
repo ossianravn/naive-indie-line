@@ -1,0 +1,44 @@
+---
+// One section of the specimen sheet. Every section is introduced the same way: a drawn rule across the sheet, then,
+// in the first three of twelve columns, its number, its title, a short introduction and the appearance settings that
+// change what it shows (the only part that hydrates). The other nine columns hold the specimens; their own grids use
+// lg:grid-cols-9 with the same gap, so their columns land on the sheet's.
+import { AppearanceControl } from "@/fineliner/extras/appearance-control"
+import { frameVars, seedOf } from "@/fineliner/pen"
+import { siteAppearance } from "@/site/appearance"
+import { SHEET, numberOf, type SheetId } from "./sheet"
+
+interface Props {
+  id: SheetId
+}
+const { id } = Astro.props
+const section = SHEET.find((s) => s.id === id)!
+---
+
+<section
+  class="mx-auto mt-page max-w-[76rem] scroll-mt-line px-snug sm:px-line"
+  aria-labelledby={id}
+  id={`${id}-section`}
+>
+  <div class="rule" style={frameVars(seedOf(`sheet-rule-${id}`))} aria-hidden="true"></div>
+  <div class="grid gap-x-line gap-y-line pt-section lg:grid-cols-12">
+    <header class="grid content-start gap-tight lg:col-span-3">
+      <p class="label m-0 text-pen-quiet">Nº {numberOf(id)}</p>
+      <h2 id={id} class="m-0 text-h2 leading-heading">{section.title}</h2>
+      <p class="m-0 max-w-measure text-small leading-small text-pen-quiet">{section.intro}</p>
+      {
+        section.rows.length > 0 && (
+          <AppearanceControl
+            rows={section.rows}
+            defaults={siteAppearance}
+            className="mt-tight"
+            client:idle
+          />
+        )
+      }
+    </header>
+    <div class="grid min-w-0 content-start gap-y-section lg:col-span-9">
+      <slot />
+    </div>
+  </div>
+</section>

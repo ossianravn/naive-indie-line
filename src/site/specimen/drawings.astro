@@ -1,0 +1,57 @@
+---
+// Drawings: the things in the listening room at the top of the sheet, taken off its shelves one by one and drawn
+// alone, then the library's two other rooms. All are drawn at build time and boil under the pointer; none hydrates.
+import { Drawing } from "@/fineliner/drawing/drawing"
+import type { SceneName } from "@/fineliner/pen"
+import SheetSection from "./sheet-section.astro"
+
+const SHELF = [
+  ["turntable", "Turntable"],
+  ["speaker", "Speaker"],
+  ["record", "Record"],
+  ["crate", "Record crate"],
+  ["disco-ball", "Disco ball"],
+  ["sunflower", "Sunflower"],
+  ["cassette", "Cassette"],
+  ["radio", "Radio"],
+  ["armchair", "Armchair"],
+  ["bottle", "Wine bottle"],
+  ["teapot", "Teapot"],
+  ["visitor", "A visitor"],
+] as const
+const ROOMS: [SceneName, string, string][] = [
+  ["studio", "The studio", "late-brief"],
+  ["bistro", "The bistro", "table-for-two"],
+]
+---
+
+<SheetSection id="drawings">
+  <ul class="m-0 grid list-none grid-cols-3 gap-x-line gap-y-line p-0 sm:grid-cols-4 lg:grid-cols-6">
+    {
+      SHELF.map(([object, name]) => (
+        <li class="grid justify-items-center gap-tight">
+          <Drawing object={object} seed={`sheet-${object}`} title="" className="h-24 w-full [&>svg]:h-full" />
+          <span class="label text-center text-pen-quiet">{name}</span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="grid gap-x-line gap-y-section sm:grid-cols-2">
+    {
+      ROOMS.map(([scene, name, seed]) => (
+        <figure class="m-0">
+          <Drawing scene={scene} seed={seed} />
+          <figcaption class="label mt-tight text-pen-quiet">
+            {name}, drawn from the seed “{seed}”
+          </figcaption>
+        </figure>
+      ))
+    }
+  </div>
+
+  <p class="m-0 flex flex-wrap gap-x-snug gap-y-hair">
+    <a href="/drawings">The whole library</a>
+    <a href="/desk">Reroll a drawing at the desk</a>
+  </p>
+</SheetSection>

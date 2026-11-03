@@ -1,0 +1,74 @@
+---
+// In use: a record from the racks as the shop shows it (sleeve, track list, price), then booking the room and the
+// sessions already booked. The sleeve, list, tag and table render at build time; only the booking form hydrates,
+// because it is the one part a visitor operates.
+import { PriceTag } from "@/fineliner/extras/price-tag"
+import { RecordSleeve } from "@/fineliner/extras/record-sleeve"
+import { TrackList, TrackListItem, TrackListSide } from "@/fineliner/extras/track-list"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/fineliner/ui/table"
+import { BookingCard } from "./booking"
+import SheetSection from "./sheet-section.astro"
+
+const TRACKS = [
+  ["A1", "Paper Moons", "4:12"],
+  ["A2", "Lanterns", "3:48"],
+  ["A3", "The Long Way Round", "5:02"],
+  ["A4", "Quiet Hours", "3:31"],
+] as const
+const SESSIONS = [
+  ["Thu 6 Nov, 19:00", "Maya Singh", "2"],
+  ["Thu 6 Nov, 20:30", "Jordan Lee", "4"],
+  ["Thu 13 Nov, 19:00", "Sam Rivera", "2"],
+] as const
+---
+
+<SheetSection id="in-use">
+  <div class="grid items-start gap-x-line gap-y-section sm:grid-cols-2 lg:grid-cols-9">
+    <div class="lg:col-span-3">
+      <RecordSleeve title="Paper Moons" artist="Odile & the Lanterns" catalogue="LR-0429" />
+    </div>
+    <TrackList className="lg:col-span-4">
+      <TrackListSide title="Side A" duration="16:33">
+        {
+          TRACKS.map(([number, title, time]) => (
+            <TrackListItem number={number} duration={time} playing={number === "A2"}>
+              {title}
+            </TrackListItem>
+          ))
+        }
+      </TrackListSide>
+    </TrackList>
+    <div class="lg:col-span-2">
+      <PriceTag price="180 kr" was="220 kr" note="First pressing" seed="sheet-paper-moons" />
+    </div>
+  </div>
+
+  <div class="grid items-start gap-x-line gap-y-section lg:grid-cols-9">
+    <div class="lg:col-span-5">
+      <BookingCard client:visible />
+    </div>
+    <div class="grid gap-tight lg:col-span-4">
+      <h3 class="m-0 text-lead leading-subhead">Upcoming sessions</h3>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>When</TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead className="text-end">Guests</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {
+            SESSIONS.map(([when, name, guests]) => (
+              <TableRow>
+                <TableCell>{when}</TableCell>
+                <TableCell>{name}</TableCell>
+                <TableCell className="text-end">{guests}</TableCell>
+              </TableRow>
+            ))
+          }
+        </TableBody>
+      </Table>
+    </div>
+  </div>
+</SheetSection>

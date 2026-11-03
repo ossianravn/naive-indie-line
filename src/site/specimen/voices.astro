@@ -1,46 +1,46 @@
 ---
-// The voices and the type scale: the serif to read, the typewriter for menus and labels, the hand for asides.
-import SectionHead from "./section-head.astro"
+// Voices: the reading serif's scale, step by step at its own size, beside the typewriter, the label voice and the
+// hand; under them a paragraph at the 34rem measure with a hand note on what the measure is for.
+import { HandNote } from "@/fineliner/extras/hand-note"
+import SheetSection from "./sheet-section.astro"
 
 const SCALE = [
-  ["display", "text-display leading-display", "Quietly strange"],
-  ["title", "text-title leading-heading", "Listening room"],
-  ["h1", "text-h1 leading-heading", "Thursday evenings"],
-  ["h2", "text-h2 leading-heading", "Bring a record you love"],
-  ["lead", "text-lead leading-lead", "And one you have never played."],
-  ["body", "text-body leading-body", "We put them on in the order they arrive."],
-  ["small", "text-small leading-small", "Doors at seven; the second side starts at eight."],
+  ["Display", "60", "text-display leading-display", "Quietly strange"],
+  ["Title", "47", "text-title leading-heading", "Listening room"],
+  ["H1", "37", "text-h1 leading-heading", "Thursday evenings"],
+  ["H2", "29", "text-h2 leading-heading", "Bring a record you love"],
+  ["Lead", "23", "text-lead leading-lead", "And one you have never played."],
+  ["Body", "18", "text-body leading-body", "We put them on in the order they arrive."],
+  ["Small", "14", "text-small leading-small", "Doors at seven; side two starts at eight."],
 ] as const
 const MENU = [
-  ["Bread, cultured butter", "45"],
-  ["Smoked trout, rye, dill", "95"],
-  ["Pét-nat by the glass", "80"],
+  ["Bread and butter", "45"],
+  ["Smoked trout", "95"],
+  ["Pét-nat, a glass", "80"],
 ]
 ---
 
-<section class="mx-auto mt-page max-w-[76rem] px-snug sm:px-line" aria-labelledby="voices">
-  <SectionHead n={2} id="voices" title="Voices" />
-  <div class="grid gap-section lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
-    <div class="grid gap-snug">
-      <h3 class="label m-0">Read · Newsreader</h3>
-      {
-        SCALE.map(([step, classes, text]) => (
-          <div class="grid gap-x-snug sm:grid-cols-[4.5rem_minmax(0,1fr)] sm:items-baseline">
-            <span class="label">{step}</span>
-            <p class={`m-0 ${classes}`}>{text}</p>
-          </div>
-        ))
-      }
-      <p class="m-0 mt-snug max-w-measure">
-        Bring a record you love and one you have never played. We put them on in the order they arrive, with the
-        lights low and the windows open, and nobody talks over the second side. The measure holds about seventy-five
-        characters, so a paragraph reads without the eye losing its place.
-      </p>
+<SheetSection id="voices">
+  <div class="grid gap-x-line gap-y-section lg:grid-cols-9">
+    <div class="grid content-start gap-snug lg:col-span-6">
+      <h3 class="label m-0 text-pen-quiet">Read · Newsreader</h3>
+      <dl class="m-0 grid gap-tight">
+        {
+          SCALE.map(([step, px, classes, text]) => (
+            <div class="grid items-baseline gap-x-snug sm:grid-cols-[6rem_minmax(0,1fr)]">
+              <dt class="label text-pen-quiet">
+                {step} <span class="font-type text-small normal-case [font-variant-caps:normal]">{px}</span>
+              </dt>
+              <dd class={`m-0 ${classes}`}>{text}</dd>
+            </div>
+          ))
+        }
+      </dl>
     </div>
-    <div class="grid content-start gap-line">
+    <div class="grid content-start gap-line lg:col-span-3">
       <div class="grid gap-tight">
-        <h3 class="label m-0">Type · Courier Prime</h3>
-        <ul class="m-0 grid max-w-[26rem] list-none gap-hair p-0 font-type">
+        <h3 class="label m-0 text-pen-quiet">Type · Courier Prime</h3>
+        <ul class="m-0 grid list-none gap-hair p-0 font-type">
           {
             MENU.map(([dish, price]) => (
               <li class="flex items-baseline gap-tight">
@@ -53,17 +53,27 @@ const MENU = [
         </ul>
       </div>
       <div class="grid gap-tight">
-        <h3 class="label m-0">Labels</h3>
+        <h3 class="label m-0 text-pen-quiet">Label</h3>
         <p class="label m-0">Side A · 33⅓ rpm · Nº 0412</p>
-        <p class="label m-0" data-labels="type">Side A · 33⅓ rpm · Nº 0412</p>
       </div>
       <div class="grid gap-tight">
-        <h3 class="label m-0">Hand · Gaegu</h3>
+        <h3 class="label m-0 text-pen-quiet">Hand · Gaegu</h3>
         <p class="m-0 -rotate-1 font-hand text-lead leading-[1.1]">the good chairs are by the window</p>
       </div>
     </div>
   </div>
-</section>
+
+  <div class="grid items-center gap-x-line gap-y-snug lg:grid-cols-9">
+    <p class="m-0 max-w-measure lg:col-span-6">
+      Bring a record you love and one you have never played. We put them on in the order they arrive, with the lights
+      low and the windows open, and nobody talks over the second side. A paragraph keeps to the measure, so the eye
+      never loses its place on the way back.
+    </p>
+    <HandNote point="start" seed="voices-measure" className="lg:col-span-3">
+      about seventy-five letters to a line
+    </HandNote>
+  </div>
+</SheetSection>
 
 <style>
   .dots {

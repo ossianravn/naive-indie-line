@@ -13,6 +13,7 @@ import type { Point } from "@/fineliner/pen/geometry"
 import { sheet } from "@/fineliner/pen/layers"
 import { seedOf, stream } from "@/fineliner/pen/seed"
 import { pen, type HandName } from "@/fineliner/pen/stroke"
+import { useOwnIds } from "@/fineliner/lib/svg-ids"
 
 // A line lifted out of the text and set large in the reading face, against a pen rule standing in its margin. The
 // quotation marks are drawn by the pen (each comma a small pocket of ink with a tail): the opening pair hangs before
@@ -67,6 +68,7 @@ export function PullQuote({
   children,
   ...props
 }: PullQuoteProps) {
+  const own = useOwnIds()
   const key = String(seed ?? (wordsOf(children).trim() || "pull-quote"))
   const marks = useMemo(
     () => ({
@@ -100,14 +102,14 @@ export function PullQuote({
           aria-hidden="true"
           data-slot="pull-quote-open"
           className="absolute start-0 top-[0.08em] w-[1.55rem] -rotate-2 rtl:-scale-x-100 calm:rotate-0 sm:w-8"
-          dangerouslySetInnerHTML={{ __html: marks.open }}
+          dangerouslySetInnerHTML={{ __html: own(marks.open) }}
         />
         {children}
         <span
           aria-hidden="true"
           data-slot="pull-quote-close"
           className="ms-[0.12em] inline-block w-[0.62em] align-[0.35em] rtl:-scale-x-100"
-          dangerouslySetInnerHTML={{ __html: marks.close }}
+          dangerouslySetInnerHTML={{ __html: own(marks.close) }}
         />
       </blockquote>
       {cite && (

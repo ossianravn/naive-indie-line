@@ -1,6 +1,9 @@
 ---
 // The object library: every drawing object by collection, rendered at build time. Hover one to see it boil.
+// Each row of a collection's grid is two shared tracks, drawings then names: the drawings stand on one line and the
+// names start on the next, whatever each drawing's height or each name's length.
 import Base from "@/site/layouts/base.astro"
+import PageHeader from "@/site/layouts/page-header.astro"
 import { Drawing } from "@/fineliner/drawing/drawing"
 import { COLLECTIONS, listObjects } from "@/fineliner/pen"
 
@@ -12,28 +15,29 @@ const total = listObjects().length
   title="Drawings"
   description="Fineliner's object library: every drawing by collection, each drawn by the pen from a seed."
 >
-  <div class="mx-auto max-w-[76rem] px-snug pt-section sm:px-line">
-    <h1 class="m-0 text-title leading-heading">Drawings</h1>
-    <p class="m-0 mt-snug max-w-measure">
-      {total} objects in {COLLECTIONS.length} collections, each drawn by the pen
-      from a seed. The library keeps growing; the <a href="/desk">desk</a>{" "}
-      rerolls any of them.
-    </p>
+  <PageHeader title="Drawings">
+    <Fragment slot="kicker">
+      Fineliner · {total} objects in {COLLECTIONS.length} collections
+    </Fragment>
+    Every object the pen draws, by collection, each from a seed. The library
+    keeps growing; the <a href="/desk">desk</a> rerolls any of them.
+  </PageHeader>
+  <div class="mx-auto max-w-[76rem] px-snug sm:px-line">
     {COLLECTIONS.map(([key, title]) => (
-      <section class="mt-section" aria-labelledby={`c-${key}`}>
+      <section class="mt-page" aria-labelledby={`c-${key}`}>
         <h2 id={`c-${key}`} class="m-0 mb-line text-h2">
           {title}
         </h2>
-        <ul class="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(9rem,1fr))] items-end gap-x-line gap-y-section p-0">
+        <ul class="m-0 grid list-none grid-cols-3 gap-x-snug gap-y-line p-0 sm:grid-cols-[repeat(auto-fill,minmax(9rem,1fr))] sm:gap-x-line">
           {listObjects(key).map((o) => (
-            <li class="grid justify-items-center gap-tight">
+            <li class="row-span-2 grid grid-rows-subgrid justify-items-center gap-y-tight">
               <Drawing
                 object={o.id}
                 seed={seed}
                 title=""
-                className="w-full [&>svg]:max-h-44"
+                className="w-full self-end [&>svg]:max-h-44"
               />
-              <span class="label text-center">{o.name}</span>
+              <span class="label self-start text-center">{o.name}</span>
             </li>
           ))}
         </ul>

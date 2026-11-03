@@ -3,7 +3,7 @@
 // stream), never from the pen, so takes agree.
 import { add, arc, dot, lerp, rect, turn, type Point } from "../geometry"
 import { define, type Draw, objectsIn } from "../library"
-import { box, depth } from "../shapes"
+import { box, depth, pad } from "../shapes"
 
 /** A picture pinned to the wall, centred on `at`: a slightly turned frame, corner pins and a small drawing inside. */
 export const picture: Draw = (
@@ -81,38 +81,69 @@ export const picture: Draw = (
   }
 }
 
+/**
+ * A slat-back chair in three-quarter view, as on the object sheet: back legs that rise into the back posts, a top
+ * rail and three slats, a seat with real thickness, and front legs. Legs, posts and slats are thin closed outlines,
+ * so their ends stay square instead of running past.
+ */
 export const chair: Draw = (s, p, r, at, k = 1) => {
   const o = depth(r)
   const [x, y] = at
-  const [w, d, seat] = [54 * k, 36 * k, 46 * k]
-  const back = (u: number) => add([x + w * u, y - seat], o, d)
-  const rail = (u: number) => add(back(u), [0, -52 * k])
-  s.stroke(p.line(back(0), rail(0)))
-  s.stroke(p.line(back(1), rail(1)))
-  s.stroke(p.line(add(rail(0), [0, 8 * k]), add(rail(1), [0, 8 * k])))
-  s.stroke(p.line(rail(0), rail(1)))
-  for (let u = 0.25; u < 0.9; u += 0.25)
-    s.stroke(p.line(add(back(u), [0, -2 * k]), add(rail(u), [0, 8 * k])))
-  s.stroke(p.line(add(back(0), [0, 5 * k]), add(back(0), [0, seat])))
-  s.stroke(p.line(add(back(1), [0, 5 * k]), add(back(1), [0, seat])))
-  box(s, p, o, [x, y - seat + 5 * k], w, 5 * k, d)
-  s.stroke(p.line([x + 3 * k, y - seat + 5 * k], [x + 3 * k, y]))
-  s.stroke(p.line([x + w - 3 * k, y - seat + 5 * k], [x + w - 3 * k, y]))
+  const [w, d, seat, t, g] = [56 * k, 40 * k, 46 * k, 7 * k, 4 * k]
+  const tall = r.between(52, 60) * k
+  /** A thin member from a up to b, `width` wide, seen face on. */
+  const stick = (a: Point, b: Point, width = g) => {
+    const q = [a, add(a, [width, 0]), add(b, [width, 0]), b]
+    s.blank(p.shape(q))
+    s.stroke(p.shape(q))
+  }
+  const back = (u: number, v: number): Point => add([x + u, y - v], o, d - g)
+  const inner = w - 2 * k - 2 * g
+  stick(back(1 * k, 0), back(1 * k, seat + tall))
+  stick(back(w - g - 1 * k, 0), back(w - g - 1 * k, seat + tall))
+  for (const u of [0.25, 0.5, 0.75]) {
+    const sx = 1 * k + g + inner * u - 1.5 * k
+    stick(back(sx, seat), back(sx, seat + tall - 12 * k), 3 * k)
+  }
+  stick(
+    back(1 * k + g, seat + tall - 12 * k),
+    back(1 * k + g, seat + tall - 3 * k),
+    inner,
+  )
+  box(s, p, o, [x, y - seat + t], w, t, d)
+  stick([x + 1 * k, y], [x + 1 * k, y - seat + t])
+  stick([x + w - g - 1 * k, y], [x + w - g - 1 * k, y - seat + t])
 }
 
+/**
+ * A padded club armchair, built back to front: the back, the left arm, the seat and its cushion between the arms,
+ * then the right arm, each hiding what it stands in front of. Short solid legs.
+ */
 export const armchair: Draw = (s, p, r, at, k = 1) => {
   const o = depth(r)
   const [x, y] = at
-  const legs = 8 * k
-  box(s, p, o, add([x, y - legs - 30 * k], o, 38 * k), 94 * k, 52 * k, 12 * k)
-  const seat = box(s, p, o, [x, y - legs], 94 * k, 30 * k, 48 * k)
-  s.stroke(
-    p.path([seat.top(0.15, 0.1), seat.top(0.5, 0.06), seat.top(0.85, 0.1)]),
-  )
-  box(s, p, o, [x - 4 * k, y - legs], 16 * k, 42 * k, 48 * k)
-  box(s, p, o, [x + 82 * k, y - legs], 16 * k, 42 * k, 48 * k)
-  for (const lx of [2, 92])
-    s.stroke(p.line([x + lx * k, y - legs], [x + lx * k, y]))
+  const [W, D, legs] = [96 * k, 50 * k, 7 * k]
+  const arm = r.between(15, 19) * k
+  const [armH, backH] = [r.between(40, 46) * k, r.between(66, 74) * k]
+  const thick = 13 * k
+  const y0 = y - legs
+  pad(s, p, o, add([x, y0], o, D - thick), W, backH, thick, 10 * k)
+  pad(s, p, o, [x, y0], arm, armH, D - thick, 7 * k)
+  box(s, p, o, [x + arm, y0], W - 2 * arm, 22 * k, D - thick)
+  pad(s, p, o, [x + arm, y0 - 22 * k], W - 2 * arm, 9 * k, D - thick, 4 * k)
+  pad(s, p, o, [x + W - arm, y0], arm, armH, D - thick, 7 * k)
+  const leg = (q: Point) =>
+    s.fill(
+      p.shape([
+        add(q, [-2 * k, 0]),
+        add(q, [2 * k, 0]),
+        add(q, [1.2 * k, legs]),
+        add(q, [-1.2 * k, legs]),
+      ]),
+    )
+  leg([x + 5 * k, y0])
+  leg([x + W - 5 * k, y0])
+  leg(add([x + W - 3 * k, y0], o, D - 6 * k))
 }
 
 /** A standing lamp; `at` is the centre of its foot. */
@@ -194,20 +225,42 @@ export const roomWindow: Draw = (
     )
     s.stroke(p.line(add(c, [0, 14 * k]), [c[0], y - h * 0.55]))
   }
+  // A curtain hanging from the rod at one side: gathered at a tie-back, flaring to a scalloped hem, with two folds.
   const side = r.chance(0.5) ? 0 : 1
+  const dir = side ? -1 : 1
   const cx = x + side * w
-  s.stroke(p.line([x - 12 * k, y - h - 6 * k], [x + w + 12 * k, y - h - 6 * k]))
-  for (let i = 0; i < 3; i++) {
-    const off = (side ? -1 : 1) * (4 + i * 6) * k
-    s.stroke(
-      p.path(
-        Array.from({ length: 6 }, (_, j): Point => [
-          cx + off + (j % 2 ? 2 : -2) * k,
-          y - h - 6 * k + (j * (h + 4 * k)) / 5,
-        ]),
-      ),
-    )
+  const [top, bottom] = [y - h - 6 * k, y + 9 * k]
+  const rod: [Point, Point] = [
+    [x - 12 * k, top],
+    [x + w + 12 * k, top],
+  ]
+  s.stroke(p.line(...rod))
+  for (const end of rod) s.stroke(p.ring(...dot(end, 2.6 * k)))
+  const tie = r.between(0.58, 0.66)
+  /** How far the curtain reaches into the window at t, from the rod (0) to the hem (1). */
+  const reach = (t: number) => {
+    const q = t < tie ? (tie - t) / tie : (t - tie) / (1 - tie)
+    return (10 + (t < tie ? 15 : 12) * q * q) * k
   }
+  const cloth = (t: number, f: number): Point => [
+    cx + dir * (-7 * k + (reach(t) + 7 * k) * f),
+    top + (bottom - top) * t,
+  ]
+  const steps = Array.from({ length: 13 }, (_, i) => i / 12)
+  const hem = Array.from({ length: 7 }, (_, i): Point => {
+    const f = 1 - i / 6
+    return add(cloth(1, f), [0, (i % 2 ? -2.2 : 0) * k])
+  })
+  const panel = [
+    ...steps.map((t) => cloth(t, 0)),
+    ...hem.slice(1, -1).reverse(),
+    ...steps.map((t) => cloth(t, 1)).reverse(),
+  ]
+  s.blank(p.shape(panel))
+  s.stroke(p.shape(panel))
+  for (const f of [0.36, 0.7])
+    s.stroke(p.path(steps.slice(1, -1).map((t) => cloth(t, f))))
+  s.fill(p.disc(...dot(cloth(tie, 1), 2.4 * k)))
 }
 
 const T = objectsIn("indie")

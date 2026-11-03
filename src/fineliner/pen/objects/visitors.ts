@@ -4,15 +4,11 @@ import { add, arc, dot, type Point } from "../geometry"
 import { define, type Draw, objectsIn } from "../library"
 import { clothes } from "./people"
 
-/** A shirt and trousers with nobody in them, standing, walking or carrying a record. */
-export const visitor: Draw = (
-  s,
-  p,
-  r,
-  at,
-  k = 1,
-  { pose = r.pick(["stand", "walk", "record"]) } = {},
-) => {
+/**
+ * A shirt and trousers with nobody in them. On its own the visitor stands empty-handed; scenes may ask for "walk" or
+ * "record" (carrying a sleeve, which is also its own object, the visitor with a record).
+ */
+export const visitor: Draw = (s, p, r, at, k = 1, { pose = "stand" } = {}) => {
   const P = (u: number, v: number): Point => [at[0] + u * k, at[1] + v * k]
   const { hands } = clothes(s, p, r, at, k, {
     pose: pose === "record" ? "mug" : pose,
@@ -76,8 +72,8 @@ export const cat: Draw = (
     P(12, 44),
   ]
   s.blank(p.shape(body))
-  if (black) s.fill(p.shape(body))
-  s.stroke(p.path([...body, body[0] as Point]))
+  // A black cat is one pocket of ink; a separate outline round it would wobble off its edge.
+  s[black ? "fill" : "stroke"](p.shape(body))
   const c = P(0, 60)
   const face = [
     ...arc(c, 16 * k, 14 * k, -20, 200, 16),
@@ -87,8 +83,7 @@ export const cat: Draw = (
     add(c, [14 * k, -19 * k]),
   ]
   s.blank(p.shape(face))
-  if (black) s.fill(p.shape(face))
-  s.stroke(p.path([...face, face[0] as Point]))
+  s[black ? "fill" : "stroke"](p.shape(face))
   const eye = black
     ? (pt: Point) => s.paper(p.disc(...dot(pt, 1.6 * k)))
     : (pt: Point) => s.fill(p.disc(...dot(pt, 1.4 * k)))

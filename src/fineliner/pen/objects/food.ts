@@ -22,41 +22,68 @@ export const coffee: Draw = (s, p, _r, at, k = 1) => {
     )
 }
 
+/**
+ * A round teapot, as on the object sheet: a squat body on a short foot, a domed lid with a solid knob, a spout curving
+ * up from low on the right and a loop handle on the left. The spout, handle and foot are drawn first, so the body
+ * hides where they join it.
+ */
 export const teapot: Draw = (s, p, _r, at, k = 1) => {
   const [x, y] = at
   const P = (u: number, v: number): Point => [x + u * k, y - v * k]
-  const body = [
-    P(-34, 4),
-    ...arc([0, 0], 36, 44, 180, 360, 18).map(([u, v]) => P(u, 4 - v)),
-    P(34, 4),
-  ]
-  s.stroke(p.path([P(30, 18), P(46, 30), P(56, 46)]))
-  s.stroke(p.path([P(32, 30), P(44, 38), P(51, 50)]))
-  s.stroke(p.line(P(56, 46), P(51, 50)))
+  /** Points on an ellipse centred at (u, v), in the object's units: 0 degrees is right, 90 is down. */
+  const oval = (
+    u: number,
+    v: number,
+    rx: number,
+    ry: number,
+    a0: number,
+    a1: number,
+    n = 10,
+  ) => arc([0, 0], rx, ry, a0, a1, n).map(([du, dv]) => P(u + du, v - dv))
+  s.stroke(p.path([P(-19, 9), P(-16, 0), P(16, 0), P(19, 9)]))
   s.stroke(
-    p.path(
-      arc([0, 0], 13, 16, -90, 90, 10).map(([u, v]) => P(-34 - u, 24 - v)),
-    ),
+    p.path([
+      P(28, 14),
+      P(42, 20),
+      P(51, 31),
+      P(57, 45),
+      P(62, 55),
+      P(56, 58),
+      P(51, 48),
+      P(45, 39),
+      P(36, 34),
+    ]),
   )
+  s.stroke(p.path(oval(-34, 35, 17, 17, 290, 70, 14)))
+  s.stroke(p.path(oval(-34, 35, 10, 10, 300, 60, 12)))
+  const body = oval(0, 34, 40, 31, 0, 360, 28)
   s.blank(p.shape(body))
-  s.stroke(p.path([...body, body[0] as Point]))
-  s.stroke(
-    p.path(arc([0, 0], 14, 7, 180, 360, 10).map(([u, v]) => P(u, 44 - v))),
-  )
-  s.fill(p.disc(...dot(P(0, 54), 3.4 * k)))
+  s.stroke(p.ring(P(0, 34), [40 * k, 0], [0, 31 * k]))
+  const lid = [...oval(0, 61, 17, 9, 180, 360), ...oval(0, 61, 17, 3.5, 0, 180)]
+  s.blank(p.shape(lid))
+  s.stroke(p.shape(lid))
+  s.fill(p.disc(...dot(P(0, 73), 3.8 * k)))
 }
 
+/**
+ * A moka pot: two faceted chambers pinched at the waist, a pointed spout at the top right, a lid with a knob and a
+ * solid handle. The spout is drawn first, so the pot hides its root and where the pen runs past it.
+ */
 export const moka: Draw = (s, p, _r, at, k = 1) => {
   const [x, y] = at
   const P = (u: number, v: number): Point => [x + u * k, y - v * k]
+  s.stroke(p.path([P(17, 66), P(25, 74), P(32, 84), P(20.5, 80)]))
   const lower = [P(-22, 0), P(22, 0), P(14, 40), P(-14, 40)]
   const upper = [P(-14, 40), P(14, 40), P(20, 80), P(-20, 80)]
   s.blank(p.shape([...lower, ...upper]))
   s.stroke(p.edges(lower))
   s.stroke(p.edges(upper))
-  s.stroke(p.edges([P(20, 80), P(30, 82), P(20, 72)], false))
+  for (const side of [-1, 1]) {
+    s.stroke(p.line(P(side * 8, 2), P(side * 5, 38)))
+    s.stroke(p.line(P(side * 5, 42), P(side * 7.5, 78)))
+  }
   s.fill(p.shape([P(-20, 72), P(-34, 68), P(-36, 48), P(-16, 46)]))
-  s.stroke(p.edges([P(-12, 80), P(12, 80), P(9, 86), P(-9, 86)]))
+  s.stroke(p.shape([P(-12, 80), P(12, 80), P(9, 86), P(-9, 86)]))
   s.fill(p.disc(...dot(P(0, 90), 3.6 * k)))
 }
 

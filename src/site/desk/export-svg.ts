@@ -5,7 +5,7 @@ export function standaloneSvg(svg: string, el: Element) {
   const style = getComputedStyle(el)
   const pen = style.getPropertyValue("--pen").trim() || "#263152"
   const wash = style.getPropertyValue("--wash").trim() || "#5b72a8"
-  const paper = style.getPropertyValue("--paper").trim() || "#ece2ca"
+  const paper = style.getPropertyValue("--paper").trim() || "#f4f0e6"
   const view = /viewBox="0 0 ([\d.]+) ([\d.]+)"/.exec(svg)
   const [w, h] = view ? [view[1], view[2]] : ["640", "440"]
   const css =

@@ -107,7 +107,7 @@ export function ExportPanel({
       aria-labelledby="export-title"
       className={cn("scroll-mt-24", className)}
     >
-      <div className="flex flex-wrap items-end justify-between gap-x-section gap-y-tight">
+      <div className="flex flex-wrap items-center gap-x-line gap-y-tight">
         <h2 id="export-title" className="m-0 text-h2">
           Export
         </h2>

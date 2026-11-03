@@ -161,8 +161,9 @@ export function Hero01({
               <CodeBlockContent wrap className="flex-1">
                 {command}
               </CodeBlockContent>
-              {/* Not CodeBlockActions: as a direct child it shows only on hover, and the hero's copy stays put. */}
-              <div className="shrink-0 pe-1.5">
+              {/* Not CodeBlockActions: as a direct child it shows only on hover, and the hero's copy stays put. In the
+                  label voice, as every code block header's copy button is. */}
+              <div className="label shrink-0 pe-1.5">
                 <CodeBlockCopyButton value={command} />
               </div>
             </CodeBlock>

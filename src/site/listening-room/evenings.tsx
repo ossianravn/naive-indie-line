@@ -9,7 +9,11 @@ import {
 import { Progress, ProgressLabel, ProgressValue } from "@/fineliner/ui/progress"
 import { EVENINGS, shortDay } from "./sessions-data"
 
-/** The Thursday evenings: date, what is on, who hosts, and how full each is. */
+/**
+ * The Thursday evenings: date, what is on, who hosts, and how full each is. The rows keep a narrow width, so the seat
+ * meter stays near its evening; on phones it drops under the title. The rows' padding hangs into the gutter, so the
+ * dates sit on the heading's edge.
+ */
 export function Evenings() {
   return (
     <section aria-labelledby="evenings" className="mt-page">
@@ -20,7 +24,7 @@ export function Evenings() {
         From seven, twelve seats, the records on the turntable chosen by the
         host.
       </p>
-      <ItemGroup className="mt-snug max-w-[44rem]">
+      <ItemGroup className="mt-snug -ms-snug w-auto max-w-[38rem]">
         {EVENINGS.map((evening) => (
           <Item key={evening.date} role="listitem">
             <ItemMedia variant="number" className="w-16 font-type text-small">
@@ -34,7 +38,7 @@ export function Evenings() {
             </ItemContent>
             <Progress
               value={(evening.taken / evening.seats) * 100}
-              className="w-36 shrink-0 max-sm:hidden"
+              className="w-32 shrink-0 max-sm:basis-full max-sm:ps-[calc(4rem+var(--spacing-snug))]"
             >
               <ProgressLabel className="sr-only">
                 Seats taken for {evening.title}

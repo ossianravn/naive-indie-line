@@ -32,7 +32,7 @@ export const appearanceLabels: {
   },
   stock: {
     label: "Paper",
-    options: { recycled: "Recycled", kraft: "Kraft", bond: "Bond" },
+    options: { bond: "Bond", recycled: "Recycled", kraft: "Kraft" },
   },
   pen: {
     label: "Pen",

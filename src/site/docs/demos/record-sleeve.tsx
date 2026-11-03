@@ -21,16 +21,16 @@ export default function RecordSleeveDemo() {
   return (
     <>
       <DemoSection title="Sizes">
-        <StateRow label="md (default)">
+        <StateRow label="sm">
           <RecordSleeve
+            size="sm"
             title={harbour.title}
             artist={harbour.artist}
             catalogue={harbour.id}
           />
         </StateRow>
-        <StateRow label="sm">
+        <StateRow label="md (default)">
           <RecordSleeve
-            size="sm"
             title={harbour.title}
             artist={harbour.artist}
             catalogue={harbour.id}

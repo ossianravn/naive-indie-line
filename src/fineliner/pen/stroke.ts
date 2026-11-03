@@ -99,7 +99,11 @@ export function pen(
   const rand = prng(fork(seedOf(seed), take ? `pen:take:${take}` : "pen"))
   const between = (a: number, b: number) => a + rand() * (b - a)
 
-  /** Offset a polyline along its normals by slow wobble plus tremor. `closed` makes the offsets meet. */
+  /**
+   * Offset a polyline along its normals by slow wobble plus tremor. `closed` makes the offsets meet and centres them,
+   * so a closed shape wobbles without growing or shrinking: on a small dot the slow wobble is nearly one offset all
+   * the way round, which would otherwise make one eye twice the size of the other.
+   */
   function trace(points: Point[], closed = false): Point[] {
     const pts = resample(
       points.map(([x, y]) => [snap(x), snap(y)]),
@@ -110,12 +114,17 @@ export function pen(
     const fine = noise(rand, size, 7, hand.tremor)
     const start = slow(0) + fine(0)
     const end = slow(size) + fine(size)
-    return pts.map(([x, y, s], i) => {
+    const offs = pts.map(([, , s]) =>
+      closed
+        ? slow(s) + fine(s) - ((end - start) * s) / size
+        : slow(s) + fine(s),
+    )
+    const mean = closed ? offs.reduce((t, o) => t + o, 0) / offs.length : 0
+    return pts.map(([x, y], i) => {
       const a = pts[Math.max(0, i - 1)] as Sample
       const b = pts[Math.min(pts.length - 1, i + 1)] as Sample
       const len = length([b[0] - a[0], b[1] - a[1]]) || 1
-      let off = slow(s) + fine(s)
-      if (closed) off -= ((end - start) * s) / size
+      const off = (offs[i] as number) - mean
       return [x - ((b[1] - a[1]) / len) * off, y + ((b[0] - a[0]) / len) * off]
     })
   }
@@ -158,8 +167,14 @@ export function pen(
         d += toPath(trace(overshoot([ring[i - 1] as Point, ring[i] as Point])))
       return d
     },
-    shape: (points) =>
-      toPath(trace([...points, points[0] as Point], true), true),
+    // The loop starts and ends halfway along its first edge: started in a corner, the two ends would be pushed off
+    // along different normals and leave a spike where they meet.
+    shape(points) {
+      const first = points[0] as Point
+      const [a, b] = [first, (points[1] ?? first) as Point]
+      const mid: Point = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]
+      return toPath(trace([mid, ...points.slice(1), first, mid], true), true)
+    },
     ring(c, u, v = [0, u[0]]) {
       const from = between(0, Math.PI * 2)
       const turn = Math.PI * 2 + between(0.3, 1) * hand.loop

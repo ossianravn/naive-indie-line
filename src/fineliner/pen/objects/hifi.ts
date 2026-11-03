@@ -1,6 +1,6 @@
 // Indie: the hi-fi. Each function draws one object; `at` is its anchor (bottom-left unless it says
 // otherwise) and `k` its scale. Composition comes from `r` (the shape stream), never from the pen, so takes agree.
-import { add, dist, dot, times, type Point } from "../geometry"
+import { add, dist, dot, roundRect, times, type Point } from "../geometry"
 import { define, type Draw, objectsIn } from "../library"
 import { box, depth } from "../shapes"
 
@@ -42,18 +42,16 @@ export const speaker: Draw = (s, p, r, at, k = 1) => {
 export const cassette: Draw = (s, p, r, at, k = 1) => {
   const [x, y] = at
   const P = (u: number, v: number): Point => [x + u * k, y - v * k]
-  const body = [
-    P(0, 4),
-    P(4, 0),
-    P(92, 0),
-    P(96, 4),
-    P(96, 56),
-    P(92, 60),
-    P(4, 60),
-    P(0, 56),
-  ]
+  const body = roundRect(x, y - 60 * k, 96 * k, 60 * k, 4 * k)
   s.blank(p.shape(body))
-  s.stroke(p.edges(body))
+  s.stroke(p.shape(body))
+  for (const [u, v] of [
+    [5, 55],
+    [91, 55],
+    [5, 5],
+    [91, 5],
+  ] as Point[])
+    s.fill(p.disc(...dot(P(u, v), 1.1 * k)))
   s.stroke(p.edges([P(10, 52), P(86, 52), P(86, 24), P(10, 24)]))
   s.stroke(p.edges([P(30, 44), P(66, 44), P(66, 32), P(30, 32)]))
   for (const cx of [22, 74]) {

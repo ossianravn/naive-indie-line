@@ -27,6 +27,7 @@ import {
 } from "./data"
 import { AddRecord } from "./add-record"
 import { RecordRow } from "./record-row"
+import { PageHeader, ShellPage } from "./page"
 
 type Filter = "all" | Status
 
@@ -60,6 +61,8 @@ export function Catalogue({ initial = RELEASES }: { initial?: Release[] }) {
     )
   }, [items, query, filter])
 
+  const inRacks = items.filter((r) => r.status === "racks").length
+  const held = items.filter((r) => r.status === "held").length
   const search = (q: string) => [setQuery(q), setLimit(PAGE)]
   const show = (f: Filter) => [setFilter(f), setLimit(PAGE)]
   const change = (id: string, patch: Partial<Release>, said: string) => {
@@ -82,14 +85,12 @@ export function Catalogue({ initial = RELEASES }: { initial?: Release[] }) {
   }
 
   return (
-    <div className="mx-auto w-full max-w-[72rem] px-snug pt-section pb-page sm:px-line">
-      <header className="flex flex-wrap items-end justify-between gap-snug">
-        <div>
-          <p className="label m-0 text-pen-quiet">The racks · November</p>
-          <h1 className="m-0 mt-hair text-h1">Catalogue</h1>
-        </div>
-        <AddRecord onAdd={add} next={next} />
-      </header>
+    <ShellPage>
+      <PageHeader
+        kicker={`${tally(inRacks)} in the racks · ${tally(held)} on hold`}
+        title="Catalogue"
+        action={<AddRecord onAdd={add} next={next} />}
+      />
 
       {items.length > 0 && (
         <div className="mt-line flex flex-wrap items-center gap-x-section gap-y-tight">
@@ -143,7 +144,7 @@ export function Catalogue({ initial = RELEASES }: { initial?: Release[] }) {
 
       {shown.length ? (
         <>
-          <ul className="m-0 mt-snug list-none p-0 [&>li]:border-b [&>li]:border-dotted [&>li]:border-pen-faint">
+          <ul className="m-0 mt-snug max-w-[48rem] list-none p-0 [&>li]:border-b [&>li]:border-dotted [&>li]:border-pen-faint">
             {shown.slice(0, limit).map((item) => (
               <RecordRow
                 key={item.id}
@@ -238,6 +239,6 @@ export function Catalogue({ initial = RELEASES }: { initial?: Release[] }) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </ShellPage>
   )
 }

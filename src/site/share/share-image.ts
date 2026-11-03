@@ -22,8 +22,8 @@ export interface Share {
 
 const W = 1200
 const H = 630
-const PAPER = "#ece2ca"
-const FLECK = "#c9b892"
+const PAPER = "#f4f0e6"
+const FLECK = "#c8bea8"
 const PEN = "#263152"
 const WASH = "#5b72a8"
 const WEIGHT = 2.6

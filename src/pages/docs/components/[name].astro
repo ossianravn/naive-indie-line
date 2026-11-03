@@ -1,7 +1,13 @@
 ---
+// One component's docs page: the shared page head with the install command, the component's states in one column of
+// a fixed width, then previous and next; from lg the nav of every component runs beside it.
 import Base from "@/site/layouts/base.astro"
+import PageHeader from "@/site/layouts/page-header.astro"
+import ComponentNav from "@/site/docs/component-nav.astro"
+import ComponentPager from "@/site/docs/component-pager.astro"
 import { DemoHost } from "@/site/docs/demo-host"
 import type { DemoMeta } from "@/site/docs/demo-kit"
+import { InstallCommand } from "@/site/docs/install-command"
 
 export function getStaticPaths() {
   const modules = import.meta.glob<{ meta: DemoMeta }>(
@@ -14,22 +20,29 @@ export function getStaticPaths() {
   }))
 }
 
-const { name } = Astro.params
+const name = Astro.params.name ?? ""
 const { meta } = Astro.props
 ---
 
 <Base title={meta.title} description={meta.description}>
-  <div class="mx-auto max-w-[76rem] px-snug pt-section sm:px-line">
-    <p class="label m-0">
-      <a href="/docs">Components</a> · {meta.item}
-    </p>
-    <h1 class="mb-tight mt-tight text-title leading-heading">{meta.title}</h1>
-    <p class="m-0 max-w-measure text-body leading-body sm:text-lead sm:leading-lead">
-      {meta.description}
-    </p>
-    <pre class="mt-snug w-fit max-w-full overflow-x-auto bg-paper-2 px-snug py-tight font-type text-small"><code>npx shadcn add @fineliner/{meta.item}</code></pre>
-  </div>
-  <div class="mx-auto mt-section max-w-[76rem] px-snug sm:px-line">
-    <DemoHost name={name ?? ""} client:load />
+  <div class="mx-auto grid max-w-[76rem] gap-x-page px-snug sm:px-line lg:grid-cols-[minmax(0,1fr)_12rem]">
+    <div class="min-w-0">
+      <PageHeader title={meta.title} contained={false}>
+        <Fragment slot="kicker">
+          <a href="/docs">Components</a> · {meta.group ?? "Other"}
+        </Fragment>
+        {meta.description}
+      </PageHeader>
+      <InstallCommand
+        command={`npx shadcn add @fineliner/${meta.item}`}
+        className="mt-snug"
+        client:visible
+      />
+      <div class="mt-section">
+        <DemoHost name={name} client:load />
+      </div>
+      <ComponentPager current={name} />
+    </div>
+    <ComponentNav current={name} />
   </div>
 </Base>

@@ -22,7 +22,7 @@ const VARIANTS = [
 export default function ButtonDemo() {
   return (
     <>
-      <DemoSection title="Variants">
+      <DemoSection title="Variants" columns={["At rest", "Disabled"]}>
         {VARIANTS.map(([variant, words]) => (
           <StateRow key={variant} label={variant}>
             <Button variant={variant}>{words}</Button>

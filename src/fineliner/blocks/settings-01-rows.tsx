@@ -65,7 +65,6 @@ export function SettingsRow({
   beside?: boolean
   children: ReactNode
 }) {
-  const wide = "@min-[28rem]/settings"
   return (
     <div
       className={cn(
@@ -78,7 +77,8 @@ export function SettingsRow({
           htmlFor={htmlFor}
           className={cn(
             "font-ui text-ui leading-ui font-medium text-pen",
-            `${wide}:flex ${wide}:min-h-control ${wide}:items-center ${wide}:justify-end ${wide}:text-end`,
+            // Written out whole, so Tailwind finds them: the same column end and control height as AppearanceControl.
+            "@min-[28rem]/settings:flex @min-[28rem]/settings:min-h-control @min-[28rem]/settings:items-center @min-[28rem]/settings:justify-end @min-[28rem]/settings:text-end",
           )}
         >
           {label}

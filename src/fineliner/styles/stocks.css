@@ -1,10 +1,10 @@
 /* Stocks: the paper, and each pen as it reads on that paper. Night is a dark card drawn on with a light gel pen, not an
    inverted page. tools/check-contrast.mjs reads these blocks, so keep one declaration per line. */
 
-:root,
-:root[data-stock="recycled"] {
-  --paper: #ece2ca;
-  --paper-2: #e3d7bb;
+:root {
+  /* Bond, the brightest stock, is the default paper. */
+  --paper: #f4f0e6;
+  --paper-2: #ebe5d7;
   --pen-navy: #263152;
   --pen-black: #262421;
   --pen-sepia: #4a3020;
@@ -32,14 +32,14 @@
   --quiet-share: 88%;
 }
 
-:root[data-stock="bond"] {
-  --paper: #f4f0e6;
-  --paper-2: #ebe5d7;
+:root[data-stock="recycled"] {
+  --paper: #ece2ca;
+  --paper-2: #e3d7bb;
 }
 
 :root[data-theme="night"] {
-  --paper: #1c2131;
-  --paper-2: #242b3e;
+  --paper: #1b1b1a;
+  --paper-2: #252523;
   --pen-navy: #dde3f2;
   --pen-black: #efe9dc;
   --pen-sepia: #eedcc6;
@@ -58,7 +58,7 @@
   --paper-2: #342920;
 }
 
-:root[data-stock="bond"][data-theme="night"] {
-  --paper: #1b1b1a;
-  --paper-2: #252523;
+:root[data-stock="recycled"][data-theme="night"] {
+  --paper: #1c2131;
+  --paper-2: #242b3e;
 }

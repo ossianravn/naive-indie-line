@@ -1,0 +1,59 @@
+---
+// Every component by group, beside a component's docs page from lg: a rail that stays in view and scrolls on its
+// own, the current page marked with the pen's dot, as the listening room's sidebar marks its room. Narrower, the
+// page ends with previous and next instead, and the kicker leads back to the index.
+import { PenMark } from "@/fineliner/drawing/pen-mark"
+import { GROUPS } from "./catalogue"
+
+interface Props {
+  current: string
+}
+const { current } = Astro.props
+---
+
+<nav
+  aria-label="Components"
+  data-component-nav
+  class="sticky top-snug hidden max-h-[calc(100dvh-2*var(--space-snug))] self-start overflow-y-auto overscroll-contain pe-tight pt-section pb-line lg:block"
+>
+  <a href="/docs" class="label text-pen-quiet no-underline hover:text-pen">
+    All components
+  </a>
+  {GROUPS.map(({ group, items }) => (
+    <section class="mt-snug" aria-labelledby={`nav-${group}`}>
+      <h2 id={`nav-${group}`} class="label m-0 text-pen-quiet">
+        {group}
+      </h2>
+      <ul class="m-0 mt-hair list-none p-0">
+        {items.map(({ name, title }) => (
+          <li class="grid grid-cols-[0.875rem_minmax(0,1fr)] items-center">
+            {name === current && (
+              <PenMark
+                name="dot"
+                seed={name}
+                hand="calm"
+                className="size-1.5"
+              />
+            )}
+            <a
+              href={`/docs/components/${name}`}
+              aria-current={name === current ? "page" : undefined}
+              class="col-start-2 block py-[0.1875rem] text-small leading-small no-underline hover:underline aria-[current=page]:font-medium"
+            >
+              {title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</nav>
+
+<script is:inline>
+  // Bring the current page into the rail's view without scrolling the page.
+  ;(() => {
+    const nav = document.querySelector("[data-component-nav]")
+    const here = nav?.querySelector("[aria-current=page]")
+    if (nav && here) nav.scrollTop = here.offsetTop - nav.clientHeight / 2
+  })()
+</script>

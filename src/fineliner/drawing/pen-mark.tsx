@@ -1,6 +1,7 @@
 import { useMemo, type ComponentProps } from "react"
 import { penMark, type HandName, type MarkName } from "@/fineliner/pen"
 import { cn } from "@/fineliner/lib/utils"
+import { useOwnIds } from "@/fineliner/lib/svg-ids"
 
 export interface PenMarkProps extends Omit<ComponentProps<"span">, "children"> {
   /** tick, ring, dot, underline, strike, arrow, chevron or pill. */
@@ -17,6 +18,7 @@ export function PenMark({
   className,
   ...props
 }: PenMarkProps) {
+  const own = useOwnIds()
   const html = useMemo(() => penMark(name, seed, hand), [name, seed, hand])
   return (
     <span
@@ -24,7 +26,7 @@ export function PenMark({
       data-slot="pen-mark"
       data-mark={name}
       className={cn("block [&>svg]:size-full", className)}
-      dangerouslySetInnerHTML={{ __html: html }}
+      dangerouslySetInnerHTML={{ __html: own(html) }}
       {...props}
     />
   )

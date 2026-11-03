@@ -1,13 +1,52 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { ExternalLinkIcon } from "lucide-react"
 import { frameStyle } from "@/fineliner/lib/frame-style"
+import { cn } from "@/fineliner/lib/utils"
 import { ToggleGroup, ToggleGroupItem } from "@/fineliner/ui/toggle-group"
 
 // A block running in a frame of its own page, so it lays out for the frame's width (full width, or a 390 px phone)
 // and its fixed and full-height parts behave as they would in an app. A segmented control picks the width, another
-// the state for blocks with variants; the link opens the frame's page on its own.
+// the state for blocks with variants; the link opens the frame's page on its own. At desktop width the frame takes
+// its page's whole height, measured in the frame (same origin) and followed as the block changes, so the page reads
+// top to bottom with the rest of the docs; at phone width it keeps a phone's height and scrolls inside.
 
 const PHONE = 390
+
+/** The height of the frame's page, followed while `on`; undefined when off or not yet measured. */
+function useFittedHeight(src: string, on: boolean) {
+  const frame = useRef<HTMLIFrameElement>(null)
+  // Kept with the frame and width it was measured for, so a new frame or width starts from the default height.
+  const key = `${src} ${on}`
+  const [fit, setFit] = useState<{ key: string; height: number }>()
+  useEffect(() => {
+    const el = frame.current
+    if (!el || !on) return
+    let observer: ResizeObserver | undefined
+    const attach = () => {
+      const doc = el.contentDocument
+      const main = doc?.querySelector("main")
+      if (!doc || !main || !el.contentWindow) return
+      observer?.disconnect()
+      // The page never scrolls in a fitted frame, so it keeps no gutter for a scrollbar.
+      doc.documentElement.style.scrollbarGutter = "auto"
+      const measure = () =>
+        setFit({ key, height: Math.ceil(main.getBoundingClientRect().bottom) })
+      const win = el.contentWindow as typeof window
+      observer = new win.ResizeObserver(measure)
+      observer.observe(main)
+      measure()
+    }
+    el.addEventListener("load", attach)
+    if (el.contentDocument?.readyState === "complete") attach()
+    return () => {
+      el.removeEventListener("load", attach)
+      observer?.disconnect()
+      if (el.contentDocument)
+        el.contentDocument.documentElement.style.scrollbarGutter = ""
+    }
+  }, [key, on])
+  return [frame, fit?.key === key ? fit.height : undefined] as const
+}
 
 /** "no-results" → "No results". */
 const variantLabel = (variant: string) =>
@@ -26,6 +65,7 @@ export function BlockPreview({
   const [variant, setVariant] = useState(variants?.[0])
   const src = `/docs/blocks/view/${name}${variant && variant !== variants?.[0] ? `/${variant}` : ""}`
   const phone = width === "phone"
+  const [frame, height] = useFittedHeight(src, !phone)
 
   return (
     <div className="@container/preview">
@@ -97,10 +137,15 @@ export function BlockPreview({
           )}
           <iframe
             key={src}
+            ref={frame}
             src={src}
             title={`${title} preview`}
             loading="lazy"
-            className="block h-[44rem] max-h-[80dvh] w-full bg-paper"
+            style={height ? { height } : undefined}
+            className={cn(
+              "block w-full bg-paper",
+              !height && "h-[44rem] max-h-[80dvh]",
+            )}
           />
         </div>
       </div>

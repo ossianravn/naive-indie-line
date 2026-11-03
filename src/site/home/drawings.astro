@@ -20,11 +20,11 @@ const SHELF = [
   class="mx-auto max-w-[76rem] px-snug py-section sm:px-line"
   aria-labelledby="drawings"
 >
-  <SectionHead n={2} id="drawings" title="Drawn, not printed" />
+  <SectionHead n={1} id="drawings" title="Drawn, not printed" />
   <p class="m-0 -mt-snug max-w-measure text-pen-quiet">
     A library of objects, people and rooms, each drawn by the pen from a seed:
     the same seed draws the same picture on the server and in the browser, and
-    another seed draws it again by another hand. Hover one to see the line boil.
+    another seed draws it again by another hand.
   </p>
   <ul class="m-0 mt-line grid list-none grid-cols-2 gap-x-snug gap-y-line p-0 min-[30rem]:grid-cols-4 lg:grid-cols-8">
     {SHELF.map(([object, name]) => (

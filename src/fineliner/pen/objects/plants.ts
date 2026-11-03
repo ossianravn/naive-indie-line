@@ -129,9 +129,12 @@ export const cactus: Draw = (s, p, r, at, k = 1) => {
   s.stroke(p.path(arm))
   s.blank(p.shape(column))
   s.stroke(p.path(column))
-  for (let i = 0; i < 9; i++) {
-    const pt: Point = [x + r.signed() * w * 0.7, y - r.next() * h * 0.95]
-    s.stroke(p.line(pt, add(pt, [r.signed() * 3 * k, -3 * k])))
+  // Two ribs with the spines' areoles as dots along them: spines as tiny strokes came out as scribbles, since the
+  // pen's run past each end is longer than the spine.
+  for (const u of [-0.45, 0.45]) {
+    s.stroke(p.line([x + u * w, y - 3 * k], [x + u * w, y - h]))
+    for (let v = r.between(0.06, 0.14); v < 0.95; v += r.between(0.15, 0.2))
+      s.fill(p.disc(...dot([x + u * w, y - v * h], 0.9 * k)))
   }
   if (r.chance(0.5)) s.fill(p.disc(...dot([x, y - h - w - 2 * k], 3.5 * k)))
   pot(s, p, at, k)

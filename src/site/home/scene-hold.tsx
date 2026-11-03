@@ -2,32 +2,51 @@ import { useState } from "react"
 import { Drawing } from "@/fineliner/drawing/drawing"
 import { Badge } from "@/fineliner/ui/badge"
 import { Button } from "@/fineliner/ui/button"
+import { Card, CardContent, CardFooter } from "@/fineliner/ui/card"
 
-/** Holding a record for a customer: the sleeve, its price and state, and the one action that changes it. */
+/** A customer's request on a record: the sleeve and its state, what Jonas asked, and the one press that answers it. */
 export function HoldScene() {
   const [held, setHeld] = useState(false)
   return (
-    <div className="flex flex-wrap items-center gap-snug">
-      <Drawing object="record" seed="LR-0429" title="" className="w-24" />
-      <div className="min-w-0">
-        <p className="m-0 font-medium leading-subhead">Paper Moons</p>
-        <p className="m-0 text-small leading-small text-pen-quiet">
-          Odile &amp; the Lanterns
-        </p>
-        <p className="m-0 mt-hair flex items-center gap-tight">
-          <span className="font-type text-small">180 kr</span>
-          <Badge variant={held ? "default" : "outline"}>
-            {held ? "Held for Jonas" : "In the racks"}
+    <Card className="max-w-[34rem] gap-snug">
+      <CardContent className="flex items-center gap-snug">
+        <Drawing
+          object="record"
+          seed="LR-0429"
+          title=""
+          className="w-20 shrink-0"
+        />
+        <div className="min-w-0">
+          <p className="m-0 font-medium leading-subhead">Paper Moons</p>
+          <p className="m-0 text-small leading-small text-pen-quiet">
+            Odile &amp; the Lanterns · LP ·{" "}
+            <span className="font-type">180 kr</span>
+          </p>
+          <Badge
+            variant={held ? "default" : "outline"}
+            className="mt-tight"
+            aria-live="polite"
+          >
+            {held ? "Held for Jonas until Saturday" : "In the racks, 2 copies"}
           </Badge>
-        </p>
-      </div>
-      <Button
-        variant={held ? "outline" : "default"}
-        onClick={() => setHeld((h) => !h)}
-        className="ms-auto"
-      >
-        {held ? "Back in the racks" : "Hold for Jonas"}
-      </Button>
-    </div>
+        </div>
+      </CardContent>
+      <CardFooter className="flex-wrap justify-between gap-snug">
+        <figure className="m-0 min-w-0">
+          <blockquote className="m-0">
+            “Could you keep one for me until Saturday?”
+          </blockquote>
+          <figcaption className="text-small leading-small text-pen-quiet">
+            Jonas, on Tuesday
+          </figcaption>
+        </figure>
+        <Button
+          variant={held ? "outline" : "default"}
+          onClick={() => setHeld((h) => !h)}
+        >
+          {held ? "Put back" : "Hold for Jonas"}
+        </Button>
+      </CardFooter>
+    </Card>
   )
 }

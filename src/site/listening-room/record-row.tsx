@@ -27,7 +27,10 @@ const BADGE = {
   sold: "secondary",
 } as const
 
-/** One record as a catalogue row: its sleeve, title and artist, details, condition, price, status and actions. */
+/**
+ * One record as a catalogue row: its sleeve, then title, artist and details together, then price, status and actions
+ * at the end. On phones the price and status join the details line.
+ */
 export function RecordRow({
   item,
   fresh,
@@ -56,12 +59,12 @@ export function RecordRow({
     </span>
   )
   return (
-    <li className="grid grid-cols-[3.25rem_minmax(0,1fr)_auto] items-start gap-x-snug gap-y-hair py-tight md:grid-cols-[3.25rem_minmax(0,1.4fr)_minmax(0,1fr)_5.5rem_7.5rem_auto] md:items-center">
+    <li className="grid grid-cols-[3.25rem_minmax(0,1fr)_auto] items-start gap-x-snug gap-y-hair py-tight md:grid-cols-[3.25rem_minmax(0,1fr)_5.5rem_7.5rem_auto]">
       <Drawing
         object="record"
         seed={item.id}
         title=""
-        className="row-span-2 w-[3.25rem] md:row-span-1"
+        className="row-span-2 w-[3.25rem] self-center"
       />
       <div className="min-w-0">
         <p className="relative m-0 line-clamp-2 w-fit leading-subhead font-medium wrap-anywhere">
@@ -90,7 +93,7 @@ export function RecordRow({
           {item.artist}
         </p>
       </div>
-      <div className="flex flex-wrap items-center gap-x-tight gap-y-hair max-md:col-start-2 max-md:row-start-2">
+      <div className="col-start-2 row-start-2 flex flex-wrap items-center gap-x-tight gap-y-hair">
         <p className="m-0 font-type text-small text-pen-quiet">
           {item.id} · {item.format} · {item.genre} ·{" "}
           <abbr
@@ -105,10 +108,12 @@ export function RecordRow({
           {status}
         </span>
       </div>
-      <p className="m-0 text-right font-type text-small tabular-nums max-md:hidden">
+      <p className="m-0 text-right font-type text-small tabular-nums max-md:hidden md:col-start-3 md:row-span-2 md:row-start-1 md:self-center">
         {price}
       </p>
-      <span className="flex max-md:hidden">{status}</span>
+      <span className="flex self-center max-md:hidden md:col-start-4 md:row-span-2 md:row-start-1">
+        {status}
+      </span>
       <DropdownMenu>
         <DropdownMenuTrigger
           render={
@@ -116,6 +121,7 @@ export function RecordRow({
               variant="ghost"
               size="icon-sm"
               aria-label={`Actions for ${item.title}`}
+              className="col-start-3 row-start-1 md:col-start-5 md:row-span-2 md:self-center"
             />
           }
         >

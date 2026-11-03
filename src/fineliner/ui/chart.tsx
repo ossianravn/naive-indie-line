@@ -96,7 +96,12 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   return css ? <style dangerouslySetInnerHTML={{ __html: css }} /> : null
 }
 
-const ChartTooltip = RechartsPrimitive.Tooltip
+/** Recharts' tooltip, which follows the pointer at once: its default 400 ms glide makes hovering feel slow. */
+function ChartTooltip(
+  props: React.ComponentProps<typeof RechartsPrimitive.Tooltip>,
+) {
+  return <RechartsPrimitive.Tooltip isAnimationActive={false} {...props} />
+}
 
 const ChartLegend = RechartsPrimitive.Legend
 

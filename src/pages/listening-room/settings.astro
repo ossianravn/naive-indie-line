@@ -1,11 +1,9 @@
 ---
-// Listening Room's settings are the kit's settings-01 block, as a consumer would install it.
+// Listening Room's settings are the kit's settings-01 block, as a consumer would install it, in the shell's page frame.
 import ListeningRoom from "@/site/layouts/listening-room.astro"
-import { Settings01 } from "@/fineliner/blocks/settings-01"
+import { SettingsPage } from "@/site/listening-room/settings"
 ---
 
 <ListeningRoom title="Settings" section="settings">
-  <div class="px-snug pt-section pb-page sm:px-line">
-    <Settings01 client:load />
-  </div>
+  <SettingsPage client:load />
 </ListeningRoom>

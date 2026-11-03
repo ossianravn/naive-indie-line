@@ -1,6 +1,12 @@
 import type { ChartConfig } from "@/fineliner/ui/chart"
 import { RELEASES, type Release } from "./data"
-import { EVENINGS, ROOM_SEATS, SESSIONS, shortDay } from "./sessions-data"
+import {
+  EVENINGS,
+  ROOM_SEATS,
+  SESSIONS,
+  TODAY,
+  shortDay,
+} from "./sessions-data"
 
 // The Overview's numbers, computed from the same records and sessions the Catalogue and Sessions screens show, so
 // the totals agree everywhere. Nothing here is typed in by hand.
@@ -36,10 +42,16 @@ export function genreSlices(releases: Release[] = RELEASES) {
 export const sliceConfig = (slices: { genre: string }[]): ChartConfig =>
   Object.fromEntries(slices.map((s) => [s.genre, { label: s.genre }]))
 
-/** Sessions in the fortnight from the demo clock, day by day: people booked and people who cancelled. */
+/** The fortnight from the demo clock, every day of it, as ISO dates. */
+export const FORTNIGHT = Array.from({ length: 14 }, (_, i) =>
+  new Date(Date.parse(`${TODAY}T00:00:00Z`) + i * 86_400_000)
+    .toISOString()
+    .slice(0, 10),
+)
+
+/** Every day of the fortnight, empty ones too: people booked and people who cancelled. */
 export function sessionDays() {
-  const days = [...new Set(SESSIONS.map((s) => s.date))].sort()
-  return days.map((date) => {
+  return FORTNIGHT.map((date) => {
     const of = SESSIONS.filter((s) => s.date === date)
     return {
       day: shortDay(date).replace(/ \w+$/u, ""),

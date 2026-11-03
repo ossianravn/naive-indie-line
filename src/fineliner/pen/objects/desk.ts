@@ -20,7 +20,8 @@ export const desk: Draw = (
   const back = (u: number) => add([x + w * u, y - legs], o, d)
   s.stroke(p.line(add(back(0), [3 * k, 0]), add(back(0), [3 * k, legs])))
   s.stroke(p.line(add(back(1), [-3 * k, 0]), add(back(1), [-3 * k, legs])))
-  const under: Point = [x + w * 0.66, y - legs + 26 * k]
+  // The drawer hangs flush under the top, which is drawn after it and hides its top face.
+  const under: Point = [x + w * 0.66, y - legs + 20 * k]
   const drawer = box(s, p, o, under, w * 0.3, 20 * k, d * 0.9)
   s.stroke(p.line(drawer.front(0.4, 0.5), drawer.front(0.6, 0.5)))
   const top = box(s, p, o, [x, y - legs], w, 7 * k, d)

@@ -7,6 +7,7 @@ import type { Point } from "@/fineliner/pen/geometry"
 import { sheet } from "@/fineliner/pen/layers"
 import { seedOf, stream } from "@/fineliner/pen/seed"
 import { pen, type HandName } from "@/fineliner/pen/stroke"
+import { useOwnIds } from "@/fineliner/lib/svg-ids"
 
 // An aside in the hand voice with a drawn arrow toward what it is about. Under its line by default; with
 // placement="margin" it hangs in the margin of its nearest positioned ancestor on screens 64rem and wider, level with
@@ -156,6 +157,7 @@ export function HandNote({
   children,
   ...props
 }: HandNoteProps) {
+  const own = useOwnIds()
   const margin = placement === "margin"
   const wide: HandNotePoint = point ?? (margin ? "start" : "up")
   const key = String(seed ?? (wordsOf(children).trim() || "hand-note"))
@@ -195,7 +197,7 @@ export function HandNote({
           ARROW_PLACE[wide],
           narrow && "max-[64rem]:hidden",
         )}
-        dangerouslySetInnerHTML={{ __html: svgs.wide }}
+        dangerouslySetInnerHTML={{ __html: own(svgs.wide) }}
       />
       {narrow && (
         <span
@@ -205,7 +207,7 @@ export function HandNote({
             "shrink-0 rtl:-scale-x-100 min-[64rem]:hidden",
             ARROW_PLACE[narrow],
           )}
-          dangerouslySetInnerHTML={{ __html: svgs.narrow }}
+          dangerouslySetInnerHTML={{ __html: own(svgs.narrow) }}
         />
       )}
       <span

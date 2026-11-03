@@ -3,6 +3,7 @@
 import { useMemo, type ComponentProps } from "react"
 import { lettering, type LetteringOptions } from "@/fineliner/pen"
 import { cn } from "@/fineliner/lib/utils"
+import { useOwnIds } from "@/fineliner/lib/svg-ids"
 
 export interface LetteringProps
   extends
@@ -27,6 +28,7 @@ export function Lettering({
   className,
   ...props
 }: LetteringProps) {
+  const own = useOwnIds()
   const html = useMemo(
     () => lettering(text, { face, seed, hand, takes: still ? 1 : 3 }).join(""),
     [text, face, seed, hand, still],
@@ -36,7 +38,7 @@ export function Lettering({
       data-slot="lettering"
       data-face={face ?? "liner"}
       className={cn("fl-takes", className)}
-      dangerouslySetInnerHTML={{ __html: html }}
+      dangerouslySetInnerHTML={{ __html: own(html) }}
       {...props}
     />
   )

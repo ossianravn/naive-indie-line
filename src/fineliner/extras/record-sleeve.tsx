@@ -8,6 +8,7 @@ import type { FaceName, SceneName } from "@/fineliner/pen"
 import { sheet } from "@/fineliner/pen/layers"
 import { seedOf, stream } from "@/fineliner/pen/seed"
 import { pen, type HandName } from "@/fineliner/pen/stroke"
+import { useOwnIds } from "@/fineliner/lib/svg-ids"
 
 // A record's square sleeve, seen from the front: a drawing, the title lettered by the pen, the artist in the reading
 // face and the catalogue number up the spine edge (the spine voice: the reading serif, bottom to top). The record's
@@ -101,6 +102,7 @@ export function RecordSleeve({
   style,
   ...props
 }: RecordSleeveProps) {
+  const own = useOwnIds()
   const { px, word, inner } = SIZES[size]
   const key = catalogue
   const seed = seedOf(key)
@@ -116,11 +118,17 @@ export function RecordSleeve({
     [key, px, peek, hand],
   )
   // Long titles letter smaller, so they wrap onto two or three lines rather than pushing the drawing off the sleeve.
+  // A title too long to letter at a readable size is set in small capitals instead, as a printer would.
   const words = title.trim().split(/\s+/).filter(Boolean)
   const perChar = letters === "stilt" ? 0.36 : 0.62
   const room = (inner * 2.4) / (title.length * perChar + words.length * 0.3)
-  const height = Math.max(word * 0.6, Math.min(word, room))
-  const lettered = (
+  const printed = room < word * 0.72
+  const height = Math.min(word, room)
+  const lettered = printed ? (
+    <span className="line-clamp-3 font-read text-[0.8125rem] leading-tight tracking-[0.04em] uppercase group-data-[size=lg]/record-sleeve:text-body group-data-[size=md]/record-sleeve:text-small">
+      {title}
+    </span>
+  ) : (
     <>
       <span className="sr-only">{title}</span>
       {words.map((w, i) => (
@@ -170,7 +178,7 @@ export function RecordSleeve({
             href &&
               "group-hover/record-sleeve:[--pen-weight:var(--pen-weight-pressed)]",
           )}
-          dangerouslySetInnerHTML={{ __html: c.svg }}
+          dangerouslySetInnerHTML={{ __html: own(c.svg) }}
         />
       ))}
       <div

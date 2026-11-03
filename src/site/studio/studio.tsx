@@ -9,8 +9,8 @@ import { matchPreset } from "./presets"
 import { Specimens } from "./specimens"
 
 /**
- * The theme studio: presets and every appearance setting in a narrow column that stays in view on wide screens, the
- * shop's dashboard and every kind of part beside it, and the export below. Settings apply to the whole site and
+ * The theme studio: presets across the top, every appearance setting in a narrow column that stays in view on wide
+ * screens, the shop's dashboard and every kind of part beside it, and the export below. Settings apply to the whole site and
  * persist, like the appearance control anywhere else.
  */
 export function Studio() {
@@ -21,20 +21,21 @@ export function Studio() {
 
   return (
     <div className="flex flex-col gap-y-section">
+      <PresetPicker
+        current={preset}
+        onPick={(next) => {
+          update(next.choices)
+          setCustomName(null)
+        }}
+      />
       {/* Side by side from 80rem, where the previews get the width the dashboard needs; narrower, the settings come
-          first. */}
+          first. Beside the previews the settings stay in view, capped to the window and scrolling on their own when
+          the window is shorter than they are. */}
       <div className="grid grid-cols-[minmax(0,1fr)] gap-x-section gap-y-line xl:grid-cols-[24rem_minmax(0,1fr)]">
         <aside
           aria-label="Theme settings"
-          className="grid max-w-[42rem] content-start gap-y-line xl:sticky xl:top-snug xl:max-h-[calc(100dvh-2rem)] xl:self-start xl:overflow-y-auto xl:pe-tight"
+          className="max-w-[42rem] xl:sticky xl:top-snug xl:max-h-[calc(100dvh-2*var(--space-snug))] xl:self-start xl:overflow-y-auto xl:overscroll-contain xl:pe-tight"
         >
-          <PresetPicker
-            current={preset}
-            onPick={(next) => {
-              update(next.choices)
-              setCustomName(null)
-            }}
-          />
           <section aria-labelledby="studio-settings">
             <h2 id="studio-settings" className="label m-0 text-pen-quiet">
               Settings
@@ -45,9 +46,10 @@ export function Studio() {
             </a>
           </section>
         </aside>
+        {/* The dashboard is a whole page; here it drops its page margins so both previews share one left edge. */}
         <div className="@container grid min-w-0 content-start gap-section">
           <h2 className="sr-only">Previews</h2>
-          <Dashboard01 />
+          <Dashboard01 className="*:px-0! *:pt-0! *:pb-0!" />
           <Specimens />
         </div>
       </div>

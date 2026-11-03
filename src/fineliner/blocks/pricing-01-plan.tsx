@@ -5,7 +5,6 @@ import { PriceTag } from "@/fineliner/extras/price-tag"
 import { Button } from "@/fineliner/ui/button"
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardHeader,
@@ -14,9 +13,9 @@ import {
 
 // One membership as a card: its price on a hanging tag, its name and who it is for, the action, and what it includes,
 // each line ticked by the pen. A yearly price strikes out twelve months at the monthly price on the tag. The
-// recommended plan is ringed by the pen and its action is the page's one pocket of ink. Inside a grid with subgrid
-// rows (PLAN_ROWS on the cards' parent), the four parts line up across neighbouring cards, so the tags hang from one
-// line whatever their size.
+// recommended plan is stamped "Most chosen" by its name, ringed by the pen, and its action is the page's one pocket of
+// ink. Inside a grid with subgrid rows (PLAN_ROWS on the cards' parent), the four parts line up across neighbouring
+// cards, so the tags hang from one line whatever their size.
 
 export type Billing = "monthly" | "yearly"
 
@@ -75,23 +74,18 @@ export function PlanCard({
       </CardContent>
       {/* content-start: a header in a taller row keeps its lines together at the top. */}
       <CardHeader className="content-start">
-        <CardTitle className="text-h2 leading-heading font-normal">
+        {/* The recommendation is stamped by the plan's name, so it reads as part of that plan at every width. */}
+        <CardTitle className="flex flex-wrap items-baseline gap-x-snug gap-y-hair text-h2 leading-heading font-normal">
           <h2 className="m-0 font-[inherit] text-[length:inherit] leading-[inherit]">
             {plan.name}
           </h2>
-        </CardTitle>
-        <CardDescription
-          className={plan.recommended ? "col-span-2" : undefined}
-        >
-          {plan.audience}
-        </CardDescription>
-        {plan.recommended && (
-          <CardAction className="row-span-1 self-center">
+          {plan.recommended && (
             <Circled seed={`chosen:${plan.name}`} className="label">
               Most chosen
             </Circled>
-          </CardAction>
-        )}
+          )}
+        </CardTitle>
+        <CardDescription>{plan.audience}</CardDescription>
       </CardHeader>
       <CardContent>
         <Button

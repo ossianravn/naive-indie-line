@@ -9,18 +9,20 @@
 }
 
 @layer base {
+  /* The paper lies on the root, so it fills the whole window however short the page; the stable gutter keeps the
+     page from shifting sideways between pages that scroll and pages that don't. */
   html {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    scrollbar-gutter: stable;
     background-color: var(--paper);
+    background-image: var(--paper-texture);
+    background-size: var(--paper-texture-size);
   }
 
   body {
     margin: 0;
     color: var(--pen);
-    background-color: var(--paper);
-    background-image: var(--paper-texture);
-    background-size: var(--paper-texture-size);
     font-family: var(--face-ui);
     font-size: var(--type-body);
     line-height: var(--lh-body);

@@ -10,6 +10,7 @@ import { WeekScene } from "./scene-week"
 const PARTS = {
   hold: [
     ["Drawing", "/drawings"],
+    ["Card", "/docs/components/card"],
     ["Badge", "/docs/components/badge"],
     ["Button", "/docs/components/button"],
   ],
@@ -26,17 +27,17 @@ const ROWS = [
   {
     key: "hold",
     title: "A record on hold",
-    text: "Jonas asked for Paper Moons. One press holds it: the ink pocket moves from the action to the record's state.",
+    text: "A customer asks the shop to keep a record for them, and one press holds it.",
   },
   {
     key: "book",
     title: "Booking the room",
-    text: "A printed month with today ringed by the pen and Sundays struck out, and the session's length on a segmented control.",
+    text: "Choosing an evening in the listening room and how long to stay. The shop is closed on Sundays.",
   },
   {
     key: "week",
     title: "The week, drawn",
-    text: "Records sold by format. The pen draws every bar through its exact value; solid, outline and dotted tell the formats apart, not colour.",
+    text: "Records sold this week, by format: the pen draws each bar through its exact value.",
   },
 ] as const
 ---
@@ -45,7 +46,7 @@ const ROWS = [
   class="mx-auto max-w-[76rem] px-snug py-section sm:px-line"
   aria-labelledby="in-use"
 >
-  <SectionHead n={3} id="in-use" title="In use" />
+  <SectionHead n={2} id="in-use" title="In use" />
   <p class="m-0 -mt-snug max-w-measure text-pen-quiet">
     Real components doing their jobs in{" "}
     <a href="/listening-room">Listening Room</a>, the record shop this kit was

@@ -16,7 +16,7 @@ const initials = (name: string) =>
     .join("")
     .slice(0, 2)
 
-/** The messages behind a hold: the customer on the left, the shop on the right, a marker where the thread starts. */
+/** The messages behind a hold: the customer on the left, Maya for the shop on the right, a marker where it starts. */
 export function RecordThread({ notes }: { notes: Note[] }) {
   const first = notes[0]
   if (!first) return null
@@ -35,7 +35,7 @@ export function RecordThread({ notes }: { notes: Note[] }) {
             <Message key={note.id} align={shop ? "end" : "start"}>
               <MessageAvatar>
                 <Avatar size="sm">
-                  <AvatarFallback name={shop ? undefined : note.author}>
+                  <AvatarFallback name={note.author}>
                     {initials(note.author)}
                   </AvatarFallback>
                 </Avatar>

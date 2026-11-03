@@ -52,6 +52,63 @@ export function box(
   }
 }
 
+/**
+ * A padded box, as an armchair's arm, back or cushion: an oblique box whose front face has rounded top corners, so its
+ * top rolls over instead of meeting the front at an edge. Same arguments as `box`, plus the corners' radius.
+ */
+export function pad(
+  s: Sheet,
+  p: Pen,
+  o: Point,
+  at: Point,
+  w: number,
+  h: number,
+  d: number,
+  rad: number,
+): Box {
+  const [x, y] = at
+  const back = (q: Point) => add(q, o, d)
+  const left: Point = [x + rad, y - h + rad]
+  const right: Point = [x + w - rad, y - h + rad]
+  // Where a line along `o` grazes the top-left roll: the left edge of the top.
+  const len = Math.sqrt(o[0] * o[0] + o[1] * o[1]) || 1
+  const graze = Math.atan2(-o[0] / len, o[1] / len) / deg + 360
+  const tangent = arc(left, rad, rad, graze, graze, 1)[0] as Point
+  const front: Point[] = [
+    [x, y],
+    ...arc(left, rad, rad, 180, 270, 6),
+    ...arc(right, rad, rad, 270, 360, 6),
+    [x + w, y],
+  ]
+  const rim = (
+    [
+      ...arc(left, rad, rad, graze, 270, 4),
+      ...arc(right, rad, rad, 270, 360, 6),
+      [x + w, y],
+    ] as Point[]
+  ).map(back)
+  s.blank(
+    p.shape([
+      [x, y],
+      ...arc(left, rad, rad, 180, graze, 4),
+      ...rim,
+      [x + w, y],
+    ]),
+  )
+  s.stroke(p.path(front))
+  s.stroke(p.line([x, y], [x + w, y]))
+  s.stroke(p.path(rim))
+  s.stroke(p.line(tangent, back(tangent)))
+  s.stroke(p.line([x + w, y], back([x + w, y])))
+  return {
+    w,
+    d,
+    o,
+    front: (u, v) => [x + w * u, y - h * v],
+    top: (u, v) => add([x + rad + (w - 2 * rad) * u, y - h], o, d * v),
+  }
+}
+
 /** An upright cylinder seen from a little above: `c` is the centre of its top. Returns its rims. */
 export function cylinder(
   s: Sheet,

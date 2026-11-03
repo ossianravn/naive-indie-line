@@ -46,10 +46,12 @@
   --boil: running;
   --boil-hover: running;
 }
-/* Takes stack in one grid cell. The grid sits in the components layer, so a call site's hidden or display wins. */
+/* Takes stack in one grid cell. The grid sits in the components layer, so a call site's hidden or display wins. The
+   cell is as tall as the element, so a call site that gives the drawing a height (h-28 [&>svg]:h-full) fits it in. */
 @layer components {
   .fl-takes {
     display: grid;
+    grid-template: minmax(0, 1fr) / minmax(0, 1fr);
   }
 }
 .fl-takes > * {

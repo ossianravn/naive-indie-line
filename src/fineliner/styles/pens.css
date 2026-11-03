@@ -34,6 +34,7 @@
     var(--paper)
   );
   --pen-faint: color-mix(in srgb, var(--pen) 45%, var(--paper));
-  /* A flat tint of the pen for hover and recessed wells: ink thinned to almost nothing. */
-  --tint: color-mix(in srgb, var(--pen) 9%, var(--paper));
+  /* Hover and recessed wells: the paper's own darker tone with a breath of ink, so a well reads as paper, not as a
+     grey panel. */
+  --tint: color-mix(in srgb, var(--pen) 4%, var(--paper-2));
 }

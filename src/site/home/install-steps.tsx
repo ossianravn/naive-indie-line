@@ -20,7 +20,7 @@ export function InstallSteps({ registry }: { registry: string }) {
         <h3 className="m-0 text-body leading-subhead font-medium">
           Add the registry to components.json
         </h3>
-        <CodeBlock size="sm" className="mt-tight w-fit max-w-full">
+        <CodeBlock size="sm" className="mt-tight w-full">
           <CodeBlockHeader>
             <CodeBlockTitle>
               <FileJsonIcon />
@@ -37,7 +37,7 @@ export function InstallSteps({ registry }: { registry: string }) {
         <h3 className="m-0 text-body leading-subhead font-medium">
           Add the kit
         </h3>
-        <CodeBlock size="sm" className="mt-tight w-fit max-w-full">
+        <CodeBlock size="sm" className="mt-tight w-full">
           <CodeBlockHeader>
             <CodeBlockTitle>
               <TerminalIcon />

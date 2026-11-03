@@ -4,7 +4,7 @@
 
 export const APPEARANCE = {
   theme: ["system", "day", "night"],
-  stock: ["recycled", "kraft", "bond"],
+  stock: ["bond", "recycled", "kraft"],
   /** The one pen that inks the document (styles/pens.css). */
   pen: ["navy", "black", "sepia", "forest", "oxblood"],
   /** How far lines wobble and run past their corners. */
@@ -40,7 +40,7 @@ export interface Appearance {
 
 export const defaultAppearance: Appearance = {
   theme: "system",
-  stock: "recycled",
+  stock: "bond",
   pen: "navy",
   hand: "lively",
   boil: "hover",

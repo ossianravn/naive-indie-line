@@ -7,7 +7,10 @@ import {
   ALIGN_APPEARANCE,
   SETTINGS_LABEL,
 } from "@/fineliner/blocks/settings-01-rows"
-import { AppearanceControl } from "@/fineliner/extras/appearance-control"
+import {
+  AppearanceControl,
+  type AppearanceRow,
+} from "@/fineliner/extras/appearance-control"
 import { cn } from "@/fineliner/lib/utils"
 import type { Appearance } from "@/fineliner/theme"
 import {
@@ -25,14 +28,16 @@ import { Button } from "@/fineliner/ui/button"
 import { Input } from "@/fineliner/ui/input"
 import { Switch } from "@/fineliner/ui/switch"
 
-// A settings page in one narrow column (40rem): profile fields sized to their values, every appearance setting
-// (AppearanceControl), notifications as switches, and closing the account behind an alert dialog. Every name sits
-// right beside its control, and the controls of every section line up on one edge.
+// A settings page in one narrow column (40rem): profile fields sized to their values, the appearance settings
+// (AppearanceControl, every row unless `appearance` picks some), notifications as switches, and closing the account
+// behind an alert dialog. Every name sits at the end of one label column, right beside its control, and the controls
+// of every section line up on one edge. `bare` drops the page's padding and heading, for an app shell that draws its
+// own page frame.
 
 export const meta = {
   title: "Settings",
   description:
-    "A narrow settings column: profile, every appearance setting, notifications as switches, and closing the account behind an alert dialog.",
+    "A narrow settings column: profile, appearance, notifications as switches, and closing the account behind an alert dialog.",
 }
 
 export interface Notification {
@@ -45,20 +50,20 @@ export interface Notification {
 export const NOTIFICATIONS: Notification[] = [
   {
     id: "holds",
-    label: "Hold reminders",
-    hint: "The day before a record you hold goes back.",
+    label: "Holds running out",
+    hint: "The morning a hold ends.",
+    on: true,
+  },
+  {
+    id: "bookings",
+    label: "New bookings",
+    hint: "Each time someone books the room.",
     on: true,
   },
   {
     id: "thursday",
     label: "The Thursday list",
-    hint: "Monday mornings: who is playing and what.",
-    on: true,
-  },
-  {
-    id: "arrivals",
-    label: "New arrivals",
-    hint: "When records come in from the genres you buy.",
+    hint: "Monday mornings: who is coming and how many seats are left.",
     on: false,
   },
 ]
@@ -74,6 +79,10 @@ export interface Settings01Props {
   onCloseAccount?: () => void
   /** The defaults the page's appearanceScript uses, so the appearance rows render the right choices on the server. */
   appearanceDefaults?: Appearance
+  /** Which appearance settings show, in this order. Defaults to every one. */
+  appearance?: readonly AppearanceRow[]
+  /** Only the sections: no page padding and no heading, for a shell that draws its own page frame. */
+  bare?: boolean
   className?: string
 }
 
@@ -83,11 +92,13 @@ export function Settings01({
   name: initialName = "Maya Singh",
   email: initialEmail = "maya@example.com",
   notifications = NOTIFICATIONS,
-  closeNote = "Your holds, your bookings and your listening history go with it. This can't be undone.",
+  closeNote = "You're signed out everywhere and your name comes off the rota. The shop's records and bookings stay. This can't be undone.",
   onSaveProfile,
   onNotificationChange,
   onCloseAccount,
   appearanceDefaults,
+  appearance,
+  bare = false,
   className,
 }: Settings01Props) {
   const [name, setName] = useState(initialName)
@@ -112,11 +123,14 @@ export function Settings01({
     <div className={cn("@container", className)}>
       <div
         className={cn(
-          "@container/settings mx-auto max-w-[40rem] px-snug pt-section pb-page @min-[40rem]:px-line",
+          "@container/settings max-w-[40rem]",
+          bare
+            ? "*:first:mt-0"
+            : "mx-auto px-snug pt-section pb-page @min-[40rem]:px-line",
           SETTINGS_LABEL,
         )}
       >
-        <h1 className="m-0 text-h1">Settings</h1>
+        {!bare && <h1 className="m-0 text-h1">Settings</h1>}
 
         <SettingsSection title="Profile">
           <SettingsRow label="Name" htmlFor="settings-name">
@@ -134,7 +148,7 @@ export function Settings01({
           <SettingsRow
             label="Email"
             htmlFor="settings-email"
-            hint="For signing in and for hold reminders."
+            hint="For signing in and the shop's notices."
             hintId="settings-email-hint"
             error={invalid && "Enter an email address, like maya@example.com."}
             errorId="settings-email-error"
@@ -174,7 +188,7 @@ export function Settings01({
             Appearance
           </h2>
           <AppearanceControl
-            hints
+            rows={appearance}
             defaults={appearanceDefaults}
             className={cn("mt-snug", ALIGN_APPEARANCE)}
           />
@@ -206,7 +220,7 @@ export function Settings01({
         <SettingsSection title="Account">
           <SettingsRow
             label="Close account"
-            hint="Removes your holds, your bookings and your listening history."
+            hint="Signs you out and takes you off the rota."
           >
             <AlertDialog>
               <AlertDialogTrigger render={<Button variant="destructive" />}>

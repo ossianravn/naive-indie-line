@@ -36,13 +36,13 @@ Facts from the label, which the rules below generalize:
 
 ## Paper
 
-| Stock              | Day       | Night     | Character                            |
-| ------------------ | --------- | --------- | ------------------------------------ |
-| Recycled (default) | `#ece2ca` | `#1c2131` | Cream unbleached; navy card at night |
-| Kraft              | `#cdb48f` | `#2a2119` | Brown wrapping paper; dark kraft     |
-| Bond               | `#f4f0e6` | `#1b1b1a` | Bright cotton paper; black card      |
+| Stock          | Day       | Night     | Character                            |
+| -------------- | --------- | --------- | ------------------------------------ |
+| Bond (default) | `#f4f0e6` | `#1b1b1a` | Bright cotton paper; black card      |
+| Recycled       | `#ece2ca` | `#1c2131` | Cream unbleached; navy card at night |
+| Kraft          | `#cdb48f` | `#2a2119` | Brown wrapping paper; dark kraft     |
 
-Night is a dark card drawn on with a light gel pen, not an inverted page. The texture is generated like Patina's: seamless SVG tiles of clouding, tooth, fibres and flecks from fixed seeds (the specimen has a quick version in `specimen/paper.js`; Phase 0 ports Patina's six-layer generator). Recycled stock carries more and darker flecks than Patina's papers, because flecks are part of this look.
+Night is a dark card drawn on with a light gel pen, not an inverted page. The texture is generated like Patina's: seamless SVG tiles of clouding, tooth, fibres and flecks from fixed seeds (the specimen has a quick version in `specimen/paper.js`; Phase 0 ports Patina's six-layer generator). Recycled stock carries more and darker flecks than Patina's papers, because flecks are part of this look. The low-frequency clouding (mottle and relief) is kept almost flat, at a fifth of Patina's: stronger, it read as grease or marble rather than paper.
 
 ## Pens
 

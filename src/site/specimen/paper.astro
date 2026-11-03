@@ -1,0 +1,68 @@
+---
+// Paper: each stock as a cut sample, its day side and its night card, with a small drawing in the default pen as it
+// reads on that side (colours from stocks.css at build time). The stock the page is printed on says so, by CSS alone.
+import { Drawing } from "@/fineliner/drawing/drawing"
+import { appearanceLabels } from "@/fineliner/extras/appearance-control"
+import { frameVars, seedOf } from "@/fineliner/pen"
+import { APPEARANCE } from "@/fineliner/theme"
+import SheetSection from "./sheet-section.astro"
+import { stockColours } from "./stock-colours"
+
+const side = (stock: string, theme: "day" | "night") => {
+  const v = stockColours(stock, theme)
+  return { paper: v["--paper"] ?? "", pen: v["--pen-navy"] ?? "", wash: v["--wash-navy"] ?? "" }
+}
+// Written out whole so Tailwind finds the classes: "this page" shows under the stock the page is printed on.
+const ABOUT: Record<string, { about: string; object: string; current: string }> = {
+  bond: {
+    about: "Bright cotton paper; a black card at night.",
+    object: "sketchbook",
+    current: "[:root[data-stock=bond]_&]:inline",
+  },
+  recycled: {
+    about: "Cream and unbleached, flecked; a navy card at night.",
+    object: "record",
+    current: "[:root[data-stock=recycled]_&]:inline",
+  },
+  kraft: {
+    about: "Brown wrapping paper; dark kraft at night.",
+    object: "bread",
+    current: "[:root[data-stock=kraft]_&]:inline",
+  },
+}
+const STOCKS = APPEARANCE.stock.map((stock) => ({
+  stock,
+  name: appearanceLabels.stock.options[stock],
+  ...ABOUT[stock]!,
+  day: side(stock, "day"),
+  night: side(stock, "night"),
+}))
+const ink = ({ paper, pen, wash }: { paper: string; pen: string; wash: string }) =>
+  `background:${paper};color:${pen};--paper:${paper};--wash:${wash}`
+---
+
+<SheetSection id="paper">
+  <ul class="m-0 grid list-none gap-x-line gap-y-section p-0 sm:grid-cols-3 lg:grid-cols-9">
+    {
+      STOCKS.map(({ stock, name, about, object, current, day, night }) => (
+        <li class="grid max-w-[16rem] content-start gap-tight sm:max-w-none lg:col-span-3">
+          <div class="frame grid grid-cols-2" style={frameVars(seedOf(`stock-${stock}`))}>
+            {[day, night].map((s) => (
+              <div class="grid aspect-[4/5] place-items-center p-snug" style={ink(s)}>
+                <Drawing object={object} seed={`stock-${stock}`} still title="" className="w-full max-w-24" />
+              </div>
+            ))}
+          </div>
+          <p class="m-0 flex items-baseline gap-tight text-lead leading-subhead">
+            {name}
+            <span class={`label hidden text-pen-quiet ${current}`}>this page</span>
+          </p>
+          <p class="m-0 text-small leading-small text-pen-quiet">{about}</p>
+          <p class="m-0 font-type text-small tabular-nums">
+            Day {day.paper} · Night {night.paper}
+          </p>
+        </li>
+      ))
+    }
+  </ul>
+</SheetSection>

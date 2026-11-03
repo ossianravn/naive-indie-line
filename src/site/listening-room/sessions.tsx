@@ -20,6 +20,7 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "@/fineliner/ui/toggle-group"
 import { BookSession } from "./book-session"
 import { Evenings } from "./evenings"
+import { PageHeader, ShellPage } from "./page"
 import {
   SESSIONS,
   SESSION_STATUS,
@@ -44,6 +45,16 @@ const BADGE = {
   arrived: "default",
   cancelled: "secondary",
 } as const
+
+/** When a session runs; the day too, unless the list shows only today. */
+const when = (s: Session, show: Show) =>
+  `${show === "today" ? "" : `${shortDay(s.date)} `}${s.start}–${endOf(s)}`
+
+/** The records a session asked for, by title. */
+const asked = (s: Session) =>
+  recordsOf(s)
+    .map((r) => r.title)
+    .join(", ") || "Their own choice"
 
 /** Listening Room's sessions: who has the room when, booking it, and the Thursday evenings. */
 export function Sessions() {
@@ -73,17 +84,17 @@ export function Sessions() {
     })
   }
 
+  const today = sessions.filter(
+    (s) => s.date === TODAY && s.status !== "cancelled",
+  ).length
+
   return (
-    <div className="mx-auto w-full max-w-[72rem] px-snug pt-section pb-page sm:px-line">
-      <header className="flex flex-wrap items-end justify-between gap-snug">
-        <div>
-          <p className="label m-0 text-pen-quiet">
-            The room · {longDay(TODAY)}
-          </p>
-          <h1 className="m-0 mt-hair text-h1">Sessions</h1>
-        </div>
-        <BookSession onBook={book} next={next} />
-      </header>
+    <ShellPage>
+      <PageHeader
+        kicker={`${longDay(TODAY)} · ${today} ${today === 1 ? "session" : "sessions"} today`}
+        title="Sessions"
+        action={<BookSession onBook={book} next={next} />}
+      />
 
       <ToggleGroup
         variant="outline"
@@ -101,41 +112,64 @@ export function Sessions() {
       </ToggleGroup>
 
       {shown.length ? (
-        <Table className="mt-snug">
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-40">When</TableHead>
-              <TableHead>Guest</TableHead>
-              <TableHead className="w-20 text-right">Seats</TableHead>
-              <TableHead className="max-md:hidden">Records</TableHead>
-              <TableHead className="w-28">Status</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
+        <>
+          {/* The table's cells keep their padding; pulling it into the gutter puts its first column on the heading's edge. */}
+          <div className="-mx-tight mt-snug max-w-[calc(52rem+2*var(--spacing-tight))] max-md:hidden">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-40">When</TableHead>
+                  <TableHead>Guest</TableHead>
+                  <TableHead className="w-20 text-right">Seats</TableHead>
+                  <TableHead>Records</TableHead>
+                  <TableHead className="w-28">Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {shown.map((s) => (
+                  <TableRow key={s.id}>
+                    <TableCell className="font-type text-small whitespace-nowrap">
+                      {when(s, show)}
+                    </TableCell>
+                    <TableCell>{s.guest}</TableCell>
+                    <TableCell className="text-right font-type text-small tabular-nums">
+                      {s.party}
+                    </TableCell>
+                    <TableCell className="text-small text-pen-quiet">
+                      {asked(s)}
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant={BADGE[s.status]}>
+                        {SESSION_STATUS[s.status]}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+          <ul className="m-0 mt-snug list-none p-0 md:hidden [&>li]:border-b [&>li]:border-dotted [&>li]:border-pen-faint">
             {shown.map((s) => (
-              <TableRow key={s.id}>
-                <TableCell className="font-type text-small whitespace-nowrap">
-                  {show === "today" ? "" : `${shortDay(s.date)} `}
-                  {s.start}–{endOf(s)}
-                </TableCell>
-                <TableCell>{s.guest}</TableCell>
-                <TableCell className="text-right font-type text-small tabular-nums">
-                  {s.party}
-                </TableCell>
-                <TableCell className="text-small text-pen-quiet max-md:hidden">
-                  {recordsOf(s)
-                    .map((r) => r.title)
-                    .join(", ") || "Their own choice"}
-                </TableCell>
-                <TableCell>
-                  <Badge variant={BADGE[s.status]}>
-                    {SESSION_STATUS[s.status]}
-                  </Badge>
-                </TableCell>
-              </TableRow>
+              <li
+                key={s.id}
+                className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-snug gap-y-hair py-tight"
+              >
+                <p className="m-0 min-w-0 leading-subhead font-medium">
+                  {s.guest}
+                </p>
+                <Badge variant={BADGE[s.status]}>
+                  {SESSION_STATUS[s.status]}
+                </Badge>
+                <p className="col-span-2 m-0 text-small leading-small text-pen-quiet">
+                  <span className="font-type whitespace-nowrap text-pen">
+                    {when(s, show)}
+                  </span>{" "}
+                  · {s.party} {s.party === 1 ? "seat" : "seats"} · {asked(s)}
+                </p>
+              </li>
             ))}
-          </TableBody>
-        </Table>
+          </ul>
+        </>
       ) : (
         <Empty className="mt-section">
           <EmptyHeader>
@@ -148,6 +182,6 @@ export function Sessions() {
 
       <Evenings />
       <Toaster />
-    </div>
+    </ShellPage>
   )
 }

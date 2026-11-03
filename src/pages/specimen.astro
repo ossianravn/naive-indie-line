@@ -1,37 +1,45 @@
 ---
-// The specimen: Fineliner's materials on one sheet. Paper and pens, the voices and the type scale, and the line.
+// The specimen: Fineliner's materials on one sheet, in the order they build on each other: paper, the pen, its line,
+// its words, its letters, its drawings, and the shop they run. Every section shares one twelve-column grid and is
+// introduced the same way (src/site/specimen/sheet-section.astro); src/site/specimen/sheet.ts lists them.
 import Base from "@/site/layouts/base.astro"
-import { AppearanceControl } from "@/fineliner/extras/appearance-control"
-import { siteAppearance } from "@/site/appearance"
 import { Drawing } from "@/fineliner/drawing/drawing"
+import Drawings from "@/site/specimen/drawings.astro"
+import InUse from "@/site/specimen/in-use.astro"
+import Lettering from "@/site/specimen/lettering.astro"
 import Lines from "@/site/specimen/lines.astro"
-import PaperPens from "@/site/specimen/paper-pens.astro"
+import Paper from "@/site/specimen/paper.astro"
+import Pens from "@/site/specimen/pens.astro"
+import Title from "@/site/specimen/title.astro"
 import Voices from "@/site/specimen/voices.astro"
 ---
 
 <Base
   title="Specimen"
-  description="A shadcn/ui kit drawn with one fine-liner on unbleached paper: the specimen of its paper, pens, voices and line."
+  description="A shadcn/ui kit drawn with one fine-liner on unbleached paper: the specimen of its paper, pens, line, voices, lettering and drawings, and the components they make."
 >
-  <div class="mx-auto max-w-[76rem] px-snug pt-section sm:px-line">
-    <div class="grid items-end gap-line lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
-      <div>
-        <h1 class="m-0 max-w-[15ch] text-display leading-display">
-          One pen, cream paper, and a quiet hand.
-        </h1>
-        <p class="m-0 mt-snug max-w-measure text-lead leading-lead max-sm:text-body max-sm:leading-body">
-          Fineliner is a shadcn/ui kit drawn the way a natural-wine label is: a
-          single fine-liner with a slow wobble, no shading, and small pockets of
-          solid ink where the eye should land.
+  <Title />
+  <Paper />
+  <Pens />
+  <Lines />
+  <Voices />
+  <Lettering />
+  <Drawings />
+  <InUse />
+  <div class="mx-auto mt-page max-w-[76rem] px-snug sm:px-line">
+    <div class="grid gap-x-line lg:grid-cols-12">
+      <div class="flex items-end gap-snug lg:col-span-9 lg:col-start-4">
+        <Drawing
+          object="cat"
+          seed="colophon"
+          title=""
+          className="w-16 shrink-0"
+        />
+        <p class="m-0 max-w-measure text-small leading-small text-pen-quiet">
+          Set in Newsreader and Courier Prime and drawn with one pen. Every line
+          on this sheet comes from a seed, so it prints the same tomorrow.
         </p>
       </div>
-      <Drawing scene="room" seed="corner-shop" drawOnView client:visible />
-    </div>
-    <div class="mt-line max-w-[46rem]">
-      <AppearanceControl defaults={siteAppearance} client:idle />
     </div>
   </div>
-  <PaperPens />
-  <Voices />
-  <Lines />
 </Base>

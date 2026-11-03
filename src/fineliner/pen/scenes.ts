@@ -30,9 +30,19 @@ interface Stage {
   border(): void
 }
 
-/** What every room shares: the scene's pen and stream, a way to place objects, walls, a rug and the border. */
-function stage(seed: string, hand: HandName, take: number): Stage {
-  const s = sheet(`fl${seedOf(seed).toString(36)}s${take}`)
+/**
+ * What every room shares: the scene's pen and stream, a way to place objects, walls, a rug and the border. The sheet's
+ * mask ids include the scene and hand, so two scenes drawn from one seed on the same page do not share masks.
+ */
+function stage(
+  seed: string,
+  hand: HandName,
+  take: number,
+  scene: string,
+): Stage {
+  const s = sheet(
+    `fl${seedOf(`${seed}:${scene}:${hand}`).toString(36)}s${take}`,
+  )
   const p = pen(seed, hand, take)
   const r = stream(seedOf(seed), "room")
   const put = (
@@ -85,6 +95,7 @@ function room(seed: string, hand: HandName, take: number) {
     seed,
     hand,
     take,
+    "room",
   )
   walls()
   if (r.chance(0.6)) {
@@ -117,24 +128,16 @@ function room(seed: string, hand: HandName, take: number) {
   put("speaker", "right", b.top(0.83, 0.22), 0.95)
   put("turntable", "turntable", b.top(0.2, 0.08), 0.84)
   put("sunflower", "plant", [r.between(0.86, 0.89) * W, floor + 80], 1.35)
-  if (r.chance(0.5))
-    put("visitor", "first", [r.between(0.1, 0.13) * W, H - M - 14], 1.3, {
-      pose: "walk",
-    })
-  if (r.chance(0.5))
-    put("person", "second", [r.between(0.27, 0.31) * W, H - M - 34], 1.08, {
-      pose: "mug",
-    })
-  else
-    put("visitor", "second", [r.between(0.27, 0.31) * W, H - M - 34], 1.25, {
-      pose: "record",
-    })
+  // Everyone in a room is only their clothes, as on the label: here someone looking at a record.
+  put("visitor", "second", [r.between(0.27, 0.31) * W, H - M - 34], 1.25, {
+    pose: "record",
+  })
   border()
   return s
 }
 
 function studio(seed: string, hand: HandName, take: number) {
-  const { s, r, put, floor, walls, border } = stage(seed, hand, take)
+  const { s, r, put, floor, walls, border } = stage(seed, hand, take, "studio")
   walls()
   put("window", "window", [r.between(0.24, 0.3) * W, floor - 120], 0.9)
   put("sticky-notes", "notes", [r.between(0.58, 0.62) * W, H * 0.3], 0.8)
@@ -151,7 +154,9 @@ function studio(seed: string, hand: HandName, take: number) {
   else put("laptop", "screen", top.top(0.4, 0.3), 0.85)
   put("desk-lamp", "lamp", top.top(0.92, 0.7), 0.75)
   put("mug", "mug", top.top(0.2, 0.18), 0.62)
-  put("person-mug", "person", [r.between(0.13, 0.18) * W, H - M - 22], 1.08)
+  put("visitor", "person", [r.between(0.13, 0.18) * W, H - M - 14], 1.25, {
+    pose: "walk",
+  })
   if (r.chance(0.6))
     put("cat", "cat", [r.between(0.82, 0.9) * W, H - M - 18], 0.9)
   border()
@@ -159,7 +164,12 @@ function studio(seed: string, hand: HandName, take: number) {
 }
 
 function bistro(seed: string, hand: HandName, take: number) {
-  const { s, r, put, floor, walls, rug, border } = stage(seed, hand, take)
+  const { s, r, put, floor, walls, rug, border } = stage(
+    seed,
+    hand,
+    take,
+    "bistro",
+  )
   walls()
   rug()
   put("picture", "picture", [r.between(0.72, 0.78) * W, H * 0.24], 0.8)
@@ -177,8 +187,8 @@ function bistro(seed: string, hand: HandName, take: number) {
   put("glass", "left", [t[0] - 12, t[1] + 8], 0.75)
   put("glass", "right", [t[0] + 22, t[1] + 4], 0.75)
   put("plate", "plate", [t[0] - 2, t[1] + 22], 0.62)
-  put("person", "guest", [r.between(0.2, 0.25) * W, H - M - 20], 1.1, {
-    pose: r.pick(["stand", "wave"]),
+  put("visitor", "guest", [r.between(0.2, 0.25) * W, H - M - 14], 1.25, {
+    pose: r.pick(["stand", "walk"]),
   })
   if (r.chance(0.5))
     put("visitor", "waiter", [r.between(0.84, 0.88) * W, H - M - 24], 1.1, {

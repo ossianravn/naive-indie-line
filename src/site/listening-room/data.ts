@@ -84,7 +84,7 @@ const r = (
 export const RELEASES: Release[] = [
   r(431, "Harbour Lights", "Ellen Moe Trio", "Nordlys", 1968, "LP", "Jazz", "VG+", 320, "racks", "First pressing; a whisper of surface noise on side two."),
   r(430, "Slow Weather", "The Quiet Arcade", "Fen Records", 1979, "LP", "Folk", "NM", 240, "racks"),
-  r(429, "Paper Moons", "Odile & the Lanterns", "Rue Verte", 1971, "LP", "Folk", "VG", 180, "held", "Held for Jonas until Thursday."),
+  r(429, "Paper Moons", "Odile & the Lanterns", "Rue Verte", 1971, "LP", "Folk", "VG", 180, "held", "Held for Jonas until Saturday."),
   r(428, "Low Tide Dub", "Kingsway Sound System", "Kingsway", 1982, "12″", "Dub", "VG+", 150, "racks"),
   r(427, "Music for Waiting Rooms", "Ana Lindqvist", "Halo", 1984, "LP", "Ambient", "NM", 280, "racks", "Plays beautifully in the listening room."),
   r(426, "Copper Sun", "Marcus Bell Quintet", "Meridian", 1966, "LP", "Jazz", "VG", 260, "sold"),
@@ -99,7 +99,7 @@ export const RELEASES: Release[] = [
   r(417, "Velvet Hours", "The Delphines", "Southgate", 1968, "LP", "Soul", "VG+", 260, "sold"),
   r(416, "Pine & Smoke", "Hollow Pines", "Fen Records", 1981, "LP", "Folk", "NM", 200, "racks"),
   r(415, "Ostinato", "Brun/Halvorsen Duo", "Nordlys", 1976, "LP", "Jazz", "VG", 210, "racks"),
-  r(414, "Neon Orchard", "Satoko Ishii", "Kasumi", 1986, "LP", "City pop", "NM", 420, "held", "Held for Maya; she is coming in on Thursday."),
+  r(414, "Neon Orchard", "Satoko Ishii", "Kasumi", 1986, "LP", "City pop", "NM", 420, "held", "Held for Rosa; she is coming in on Thursday."),
   r(413, "Weekend in Ruins", "Glass Canal", "Concrete", 1983, "12″", "Post-punk", "VG+", 140, "racks"),
   r(412, "A Room to Listen In", "Various artists", "Listening Room", 2024, "2×LP", "Library", "M", 300, "racks", "Our own compilation; the money goes to the Thursday nights."),
 ]

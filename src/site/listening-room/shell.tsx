@@ -1,14 +1,25 @@
 import type { ReactNode } from "react"
 import {
   CalendarDaysIcon,
+  ChevronsUpDownIcon,
   DiscIcon,
   LayoutGridIcon,
+  LogOutIcon,
   SettingsIcon,
   type LucideIcon,
 } from "lucide-react"
 import { Drawing } from "@/fineliner/drawing/drawing"
 import { Lettering } from "@/fineliner/drawing/lettering"
 import { Avatar, AvatarFallback } from "@/fineliner/ui/avatar"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/fineliner/ui/dropdown-menu"
 import { Separator } from "@/fineliner/ui/separator"
 import {
   Sidebar,
@@ -32,27 +43,34 @@ import { SESSIONS, TODAY } from "./sessions-data"
 
 export type Section = "catalogue" | "sessions" | "overview" | "settings"
 
+// Each badge counts what its page's kicker counts, in the same words: records in the racks, sessions today.
 const SHOP: {
   key: Section
   label: string
   href: string
   icon: LucideIcon
-  count?: number
+  count?: { n: number; of: string }
 }[] = [
   {
     key: "catalogue",
     label: "Catalogue",
     href: "/listening-room",
     icon: DiscIcon,
-    count: RELEASES.filter((r) => r.status !== "sold").length,
+    count: {
+      n: RELEASES.filter((r) => r.status === "racks").length,
+      of: "in the racks",
+    },
   },
   {
     key: "sessions",
     label: "Sessions",
     href: "/listening-room/sessions",
     icon: CalendarDaysIcon,
-    count: SESSIONS.filter((s) => s.date === TODAY && s.status === "booked")
-      .length,
+    count: {
+      n: SESSIONS.filter((s) => s.date === TODAY && s.status !== "cancelled")
+        .length,
+      of: "today",
+    },
   },
   {
     key: "overview",
@@ -62,12 +80,25 @@ const SHOP: {
   },
 ]
 
-const LABEL: Record<Section, string> = {
-  catalogue: "Catalogue",
-  sessions: "Sessions",
-  overview: "Overview",
-  settings: "Settings",
+const CRUMB: Record<Section, [label: string, href: string]> = {
+  catalogue: ["Catalogue", "/listening-room"],
+  sessions: ["Sessions", "/listening-room/sessions"],
+  overview: ["Overview", "/listening-room/overview"],
+  settings: ["Settings", "/listening-room/settings"],
 }
+
+/** The shop's name, drawn in the stilt hand. */
+const Name = ({ className }: { className: string }) => (
+  <Lettering
+    text="Listening Room"
+    seed="listening-room"
+    face="stilt"
+    still
+    role="img"
+    aria-label="Listening Room"
+    className={className}
+  />
+)
 
 /** Listening Room's frame: the shop's sections in a sidebar (a sheet on phones) beside the page. */
 export function ListeningRoomShell({
@@ -88,21 +119,17 @@ export function ListeningRoomShell({
                 size="lg"
                 tooltip="Listening Room"
                 render={<a href="/listening-room" />}
+                className="h-auto gap-tight py-hair"
               >
                 <Drawing
                   object="turntable"
                   seed="listening-room"
                   title=""
                   still
-                  className="w-8 shrink-0"
+                  className="w-12 shrink-0 group-data-[collapsible=icon]:w-7"
                 />
-                <span className="flex min-w-0 flex-col gap-0.5">
-                  <Lettering
-                    text="Listening Room"
-                    seed="listening-room"
-                    face="stilt"
-                    className="[&>svg]:h-4 [&>svg]:w-auto"
-                  />
+                <span className="flex min-w-0 flex-col gap-hair">
+                  <Name className="[&>svg]:h-7 [&>svg]:w-auto" />
                   <span className="label truncate text-pen-quiet">
                     Records · Room · Wine
                   </span>
@@ -132,7 +159,10 @@ export function ListeningRoomShell({
                       <span>{label}</span>
                     </SidebarMenuButton>
                     {count ? (
-                      <SidebarMenuBadge>{count}</SidebarMenuBadge>
+                      <SidebarMenuBadge title={`${count.n} ${count.of}`}>
+                        {count.n}
+                        <span className="sr-only"> {count.of}</span>
+                      </SidebarMenuBadge>
                     ) : null}
                   </SidebarMenuItem>
                 ))}
@@ -143,32 +173,46 @@ export function ListeningRoomShell({
         <SidebarFooter>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton
-                isActive={current === "settings"}
-                tooltip="Settings"
-                render={
-                  <a
-                    href="/listening-room/settings"
-                    aria-current={current === "settings" ? "page" : undefined}
-                  />
-                }
-              >
-                <SettingsIcon />
-                <span>Settings</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton size="lg" tooltip="Maya Singh">
-                <Avatar size="sm" className="size-8!" aria-hidden="true">
-                  <AvatarFallback name="Maya Singh">MS</AvatarFallback>
-                </Avatar>
-                <span className="flex min-w-0 flex-col">
-                  <span className="truncate font-medium">Maya Singh</span>
-                  <span className="label truncate text-pen-quiet">
-                    Behind the counter
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  render={
+                    <SidebarMenuButton
+                      size="lg"
+                      tooltip="Maya Singh"
+                      isActive={current === "settings"}
+                    />
+                  }
+                >
+                  <Avatar size="sm" className="size-8!" aria-hidden="true">
+                    <AvatarFallback name="Maya Singh">MS</AvatarFallback>
+                  </Avatar>
+                  <span className="flex min-w-0 flex-1 flex-col">
+                    <span className="truncate font-medium">Maya Singh</span>
+                    <span className="label truncate text-pen-quiet">
+                      Behind the counter
+                    </span>
                   </span>
-                </span>
-              </SidebarMenuButton>
+                  <ChevronsUpDownIcon className="ms-auto text-pen-quiet" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent side="top" align="start" className="w-56">
+                  <DropdownMenuGroup>
+                    <DropdownMenuLabel>maya@example.com</DropdownMenuLabel>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    render={<a href="/listening-room/settings" />}
+                  >
+                    <SettingsIcon />
+                    Settings
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    render={<a href="/listening-room/sign-in" />}
+                  >
+                    <LogOutIcon />
+                    Sign out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarFooter>
@@ -178,7 +222,16 @@ export function ListeningRoomShell({
         <header className="flex h-14 shrink-0 items-center gap-tight px-snug sm:px-line">
           <SidebarTrigger className="-ms-2" />
           <Separator orientation="vertical" className="my-4" />
-          <span className="label text-pen-quiet">{LABEL[current]}</span>
+          {/* On phones the sidebar is a sheet, so the top bar carries the shop's name. */}
+          <a href="/listening-room" className="flex items-center md:hidden">
+            <Name className="flex [&>svg]:h-5 [&>svg]:w-auto" />
+          </a>
+          <a
+            href={CRUMB[current][1]}
+            className="label text-pen-quiet no-underline hover:text-pen hover:underline"
+          >
+            {CRUMB[current][0]}
+          </a>
           <a href="/" className="label ms-auto text-pen-quiet max-sm:hidden">
             Demo · Fineliner
           </a>

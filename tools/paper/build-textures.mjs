@@ -8,7 +8,7 @@ import { fibres, flecks, relief, tinted } from "./layers.mjs"
 const NEUTRAL = {
   day: {
     tooth: relief(353, 0.55, 3, 0.13),
-    relief: relief(541, 0.08, 9, 0.09),
+    relief: relief(541, 0.08, 9, 0.02),
     fibres: fibres(613, 150, 17, [
       ["#fffdf6", 0.7],
       ["#fffdf6", 0.55],
@@ -18,7 +18,7 @@ const NEUTRAL = {
   },
   night: {
     tooth: relief(353, 0.55, 3, 0.07, [0, 0, 0]),
-    relief: relief(541, 0.08, 9, 0.05, [0, 0, 0]),
+    relief: relief(541, 0.08, 9, 0.012, [0, 0, 0]),
     fibres: fibres(613, 130, 17, [
       ["#e8e2d2", 0.18],
       ["#e8e2d2", 0.12],
@@ -32,7 +32,7 @@ const NEUTRAL = {
 const STOCKS = {
   recycled: {
     day: {
-      mottle: [[0.42, 0.31, 0.15], 0.24, -0.09],
+      mottle: [[0.42, 0.31, 0.15], 0.048, -0.018],
       flecks: [
         120,
         [
@@ -43,7 +43,7 @@ const STOCKS = {
       ],
     },
     night: {
-      mottle: [[0, 0, 0], 0.38, -0.13],
+      mottle: [[0, 0, 0], 0.076, -0.026],
       flecks: [
         70,
         [
@@ -55,7 +55,7 @@ const STOCKS = {
   },
   kraft: {
     day: {
-      mottle: [[0.36, 0.24, 0.1], 0.3, -0.11],
+      mottle: [[0.36, 0.24, 0.1], 0.06, -0.022],
       flecks: [
         80,
         [
@@ -65,7 +65,7 @@ const STOCKS = {
       ],
     },
     night: {
-      mottle: [[0, 0, 0], 0.38, -0.13],
+      mottle: [[0, 0, 0], 0.076, -0.026],
       flecks: [
         50,
         [
@@ -77,11 +77,17 @@ const STOCKS = {
   },
   bond: {
     day: {
-      mottle: [[0.3, 0.27, 0.2], 0.16, -0.06],
-      flecks: [24, [["#3a352d", 0.45]]],
+      mottle: [[0.3, 0.27, 0.2], 0.032, -0.012],
+      flecks: [
+        48,
+        [
+          ["#3a352d", 0.5],
+          ["#6e5a40", 0.45],
+        ],
+      ],
     },
     night: {
-      mottle: [[0, 0, 0], 0.36, -0.12],
+      mottle: [[0, 0, 0], 0.072, -0.024],
       flecks: [20, [["#d8d4ca", 0.25]]],
     },
   },
@@ -93,7 +99,7 @@ const block = (selector, vars) =>
     .join("\n")}\n}`
 
 const selectorFor = (stock, theme) => {
-  const isDefault = stock === "recycled"
+  const isDefault = stock === "bond"
   if (theme === "day")
     return isDefault
       ? `:root,\n:root[data-stock="${stock}"]`

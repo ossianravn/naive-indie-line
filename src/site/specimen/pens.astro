@@ -1,0 +1,78 @@
+---
+// Pens: each of the five as a pocket of its ink with its name written in it, live on this page's paper (data-pen
+// re-inks a region), with its day and night values from stocks.css. Under them the two inks that are not for words:
+// the wash in a drawing's pot, and the correction pen on a field that went wrong.
+import { Drawing } from "@/fineliner/drawing/drawing"
+import { appearanceLabels } from "@/fineliner/extras/appearance-control"
+import { frameVars, seedOf } from "@/fineliner/pen"
+import { APPEARANCE } from "@/fineliner/theme"
+import { Field, FieldLabel } from "@/fineliner/ui/field"
+import { Input } from "@/fineliner/ui/input"
+import SheetSection from "./sheet-section.astro"
+import { stockColours } from "./stock-colours"
+
+const day = stockColours("bond", "day")
+const night = stockColours("bond", "night")
+// Written out whole so Tailwind finds the classes: the pen inking the page says so, by CSS alone.
+const CURRENT: Record<string, string> = {
+  navy: "[:root[data-pen=navy]_&]:inline",
+  black: "[:root[data-pen=black]_&]:inline",
+  sepia: "[:root[data-pen=sepia]_&]:inline",
+  forest: "[:root[data-pen=forest]_&]:inline",
+  oxblood: "[:root[data-pen=oxblood]_&]:inline",
+}
+---
+
+<SheetSection id="pens">
+  <ul class="m-0 grid list-none grid-cols-2 gap-x-line gap-y-section p-0 sm:grid-cols-3 lg:grid-cols-5">
+    {
+      APPEARANCE.pen.map((pen) => (
+        <li data-pen={pen} class="grid content-start gap-tight">
+          <span class="relative isolate block h-16" aria-hidden="true">
+            <i class="ink-fill" style={frameVars(seedOf(`pen-${pen}`))} />
+          </span>
+          <p class="m-0 text-lead leading-subhead text-pen">
+            {appearanceLabels.pen.options[pen]}
+          </p>
+          <p class="m-0 font-type text-small leading-small text-pen-quiet tabular-nums">
+            {day[`--pen-${pen}`]}
+            <br />
+            {night[`--pen-${pen}`]}
+          </p>
+          <p class={`label m-0 hidden text-pen-quiet ${CURRENT[pen]}`}>Inking this page</p>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="grid gap-x-line gap-y-section sm:grid-cols-2 lg:grid-cols-9">
+    <div class="grid content-start justify-items-start gap-snug lg:col-span-3">
+      <div>
+        <h3 class="m-0 text-lead leading-subhead">The wash</h3>
+        <p class="m-0 mt-hair text-small leading-small text-pen-quiet">
+          The pen thinned with water: a pot, a picture, a highlight. Never words.
+        </p>
+      </div>
+      <Drawing object="sunflower" seed="pens-wash" title="" className="w-20" />
+    </div>
+    <div class="grid content-start justify-items-start gap-snug lg:col-span-6">
+      <div>
+        <h3 class="m-0 text-lead leading-subhead text-correction">The correction pen</h3>
+        <p class="m-0 mt-hair text-small leading-small text-pen-quiet">For errors and destructive actions only.</p>
+      </div>
+      <Field>
+        <FieldLabel htmlFor="pens-date">Date</FieldLabel>
+        <Input
+          id="pens-date"
+          defaultValue="Sunday 30 November"
+          aria-invalid="true"
+          aria-describedby="pens-date-error"
+          className="w-[14rem]"
+        />
+        <p id="pens-date-error" class="m-0 text-small leading-small text-correction">
+          The shop is closed on Sundays.
+        </p>
+      </Field>
+    </div>
+  </div>
+</SheetSection>

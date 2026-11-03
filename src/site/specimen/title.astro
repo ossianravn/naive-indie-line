@@ -1,0 +1,51 @@
+---
+// The title block: what the sheet is, its contents set like a menu in the typewriter, and the listening room the rest
+// of the sheet takes apart. The room is drawn on as it comes into view, the one moment that hydrates here.
+import { Drawing } from "@/fineliner/drawing/drawing"
+import { SHEET, numberOf } from "./sheet"
+---
+
+<div class="mx-auto max-w-[76rem] px-snug pt-section sm:px-line">
+  <div class="grid items-start gap-x-line gap-y-section lg:grid-cols-12">
+    <div class="lg:col-span-5">
+      <p class="label m-0 text-pen-quiet">Fineliner · Specimen Nº 1</p>
+      <h1 class="m-0 mt-tight max-w-[14ch] text-display leading-display text-balance">
+        One pen, good paper and a quiet hand.
+      </h1>
+      <p class="m-0 mt-snug max-w-measure text-lead leading-lead max-sm:text-body max-sm:leading-body">
+        Fineliner is a shadcn/ui kit drawn the way a natural-wine label is: a single fine-liner with a slow wobble, no
+        shading, and small pockets of solid ink where the eye should land.
+      </p>
+      <nav aria-labelledby="contents" class="mt-line">
+        <h2 id="contents" class="label m-0 text-pen-quiet">On this sheet</h2>
+        <ol class="m-0 mt-tight grid list-none grid-flow-col grid-cols-2 grid-rows-4 gap-x-line gap-y-hair p-0 font-type text-small">
+          {
+            SHEET.map(({ id, title }) => (
+              <li>
+                <a href={`#${id}-section`} class="flex items-baseline gap-tight no-underline hover:underline">
+                  {title}
+                  <span class="contents-dots" aria-hidden="true" />
+                  <span class="tabular-nums">{numberOf(id)}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+    </div>
+    <figure class="m-0 lg:col-span-7">
+      <Drawing scene="room" seed="after-hours" drawOnView client:visible />
+      <figcaption class="label mt-tight text-pen-quiet">
+        The listening room, drawn from the seed “after-hours”
+      </figcaption>
+    </figure>
+  </div>
+</div>
+
+<style>
+  .contents-dots {
+    flex: 1;
+    border-bottom: 1.5px dotted currentColor;
+    translate: 0 -0.3em;
+  }
+</style>

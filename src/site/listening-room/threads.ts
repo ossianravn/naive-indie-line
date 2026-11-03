@@ -1,5 +1,5 @@
-// The messages behind a record on hold: the customer asks, the shop answers. Keyed by catalogue number; records
-// without a thread show none. Made up, and static; times are local, on the days before the demo clock.
+// The messages behind a record on hold: the customer asks, Maya answers from behind the counter. Keyed by catalogue
+// number; records without a thread show none. Made up, and static; times are local, on the days before the demo clock.
 
 export interface Note {
   id: string
@@ -22,7 +22,7 @@ export const THREADS: Record<string, Note[]> = {
     {
       id: "n2",
       from: "shop",
-      author: "Listening Room",
+      author: "Maya Singh",
       at: "2026-10-30T18:05",
       body: "It is. Very good copy, a little ring wear on the sleeve. Shall we hold it for you?",
     },
@@ -31,28 +31,28 @@ export const THREADS: Record<string, Note[]> = {
       from: "customer",
       author: "Jonas Berg",
       at: "2026-10-30T18:11",
-      body: "Please. I can come in on Thursday after the Blue Note night.",
+      body: "Please. Could you keep it until Saturday? I can come in after lunch.",
     },
     {
       id: "n4",
       from: "shop",
-      author: "Listening Room",
+      author: "Maya Singh",
       at: "2026-10-30T18:14",
-      body: "Held for you until Thursday 5 November. We'll put it behind the counter.",
+      body: "Held for you until Saturday 7 November. It's behind the counter.",
     },
   ],
   "LR-0414": [
     {
       id: "n1",
       from: "customer",
-      author: "Maya Singh",
+      author: "Rosa Lindgren",
       at: "2026-11-01T10:20",
       body: "Neon Orchard! Could I play it in the room before I decide? It's a lot of money for one record.",
     },
     {
       id: "n2",
       from: "shop",
-      author: "Listening Room",
+      author: "Maya Singh",
       at: "2026-11-01T10:48",
       body: "Of course. It's on hold for you, and it's on the list for your session on Thursday at two.",
     },
@@ -68,7 +68,7 @@ export const THREADS: Record<string, Note[]> = {
     {
       id: "n2",
       from: "shop",
-      author: "Listening Room",
+      author: "Maya Singh",
       at: "2026-10-31T15:30",
       body: "It's yours until Saturday 7 November. See you then.",
     },

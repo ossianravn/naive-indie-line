@@ -106,44 +106,21 @@ export function Desk() {
     )
 
   return (
-    <div className="grid gap-section lg:grid-cols-[minmax(0,1fr)_19rem]">
-      <div className="grid content-start gap-line">
-        <div
-          ref={stage}
-          className={kind === "object" ? "mx-auto w-full max-w-[26rem]" : ""}
-        >
-          {show(
-            seed,
-            kind === "lettering"
-              ? "[&>svg]:h-28 [&>svg]:w-auto [&>svg]:max-w-full"
-              : "",
-          )}
-        </div>
-        <div>
-          <span className="label">Neighbouring seeds</span>
-          <div className="mt-tight grid grid-cols-2 gap-snug sm:grid-cols-4">
-            {neighbours.map((n) => (
-              <button
-                key={n}
-                type="button"
-                className="grid content-end gap-hair text-left"
-                onClick={() => reroll(n)}
-                aria-label={`Use seed ${n}`}
-              >
-                {show(
-                  n,
-                  kind === "lettering"
-                    ? "[&>svg]:h-8 [&>svg]:w-auto [&>svg]:max-w-full"
-                    : "",
-                )}
-                <span className="font-type text-small">{n}</span>
-              </button>
-            ))}
-          </div>
-        </div>
+    // One column on a phone: the drawing, its controls right under it, then the neighbouring seeds. From lg the
+    // controls run down a narrow column beside the drawing and its neighbours.
+    <div className="grid gap-x-section gap-y-line lg:grid-cols-[minmax(0,1fr)_19rem] lg:grid-rows-[auto_1fr]">
+      <div
+        ref={stage}
+        className={kind === "object" ? "mx-auto w-full max-w-[26rem]" : ""}
+      >
+        {show(
+          seed,
+          kind === "lettering"
+            ? "[&>svg]:h-28 [&>svg]:w-auto [&>svg]:max-w-full"
+            : "",
+        )}
       </div>
-
-      <div className="grid content-start gap-snug">
+      <div className="grid content-start gap-snug lg:col-start-2 lg:row-span-2 lg:row-start-1">
         <Segments
           label="Draw"
           value={kind}
@@ -290,6 +267,28 @@ export function Desk() {
           <p className="m-0 min-h-[1.5em] text-small" role="status">
             {copied && `Copied the ${copied}.`}
           </p>
+        </div>
+      </div>
+      <div className="lg:col-start-1 lg:row-start-2">
+        <span className="label">Neighbouring seeds</span>
+        <div className="mt-tight grid grid-cols-2 gap-snug sm:grid-cols-4">
+          {neighbours.map((n) => (
+            <button
+              key={n}
+              type="button"
+              className="grid content-end gap-hair text-left"
+              onClick={() => reroll(n)}
+              aria-label={`Use seed ${n}`}
+            >
+              {show(
+                n,
+                kind === "lettering"
+                  ? "[&>svg]:h-8 [&>svg]:w-auto [&>svg]:max-w-full"
+                  : "",
+              )}
+              <span className="font-type text-small">{n}</span>
+            </button>
+          ))}
         </div>
       </div>
     </div>

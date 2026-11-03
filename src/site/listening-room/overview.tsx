@@ -27,7 +27,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/fineliner/ui/table"
+import { cn } from "@/fineliner/lib/utils"
 import { kroner, tally } from "./data"
+import { PageHeader, ShellPage } from "./page"
 import {
   byGenre,
   eveningConfig,
@@ -63,18 +65,48 @@ function Figure({
 function Panel({
   title,
   note,
+  className,
   children,
 }: {
   title: string
   note: string
+  className?: string
   children: ReactNode
 }) {
   return (
-    <section className="min-w-0">
+    <section className={cn("min-w-0", className)}>
       <h2 className="m-0 text-lead leading-subhead font-medium">{title}</h2>
       <p className="m-0 text-small leading-small text-pen-quiet">{note}</p>
       <div className="mt-tight">{children}</div>
     </section>
+  )
+}
+
+/** A day of the fortnight as two short lines, its date over its weekday, so fourteen fit side by side on a phone. */
+function DayTick({
+  x = 0,
+  y = 0,
+  payload,
+}: {
+  x?: number
+  y?: number
+  payload?: { value: string }
+}) {
+  const [weekday = "", date = ""] = (payload?.value ?? "").split(" ")
+  return (
+    <text
+      x={x}
+      y={y}
+      textAnchor="middle"
+      className="recharts-cartesian-axis-tick-value fill-pen-quiet font-type text-label"
+    >
+      <tspan x={x} dy="1em">
+        {date}
+      </tspan>
+      <tspan x={x} dy="1.3em">
+        {weekday.slice(0, 2)}
+      </tspan>
+    </text>
   )
 }
 
@@ -84,161 +116,170 @@ export function Overview() {
   const slices = genreSlices()
   const genres = byGenre()
   return (
-    <div className="mx-auto w-full max-w-[72rem] px-snug pt-section pb-page sm:px-line">
-      <p className="label m-0 text-pen-quiet">
-        The shop · first week of November
-      </p>
-      <h1 className="m-0 mt-hair text-h1">Overview</h1>
+    <ShellPage>
+      <PageHeader kicker="The shop · first week of November" title="Overview" />
 
-      <div className="mt-line grid grid-cols-2 gap-x-section gap-y-line md:grid-cols-4">
-        <Figure
-          label="In the shop"
-          value={tally(t.records)}
-          note={`${t.held} on hold, ${t.sold} sold`}
-        />
-        <Figure
-          label="At asking price"
-          value={kroner(t.value)}
-          note="Records not yet sold"
-        />
-        <Figure
-          label="Sessions booked"
-          value={tally(t.sessions)}
-          note={`${t.guests} guests, ${t.roomHours} hours in the room`}
-        />
-        <Figure
-          label="Thursday seats"
-          value={`${t.eveningSeats} of ${t.eveningCapacity}`}
-          note="Four evenings in November"
-        />
-      </div>
-
-      <div className="mt-section grid gap-x-section gap-y-section lg:grid-cols-2">
-        <Panel
-          title="The racks by genre"
-          note="Records in the shop, not yet sold"
-        >
-          <ChartContainer config={sliceConfig(slices)} className={CHART}>
-            <PieChart accessibilityLayer>
-              <ChartTooltip
-                content={<ChartTooltipContent nameKey="genre" hideLabel />}
-              />
-              <Pie
-                data={slices}
-                dataKey="count"
-                nameKey="genre"
-                innerRadius="58%"
-                outerRadius="92%"
-                startAngle={90}
-                endAngle={-270}
-                paddingAngle={3}
-                shape={drawnSector}
-              >
-                <Label
-                  content={({ viewBox }) => {
-                    if (!viewBox || !("cx" in viewBox)) return null
-                    const { cx = 0, cy = 0 } = viewBox
-                    return (
-                      <text x={cx} y={cy} textAnchor="middle">
-                        <tspan
-                          x={cx}
-                          y={cy + 4}
-                          className="fill-pen font-type text-h2"
-                        >
-                          {t.records}
-                        </tspan>
-                        <tspan
-                          x={cx}
-                          y={cy + 24}
-                          className="fill-pen-quiet font-read text-small"
-                        >
-                          records
-                        </tspan>
-                      </text>
-                    )
-                  }}
+      {/* Two columns that end together: the figures and the room on the left, the racks on the right. */}
+      <div className="mt-line grid gap-x-section gap-y-section lg:grid-cols-2 lg:items-start">
+        <div className="flex min-w-0 flex-col gap-section">
+          <div className="grid grid-cols-2 gap-x-section gap-y-line md:grid-cols-4 lg:grid-cols-2">
+            <Figure
+              label="In the shop"
+              value={tally(t.records)}
+              note={`${t.held} on hold, ${t.sold} sold`}
+            />
+            <Figure
+              label="At asking price"
+              value={kroner(t.value)}
+              note="Records not yet sold"
+            />
+            <Figure
+              label="Sessions booked"
+              value={tally(t.sessions)}
+              note={`${t.guests} guests, ${t.roomHours} hours in the room`}
+            />
+            <Figure
+              label="Thursday seats"
+              value={`${t.eveningSeats} of ${t.eveningCapacity}`}
+              note="Four evenings in November"
+            />
+          </div>
+          <Panel
+            title="Guests in the room"
+            note="By day, the fortnight from Monday 2 November"
+          >
+            <ChartContainer config={sessionConfig} className={CHART}>
+              <BarChart accessibilityLayer data={sessionDays()} margin={margin}>
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="day"
+                  tickLine={false}
+                  interval={0}
+                  height={44}
+                  tick={<DayTick />}
                 />
-              </Pie>
-              <ChartLegend content={<ChartLegendContent nameKey="genre" />} />
-            </PieChart>
-          </ChartContainer>
-        </Panel>
-        <Panel
-          title="Guests in the room"
-          note="By day, the fortnight from Monday 2 November"
-        >
-          <ChartContainer config={sessionConfig} className={CHART}>
-            <BarChart accessibilityLayer data={sessionDays()} margin={margin}>
-              <CartesianGrid vertical={false} />
-              <XAxis dataKey="day" tickLine={false} tickMargin={8} />
-              <YAxis
-                tickLine={false}
-                axisLine={false}
-                width={28}
-                allowDecimals={false}
-              />
-              <ChartTooltip content={<ChartTooltipContent />} />
-              <ChartLegend content={<ChartLegendContent />} />
-              <Bar dataKey="booked" stackId="day" shape={drawnBar} />
-              <Bar dataKey="cancelled" stackId="day" shape={drawnBar} />
-            </BarChart>
-          </ChartContainer>
-        </Panel>
-        <Panel title="Thursday evenings" note="Seats taken of twelve">
-          <ChartContainer config={eveningConfig} className={CHART}>
-            <BarChart accessibilityLayer data={eveningFill()} margin={margin}>
-              <CartesianGrid vertical={false} />
-              <XAxis dataKey="night" tickLine={false} tickMargin={8} />
-              <YAxis
-                tickLine={false}
-                axisLine={false}
-                width={28}
-                allowDecimals={false}
-                domain={[0, 12]}
-              />
-              <ChartTooltip content={<ChartTooltipContent />} />
-              <ChartLegend content={<ChartLegendContent />} />
-              <Bar dataKey="taken" stackId="night" shape={drawnBar} />
-              <Bar dataKey="free" stackId="night" shape={drawnBar} />
-            </BarChart>
-          </ChartContainer>
-        </Panel>
-        <Panel title="Genres" note="Records in the shop and their value">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Genre</TableHead>
-                <TableHead className="text-right">Records</TableHead>
-                <TableHead className="text-right">Value</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {genres.map((g) => (
-                <TableRow key={g.genre}>
-                  <TableCell>{g.genre}</TableCell>
-                  <TableCell className="text-right font-type text-small tabular-nums">
-                    {g.count}
-                  </TableCell>
-                  <TableCell className="text-right font-type text-small tabular-nums">
-                    {kroner(g.value)}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TableCell>All</TableCell>
-                <TableCell className="text-right font-type text-small tabular-nums">
-                  {t.records}
-                </TableCell>
-                <TableCell className="text-right font-type text-small tabular-nums">
-                  {kroner(t.value)}
-                </TableCell>
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </Panel>
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  width={28}
+                  allowDecimals={false}
+                />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <ChartLegend content={<ChartLegendContent />} />
+                <Bar dataKey="booked" stackId="day" shape={drawnBar} />
+                <Bar dataKey="cancelled" stackId="day" shape={drawnBar} />
+              </BarChart>
+            </ChartContainer>
+          </Panel>
+          <Panel title="Thursday evenings" note="Seats taken of twelve">
+            <ChartContainer config={eveningConfig} className={CHART}>
+              <BarChart accessibilityLayer data={eveningFill()} margin={margin}>
+                <CartesianGrid vertical={false} />
+                <XAxis dataKey="night" tickLine={false} tickMargin={8} />
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  width={28}
+                  allowDecimals={false}
+                  domain={[0, 12]}
+                />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <ChartLegend content={<ChartLegendContent />} />
+                <Bar dataKey="taken" stackId="night" shape={drawnBar} />
+                <Bar dataKey="free" stackId="night" shape={drawnBar} />
+              </BarChart>
+            </ChartContainer>
+          </Panel>
+        </div>
+        <div className="flex min-w-0 flex-col gap-section">
+          <Panel
+            title="The racks by genre"
+            note="Records in the shop, not yet sold"
+          >
+            <ChartContainer config={sliceConfig(slices)} className={CHART}>
+              <PieChart accessibilityLayer>
+                <ChartTooltip
+                  content={<ChartTooltipContent nameKey="genre" hideLabel />}
+                />
+                <Pie
+                  data={slices}
+                  dataKey="count"
+                  nameKey="genre"
+                  innerRadius="58%"
+                  outerRadius="92%"
+                  startAngle={90}
+                  endAngle={-270}
+                  paddingAngle={3}
+                  shape={drawnSector}
+                >
+                  <Label
+                    content={({ viewBox }) => {
+                      if (!viewBox || !("cx" in viewBox)) return null
+                      const { cx = 0, cy = 0 } = viewBox
+                      return (
+                        <text x={cx} y={cy} textAnchor="middle">
+                          <tspan
+                            x={cx}
+                            y={cy + 4}
+                            className="fill-pen font-type text-h2"
+                          >
+                            {t.records}
+                          </tspan>
+                          <tspan
+                            x={cx}
+                            y={cy + 24}
+                            className="fill-pen-quiet font-read text-small"
+                          >
+                            records
+                          </tspan>
+                        </text>
+                      )
+                    }}
+                  />
+                </Pie>
+                <ChartLegend content={<ChartLegendContent nameKey="genre" />} />
+              </PieChart>
+            </ChartContainer>
+          </Panel>
+          <Panel title="Genres" note="Records in the shop and their value">
+            <div className="-mx-tight">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Genre</TableHead>
+                    <TableHead className="text-right">Records</TableHead>
+                    <TableHead className="text-right">Value</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {genres.map((g) => (
+                    <TableRow key={g.genre}>
+                      <TableCell>{g.genre}</TableCell>
+                      <TableCell className="text-right font-type text-small tabular-nums">
+                        {g.count}
+                      </TableCell>
+                      <TableCell className="text-right font-type text-small tabular-nums">
+                        {kroner(g.value)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+                <TableFooter>
+                  <TableRow>
+                    <TableCell>All</TableCell>
+                    <TableCell className="text-right font-type text-small tabular-nums">
+                      {t.records}
+                    </TableCell>
+                    <TableCell className="text-right font-type text-small tabular-nums">
+                      {kroner(t.value)}
+                    </TableCell>
+                  </TableRow>
+                </TableFooter>
+              </Table>
+            </div>
+          </Panel>
+        </div>
       </div>
-    </div>
+    </ShellPage>
   )
 }

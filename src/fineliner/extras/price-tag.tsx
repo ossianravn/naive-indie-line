@@ -7,6 +7,7 @@ import type { Point } from "@/fineliner/pen/geometry"
 import { sheet } from "@/fineliner/pen/layers"
 import { seedOf, stream } from "@/fineliner/pen/seed"
 import { pen, type HandName } from "@/fineliner/pen/stroke"
+import { useOwnIds } from "@/fineliner/lib/svg-ids"
 
 // A hanging tag: a card with its top corners cut off, a punched hole with a reinforcing ring, and a loop of string
 // it hangs from, the price in the typewriter, an old price struck through by the pen above it and a short line under
@@ -122,6 +123,7 @@ export function PriceTag({
   style,
   ...props
 }: PriceTagProps) {
+  const own = useOwnIds()
   const key = String(seed ?? [price, was, note].filter(Boolean).join(" "))
   const { width, height, top, lines, drawn } = useMemo(() => {
     const size = measure(price, was, note)
@@ -169,7 +171,7 @@ export function PriceTag({
             "absolute inset-0 block [&>svg]:size-full",
             !hand && (d.hand === "calm" ? "hidden calm:block" : "calm:hidden"),
           )}
-          dangerouslySetInnerHTML={{ __html: d.svg }}
+          dangerouslySetInnerHTML={{ __html: own(d.svg) }}
         />
       ))}
       <span className="sr-only">{spoken}</span>

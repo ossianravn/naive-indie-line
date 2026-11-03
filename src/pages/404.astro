@@ -1,27 +1,22 @@
 ---
 // Not found: said plainly, with the way back. nginx serves it for any missing path.
 import Base from "@/site/layouts/base.astro"
+import PageHeader from "@/site/layouts/page-header.astro"
 import { Drawing } from "@/fineliner/drawing/drawing"
 ---
 
 <Base title="Page not found" description="There is no page at this address.">
-  <div class="mx-auto grid max-w-[76rem] items-center gap-x-page gap-y-line px-snug py-section sm:px-line md:grid-cols-[minmax(0,1fr)_16rem]">
-    <div class="min-w-0">
-      <p class="label m-0 text-pen-quiet">404 · Not found</p>
-      <h1 class="mt-tight mb-tight text-title leading-heading">
-        Nothing drawn here
-      </h1>
-      <p class="m-0 max-w-measure">
-        The address may be old or mistyped. Start again from the{" "}
-        <a href="/">home page</a>, or go straight to the{" "}
-        <a href="/docs">components</a>.
-      </p>
-    </div>
+  <PageHeader title="Nothing drawn here">
+    <Fragment slot="kicker">404 · Not found</Fragment>
+    The address may be old or mistyped. Start again from the{" "}
+    <a href="/">home page</a>, or go straight to the{" "}
+    <a href="/docs">components</a>.
     <Drawing
+      slot="aside"
       object="crate"
       seed="lost-record"
       title=""
       className="mx-auto w-full max-w-[12rem] md:max-w-none"
     />
-  </div>
+  </PageHeader>
 </Base>
