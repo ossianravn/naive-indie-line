@@ -1,27 +1,53 @@
 // Everyday: post sent, parcels received and things crossed off. `at` is bottom-centre unless a function says
 // otherwise. Composition comes from `r` (the shape stream), never from the pen, so takes agree. Parts are drawn
-// back to front in the object's own units (`units.ts`), with blanks under the paper and the pencil.
-import { add, dist, dot, lerp, roundRect, turn, type Point } from "../geometry"
+// back to front in the object's own units (`units.ts`), with blanks under the flap, the handset and the clip.
+import {
+  add,
+  deg,
+  dist,
+  dot,
+  lerp,
+  roundRect,
+  times,
+  turn,
+  type Point,
+} from "../geometry"
 import { define, type Draw, objectsIn } from "../library"
 import { pathOf, pathPoints } from "../path"
 import { box, depth, scribble } from "../shapes"
+import { HANDS, type Pen } from "../stroke"
 import { outline, place, pts, type Map } from "./units"
 
-/** An open envelope with a letter half out, lying back up; `at` is bottom-centre. */
+/** Where a line from `a` towards `b` stops, short of `b` by part of the pen's run-on, so it lands on the line at `b`. */
+const short = (p: Pen, a: Point, b: Point) =>
+  lerp(b, a, (HANDS[p.hand].over * 0.4) / (dist(a, b) || 1))
+
+/** The back of a sealed envelope, tipped a little: its flap folded down to a wax seal; `at` is bottom-centre. */
 export const envelope: Draw = (s, p, r, at, k = 1) => {
   const P = place(at, k)
-  const tilt = r.between(-3, -1)
-  const lean = r.between(0.25, 0.29)
-  const Q: Map = (u, v) => turn(P(u + lean * v, v * 0.62), at, tilt)
-  outline(s, p, pts(Q, [-39, 62, 0, 118, 39, 62]))
-  s.blank(p.shape(pts(Q, [-39, 0, 39, 0, 39, 62, -39, 62])))
-  s.stroke(p.path(pts(Q, [-39, 59, -39, 62, 39, 62, 39, 59])))
-  outline(s, p, pts(Q, [-28, 14, 28, 14, 28, 96, -28, 96]))
-  const text = Q(-18, 81)
-  scribble(s, p, r, text[0], text[1], 33 * k, 3, 6 * k)
-  // The pocket hides the inserted half of the sheet; its upper edge dips between the two side folds.
-  outline(s, p, pts(Q, [-39, 0, 39, 0, 39, 62, 0, 25, -39, 62]))
-  s.stroke(p.path(pts(Q, [-36, 2, 0, 25, 36, 2])))
+  const tip = r.signed() * 3
+  const Q: Map = (u, v) => turn(P(u, v), P(0, 31), tip)
+  const [w, h, fold] = [48, 62, 24]
+  outline(
+    s,
+    p,
+    roundRect(-w, -h, 2 * w, h, 2.5).map(([u, v]) => Q(u, -v)),
+  )
+  // The bottom folds rise from the corners and run on under the flap, which hides their ends.
+  s.stroke(p.line(Q(-w + 5, 4), Q(-6, fold + 10)))
+  s.stroke(p.line(Q(w - 5, 4), Q(6, fold + 10)))
+  s.blank(p.shape(pts(Q, [-w + 5, h - 3, 0, fold, w - 5, h - 3])))
+  const [a, b, c] = pts(Q, [-w + 1, h - 1, 0, fold, w - 1, h - 1]) as [
+    Point,
+    Point,
+    Point,
+  ]
+  s.stroke(p.path([short(p, b, a), b, short(p, b, c)]))
+  const seal = Q(0, fold + 2)
+  s.fill(p.disc(...dot(seal, 7.5 * k)))
+  s.paper(
+    p.disc(...dot(seal, 4.4 * k)) + p.disc(seal, [3.4 * k, 0], [0, -3.4 * k]),
+  )
 }
 
 /** A cardboard parcel tied both ways, with a bow and a label; `at` is bottom-left. */
@@ -66,157 +92,169 @@ export const parcel: Draw = (s, p, r, at, k = 1) => {
   scribble(s, p, r, text[0], text[1], 15 * k, 2, 6 * k)
 }
 
-/** The part of a run of points from `from` to `to` along it, as one dash of a dashed line. */
-function stretch(q: Point[], from: number, to: number) {
-  const out: Point[] = []
-  let walked = 0
-  q.forEach((b, i) => {
-    const a = q[i - 1] ?? b
-    const step = dist(a, b)
-    const [t0, t1] = [(from - walked) / step, (to - walked) / step]
-    if (step > 0 && t0 < 1 && t1 > 0) {
-      if (t0 > 0) out.push(lerp(a, b, t0))
-      out.push(t1 < 1 ? lerp(a, b, t1) : b)
-    }
-    walked += step
-  })
-  return out
-}
-
-/** A folded paper plane trailing a dashed swoop; `at` is bottom-left. */
+/**
+ * A paper dart climbing away to the right: built in its own space (x to the nose, y to its left wing, z up), banked a
+ * little, pitched up, turned away and seen from above, so the far wing, a sliver of the inked keel and the near wing
+ * fall in place. `at` is bottom-centre.
+ */
 export const paperPlane: Draw = (s, p, r, at, k = 1) => {
-  const P = place(at, k)
-  const tilt = r.between(-1.5, 1.5)
-  const Q: Map = (u, v) => turn(P(u, v), P(100, 45), tilt)
-  const curve = (a: Point, b: Point, c: Point, d: Point) =>
-    Array.from({ length: 33 }, (_, i) => {
-      const t = i / 32
-      return lerp(
-        lerp(lerp(a, b, t), lerp(b, c, t), t),
-        lerp(lerp(b, c, t), lerp(c, d, t), t),
-        t,
-      )
-    })
-  // The trail: one swooping curve back from just behind the tail, drawn as five equal dashes with equal gaps.
-  const trail = curve(Q(70, 56), Q(40, 64), Q(36, 12), Q(2, 20))
-  const reach = trail.reduce((sum, b, i) => sum + dist(trail[i - 1] ?? b, b), 0)
-  const dash = 9 * k
-  const gap = (reach - 5 * dash) / 4
-  for (let i = 0; i < 5; i++) {
-    const from = i * (dash + gap)
-    s.stroke(p.path(stretch(trail, from, from + dash)))
+  const [yaw, pitch] = [
+    (30 + r.signed() * 3) * deg,
+    (20 + r.signed() * 3) * deg,
+  ]
+  const [cy, sy, cp, sp] = [
+    Math.cos(yaw),
+    Math.sin(yaw),
+    Math.cos(pitch),
+    Math.sin(pitch),
+  ]
+  const [cb, sb, ce, se] = [
+    Math.cos(-8 * deg),
+    Math.sin(-8 * deg),
+    Math.cos(44 * deg),
+    Math.sin(44 * deg),
+  ]
+  const see = (x: number, y0: number, z0: number): Point => {
+    const [y, z] = [y0 * cb - z0 * sb, y0 * sb + z0 * cb]
+    const [x1, z1] = [x * cp - z * sp, x * sp + z * cp]
+    return [x1 * cy - y * sy, z1 * ce + (x1 * sy + y * cy) * se]
   }
-  outline(s, p, pts(Q, [148, 85, 67, 70, 76, 57, 52, 8]))
-  outline(s, p, pts(Q, [148, 85, 76, 57, 76, 42]))
+  const parts = [
+    see(100, 0, 0),
+    see(0, 0, 0),
+    see(0, 40, 5),
+    see(0, 0, -20),
+    see(0, -40, 5),
+  ]
+  const us = parts.map(([u]) => u)
+  const mid = (Math.min(...us) + Math.max(...us)) / 2
+  const low = Math.min(...parts.map(([, v]) => v))
+  const P = place(at, k)
+  const [nose, spine, far, keel, near] = parts.map(([u, v]) =>
+    P(u - mid, v - low + 8),
+  ) as [Point, Point, Point, Point, Point]
+  // The keel, the near wing over most of it, then the far wing as one run tucked into the nose and the tail, so the
+  // fold between the wings is drawn once. The near wing's blank reaches a little past the fold, towards the far
+  // wing, so the keel's ink never shows along it; the keel starts back from the nose, where the near wing hides it.
+  const fin = [lerp(nose, spine, 0.15), spine, keel]
+  s.blank(p.shape(fin))
+  s.fill(p.shape(fin))
+  const across: Point = [spine[1] - nose[1], nose[0] - spine[0]]
+  const towards =
+    across[0] * (far[0] - spine[0]) + across[1] * (far[1] - spine[1])
+  const lift = times(across, ((towards > 0 ? 2 : -2) * k) / dist(nose, spine))
+  s.blank(p.shape([add(nose, lift), add(spine, lift), near]))
+  s.stroke(p.shape([nose, spine, near]))
+  s.stroke(p.path([short(p, far, nose), far, short(p, far, spine)]))
 }
 
-/** A desk telephone with a sloping keypad, resting handset and loose coiled cord; `at` is bottom-centre. */
+/**
+ * A rotary desk telephone: a coiled cord behind, then the sloping body with its dial of ten finger holes, and the
+ * handset resting across the top, which hides the top face. `at` is bottom-centre.
+ */
 export const telephone: Draw = (s, p, r, at, k = 1) => {
   const P = place(at, k)
   const o = depth(r)
-  const H: Map = (u, v) => add(P(u, 33 + v), o, 33 * k)
-  const radius = r.between(5.5, 6.2)
-  const coil = Array.from({ length: 97 }, (_, i) => {
-    const t = i / 96
-    const a = t * Math.PI * 8
-    return P(57 + radius * Math.cos(a), -10 + 34 * t + 5 * Math.sin(a))
-  })
-  s.stroke(
-    p.path([
-      P(37, 4),
-      P(45, 3),
-      P(47, -7),
-      P(51, -14),
-      P(57, -16),
-      ...coil,
-      H(38, 4),
-    ]),
-  )
-  const b = box(s, p, o, P(-38, 0), 76 * k, 10 * k, 44 * k)
-  const [f0, f1] = [b.top(0, 0), b.top(1, 0)]
-  const [b0, b1] = [
-    add(b.top(0, 1), [0, -22 * k]),
-    add(b.top(1, 1), [0, -22 * k]),
-  ]
-  outline(s, p, [f1, b.top(1, 1), b1])
-  outline(s, p, [f0, f1, b1, b0])
-  for (let row = 0; row < 4; row++)
-    for (let col = 0; col < 3; col++) {
-      const v = 0.14 + row * 0.17
-      const q = lerp(lerp(f0, b0, v), lerp(f1, b1, v), 0.35 + col * 0.15)
-      s.fill(p.disc(...dot(q, 1.65 * k)))
-    }
-  for (const u of [0.12, 0.88])
-    s.stroke(
-      p.line(
-        lerp(lerp(f0, b0, 0.84), lerp(f1, b1, 0.84), u),
-        H(-38 + 76 * u, 3),
-      ),
+  const d = 24
+  const back: Map = (u, v) => P(u + o[0] * d, v - o[1] * d)
+  const [bw, tw, h] = [42, 29, 40]
+  const H: Map = (u, v) => P(u + o[0] * d * 0.35, h - 1.2 + v - o[1] * d * 0.35)
+  const [b0, b1, b2, b3] = [H(-40, 1), P(-56, 26), P(-56, 6), P(-32, 8)]
+  const bend = (t: number) =>
+    lerp(
+      lerp(lerp(b0, b1, t), lerp(b1, b2, t), t),
+      lerp(lerp(b1, b2, t), lerp(b2, b3, t), t),
+      t,
     )
-  outline(
-    s,
-    p,
-    pts(
-      H,
-      [
-        -43, 0, -43, 9, -39, 16, -30, 21, -16, 24, 0, 25, 16, 24, 30, 21, 39,
-        16, 43, 9, 43, 0, 38, -3, 29, -2, 26, 7, 13, 12, -13, 12, -26, 7, -29,
-        -2, -38, -3,
-      ],
+  // Five loose turns of coil along the cord's bend, each turned to the way the cord runs.
+  const coil = Array.from({ length: 121 }, (_, i) => {
+    const t = i / 120
+    const [a, b] = [bend(Math.max(0, t - 0.01)), bend(Math.min(1, t + 0.01))]
+    const len = dist(a, b) || 1
+    const [tx, ty] = [(b[0] - a[0]) / len, (b[1] - a[1]) / len]
+    const wind = t * Math.PI * 10
+    const [along, across] = [4 * k * Math.cos(wind), 5.5 * k * Math.sin(wind)]
+    return add(bend(t), [tx * along - ty * across, ty * along + tx * across])
+  })
+  s.stroke(p.path(coil))
+  const [f0, f1] = [P(-tw, h), P(tw, h)]
+  outline(s, p, [
+    P(-bw, 0),
+    P(bw, 0),
+    back(bw, 0),
+    back(tw, h),
+    back(-tw, h),
+    f0,
+  ])
+  s.stroke(p.path([short(p, f1, f0), f1, short(p, f1, back(tw, h))]))
+  s.stroke(p.line(short(p, P(bw, 0), f1), short(p, f1, P(bw, 0))))
+  const dial = P(0, 20)
+  s.stroke(p.disc(...dot(dial, 16.5 * k)))
+  for (let i = 0; i < 10; i++) {
+    const a = (70 + i * 30) * deg
+    const q = add(dial, [11.8 * k * Math.cos(a), 11.8 * k * Math.sin(a)])
+    s.stroke(p.disc(...dot(q, 2 * k)))
+  }
+  s.fill(p.disc(...dot(dial, 4.4 * k)))
+  const handset = [
+    -41, 0, -44, 6, -43, 11, -38, 14.5, -26, 17, -12, 18.5, 0, 19, 12, 18.5, 26,
+    17, 38, 14.5, 43, 11, 44, 6, 41, 0,
+  ]
+  // Its blank runs straight between the cups, so the top face doesn't show under the handle.
+  s.blank(p.shape(pts(H, [...handset, 30, 0, -30, 0])))
+  s.stroke(
+    p.shape(
+      pts(H, [
+        ...handset,
+        35,
+        -1,
+        30,
+        0,
+        27,
+        5,
+        16,
+        8,
+        0,
+        9,
+        -16,
+        8,
+        -27,
+        5,
+        -30,
+        0,
+        -35,
+        -1,
+      ]),
     ),
   )
 }
 
-/** A clipboard with three ticked rows and a pencil lying over its sheet; `at` is bottom-centre. */
+/** A clipboard with three ticked rows, its sheet's corner turned up, under an open clip; `at` is bottom-centre. */
 export const checklist: Draw = (s, p, r, at, k = 1) => {
   const P = place(at, k)
-  const lean = r.between(0.1, 0.14)
-  const Q: Map = (u, v) => P(u + lean * v, v * 0.92)
-  const board = roundRect(-35, -120, 70, 120, 5)
-  outline(
-    s,
-    p,
-    board.map(([u, v]) => Q(u + 2, -v - 3)),
-  )
-  outline(
-    s,
-    p,
-    board.map(([u, v]) => Q(u, -v)),
-  )
-  outline(s, p, pts(Q, [-28, 8, 28, 8, 28, 113, -28, 113]))
-  for (const v of [92, 68, 44]) {
+  const tip = r.signed() * 2
+  const Q: Map = (u, v) => turn(P(u, v), P(0, 56), tip)
+  // A rounded rectangle from its bottom-left corner, in the clipboard's own units.
+  const R = (u: number, v: number, w: number, h: number, rad: number) =>
+    roundRect(u, -(v + h), w, h, rad).map(([a, b]) => Q(a, -b))
+  outline(s, p, R(-37, 0, 74, 108, 6))
+  outline(s, p, pts(Q, [-29, 9, 20, 9, 29, 18, 29, 98, -29, 98]))
+  outline(s, p, pts(Q, [20, 9, 29, 18, 20.5, 18.5]))
+  for (const v of [76, 56, 36]) {
     s.stroke(p.shape(pts(Q, [-21, v - 5, -11, v - 5, -11, v + 5, -21, v + 5])))
-    s.stroke(p.path(pts(Q, [-20, v, -16, v - 4, -9, v + 6])))
-    const text = Q(-2, v)
-    scribble(s, p, r, text[0], text[1], 32 * k, 1)
+    s.stroke(p.path(pts(Q, [-19.5, v + 0.5, -16, v - 3.5, -8.5, v + 7.5])))
+    const text = Q(-3, v)
+    scribble(s, p, r, text[0], text[1], 28 * k, 1)
   }
-  const clip = roundRect(-14, -125, 28, 12, 3).map(([u, v]) => Q(u, -v))
-  s.blank(p.shape(clip))
-  s.fill(p.shape(clip))
-  const [tip, end] = [Q(-27, 15), Q(33, 48)]
-  const neck = lerp(tip, end, 0.14)
-  const len = dist(tip, end)
-  const side: Point = [
-    ((end[1] - tip[1]) / len) * 3 * k,
-    ((tip[0] - end[0]) / len) * 3 * k,
-  ]
-  const [a, b] = [add(neck, side), add(neck, side, -1)]
-  outline(s, p, [tip, a, add(end, side), add(end, side, -1), b])
-  s.stroke(
-    p.path([
-      lerp(a, add(end, side), 0.06),
-      a,
-      b,
-      lerp(b, add(end, side, -1), 0.06),
-    ]),
-  )
-  s.fill(p.shape([tip, lerp(tip, a, 0.4), lerp(tip, b, 0.4)]))
+  outline(s, p, R(-11, 103, 22, 11, 4))
+  outline(s, p, pts(Q, [-19, 91, 19, 91, 15, 106, -15, 106]))
+  s.fill(p.shape(R(-5, 96, 10, 4.5, 2.2)))
 }
 
 const T = objectsIn("everyday")
 
 define(
-  T("envelope", "Envelope", [130, 100], [49, 87], 1, envelope, [
+  T("envelope", "Envelope", [120, 86], [60, 75], 1, envelope, [
     "newsletter",
     "inbox",
     "message",
@@ -230,20 +268,20 @@ define(
     "gift",
     "shop",
   ]),
-  T("paper-plane", "Paper plane", [170, 110], [12, 98], 1, paperPlane, [
+  T("paper-plane", "Paper plane", [126, 98], [63, 96], 1, paperPlane, [
     "sent",
     "message",
     "publish",
     "deploy",
     "done",
   ]),
-  T("telephone", "Telephone", [150, 110], [65, 83], 1, telephone, [
+  T("telephone", "Telephone", [132, 82], [68, 72], 1, telephone, [
     "contact",
     "support",
     "call",
     "help",
   ]),
-  T("checklist", "Checklist", [120, 150], [48, 136], 1, checklist, [
+  T("checklist", "Checklist", [96, 134], [48, 124], 1, checklist, [
     "done",
     "complete",
     "tasks",

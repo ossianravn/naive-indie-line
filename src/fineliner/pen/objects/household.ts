@@ -1,10 +1,20 @@
 // Everyday: things for arriving, waiting, keeping and finding. `at` is bottom-centre unless a function says
 // otherwise. Composition comes from `r` (the shape stream), never from the pen, so takes agree. Parts are drawn
 // in the object's own units (`units.ts`), back to front with blanks.
-import { arc, dot, type Point } from "../geometry"
+import { arc, deg, dot, type Point } from "../geometry"
 import { define, type Draw, objectsIn } from "../library"
-import { depth, scribble } from "../shapes"
-import { ell, outline, place, pts, slab, sym, tuck, type Map } from "./units"
+import { depth } from "../shapes"
+import {
+  ell,
+  outline,
+  place,
+  pts,
+  slab,
+  sym,
+  tuck,
+  type Map,
+  type Oval,
+} from "./units"
 
 /** An inward-opening door with an empty doorway and a mat; `at` is bottom-centre of the mat. */
 export const door: Draw = (s, p, r, at, k = 1) => {
@@ -137,109 +147,111 @@ export const hourglass: Draw = (s, p, r, at, k = 1) => {
   slab(s, p, P, [0, 120, 29, 7], 4)
 }
 
-/** A closed padlock with a thick shackle and rounded body; `at` is bottom-centre. */
+/**
+ * A closed padlock face on, its thickness showing at the right: the shackle first, its legs running down behind the
+ * body, then the body and a keyhole on a small round plate. `at` is bottom-centre.
+ */
 export const padlock: Draw = (s, p, r, at, k = 1) => {
   const P = place(at, k)
-  const o = depth(r)
-  const back: Map = (u, v) => P(u + o[0] * 22, v - o[1] * 22)
-  const H: Map = (u, v) => P(u + o[0] * 10, v - o[1] * 10)
+  const band = r.between(6, 8)
+  const [w, h, bend, so, si] = [32, 50, r.between(77, 81), 19, 12]
+  const side: Map = (u, v) => P(u + band, v)
+  const mid: Map = (u, v) => P(u + band / 2, v)
+  const TL: Oval = [-w + 7, h - 7, 7, 7]
+  const TR: Oval = [w - 7, h - 7, 7, 7]
+  const BR: Oval = [w - 12, 12, 12, 12]
+  const BL: Oval = [-w + 12, 12, 12, 12]
   outline(s, p, [
-    H(-18, 52),
-    ...ell(H, [0, 86, 18, 20], 180, 360, 16),
-    H(18, 52),
-    H(12, 52),
-    ...ell(H, [0, 86, 12, 14], 0, -180, 16),
-    H(-12, 52),
+    ...pts(mid, [-so, h - 6, -so, bend]),
+    ...ell(mid, [0, bend, so, so], 180, 360, 18),
+    ...pts(mid, [so, bend, so, h - 6, si, h - 6, si, bend]),
+    ...ell(mid, [0, bend, si, si], 360, 180, 14),
+    ...pts(mid, [-si, bend, -si, h - 6]),
   ])
-  const graze = 180 + (Math.atan2(o[0], -o[1]) * 180) / Math.PI
   outline(s, p, [
-    ...ell(P, [-21, 11, 6, 6], 90, 180, 5),
-    ...ell(P, [-21, 49, 6, 6], 180, graze, 5),
-    ...ell(back, [-21, 49, 6, 6], graze, 270, 5),
-    ...ell(back, [21, 49, 6, 6], 270, 360, 6),
-    ...ell(back, [21, 11, 6, 6], 0, graze - 180, 5),
-    ...ell(P, [21, 11, 6, 6], graze - 180, 90, 5),
+    ...ell(P, BL, 90, 180, 6),
+    ...ell(P, TL, 180, 270, 5),
+    ...ell(side, TR, 270, 360, 6),
+    ...ell(side, BR, 0, 90, 6),
   ])
-  s.stroke(
-    p.path([
-      ...ell(P, [-21, 49, 6, 6], graze - 12, 270, 5),
-      ...ell(P, [21, 49, 6, 6], 270, 360, 6),
-      ...ell(P, [21, 11, 6, 6], 0, graze - 168, 5),
-    ]),
-  )
-  s.stroke(
-    p.path([
-      ...ell(P, [21, 49, 6, 6], 315, 322, 2),
-      ...ell(back, [21, 49, 6, 6], 322, 315, 2),
-    ]),
-  )
+  // The front's right edge starts and ends on the outline, so its run-on follows the top and the bottom.
+  s.stroke(p.path([...ell(P, TR, 280, 360, 6), ...ell(P, BR, 0, 72, 6)]))
+  s.stroke(p.disc(...dot(P(0, 24), 10 * k)))
   s.fill(
     p.shape([
-      ...ell(P, [0, 34, 3.5, 3.5], 140, 400, 12),
-      ...pts(P, [4, 22, -4, 22]),
+      ...ell(P, [0, 27, 4.4, 4.4], 125, 415, 14),
+      ...pts(P, [2.4, 13, -2.4, 13]),
     ]),
   )
 }
 
-/** Two flattened keys on a split ring with a tied paper tag; `at` is bottom-centre. */
+/**
+ * Two keys hanging from a split ring: behind, a newer key with an inked head and three teeth; in front, an old key
+ * with a ring bow and a notched bit, the ring running over its bow on one side of the hole. `at` is bottom-centre.
+ */
 export const keys: Draw = (s, p, r, at, k = 1) => {
   const P = place(at, k)
-  s.stroke(p.disc(P(-8, 71), [32 * k, 0], [0, 13 * k]))
-  s.blank(p.disc(...dot(P(-29, 81), 3.2 * k)))
-  const key = (cx: number, cy: number, angle: number, square: boolean) => {
-    const a = (angle * Math.PI) / 180
-    const M: Map = (u, v) =>
-      P(
-        cx + u * Math.cos(a) - v * Math.sin(a),
-        cy + (u * Math.sin(a) + v * Math.cos(a)) * 0.65,
-      )
-    const bow = square
-      ? pts(M, [12, 6, 12, 14, -14, 14, -14, -14, 12, -14, 12, -6])
-      : arc([0, 0], 16, 16, 25, 335, 22).map(([u, v]) => M(u, v))
-    const blade = square
-      ? [35, -6, 35, -12, 45, -12, 45, 6]
-      : [48, -6, 48, -13, 57, -13, 57, -4, 64, -4, 64, -11, 72, -11, 72, 6]
-    const body = [...bow, ...pts(M, blade)]
-    const hole = square
-      ? pts(M, [-7, -7, 6, -7, 6, 7, -7, 7])
-      : arc([0, 0], 7, 7, 0, 360, 18).map(([u, v]) => M(u, v))
-    s.blank(p.shape(body) + p.shape([...hole].reverse()))
-    s.stroke(p.shape(body))
-    s.stroke(p.shape(hole))
+  const [cx, cy, R] = [3, 84, 14]
+  // A key's own frame from where the ring holds it, at `a` degrees round the ring: x runs down the key, y across.
+  const frame = (a: number): Map => {
+    const [hx, hy] = [cx + R * Math.cos(a * deg), cy - R * Math.sin(a * deg)]
+    const t = (90 + (a - 90) * 0.55) * deg
+    const [c, n] = [Math.cos(t), Math.sin(t)]
+    return (x, y) => P(hx + c * x + n * y, hy - n * x + c * y)
   }
-  key(-33, 59, -124 + r.signed() * 2, true)
-  key(16, 58, -60 + r.signed() * 2, false)
-  outline(s, p, pts(P, [25, 68, 38, 80, 66, 80, 60, 58, 32, 58]))
-  s.stroke(p.path(pts(P, [20, 77, 25, 76, 33, 70])))
-  s.fill(p.disc(...dot(P(34, 69), 1.5 * k)))
-  const q = P(42, 69)
-  scribble(s, p, r, q[0], q[1], 23 * k, 1)
+  s.stroke(p.ring(P(cx, cy), [R * k, 0], [0, R * k]))
+  const [left, right] = [122 + r.signed() * 3, 60 + r.signed() * 3]
+  const Y = frame(right)
+  const corners = (from: number) =>
+    [
+      ...arc([8, 5], 6, 6, from, 90, 4),
+      ...arc([0, 5], 6, 6, 90, 180, 4),
+      ...arc([0, -5], 6, 6, 180, 270, 4),
+      ...arc([8, -5], 6, 6, 270, 360, 4),
+    ].map(([x, y]) => Y(x, y))
+  const yale = [
+    ...corners(15),
+    ...pts(Y, [55, -5, 59, -2, 59, 1.5, 55, 5, 51.5, 2.6, 47.5, 6.5]),
+    ...pts(Y, [43.5, 2.6, 39.5, 6.5, 35.5, 2.6, 31.5, 6.5, 16, 6.5]),
+  ]
+  // Both keys' outlines run against the pen's discs, so a disc added to one is its hole and the ring shows through.
+  const eye = p.disc(...dot(Y(1.2, 0), 2.6 * k))
+  s.blank(p.shape(yale) + eye)
+  s.stroke(p.shape(yale))
+  s.fill(p.shape(corners(0)) + eye)
+  const C = frame(left)
+  const join = 3.5 + Math.sqrt(10.5 * 10.5 - 4.6 * 4.6)
+  const ja = Math.atan2(4.6, join - 3.5) / deg
+  const old = [
+    ...arc([3.5, 0], 10.5, 10.5, ja, 360 - ja, 20).map(([x, y]) => C(x, y)),
+    ...pts(C, [join, -4.6, 19.5, -4.6, 19.5, -2.7, 50, -2.7, 50, -13]),
+    ...pts(C, [54.5, -13, 54.5, -8.5, 58.5, -8.5, 58.5, -13, 64, -13]),
+    ...pts(C, [64, 2.7, 19.5, 2.7, 19.5, 4.6, join, 4.6]),
+  ]
+  const bow = dot(C(3.5, 0), 5.2 * k)
+  s.blank(p.shape(old) + p.disc(...bow))
+  s.stroke(p.shape(old))
+  s.stroke(p.disc(...bow))
+  s.stroke(p.path(ell(P, [cx, cy, R, R], left + 4, left + 46, 8)))
 }
 
-/** A magnifier over two scribbled index cards; `at` is bottom-centre. */
+/** A magnifying glass at a slant: a round rim with a glint, a short collar and an inked handle; `at` is bottom-centre. */
 export const magnifier: Draw = (s, p, r, at, k = 1) => {
   const P = place(at, k)
-  const o = depth(r)
-  const card = (u: number, v: number, w: number, d: number) => {
-    const C: Map = (a, b) => P(u + a + o[0] * b, v - o[1] * b)
-    outline(s, p, [C(0, 0), C(w, 0), C(w, d), C(0, d)])
-    const textPen = {
-      ...p,
-      path: (q: Point[]) => p.path(q.map(([x, y]) => C(x, -y))),
-    }
-    scribble(s, textPen, r, 9, -(d - 12), w - 18, 3, 12)
-  }
-  card(-43, 38, 72, 48)
-  card(-58, 10, 88, 85)
-  s.fill(p.shape(pts(P, [14, 35, 41, 4, 46, 8, 19, 39])))
-  s.blank(p.disc(P(-3, 43), [26 * k, 0], [0, 14 * k]))
-  const glassPen = {
-    ...p,
-    path: (q: Point[]) => p.path(q.map(([u, v]) => P(u, 43 - (v - 43) * 1.6))),
-  }
-  scribble(s, glassPen, r, -17, 40.5, 30, 2, 6)
-  s.stroke(p.disc(P(-3, 43), [26 * k, 0], [0, 14 * k]))
-  s.stroke(p.disc(P(-3, 43), [22 * k, 0], [0, 10.5 * k]))
+  const t = r.between(-47, -41) * deg
+  const c: Point = [-12, 72]
+  // The handle's own frame: x runs from the lens's centre down the handle, y across it.
+  const [cs, sn] = [Math.cos(t), Math.sin(t)]
+  const H: Map = (x, y) => P(c[0] + cs * x - sn * y, c[1] + sn * x + cs * y)
+  outline(s, p, pts(H, [27, 3.4, 27, -3.4, 40, -3.4, 40, 3.4]))
+  const end = arc([82, 0], 6.2, 6.2, -90, 90, 10).map(([x, y]) => H(x, y))
+  s.fill(p.shape([...pts(H, [39, 4.6, 39, -4.6, 82, -6.2]), ...end]))
+  s.paper(p.disc(...dot(H(82, 0), 1.7 * k)))
+  const lens = (rad: number) => p.disc(P(...c), [rad * k, 0], [0, rad * k])
+  s.blank(lens(30))
+  s.stroke(lens(30))
+  s.stroke(lens(24.5))
+  s.stroke(p.path(ell(P, [c[0], c[1], 18.5, 18.5], 200, 240, 6)))
 }
 
 const T = objectsIn("everyday")
@@ -265,21 +277,21 @@ define(T("hourglass", "Hourglass", [90, 150], [45, 139], 1, hourglass, [
   "time",
   "waitlist",
 ]))
-define(T("padlock", "Padlock", [100, 130], [44, 117], 1, padlock, [
+define(T("padlock", "Padlock", [100, 120], [46, 110], 1, padlock, [
   "security",
   "private",
   "permissions",
   "locked",
   "sign-in",
 ]))
-define(T("keys", "Keys", [150, 100], [75, 92], 1, keys, [
+define(T("keys", "Keys", [94, 108], [50, 108], 1, keys, [
   "access",
   "account",
   "sign-in",
   "home",
   "password",
 ]))
-define(T("magnifier", "Magnifier", [160, 110], [72, 96], 1, magnifier, [
+define(T("magnifier", "Magnifier", [120, 120], [53.5, 114], 1, magnifier, [
   "search",
   "find",
   "no results",
