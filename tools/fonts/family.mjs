@@ -112,7 +112,8 @@ export async function buildFamily(spec) {
   view.setUint16(74, 1000)
   view.setUint16(76, 300)
   const otf = addTable(kerned, "OS/2", os2)
-  return { otf, woff2: await wawoff2.compress(otf) }
+  // wawoff2 returns a view into its WebAssembly heap, which the next compress overwrites: keep a copy.
+  return { otf, woff2: Uint8Array.from(await wawoff2.compress(otf)) }
 }
 
 /** A path from fitted contours ([start, ...[c1, c2, end]]). */
