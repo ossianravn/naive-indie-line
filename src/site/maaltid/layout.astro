@@ -1,13 +1,23 @@
 ---
-// MÅLTID's own frame: a restaurant's site, not the docs. Its look is fixed (bond paper, the oxblood pen, a calm hand,
-// typewriter labels) whatever a visitor chose elsewhere on Fineliner's site; only day and night follow the system.
-// The wordmark is Tramline drawn by the pen as SVG, so no Tramline font loads.
+// MÅLTID's own frame: a restaurant's site, not the docs. It starts in its own look (bond paper, the oxblood pen, a calm
+// hand, typewriter labels) whatever a visitor chose elsewhere on Fineliner's site. A thin strip above the restaurant's
+// header belongs to the demo, not the restaurant: the way back to Fineliner and the appearance panel, whose changes
+// MÅLTID keeps under a key of its own. The wordmark is Tramline drawn by the pen as SVG, so no Tramline font loads.
 import "@/fineliner/styles/fineliner.css"
 import "@/site/maaltid/drawings"
 import { FinelinerDefs } from "@/fineliner/defs/fineliner-defs"
 import { frameStyle } from "@/fineliner/lib/frame-style"
 import { buttonVariants } from "@/fineliner/ui/button"
 import { frameVars, lettering, seedOf } from "@/fineliner/pen"
+import { appearanceScript } from "@/fineliner/theme/appearance-script"
+import { AppearancePanel } from "@/site/appearance-panel"
+import { PartsXray } from "@/site/parts-xray"
+import { PRESETS } from "@/site/studio/presets"
+import {
+  MAALTID_PRESET,
+  MAALTID_STORAGE_KEY,
+  maaltidAppearance,
+} from "./appearance"
 import { PLACE } from "./data"
 
 interface Props {
@@ -24,19 +34,20 @@ const NAV = [
 ]
 const wordmark = lettering("MÅLTID", { seed: "maaltid", hand: "calm" })[0]
 const shareImage = new URL("/og/maaltid.png", Astro.site ?? Astro.url).href
+const look = maaltidAppearance
 ---
 
 <!doctype html>
 <html
   lang="en"
-  data-stock="bond"
-  data-pen="oxblood"
-  data-hand="calm"
-  data-boil="hover"
-  data-containers="open"
-  data-labels="type"
-  data-density="comfortable"
-  data-theme-preference="system"
+  data-stock={look.stock}
+  data-pen={look.pen}
+  data-hand={look.hand}
+  data-boil={look.boil}
+  data-containers={look.containers}
+  data-labels={look.labels}
+  data-density={look.density}
+  data-theme-preference={look.theme}
 >
   <head>
     <meta charset="utf-8" />
@@ -51,13 +62,10 @@ const shareImage = new URL("/og/maaltid.png", Astro.site ?? Astro.url).href
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
-    <script is:inline>
-      document.documentElement.dataset.theme = matchMedia(
-        "(prefers-color-scheme: dark)",
-      ).matches
-        ? "night"
-        : "day"
-    </script>
+    <script
+      is:inline
+      set:html={appearanceScript(maaltidAppearance, MAALTID_STORAGE_KEY)}
+    />
   </head>
   <body>
     <FinelinerDefs />
@@ -67,6 +75,27 @@ const shareImage = new URL("/og/maaltid.png", Astro.site ?? Astro.url).href
     >
       Skip to content
     </a>
+    <aside
+      aria-label="Fineliner demo"
+      data-parts-skip=""
+      class="mx-auto flex max-w-[76rem] flex-wrap items-center gap-x-line gap-y-hair px-snug pt-tight sm:px-line"
+    >
+      <a
+        href="/"
+        class="label me-auto text-pen-quiet no-underline hover:underline"
+      >
+        Demo · Fineliner
+      </a>
+      <PartsXray client:idle />
+      <AppearancePanel
+        defaults={maaltidAppearance}
+        presets={[MAALTID_PRESET, ...PRESETS]}
+        storageKey={MAALTID_STORAGE_KEY}
+        className="text-pen-quiet max-sm:-me-2"
+        dotOnPhone
+        client:idle
+      />
+    </aside>
     <header class="mx-auto flex max-w-[76rem] flex-wrap items-center justify-between gap-x-line gap-y-snug px-snug pt-line sm:px-line">
       <a href="/maaltid" class="block text-pen" aria-label="MÅLTID, home">
         <span
@@ -90,6 +119,7 @@ const shareImage = new URL("/og/maaltid.png", Astro.site ?? Astro.url).href
           <li>
             <a
               href="/maaltid/book"
+              data-slot="button"
               class={buttonVariants({ size: "sm", className: "no-underline" })}
               style={frameStyle(["Book a table"])}
               aria-current={path === "/maaltid/book" ? "page" : undefined}

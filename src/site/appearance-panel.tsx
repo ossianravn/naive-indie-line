@@ -1,9 +1,10 @@
+import "./appearance-panel.css"
 import type { CSSProperties } from "react"
 import { PenMark } from "@/fineliner/drawing/pen-mark"
 import { AppearanceControl } from "@/fineliner/extras/appearance-control"
 import { cn } from "@/fineliner/lib/utils"
 import { frameVars, seedOf } from "@/fineliner/pen"
-import { useAppearance } from "@/fineliner/theme"
+import { useAppearance, type Appearance } from "@/fineliner/theme"
 import {
   Sheet,
   SheetContent,
@@ -13,23 +14,30 @@ import {
 } from "@/fineliner/ui/sheet"
 import { siteAppearance } from "./appearance"
 import { PresetSwatch } from "./studio/preset-picker"
-import { matchPreset, PRESETS } from "./studio/presets"
+import { matchPreset, PRESETS, type Preset } from "./studio/presets"
 
 // The site's appearance panel: a button at the end of every page's header that opens a sheet from the right with the
 // studio's presets and every setting. Choices apply to <html> and persist, so they follow the visitor from page to
 // page. The sheet is not modal and the page is not dimmed (site.css), so the page restyles in view behind it and
-// still scrolls.
+// still scrolls. A demo with a look of its own (MÅLTID) passes its defaults, presets and storage key; the studio's
+// export reads the site's choice, so only the site's panel links to it.
 
 export function AppearancePanel({
   className,
   dotOnPhone = false,
+  defaults = siteAppearance,
+  presets = PRESETS,
+  storageKey,
 }: {
   className?: string
   /** On a phone the button is its pen dot alone, for a header with no room for the word. */
   dotOnPhone?: boolean
+  defaults?: Appearance
+  presets?: Preset[]
+  storageKey?: string
 }) {
-  const [appearance, update] = useAppearance(siteAppearance)
-  const preset = matchPreset(appearance)
+  const [appearance, update] = useAppearance(defaults, storageKey)
+  const preset = matchPreset(appearance, presets)
   return (
     <Sheet modal={false}>
       <SheetTrigger
@@ -58,7 +66,7 @@ export function AppearancePanel({
               Presets
             </h2>
             <ul className="m-0 mt-hair grid list-none grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] gap-hair p-0">
-              {PRESETS.map((item) => {
+              {presets.map((item) => {
                 const on = item === preset
                 return (
                   <li key={item.name} className="flex">
@@ -89,11 +97,17 @@ export function AppearancePanel({
             <h2 id="panel-settings" className="label m-0 text-pen-quiet">
               Settings
             </h2>
-            <AppearanceControl defaults={siteAppearance} className="mt-tight" />
+            <AppearanceControl
+              defaults={defaults}
+              storageKey={storageKey}
+              className="mt-tight"
+            />
           </section>
-          <a href="/studio#export" className="self-start text-small">
-            Export this theme in the studio
-          </a>
+          {!storageKey && (
+            <a href="/studio#export" className="self-start text-small">
+              Export this theme in the studio
+            </a>
+          )}
         </div>
       </SheetContent>
     </Sheet>

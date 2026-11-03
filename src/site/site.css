@@ -73,10 +73,3 @@
     transition: none;
   }
 }
-
-/* The appearance panel (appearance-panel.tsx) is not modal: the page stays undimmed, so a change shows in view. */
-[data-slot="sheet-overlay"]:has(
-  + [data-slot="sheet-viewport"] [data-appearance-panel]
-) {
-  display: none;
-}

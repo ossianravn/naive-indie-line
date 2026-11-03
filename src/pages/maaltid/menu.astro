@@ -1,7 +1,8 @@
 ---
-// Tonight's menu: the whole card, with the set menu and what to tell the kitchen beside it.
+// Tonight's menu: the whole card as printed, with what to leave out above it, and the set menu and what to tell the
+// kitchen beside it.
 import Layout from "@/site/maaltid/layout.astro"
-import MenuCard from "@/site/maaltid/menu-card.astro"
+import { TonightMenu } from "@/site/maaltid/tonight-menu"
 import { SET_MENU, TONIGHT, kr } from "@/site/maaltid/data"
 ---
 
@@ -24,15 +25,16 @@ import { SET_MENU, TONIGHT, kr } from "@/site/maaltid/data"
         <dd class="m-0 font-type text-small">{kr(SET_MENU.wine)}</dd>
       </dl>
       <p class="m-0 text-small leading-small text-pen-quiet">
-        A person, for the whole table. Tell us about allergies when you book;
-        most of it can be made without gluten or dairy.
+        A person, for the whole table. Everything but the mackerel is
+        vegetarian. Tell us about allergies when you book; most of it can be
+        made without gluten or dairy.
       </p>
       <p class="m-0">
         <a href="/maaltid/book">Book a table</a>
       </p>
     </header>
     <div class="lg:col-span-8">
-      <MenuCard />
+      <TonightMenu client:load />
     </div>
   </div>
 </Layout>

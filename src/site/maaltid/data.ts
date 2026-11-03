@@ -13,10 +13,23 @@ export const PLACE = {
 /** The evening the menu is for, and the first day the booking calendar opens on. */
 export const TONIGHT = { iso: "2026-11-05", label: "Thursday 5 November" }
 
+/** The four things guests most often ask the kitchen to leave out. */
+export const ALLERGENS = ["gluten", "dairy", "fish", "nuts"] as const
+export type Allergen = (typeof ALLERGENS)[number]
+
 export interface Dish {
   name: string
   with: string
   price: number
+  /** Which of the four it has in it. */
+  contains: Allergen[]
+  diet?: "vegetarian" | "vegan"
+  /** A drawing of its own; the course's when left out. */
+  object?: string
+  /** A word in the hand beside it on the printed card. */
+  aside?: string
+  /** What the waiter would tell you about it. */
+  story: string
 }
 export interface Course {
   title: string
@@ -34,16 +47,29 @@ export const MENU: Course[] = [
         name: "Rye focaccia",
         with: "cultured butter, whey caramel",
         price: 45,
+        contains: ["gluten", "dairy"],
+        diet: "vegetarian",
+        aside: "more bread is free",
+        story:
+          "Baked twice a day from Stevns rye and a sourdough older than the restaurant. We culture the butter ourselves and boil the whey it leaves into caramel.",
       },
       {
         name: "Raw mackerel",
         with: "rhubarb, horseradish, cold-pressed rapeseed oil",
         price: 95,
+        contains: ["fish"],
+        object: "fish",
+        story:
+          "From the morning boats at Gilleleje, sliced to order and dressed with forced rhubarb, fresh horseradish and the green oil from a press on Fyn.",
       },
       {
         name: "From the jars",
         with: "pickled roots and leaves, hazelnut crumbs",
         price: 55,
+        contains: ["nuts"],
+        diet: "vegan",
+        story:
+          "Whatever we put up through the summer: beetroot, kohlrabi, nasturtium leaves, green tomatoes. The hazelnuts come from the same farm as the roots.",
       },
     ],
   },
@@ -55,11 +81,21 @@ export const MENU: Course[] = [
         name: "Pici cacio e pepe",
         with: "Danish sheep's cheese, smoked pepper",
         price: 145,
+        contains: ["gluten", "dairy"],
+        diet: "vegetarian",
+        aside: "the one everyone orders",
+        story:
+          "Thick hand-rolled noodles, as in southern Tuscany, with a hard sheep's cheese from Lolland where Rome would use pecorino, and pepper we smoke over the grill.",
       },
       {
         name: "Spelt tagliatelle",
         with: "porcini, brown butter, thyme",
         price: 165,
+        contains: ["gluten", "dairy"],
+        diet: "vegetarian",
+        object: "mushrooms",
+        story:
+          "Spelt from Bornholm rolled thin each afternoon, with porcini picked in Gribskov and butter browned until it smells of hazelnuts.",
       },
     ],
   },
@@ -71,11 +107,20 @@ export const MENU: Course[] = [
         name: "Ribollita",
         with: "kale, white beans, yesterday's bread",
         price: 135,
+        contains: ["gluten"],
+        diet: "vegan",
+        story:
+          "The Tuscan way to use up bread: beans, black kale and yesterday's loaf, cooked down until a spoon stands in it, with plenty of olive oil.",
       },
       {
         name: "Whole mackerel",
         with: "grilled over beech, salsa verde of ramsons",
         price: 195,
+        contains: ["fish"],
+        object: "fish",
+        aside: "twelve tonight",
+        story:
+          "A whole fish from Gilleleje grilled over beech, with a salsa verde of wild garlic we picked in spring and kept in oil.",
       },
     ],
   },
@@ -87,17 +132,27 @@ export const MENU: Course[] = [
         name: "Sheep's ricotta",
         with: "heather honey, burnt apple",
         price: 85,
+        contains: ["dairy"],
+        diet: "vegetarian",
+        story:
+          "Fresh ricotta from the same flock on Lolland, heather honey from Rold Skov and an apple burnt in the embers until it is soft.",
       },
       {
         name: "Two cheeses",
         with: "one hard, one soft, rye crispbread",
         price: 95,
+        contains: ["dairy", "gluten"],
+        diet: "vegetarian",
+        story:
+          "One hard and one soft, chosen the week they are ready, with a crispbread of rye and seeds baked here.",
       },
     ],
   },
 ]
 
 export const SET_MENU = { food: 495, wine: 395 }
+/** How many menus the kitchen has printed since it opened; tonight's is the next. */
+export const MENU_NUMBER = 214
 
 export type WineKind = "Sparkling" | "White" | "Orange" | "Red"
 export interface Wine {

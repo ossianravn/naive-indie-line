@@ -62,6 +62,7 @@ export const defaultAppearance: Appearance = {
   penStrength: 80,
 }
 
+/** Where the choice is saved. Two sites on one origin that each keep their own look pass a key of their own. */
 export const STORAGE_KEY = "fineliner-appearance"
 
 type Choice = keyof typeof APPEARANCE
@@ -100,10 +101,13 @@ export function normalize(
   return next as unknown as Appearance
 }
 
-export function readSaved(defaults = defaultAppearance): Appearance {
+export function readSaved(
+  defaults = defaultAppearance,
+  storageKey = STORAGE_KEY,
+): Appearance {
   try {
     return normalize(
-      JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "{}") ?? {},
+      JSON.parse(localStorage.getItem(storageKey) ?? "{}") ?? {},
       defaults,
     )
   } catch {
@@ -111,9 +115,9 @@ export function readSaved(defaults = defaultAppearance): Appearance {
   }
 }
 
-export function save(appearance: Appearance) {
+export function save(appearance: Appearance, storageKey = STORAGE_KEY) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(appearance))
+    localStorage.setItem(storageKey, JSON.stringify(appearance))
   } catch {
     // Private windows and blocked storage keep the choice for this page only.
   }

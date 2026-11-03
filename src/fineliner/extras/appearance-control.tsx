@@ -85,6 +85,8 @@ export interface AppearanceControlProps extends Omit<
   hints?: boolean
   /** The defaults the page's appearanceScript uses, for the server render. */
   defaults?: Appearance
+  /** The storage key the page's appearanceScript reads, if not the kit's. */
+  storageKey?: string
 }
 
 type Change = (change: Partial<Appearance>) => void
@@ -94,10 +96,11 @@ export function AppearanceControl({
   rows = APPEARANCE_ROWS,
   hints = false,
   defaults,
+  storageKey,
   className,
   ...props
 }: AppearanceControlProps) {
-  const [appearance, update] = useAppearance(defaults)
+  const [appearance, update] = useAppearance(defaults, storageKey)
   const id = useId()
   return (
     <div

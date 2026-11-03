@@ -7,6 +7,7 @@ import {
   current,
   defaultAppearance,
   save,
+  STORAGE_KEY,
   type Appearance,
 } from "./appearance"
 
@@ -35,13 +36,22 @@ function subscribe(onChange: () => void) {
   }
 }
 
-/** The document's appearance and a setter that applies and saves a change. Server renders use the defaults. */
-export function useAppearance(defaults: Appearance = defaultAppearance) {
+/**
+ * The document's appearance and a setter that applies and saves a change, under the storage key the page's
+ * appearanceScript reads. Server renders use the defaults.
+ */
+export function useAppearance(
+  defaults: Appearance = defaultAppearance,
+  storageKey = STORAGE_KEY,
+) {
   const appearance = useSyncExternalStore(subscribe, snapshot, () => defaults)
-  const update = useCallback((change: Partial<Appearance>) => {
-    const next = { ...current(), ...change }
-    apply(next)
-    save(next)
-  }, [])
+  const update = useCallback(
+    (change: Partial<Appearance>) => {
+      const next = { ...current(), ...change }
+      apply(next)
+      save(next, storageKey)
+    },
+    [storageKey],
+  )
   return [appearance, update] as const
 }

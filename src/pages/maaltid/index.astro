@@ -3,7 +3,7 @@
 // glass and where the food comes from. Sections put their heading in the first four of twelve columns and their
 // content in the rest, like a printed programme.
 import Layout from "@/site/maaltid/layout.astro"
-import MenuCard from "@/site/maaltid/menu-card.astro"
+import { MenuCard } from "@/site/maaltid/menu-card"
 import { Drawing } from "@/fineliner/drawing/drawing"
 import { TastingNote } from "@/fineliner/extras/tasting-note"
 import { frameStyle } from "@/fineliner/lib/frame-style"
@@ -36,6 +36,7 @@ const section =
       <div class="mt-tight flex flex-wrap items-center gap-x-line gap-y-snug">
         <a
           href="/maaltid/book"
+          data-slot="button"
           class={buttonVariants({ className: "no-underline" })}
           style={frameStyle(["Book a table"])}
         >

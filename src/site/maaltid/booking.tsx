@@ -1,7 +1,7 @@
 import "@/fineliner/pen/objects/everyday"
 import { useEffect, useRef, useState, type SyntheticEvent } from "react"
 import { CalendarIcon } from "lucide-react"
-import { Drawing } from "@/fineliner/drawing/drawing"
+import { toast } from "sonner"
 import { Button } from "@/fineliner/ui/button"
 import { Calendar } from "@/fineliner/ui/calendar"
 import {
@@ -14,12 +14,16 @@ import {
 import { Input } from "@/fineliner/ui/input"
 import { NativeSelect, NativeSelectOption } from "@/fineliner/ui/native-select"
 import { Popover, PopoverContent, PopoverTrigger } from "@/fineliner/ui/popover"
+import { Toaster } from "@/fineliner/ui/sonner"
 import { Textarea } from "@/fineliner/ui/textarea"
 import { ToggleGroup, ToggleGroupItem } from "@/fineliner/ui/toggle-group"
+import { BookingTicket } from "./booking-ticket"
+import { addBooking, CANCELLED, codeOf, dayName, type Booked } from "./bookings"
 
 // Booking a table: an evening (Wednesday to Saturday, from the made-up "today"), a time, how many, a name and where to
 // send the booking. Fridays and Saturdays are full at the busiest times. Nothing is sent anywhere: a valid form turns
-// into the booking itself, with a way to book another.
+// into the booking's ticket, with its code for changing it, a toast says where it went, and the booking is kept for
+// the visit so "Change a booking" can find it. The page's one Toaster lives here.
 
 const TODAY = new Date(2026, 10, 4)
 const CLOSED = [{ before: TODAY }, { dayOfWeek: [0, 1, 2] }]
@@ -39,24 +43,10 @@ const FULL: Record<number, string[]> = {
   6: ["18:30", "19:00", "19:30", "20:00"],
 }
 const GUESTS = Array.from({ length: 8 }, (_, i) => String(i + 1))
-const dayName = (day: Date) =>
-  day.toLocaleDateString("en-GB", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-  })
 const trigger =
   "control-field inline-flex h-control cursor-pointer items-center gap-tight px-tight text-left whitespace-nowrap data-[empty=true]:text-pen-quiet [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-pen-quiet"
 
-interface Booked {
-  day: Date
-  time: string
-  guests: string
-  name: string
-  email: string
-}
-
-export function Booking() {
+function BookingForm() {
   const [day, setDay] = useState<Date>()
   const [picking, setPicking] = useState(false)
   const [time, setTime] = useState("")
@@ -82,34 +72,36 @@ export function Booking() {
     if (booked) heading.current?.focus()
   }, [booked])
 
+  // Cancelled from "Change a booking": the ticket on show gives way to the form again.
+  useEffect(() => {
+    const stepDown = (event: Event) => {
+      if (booked && (event as CustomEvent<string>).detail === codeOf(booked))
+        setBooked(null)
+    }
+    window.addEventListener(CANCELLED, stepDown)
+    return () => window.removeEventListener(CANCELLED, stepDown)
+  }, [booked])
+
   function book(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault()
     setTried(true)
     if (Object.values(errors).some(Boolean) || !day) return
-    setBooked({ day, time, guests, name: name.trim(), email: email.trim() })
+    const next = { day, time, guests, name: name.trim(), email: email.trim() }
+    addBooking(next)
+    setBooked(next)
+    toast.success(`Booking sent to ${next.email}`)
   }
 
   if (booked)
     return (
-      <div className="grid max-w-measure gap-snug" aria-live="polite">
-        <Drawing
-          object="envelope"
-          seed={`maaltid-${booked.email}`}
-          title=""
-          className="w-32"
-        />
-        <h2
-          ref={heading}
-          tabIndex={-1}
-          className="m-0 text-h2 leading-heading outline-none"
-        >
-          See you {dayName(booked.day)} at {booked.time}
-        </h2>
-        <p className="m-0">
-          A table for {booked.guests} under {booked.name}. We've sent the
-          booking to <span className="wrap-anywhere">{booked.email}</span>. If
-          you're running late, we keep the table for twenty minutes.
-        </p>
+      <div className="grid gap-line" aria-live="polite">
+        <BookingTicket booked={booked} headingRef={heading}>
+          <p className="m-0 text-small leading-small text-pen-quiet">
+            We've sent it to{" "}
+            <span className="wrap-anywhere">{booked.email}</span>. If you're
+            running late, we keep the table for twenty minutes.
+          </p>
+        </BookingTicket>
         <div>
           <Button
             variant="outline"
@@ -250,5 +242,14 @@ export function Booking() {
         <Button type="submit">Book the table</Button>
       </div>
     </form>
+  )
+}
+
+export function Booking() {
+  return (
+    <>
+      <BookingForm />
+      <Toaster />
+    </>
   )
 }

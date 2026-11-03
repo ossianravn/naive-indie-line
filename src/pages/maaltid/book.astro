@@ -1,7 +1,8 @@
 ---
-// Booking a table: the form beside the house rules a guest wants before they book.
+// Booking a table: the form beside the house rules a guest wants before they book, and a way to change a booking.
 import Layout from "@/site/maaltid/layout.astro"
 import { Booking } from "@/site/maaltid/booking"
+import { ChangeBooking } from "@/site/maaltid/change-booking"
 import { PLACE } from "@/site/maaltid/data"
 ---
 
@@ -19,6 +20,9 @@ import { PLACE } from "@/site/maaltid/data"
       <p class="m-0 text-small leading-small text-pen-quiet">
         {PLACE.hours}. {PLACE.kitchen}. {PLACE.closed}.
       </p>
+      <div class="mt-tight">
+        <ChangeBooking client:load />
+      </div>
     </header>
     <div class="lg:col-span-8">
       <Booking client:load />

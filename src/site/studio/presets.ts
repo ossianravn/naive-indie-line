@@ -99,7 +99,7 @@ export const choicesOf = (appearance: Appearance): ThemeChoices => ({
 })
 
 /** The preset the page currently shows, if any. */
-export const matchPreset = (appearance: Appearance) =>
-  PRESETS.find((preset) =>
+export const matchPreset = (appearance: Appearance, presets = PRESETS) =>
+  presets.find((preset) =>
     CHOICE_KEYS.every((key) => preset.choices[key] === appearance[key]),
   )

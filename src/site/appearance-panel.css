@@ -1,0 +1,7 @@
+/* The appearance panel is not modal: the page stays undimmed, so a change shows in view. It lives
+   with the panel rather than in site.css, so MÅLTID, which does not load site.css, gets it too. */
+[data-slot="sheet-overlay"]:has(
+  + [data-slot="sheet-viewport"] [data-appearance-panel]
+) {
+  display: none;
+}
