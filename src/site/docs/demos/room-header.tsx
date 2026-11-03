@@ -26,7 +26,7 @@ export default function RoomHeaderDemo() {
             </p>
           </RoomHeader>
         </StateRow>
-        <StateRow label="Studio, Line Sans">
+        <StateRow label="Studio, Naïve Sans">
           <RoomHeader
             title="Notes from the back office"
             kicker="The journal · Nº 12"

@@ -1,4 +1,4 @@
-// Naïve Indie Inline: the skeleton drawn as a contrasted serif. A broad nib held along the / diagonal decides how thick
+// Fineliner Naïve Inline: the skeleton drawn as a contrasted serif. A broad nib held along the / diagonal decides how thick
 // each part of a stroke is (verticals and \ diagonals thick, horizontals and / diagonals thin, curves swelling at their
 // sides); a thick part is drawn as its two outlines with the tint between them, a thin part as one line. Free ends on
 // the baseline or the cap line take a short serif, free arm ends a tick. Coordinates are font units, y up.

@@ -35,7 +35,7 @@ Measured 2026-11-03: sizes gzipped (unpacked in brackets), speed in Chrome.
 | Theme studio                       | 39 KB of HTML (289 KB)                                                                                       |
 | Listening Room catalogue           | 33 KB of HTML (215 KB)                                                                                       |
 | The drawing library                | 83 KB of HTML (582 KB, 62 objects), plus the pen engine (23 KB) where boil shows the other takes             |
-| Stylesheet                         | 51 KB with the paper textures; Line Sans loads beside it from `/fonts/` (74 KB, preloaded)                   |
+| Stylesheet                         | 51 KB with the paper textures; Naïve Sans loads beside it from `/fonts/` (74 KB, preloaded)                  |
 | A collapsible opening              | No frame over 17 ms in Chrome with the GPU (one frame in three took 100 ms while the paper repainted)        |
 | A 200-row table                    | No frame over 20 ms while scrolling at 1× CPU; two or three 33 ms frames at 4× (headless Chromium)           |
 | Share images                       | 91 PNGs at 1200 × 630, about 31 KB each, drawn at build time                                                 |

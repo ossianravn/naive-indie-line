@@ -31,7 +31,7 @@ export const meta = {
 export interface Hero01Props {
   /** The product's name, lettered by the pen and read as the page's heading. */
   product?: string
-  /** The wordmark's face: "line" (Naïve Indie Line Sans), "inline" or "tramline" (import their stylesheets once). */
+  /** The wordmark's face: "line" (Fineliner Naïve Sans), "inline" or "tramline" (import their stylesheets once). */
   face?: LetteringFace
   /** A line in the label voice above the name. */
   kicker?: ReactNode

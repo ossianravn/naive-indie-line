@@ -23,7 +23,7 @@ export interface RoomHeaderProps extends Omit<
   kicker?: ReactNode
   /** room (a listening room), studio (a freelancer's desk) or bistro (a table for two). */
   scene?: SceneName
-  /** The title's face: "line" (Naïve Indie Line Sans), "inline" or "tramline" (import their stylesheets once). */
+  /** The title's face: "line" (Fineliner Naïve Sans), "inline" or "tramline" (import their stylesheets once). */
   face?: LetteringFace
   /** beside: title and scene side by side on wide containers. under: the scene above, the title centred under it. */
   layout?: "beside" | "under"

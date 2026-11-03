@@ -88,7 +88,7 @@ const CRUMB: Record<Section, [label: string, href: string]> = {
   settings: ["Settings", "/listening-room/settings"],
 }
 
-/** The shop's name, in Naïve Indie Line Sans. */
+/** The shop's name, in Fineliner Naïve Sans. */
 const Name = ({ className }: { className: string }) => (
   <Lettering text="Listening Room" className={className} />
 )

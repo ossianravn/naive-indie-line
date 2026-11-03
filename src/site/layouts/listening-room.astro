@@ -23,15 +23,17 @@ const shareImage = new URL("/og/listening-room.png", Astro.site ?? Astro.url)
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Every page letters something in Line Sans; the build serves it as a file (astro.config.mjs). -->
+    <!-- Every page letters something in Naïve Sans; the build serves it as a file (astro.config.mjs). -->
     <link
       rel="preload"
-      href="/fonts/naive-indie-line-sans.woff2"
+      href="/fonts/fineliner-naive-sans.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
     <title>{title} · Listening Room</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta
       name="description"
       content="Listening Room, a record shop with a room to listen in: a demo product built with Fineliner."

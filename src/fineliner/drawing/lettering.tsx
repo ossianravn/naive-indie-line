@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react"
 import { cn } from "@/fineliner/lib/utils"
 
-/** The pen as typefaces: Naïve Indie Line Sans, Inline and Tramline. */
+/** The pen as typefaces: Fineliner Naïve Sans, Inline and Tramline. */
 export type LetteringFace = "line" | "inline" | "tramline"
 
 export interface LetteringProps extends Omit<
@@ -11,8 +11,8 @@ export interface LetteringProps extends Omit<
   /** The words to letter. */
   text: string
   /**
-   * "line" (the default) sets the words in Naïve Indie Line Sans. "inline" sets them in Naïve Indie Inline with its
-   * tint in the wash under the outlines (import styles/inline.generated.css once); "tramline" in Naïve Indie Tramline,
+   * "line" (the default) sets the words in Fineliner Naïve Sans. "inline" sets them in Fineliner Naïve Inline with its
+   * tint in the wash under the outlines (import styles/inline.generated.css once); "tramline" in Fineliner Naïve Tramline,
    * every stroke three parallel lines (import styles/tramline.generated.css once). Size it with a text size.
    */
   face?: LetteringFace

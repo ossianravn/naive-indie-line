@@ -46,7 +46,7 @@ export interface LabelCardProps extends Omit<ComponentProps<"div">, "title"> {
   scene?: SceneName
   /** A picture of your own in place of a drawing, or false for a label without one. */
   art?: ReactNode | false
-  /** Letter the title in Naïve Indie Line Sans ("line"), Inline or Tramline; the reading face when left out. */
+  /** Letter the title in Fineliner Naïve Sans ("line"), Inline or Tramline; the reading face when left out. */
   face?: LetteringFace
   /** Same seed, same drawing and border. Defaults to the title's words. */
   seed?: string | number

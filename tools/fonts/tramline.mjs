@@ -1,4 +1,4 @@
-// Naïve Indie Tramline: the drawn Tramline as a font. Every stroke of the skeleton becomes three parallel lines a little
+// Fineliner Naïve Tramline: the drawn Tramline as a font. Every stroke of the skeleton becomes three parallel lines a little
 // apart, each wobbled on its own by the hand, running a little past its ends or stopping short of them (so the lines
 // cross at corners, as the pen's do), and swept by a fine round pen; accents and bars draw their lines closer. Each take tilts and
 // lifts its letter a little, as the drawn lettering does letter by letter. Skeleton units in, font units out.

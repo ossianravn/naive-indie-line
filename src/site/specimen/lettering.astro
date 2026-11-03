@@ -1,80 +1,163 @@
 ---
-// Lettering: Naïve Indie Line Sans, the pen as a real typeface, shown at size with its whole character set and a line
-// in several languages; Naïve Indie Inline, its contrasted serif with the tint; then Naïve Indie Tramline, three lines
-// to a stroke. Titles come from the shop's racks, so the section hands on to the records in use at the end of the sheet.
+// Lettering: the three Fineliner Naïve faces, each shown the same way so they compare at a glance: a title from the
+// shop's racks at one size, the face's name, what it is and its files beside it, then its letters and figures at one
+// size. A faint rule parts the faces. The set they share (marks, accents, a line in several languages) closes the
+// section once, in Sans, rather than differently under each.
 import { Lettering } from "@/fineliner/drawing/lettering"
+import { frameVars, seedOf } from "@/fineliner/pen"
 import SheetSection from "./sheet-section.astro"
 
-const SET: [string, string][] = [
-  ["Letters", "ABCDEFGHIJKLMNOPQRSTUVWXYZ ÆØÅ ŒẞÞÐŊĲ"],
-  ["Figures", "0123456789"],
-  ["Marks", ".,:;!?¡¿ '\"‘’“”‚„ «»‹› -–— … ()[]{} /\\| @#$%&*+−=<>^_~ €£¥¢ §©®°±×÷•¶"],
+type Face = "line" | "inline" | "tramline"
+const FACES: {
+  face: Face
+  sample: string
+  name: string
+  about: string
+  files: [string, string][]
+}[] = [
+  {
+    face: "line",
+    sample: "Paper Moons",
+    name: "Fineliner Naïve Sans",
+    about:
+      "The pen as a typeface: capitals in one line, three takes of every letter that take turns, so a word never repeats a stamp.",
+    files: [
+      ["OTF", "fineliner-naive-sans.otf"],
+      ["WOFF2", "fineliner-naive-sans.woff2"],
+    ],
+  },
+  {
+    face: "inline",
+    sample: "Rue Verte",
+    name: "Fineliner Naïve Inline",
+    about:
+      "A contrasted serif: thick strokes drawn as two lines with the wash between them, thin strokes as one. Two fonts, the outlines and their Fill, set one over the other.",
+    files: [
+      ["Inline OTF", "fineliner-naive-inline.otf"],
+      ["Fill OTF", "fineliner-naive-inline-fill.otf"],
+    ],
+  },
+  {
+    face: "tramline",
+    sample: "Rêverie",
+    name: "Fineliner Naïve Tramline",
+    about:
+      "Every stroke drawn three times side by side, the lines running past their ends where they meet, each letter leaning a little its own way.",
+    files: [
+      ["OTF", "fineliner-naive-tramline.otf"],
+      ["WOFF2", "fineliner-naive-tramline.woff2"],
+    ],
+  },
+]
+const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ ÆØÅ ŒẞÞÐŊĲ"
+const FIGURES = "0123456789"
+const SHARED: [string, string][] = [
+  [
+    "Marks",
+    ".,:;!?¡¿ '\"‘’“”‚„ «»‹› -–— … ()[]{} /\\| @#$%&*+−=<>^_~ €£¥¢ §©®°±×÷•¶",
+  ],
   [
     "Accents",
     "ÀÁÂÃÄĀĂĄ ÇĆĈĊČ ĎĐ ÈÉÊËĒĔĖĘĚ ĜĞĠĢ ĤĦ ÌÍÎÏĨĪĬĮİ Ĵ Ķ ĹĻĽĿŁ ÑŃŅŇ ÒÓÔÕÖØŌŎŐ ŔŖŘ ŚŜŞŠȘ ŢŤŦȚ ÙÚÛÜŨŪŬŮŰŲ ŴẀẂẄ ÝŶŸỲ ŹŻŽ",
   ],
+  [
+    "Languages",
+    "Blåbærsyltetøy · Zażółć gęślą jaźń · Árvíztűrő tükörfúrógép · Șofer ținând · Glāžšķūņa rūķīši",
+  ],
 ]
-const EUROPE = "Blåbærsyltetøy · Zażółć gęślą jaźń · Árvíztűrő tükörfúrógép · Șofer ținând · Glāžšķūņa rūķīši"
+const rule = (key: string) => frameVars(seedOf(`lettering-rule-${key}`))
 ---
 
 <SheetSection id="lettering">
   <div class="grid gap-y-section">
-    <div class="grid items-end gap-x-line gap-y-tight lg:grid-cols-9">
-      <Lettering text="Paper Moons" className="block text-[clamp(3rem,9vw,5.5rem)] lg:col-span-6" />
-      <div class="lg:col-span-3">
-        <p class="m-0 text-lead leading-subhead">Naïve Indie Line Sans</p>
-        <p class="m-0 text-small leading-small text-pen-quiet">
-          The pen as a typeface: capitals in one line, three takes of every letter that take turns, so a word never
-          repeats a stamp. Real text, for every Latin-script language in Europe.
-        </p>
-        <p class="m-0 mt-tight text-small leading-small">
-          <a href="/fonts/naive-indie-line-sans.otf" download>OTF</a> ·{" "}
-          <a href="/fonts/naive-indie-line-sans.woff2" download>WOFF2</a> · MIT
+    {
+      FACES.map(({ face, sample, name, about, files }) => (
+        <>
+          <article class="grid gap-y-line" aria-label={name}>
+            <div class="grid items-start gap-x-line gap-y-tight lg:grid-cols-9">
+              <Lettering
+                text={sample}
+                face={face}
+                className="block text-[clamp(2.75rem,7vw,4.5rem)] whitespace-nowrap lg:col-span-6"
+              />
+              <div class="lg:col-span-3">
+                <h3 class="m-0 text-lead leading-subhead">{name}</h3>
+                <p class="m-0 text-small leading-small text-pen-quiet">
+                  {about}
+                </p>
+                <p class="m-0 mt-tight text-small leading-small">
+                  {files.map(([label, file]) => (
+                    <>
+                      <a href={`/fonts/${file}`} download>
+                        {label}
+                      </a>{" "}
+                      ·{" "}
+                    </>
+                  ))}
+                  MIT
+                </p>
+              </div>
+            </div>
+            <dl class="m-0 grid gap-y-tight lg:grid-cols-9 lg:gap-x-line">
+              {[
+                ["Letters", LETTERS],
+                ["Figures", FIGURES],
+              ].map(([label, glyphs]) => (
+                <div class="contents">
+                  <dt class="label text-pen-quiet lg:col-span-1 lg:pt-hair">
+                    {label}
+                  </dt>
+                  <dd class="m-0 lg:col-span-8">
+                    <Lettering
+                      text={glyphs ?? ""}
+                      face={face}
+                      className="block text-[1.75rem] wrap-anywhere"
+                    />
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </article>
+          <div
+            class="rule text-pen-faint"
+            style={rule(face)}
+            aria-hidden="true"
+          />
+        </>
+      ))
+    }
+    <article class="grid gap-y-line" aria-labelledby="lettering-shared">
+      <div class="grid gap-x-line gap-y-tight lg:grid-cols-9">
+        <h3
+          id="lettering-shared"
+          class="m-0 text-lead leading-subhead lg:col-span-6"
+        >
+          The set they share
+        </h3>
+        <p
+          class="m-0 text-small leading-small text-pen-quiet lg:col-span-3 lg:row-span-2"
+        >
+          All three draw the same 197 characters, for every Latin-script
+          language in Europe; lowercase types the capitals.
         </p>
       </div>
-    </div>
-    <dl class="m-0 grid gap-y-snug lg:grid-cols-9 lg:gap-x-line">
-      {
-        SET.map(([name, glyphs]) => (
-          <div class="contents">
-            <dt class="label text-pen-quiet lg:col-span-1 lg:pt-hair">{name}</dt>
-            <dd class="m-0 lg:col-span-8">
-              <Lettering text={glyphs} className="block text-[1.75rem] wrap-anywhere" />
-            </dd>
-          </div>
-        ))
-      }
-    </dl>
-    <Lettering text={EUROPE} className="block max-w-[52rem] text-[1.6rem] leading-[1.35]" />
-    <div class="grid items-end gap-x-line gap-y-tight lg:grid-cols-9">
-      <Lettering text="Side Streets" face="inline" className="block text-[clamp(3rem,9vw,5.5rem)] lg:col-span-6" />
-      <div class="lg:col-span-3">
-        <p class="m-0 text-lead leading-subhead">Naïve Indie Inline</p>
-        <p class="m-0 text-small leading-small text-pen-quiet">
-          The pen as a contrasted serif: thick strokes drawn as two lines with the wash between them, thin strokes as
-          one. Two fonts, the outlines and their Fill, set one over the other.
-        </p>
-        <p class="m-0 mt-tight text-small leading-small">
-          <a href="/fonts/naive-indie-inline.otf" download>Inline OTF</a> ·{" "}
-          <a href="/fonts/naive-indie-inline-fill.otf" download>Fill OTF</a> · MIT
-        </p>
-      </div>
-    </div>
-    <Lettering text={SET[3]?.[1] ?? ""} face="inline" className="block max-w-[56rem] text-[2rem] leading-[1.35] wrap-anywhere" />
-    <div class="grid items-end gap-x-line gap-y-tight lg:grid-cols-9">
-      <Lettering text="Rêverie" face="tramline" className="block text-[clamp(3rem,9vw,5.5rem)] lg:col-span-6" />
-      <div class="lg:col-span-3">
-        <p class="m-0 text-lead leading-subhead">Naïve Indie Tramline</p>
-        <p class="m-0 text-small leading-small text-pen-quiet">
-          Every stroke drawn three times side by side, the lines running past their ends where they meet, and each
-          letter leaning a little its own way.
-        </p>
-        <p class="m-0 mt-tight text-small leading-small">
-          <a href="/fonts/naive-indie-tramline.otf" download>OTF</a> ·{" "}
-          <a href="/fonts/naive-indie-tramline.woff2" download>WOFF2</a> · MIT
-        </p>
-      </div>
-    </div>
-    <Lettering text={SET[0]?.[1] ?? ""} face="tramline" className="block max-w-[56rem] text-[2rem] leading-[1.35] wrap-anywhere" />
+      <dl class="m-0 grid gap-y-tight lg:grid-cols-9 lg:gap-x-line">
+        {
+          SHARED.map(([label, glyphs]) => (
+            <div class="contents">
+              <dt class="label text-pen-quiet lg:col-span-1 lg:pt-hair">
+                {label}
+              </dt>
+              <dd class="m-0 lg:col-span-8">
+                <Lettering
+                  text={glyphs}
+                  className="block text-[1.75rem] leading-[1.35] wrap-anywhere"
+                />
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </article>
   </div>
 </SheetSection>

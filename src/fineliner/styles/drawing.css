@@ -7,7 +7,7 @@
   :where([data-slot="lettering"]) {
     line-height: 1.1;
   }
-  /* Naïve Indie Inline: the outlines in the pen, its Fill font laid under them in the wash. Both fonts shape a line
+  /* Fineliner Naïve Inline: the outlines in the pen, its Fill font laid under them in the wash. Both fonts shape a line
      the same way, so the tint sits exactly between the outlines however the words wrap. */
   :where([data-slot="lettering"][data-face="inline"]) {
     position: relative;

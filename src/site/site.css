@@ -3,19 +3,19 @@
    imports styles/inline.generated.css and styles/tramline.generated.css, which carry them inside, instead. */
 
 @font-face {
-  font-family: "Naïve Indie Inline";
+  font-family: "Fineliner Naïve Inline";
   font-display: swap;
-  src: url("/fonts/naive-indie-inline.woff2") format("woff2");
+  src: url("/fonts/fineliner-naive-inline.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Naïve Indie Inline Fill";
+  font-family: "Fineliner Naïve Inline Fill";
   font-display: swap;
-  src: url("/fonts/naive-indie-inline-fill.woff2") format("woff2");
+  src: url("/fonts/fineliner-naive-inline-fill.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Naïve Indie Tramline";
+  font-family: "Fineliner Naïve Tramline";
   font-display: swap;
-  src: url("/fonts/naive-indie-tramline.woff2") format("woff2");
+  src: url("/fonts/fineliner-naive-tramline.woff2") format("woff2");
 }
 
 .segmented {

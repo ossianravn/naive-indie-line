@@ -63,7 +63,7 @@ export interface RecordSleeveProps extends Omit<
   object?: string
   /** A whole scene on the cover in place of an object; import "@/fineliner/pen/objects/rooms" for the kit's. */
   scene?: SceneName
-  /** The title's face: "line" (Naïve Indie Line Sans, the default), "inline" or "tramline" (import their stylesheets once). */
+  /** The title's face: "line" (Fineliner Naïve Sans, the default), "inline" or "tramline" (import their stylesheets once). */
   face?: LetteringFace
   /** The pen's hand. Left out, the sleeve follows the page's hand. */
   hand?: HandName

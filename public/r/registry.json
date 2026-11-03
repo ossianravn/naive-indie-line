@@ -1080,7 +1080,7 @@
       "name": "font-inline",
       "type": "registry:component",
       "title": "Font Inline",
-      "description": "Naïve Indie Inline and its Fill, embedded in one stylesheet: import it once (@import \"./fineliner/styles/inline.generated.css\") to letter with <Lettering face=\"inline\">.",
+      "description": "Fineliner Naïve Inline and its Fill, embedded in one stylesheet: import it once (@import \"./fineliner/styles/inline.generated.css\") to letter with <Lettering face=\"inline\">.",
       "registryDependencies": [
         "@fineliner/base"
       ],
@@ -1096,7 +1096,7 @@
       "name": "font-tramline",
       "type": "registry:component",
       "title": "Font Tramline",
-      "description": "Naïve Indie Tramline, embedded in one stylesheet: import it once (@import \"./fineliner/styles/tramline.generated.css\") to letter with <Lettering face=\"tramline\">.",
+      "description": "Fineliner Naïve Tramline, embedded in one stylesheet: import it once (@import \"./fineliner/styles/tramline.generated.css\") to letter with <Lettering face=\"tramline\">.",
       "registryDependencies": [
         "@fineliner/base"
       ],

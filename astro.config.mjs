@@ -37,7 +37,7 @@ const touchNewFiles = {
 }
 
 /**
- * Build only. The kit embeds Naïve Indie Line Sans in its stylesheet so an install needs no font files; the site serves
+ * Build only. The kit embeds Fineliner Naïve Sans in its stylesheet so an install needs no font files; the site serves
  * the file instead (preloaded in the layouts), so 74 KB of font loads beside the stylesheet rather than inside it, where
  * it would hold back the first paint.
  * @type {import("vite").Plugin}
@@ -49,8 +49,8 @@ const lineSansFromFile = {
     for (const file of Object.values(bundle))
       if (file.type === "asset" && file.fileName.endsWith(".css"))
         file.source = String(file.source).replace(
-          /(font-family:\s*"?Naïve Indie Line Sans"?;[^}]*?)url\(data:font\/woff2;base64,[^)]+\)/,
-          '$1url("/fonts/naive-indie-line-sans.woff2")',
+          /(font-family:\s*"?Fineliner Naïve Sans"?;[^}]*?)url\(data:font\/woff2;base64,[^)]+\)/,
+          '$1url("/fonts/fineliner-naive-sans.woff2")',
         )
   },
 }

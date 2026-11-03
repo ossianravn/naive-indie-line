@@ -1,4 +1,4 @@
-// The glyph set every Naïve Indie font draws: the kit's skeleton alphabet (src/fineliner/pen/glyphs.ts), the extras
+// The glyph set every Fineliner Naïve font draws: the kit's skeleton alphabet (src/fineliner/pen/glyphs.ts), the extras
 // and composites in glyphs.mjs, and which characters each glyph answers to (itself, its lowercase, look-alikes).
 // A glyph is { w, s, m, d }: strokes, marks (accents and bars, which a face may draw lighter) and dots.
 import path from "node:path"

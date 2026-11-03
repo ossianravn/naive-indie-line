@@ -1,10 +1,10 @@
-// Naïve Indie Line Sans for the share images: they are rasterised at build time without a browser, so the words are
+// Fineliner Naïve Sans for the share images: they are rasterised at build time without a browser, so the words are
 // set as outlines from the font file instead of as text. Returns an SVG in the same shape the pen's lettering has.
 import fs from "node:fs"
 import path from "node:path"
 import opentype, { type Command } from "opentype.js"
 
-const FILE = path.resolve("public/fonts/naive-indie-line-sans.otf")
+const FILE = path.resolve("public/fonts/fineliner-naive-sans.otf")
 let font: ReturnType<typeof opentype.parse> | undefined
 
 // Written here rather than by opentype.js 2.0's toPathData, whose number formatting puts NaN into these outlines.

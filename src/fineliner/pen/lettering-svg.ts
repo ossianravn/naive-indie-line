@@ -17,7 +17,7 @@ interface Face {
   lines: number
 }
 
-/** The drawn faces. Naïve Indie Line Sans, the kit's other display face, is a real font (styles/line-sans.generated.css). */
+/** The drawn faces. Fineliner Naïve Sans, the kit's other display face, is a real font (styles/line-sans.generated.css). */
 export const FACES = {
   tramline: { name: "Tramline", sx: 1, track: 28, lines: 4.6 },
 } satisfies Record<string, Face>

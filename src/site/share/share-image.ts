@@ -3,8 +3,8 @@ import "@/fineliner/pen/objects/rooms"
 import { drawing, pen, stream, seedOf, type SceneName } from "@/fineliner/pen"
 import { lineSans } from "./line-sans"
 
-// A share image drawn by the pen: day paper with a few flecks, the label's drawn border, the title set in Naïve Indie
-// Line Sans, a kicker set small, and a drawing from the library on the right. Built as one SVG at 1200 × 630 and rasterised
+// A share image drawn by the pen: day paper with a few flecks, the label's drawn border, the title set in Fineliner Naïve
+// Sans, a kicker set small, and a drawing from the library on the right. Built as one SVG at 1200 × 630 and rasterised
 // at build time (src/pages/og/[slug].png.ts). Classes become inline paint, so each drawing keeps one screen weight
 // however far it is scaled, without relying on non-scaling strokes in the rasteriser.
 
