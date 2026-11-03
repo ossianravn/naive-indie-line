@@ -3,6 +3,10 @@
 
 /* The drawing's box is a default the call site sizes (w-20, [&>svg]:h-6), so it sits in a layer below utilities. */
 @layer components {
+  /* Lettering set in Naïve Indie Line Sans: display lines sit close. A caller's leading-* still wins (no specificity). */
+  :where([data-slot="lettering"][data-face="line"]) {
+    line-height: 1.1;
+  }
   .fl-drawing {
     display: block;
     width: 100%;

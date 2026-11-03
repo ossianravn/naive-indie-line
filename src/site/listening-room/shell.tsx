@@ -87,17 +87,9 @@ const CRUMB: Record<Section, [label: string, href: string]> = {
   settings: ["Settings", "/listening-room/settings"],
 }
 
-/** The shop's name, drawn in the stilt hand. */
+/** The shop's name, in Naïve Indie Line Sans. */
 const Name = ({ className }: { className: string }) => (
-  <Lettering
-    text="Listening Room"
-    seed="listening-room"
-    face="stilt"
-    still
-    role="img"
-    aria-label="Listening Room"
-    className={className}
-  />
+  <Lettering text="Listening Room" className={className} />
 )
 
 /** Listening Room's frame: the shop's sections in a sidebar (a sheet on phones) beside the page. */
@@ -129,7 +121,7 @@ export function ListeningRoomShell({
                   className="w-12 shrink-0 group-data-[collapsible=icon]:w-7"
                 />
                 <span className="flex min-w-0 flex-col gap-hair">
-                  <Name className="[&>svg]:h-7 [&>svg]:w-auto" />
+                  <Name className="text-[1.3rem] whitespace-nowrap" />
                   <span className="label truncate text-pen-quiet">
                     Records · Room · Wine
                   </span>
@@ -224,7 +216,7 @@ export function ListeningRoomShell({
           <Separator orientation="vertical" className="my-4" />
           {/* On phones the sidebar is a sheet, so the top bar carries the shop's name. */}
           <a href="/listening-room" className="flex items-center md:hidden">
-            <Name className="flex [&>svg]:h-5 [&>svg]:w-auto" />
+            <Name className="text-[1.15rem] whitespace-nowrap" />
           </a>
           <a
             href={CRUMB[current][1]}

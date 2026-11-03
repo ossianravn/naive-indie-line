@@ -56,16 +56,8 @@ function RoomHeaderPreview() {
     <div className="grid w-full max-w-[17rem] grid-cols-[minmax(0,1fr)_6rem] items-end gap-x-snug">
       <div className="flex min-w-0 flex-col gap-hair">
         <p className="label m-0 text-pen-quiet">The journal</p>
-        <p className="m-0 flex flex-wrap items-end gap-x-[0.18em]">
-          {["How", "we", "grade", "a", "record"].map((word, i) => (
-            <Lettering
-              key={`${i}-${word}`}
-              text={word}
-              face="liner"
-              seed={`How we grade a record:${i}`}
-              className="h-6 shrink-0 [&>svg]:h-full [&>svg]:w-auto"
-            />
-          ))}
+        <p className="m-0">
+          <Lettering text="How we grade a record" className="text-[1.5rem]" />
         </p>
       </div>
       <Drawing object="armchair" seed="gallery:room-header" still title="" />

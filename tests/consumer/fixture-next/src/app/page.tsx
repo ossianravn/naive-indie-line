@@ -23,7 +23,7 @@ export default function Page() {
     <>
       <FinelinerDefs />
       <main className="mx-auto grid max-w-measure gap-section p-page">
-        <Lettering text="Side B" face="liner" className="h-16" />
+        <Lettering text="Side B" className="text-6xl" />
         <Drawing object="turntable" seed="consumer" className="w-64" />
         <p className={cn("font-read text-body")}>
           Records, coffee and a listening corner, open from{" "}

@@ -18,7 +18,7 @@ export default function LabelCardDemo() {
           <LabelCard
             scene="room"
             title="Listening Room"
-            face="stilt"
+            face="line"
             kicker="Chenin blanc · Loire · 2025"
             spine="Pétillant Naturel"
             className="w-[19rem]"
@@ -81,7 +81,7 @@ export default function LabelCardDemo() {
           <LabelCard
             object="disco-ball"
             title="A Room to Listen In"
-            face="liner"
+            face="line"
             kicker="Various artists · 2×LP"
             spine={<EditionNumber value={127} of={500} />}
           />
@@ -120,7 +120,7 @@ export default function LabelCardDemo() {
             <LabelCard
               scene="bistro"
               title="Wine Thursday"
-              face="stilt"
+              face="line"
               kicker="Thursday 19 November"
               spine="Listening Room"
             />

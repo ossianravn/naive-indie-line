@@ -1,35 +1,64 @@
 ---
-// Lettering: the four faces the pen strokes from one skeleton alphabet, each lettering a title from the shop's racks,
+// Lettering: Naïve Indie Line Sans, the pen as a real typeface, shown at size with its whole character set and a line
+// in several languages; then Tramline, drawn by the pen from the skeleton alphabet. Titles come from the shop's racks,
 // so the section hands on to the records in use at the end of the sheet.
 import { Lettering } from "@/fineliner/drawing/lettering"
-import type { FaceName } from "@/fineliner/pen"
 import SheetSection from "./sheet-section.astro"
 
-const FACES: [FaceName, string, string, string][] = [
-  ["liner", "Liner", "One monoline, a short serif across every free end.", "Paper Moons"],
-  ["stilt", "Stilt", "Liner drawn tall and narrow, for spines and signs.", "Quiet Hours"],
-  ["ribbon", "Ribbon", "Two outlines a stroke apart, filled with the wash.", "Side Streets"],
-  ["tramline", "Tramline", "Three parallel lines and no serifs.", "Pétillant"],
+const SET: [string, string][] = [
+  ["Letters", "ABCDEFGHIJKLMNOPQRSTUVWXYZ ÆØÅ ŒẞÞÐŊĲ"],
+  ["Figures", "0123456789"],
+  ["Marks", ".,:;!?¡¿ '\"‘’“”‚„ «»‹› -–— … ()[]{} /\\| @#$%&*+−=<>^_~ €£¥¢ §©®°±×÷•¶"],
+  [
+    "Accents",
+    "ÀÁÂÃÄĀĂĄ ÇĆĈĊČ ĎĐ ÈÉÊËĒĔĖĘĚ ĜĞĠĢ ĤĦ ÌÍÎÏĨĪĬĮİ Ĵ Ķ ĹĻĽĿŁ ÑŃŅŇ ÒÓÔÕÖØŌŎŐ ŔŖŘ ŚŜŞŠȘ ŢŤŦȚ ÙÚÛÜŨŪŬŮŰŲ ŴẀẂẄ ÝŶŸỲ ŹŻŽ",
+  ],
 ]
+const EUROPE = "Blåbærsyltetøy · Zażółć gęślą jaźń · Árvíztűrő tükörfúrógép · Șofer ținând · Glāžšķūņa rūķīši"
 ---
 
 <SheetSection id="lettering">
-  <ul class="m-0 grid list-none gap-y-section p-0">
-    {
-      FACES.map(([face, name, note, words]) => (
-        <li class="grid items-end gap-x-line gap-y-tight lg:grid-cols-9">
-          <Lettering
-            text={words}
-            face={face}
-            seed={`sheet-${face}`}
-            className="block h-14 max-w-full lg:col-span-6 [&>svg]:h-full [&>svg]:w-auto [&>svg]:max-w-full"
-          />
-          <div class="lg:col-span-3">
-            <p class="m-0 text-lead leading-subhead">{name}</p>
-            <p class="m-0 text-small leading-small text-pen-quiet">{note}</p>
+  <div class="grid gap-y-section">
+    <div class="grid items-end gap-x-line gap-y-tight lg:grid-cols-9">
+      <Lettering text="Paper Moons" className="block text-[clamp(3rem,9vw,5.5rem)] lg:col-span-6" />
+      <div class="lg:col-span-3">
+        <p class="m-0 text-lead leading-subhead">Naïve Indie Line Sans</p>
+        <p class="m-0 text-small leading-small text-pen-quiet">
+          The pen as a typeface: capitals in one line, three takes of every letter that take turns, so a word never
+          repeats a stamp. Real text, for every Latin-script language in Europe.
+        </p>
+        <p class="m-0 mt-tight text-small leading-small">
+          <a href="/fonts/naive-indie-line-sans.otf" download>OTF</a> ·
+          <a href="/fonts/naive-indie-line-sans.woff2" download>WOFF2</a> · MIT
+        </p>
+      </div>
+    </div>
+    <dl class="m-0 grid gap-y-snug lg:grid-cols-9 lg:gap-x-line">
+      {
+        SET.map(([name, glyphs]) => (
+          <div class="contents">
+            <dt class="label text-pen-quiet lg:col-span-1 lg:pt-hair">{name}</dt>
+            <dd class="m-0 lg:col-span-8">
+              <Lettering text={glyphs} className="block text-[1.75rem] wrap-anywhere" />
+            </dd>
           </div>
-        </li>
-      ))
-    }
-  </ul>
+        ))
+      }
+    </dl>
+    <Lettering text={EUROPE} className="block max-w-[52rem] text-[1.6rem] leading-[1.35]" />
+    <div class="grid items-end gap-x-line gap-y-tight lg:grid-cols-9">
+      <Lettering
+        text="Pétillant"
+        face="tramline"
+        seed="sheet-tramline"
+        className="block h-14 max-w-full lg:col-span-6 [&>svg]:h-full [&>svg]:w-auto [&>svg]:max-w-full"
+      />
+      <div class="lg:col-span-3">
+        <p class="m-0 text-lead leading-subhead">Tramline</p>
+        <p class="m-0 text-small leading-small text-pen-quiet">
+          Drawn by the pen from the skeleton alphabet: three parallel lines, each word leaning by its seed.
+        </p>
+      </div>
+    </div>
+  </div>
 </SheetSection>

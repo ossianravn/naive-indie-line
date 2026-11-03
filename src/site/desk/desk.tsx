@@ -9,12 +9,10 @@ import { Lettering } from "@/fineliner/drawing/lettering"
 import { PenMark } from "@/fineliner/drawing/pen-mark"
 import {
   COLLECTIONS,
-  FACES,
   SCENES,
   drawing,
   lettering,
   listObjects,
-  type FaceName,
   type HandName,
   type SceneName,
 } from "@/fineliner/pen"
@@ -47,7 +45,6 @@ export function Desk() {
     () => query().get("object") ?? "turntable",
   )
   const [text, setText] = useState("Listening room")
-  const [face, setFace] = useState<FaceName>("liner")
   const [seed, setSeed] = useState(() => query().get("seed") ?? "corner-shop")
   const [hand, setHand] = useState<HandName>("lively")
   const [copied, setCopied] = useState("")
@@ -70,7 +67,7 @@ export function Desk() {
   }
   const svg = () =>
     (kind === "lettering"
-      ? lettering(text, { face, seed, hand })
+      ? lettering(text, { face: "tramline", seed, hand })
       : drawing({
           ...(kind === "scene" ? { scene } : { object }),
           seed,
@@ -78,7 +75,7 @@ export function Desk() {
         }))[0] ?? ""
   const jsx =
     kind === "lettering"
-      ? `<Lettering text="${text}" face="${face}" seed="${seed}" />`
+      ? `<Lettering text="${text}" face="tramline" seed="${seed}" />`
       : kind === "scene"
         ? `<Drawing scene="${scene}" seed="${seed}" />`
         : `<Drawing object="${object}" seed="${seed}" />`
@@ -91,7 +88,7 @@ export function Desk() {
     kind === "lettering" ? (
       <Lettering
         text={text}
-        face={face}
+        face="tramline"
         seed={s}
         hand={hand}
         className={className}
@@ -187,14 +184,6 @@ export function Desk() {
                 />
               </span>
             </label>
-            <Segments
-              label="Face"
-              value={face}
-              onChange={setFace}
-              options={Object.entries(FACES).map(
-                ([k, f]) => [k as FaceName, f.name] as const,
-              )}
-            />
           </>
         )}
         <label className="grid justify-items-start gap-hair">

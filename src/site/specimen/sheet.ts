@@ -39,7 +39,7 @@ export const SHEET = [
     id: "lettering",
     title: "Lettering",
     intro:
-      "For covers and signs the pen letters its own words: one skeleton alphabet, stroked four ways, every letter leaning by its seed.",
+      "For covers and signs, two display faces: Naïve Indie Line Sans, the pen as a real typeface, and Tramline, drawn by the pen word by word.",
     rows: [],
   },
   {

@@ -60,7 +60,7 @@ The bar: before showing or reporting a screen, ask whether Apple would ship it. 
 
 Verify with the least total effort; never create unit tests. The dev server runs on **4791** (preview 4792); the static prototype on 4790 (`.claude/launch.json`). Never use framework default ports.
 
-1. Run `npm run typecheck` and `npm run lint` always; `npm run build` when routes, modules or dependencies change; `npm run registry` then `npm run registry:check` when a kit file is added, moved or changes its imports, and `npm run test:consumer` when an item's files or dependencies change; `npm run check:contrast` when stocks, pens or textures change (after `npm run build:textures` if you edited the layers).
+1. Run `npm run typecheck` and `npm run lint` always; `npm run build` when routes, modules or dependencies change; `npm run registry` then `npm run registry:check` when a kit file is added, moved or changes its imports, and `npm run test:consumer` when an item's files or dependencies change; `npm run check:contrast` when stocks, pens or textures change (after `npm run build:textures` if you edited the layers); `npm run build:fonts` when the skeleton alphabet (`pen/glyphs.ts`) or `tools/fonts` change, then look at the font large in a browser.
 2. Look at the changed screen with realistic content at 1440 and 390 px, day and night, on more than one stock. The browser pane may be hidden, which freezes transitions, timers and observers: check motion through the Web Animations API and say what you could not watch.
 3. Add a lasting test only for a boundary that will change again (from Phase 1: the registry install contract and the seed-to-drawing promise), in `tests/consumer/`.
 4. Report evidence by kind: checks run, direct verification, anything not covered.

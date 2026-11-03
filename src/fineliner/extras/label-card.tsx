@@ -1,9 +1,9 @@
 import type { ComponentProps, ReactNode } from "react"
 import { Drawing } from "@/fineliner/drawing/drawing"
-import { Lettering } from "@/fineliner/drawing/lettering"
+import { Lettering, type LetteringFace } from "@/fineliner/drawing/lettering"
 import { frameStyle, wordsOf } from "@/fineliner/lib/frame-style"
 import { cn } from "@/fineliner/lib/utils"
-import type { FaceName, HandName, SceneName } from "@/fineliner/pen"
+import type { HandName, SceneName } from "@/fineliner/pen"
 import { seedOf, stream } from "@/fineliner/pen/seed"
 
 // A label from a bottle or a sleeve: a drawing inside a drawn border, spine words standing up its outer edge (the
@@ -43,8 +43,8 @@ export interface LabelCardProps extends Omit<ComponentProps<"div">, "title"> {
   scene?: SceneName
   /** A picture of your own in place of a drawing, or false for a label without one. */
   art?: ReactNode | false
-  /** Letter the title by the pen in one of the four faces; the reading face when left out. */
-  face?: FaceName
+  /** Letter the title: "line" sets it in Naïve Indie Line Sans, "tramline" draws it; the reading face when left out. */
+  face?: LetteringFace
   /** Same seed, same drawing, border and letters. Defaults to the title's words. */
   seed?: string | number
   /** The pen's hand for the drawing and the letters. */
@@ -94,7 +94,9 @@ export function LabelCard({
       </div>
     )
   const heading =
-    face && words ? (
+    face === "line" && words ? (
+      <Lettering text={words} className="text-balance" />
+    ) : face && words ? (
       <>
         <span className="sr-only">{words}</span>
         {words.split(/\s+/).map((word, i) => (
@@ -114,9 +116,11 @@ export function LabelCard({
     )
 
   const titleLayout =
-    face && words
-      ? "flex flex-wrap items-center gap-x-[0.3em] gap-y-[0.2em] py-[0.1em] text-[2rem] leading-none"
-      : "font-read text-lead leading-subhead font-medium text-balance wrap-anywhere"
+    face === "line" && words
+      ? "py-[0.1em] text-[2rem]"
+      : face && words
+        ? "flex flex-wrap items-center gap-x-[0.3em] gap-y-[0.2em] py-[0.1em] text-[2rem] leading-none"
+        : "font-read text-lead leading-subhead font-medium text-balance wrap-anywhere"
 
   return (
     <div

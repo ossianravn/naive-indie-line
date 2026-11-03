@@ -83,7 +83,7 @@ export default function RecordSleeveDemo() {
             artist="Various artists"
             catalogue="LR-0412"
             scene="room"
-            face="ribbon"
+            face="line"
           />
         </StateRow>
       </DemoSection>

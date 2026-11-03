@@ -1,14 +1,8 @@
-import {
-  drawing,
-  lettering,
-  pen,
-  stream,
-  seedOf,
-  type SceneName,
-} from "@/fineliner/pen"
+import { drawing, pen, stream, seedOf, type SceneName } from "@/fineliner/pen"
+import { lineSans } from "./line-sans"
 
-// A share image drawn by the pen: day paper with a few flecks, the label's drawn border, the title lettered in Liner,
-// a kicker lettered small, and a drawing from the library on the right. Built as one SVG at 1200 × 630 and rasterised
+// A share image drawn by the pen: day paper with a few flecks, the label's drawn border, the title set in Naïve Indie
+// Line Sans, a kicker set small, and a drawing from the library on the right. Built as one SVG at 1200 × 630 and rasterised
 // at build time (src/pages/og/[slug].png.ts). Classes become inline paint, so each drawing keeps one screen weight
 // however far it is scaled, without relying on non-scaling strokes in the rasteriser.
 
@@ -28,14 +22,9 @@ const PEN = "#263152"
 const WASH = "#5b72a8"
 const WEIGHT = 2.6
 
-/** What the pen can letter: capitals, digits and a little punctuation; anything else becomes a space. */
+/** One line for the font: its capitals cover every Latin-script European language; the double prime goes. */
 const letterable = (text: string) =>
-  text
-    .toUpperCase()
-    .replace(/″/gu, "")
-    .replace(/[^A-ZÆØÅÄËÏÖÜÉ0-9 .,·'!?/+&–-]/gu, " ")
-    .replace(/\s+/gu, " ")
-    .trim()
+  text.replace(/″/gu, "").replace(/\s+/gu, " ").trim()
 
 /** One drawing's SVG placed in a box: its viewBox fitted in, its classes painted at a weight that survives the scale. */
 function place(
@@ -46,7 +35,7 @@ function place(
   h: number,
   align = "xMidYMid",
 ) {
-  const view = /viewBox="0 0 ([\d.]+) ([\d.]+)"/u.exec(svg)
+  const view = /viewBox="-?[\d.]+ -?[\d.]+ ([\d.]+) ([\d.]+)"/u.exec(svg)
   const [vw, vh] = view ? [Number(view[1]), Number(view[2])] : [w, h]
   const scale = Math.min(w / vw, h / vh)
   const stroke = (WEIGHT / scale).toFixed(2)
@@ -63,6 +52,7 @@ function place(
       `fill="${PEN}" stroke="${PEN}" stroke-width="${stroke}" stroke-linejoin="round"`,
     )
     .replace(/class="wash"/gu, `fill="${WASH}"`)
+    .replace(/class="glyph"/gu, `fill="${PEN}"`)
     .replace(/class="sheet-fill"/gu, `fill="${PAPER}"`)
 }
 
@@ -92,13 +82,8 @@ export function shareSvg({ slug, title, kicker, object, scene }: Share) {
   const words = letterable(title)
   // Long titles get a shorter box, so they letter smaller and stay in the left half.
   const titleHeight = words.length > 18 ? 74 : words.length > 11 ? 92 : 112
-  const titleSvg =
-    lettering(words || "FINELINER", { seed: slug, face: "liner" })[0] ?? ""
-  const kickerSvg =
-    lettering(letterable(kicker), {
-      seed: `${slug}:kicker`,
-      face: "stilt",
-    })[0] ?? ""
+  const titleSvg = lineSans(words || "Fineliner")
+  const kickerSvg = lineSans(letterable(kicker))
   const art =
     drawing({ object, scene, seed: slug, takes: 1, title: "" })[0] ?? ""
   return [

@@ -1,4 +1,4 @@
-// Lettering: words drawn by the pen from the skeleton alphabet, in four faces. Each letter takes a small seeded tilt
+// Lettering: words drawn by the pen from the skeleton alphabet, in Tramline, three parallel lines per stroke. Each letter takes a small seeded tilt
 // and lift, so the same word reads as hand-lettered and is the same on every render. Ported from the prototype in
 // specimen/lettering/lettering.js; lengths go through snap() before they decide a count.
 import { dist, last, snap, type Point } from "./geometry"
@@ -13,25 +13,16 @@ interface Face {
   sx: number
   /** Space after each letter. */
   track: number
-  /** Serif length at free stroke ends. */
-  serif?: number
-  /** Half the width of a ribbon stroke. */
-  ribbon?: number
   /** Spacing of a tramline's three lines. */
-  lines?: number
+  lines: number
 }
 
+/** The drawn faces. Naïve Indie Line Sans, the kit's other display face, is a real font (styles/line-sans.generated.css). */
 export const FACES = {
-  liner: { name: "Liner", sx: 1, track: 24, serif: 12 },
-  stilt: { name: "Stilt", sx: 0.54, track: 15, serif: 9 },
-  ribbon: { name: "Ribbon", sx: 1.04, track: 26, ribbon: 5.5 },
   tramline: { name: "Tramline", sx: 1, track: 28, lines: 4.6 },
 } satisfies Record<string, Face>
 
 export type FaceName = keyof typeof FACES
-
-/** Marks that never take serifs. */
-const PLAIN = new Set(["-", "–", "/", "+", "'", ",", "&"])
 
 const closed = (st: Point[]) =>
   st.length > 2 && dist(st[0] as Point, last(st)) < 0.5
@@ -65,58 +56,11 @@ function offset(st: Point[], d: number): Point[] {
   })
 }
 
-/** Is this end of a stroke free, or does it meet another stroke of the same letter? */
-const free = (end: Point, strokes: Point[][], self: number) =>
-  strokes.every(
-    (st, i) => i === self || resample(st, 2).every((pt) => dist(pt, end) > 4),
-  )
-
-/** A short tick across a stroke's free end: the serif. */
-function serif(end: Point, toward: Point, len: number): [Point, Point] {
-  const d = dist(end, toward) || 1
-  const [nx, ny] = [-(toward[1] - end[1]) / d, (toward[0] - end[0]) / d]
-  return [
-    [end[0] - (nx * len) / 2, end[1] - (ny * len) / 2],
-    [end[0] + (nx * len) / 2, end[1] + (ny * len) / 2],
-  ]
-}
-
-function strokeLetter(
-  s: Sheet,
-  p: Pen,
-  face: Face,
-  strokes: Point[][],
-  plain = false,
-) {
-  strokes.forEach((st, i) => {
-    if (face.ribbon) {
-      const [L, R] = [offset(st, face.ribbon), offset(st, -face.ribbon)]
-      if (closed(st)) {
-        s.raw(
-          `<path class="wash" fill-rule="evenodd" d="${p.shape(L)}${p.shape(R)}"/>`,
-        )
-      } else {
-        s.wash(p.shape([...L, ...R.slice().reverse()]))
-        s.stroke(p.line(L[0] as Point, R[0] as Point))
-        s.stroke(p.line(last(L), last(R)))
-      }
-      s.stroke(p.path(L))
-      s.stroke(p.path(R))
-    } else if (face.lines) {
-      for (const d of [-face.lines, 0, face.lines])
-        s.stroke(p.path(offset(st, d)))
-    } else {
-      s.stroke(p.path(st))
-      if (!face.serif || plain || closed(st)) return
-      const ends: [Point, Point][] = [
-        [st[0] as Point, st[1] as Point],
-        [last(st), st[st.length - 2] as Point],
-      ]
-      for (const [end, toward] of ends)
-        if (free(end, strokes, i))
-          s.stroke(p.line(...serif(end, toward, face.serif)))
-    }
-  })
+/** Each stroke as three parallel lines. */
+function strokeLetter(s: Sheet, p: Pen, face: Face, strokes: Point[][]) {
+  for (const st of strokes)
+    for (const d of [-face.lines, 0, face.lines])
+      s.stroke(p.path(offset(st, d)))
 }
 
 export interface LetteringOptions {
@@ -135,7 +79,7 @@ export interface LetteringOptions {
 export function lettering(
   text: string,
   {
-    face: faceName = "liner",
+    face: faceName = "tramline",
     seed = text,
     hand = "lively",
     takes = 1,
@@ -166,15 +110,7 @@ export function lettering(
         s,
         p,
         face,
-        g.s.map((st) => st.map(at)),
-        PLAIN.has(ch),
-      )
-      strokeLetter(
-        s,
-        p,
-        face,
-        (g.m ?? []).map((st) => st.map(at)),
-        true,
+        [...g.s, ...(g.m ?? [])].map((st) => st.map(at)),
       )
       for (const d of g.d ?? []) s.fill(p.disc(at(d), [3.2, 0], [0, 3.2]))
       x += w + face.track

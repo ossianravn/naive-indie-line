@@ -2,9 +2,9 @@
 
 import { useMemo, type ComponentProps, type CSSProperties } from "react"
 import { Drawing } from "@/fineliner/drawing/drawing"
-import { Lettering } from "@/fineliner/drawing/lettering"
+import { Lettering, type LetteringFace } from "@/fineliner/drawing/lettering"
 import { cn } from "@/fineliner/lib/utils"
-import type { FaceName, SceneName } from "@/fineliner/pen"
+import type { SceneName } from "@/fineliner/pen"
 import { sheet } from "@/fineliner/pen/layers"
 import { seedOf, stream } from "@/fineliner/pen/seed"
 import { pen, type HandName } from "@/fineliner/pen/stroke"
@@ -59,8 +59,8 @@ export interface RecordSleeveProps extends Omit<
   object?: string
   /** A whole scene on the cover in place of an object. */
   scene?: SceneName
-  /** The title's lettering face; the catalogue number picks Liner or Stilt when left out. */
-  face?: FaceName
+  /** The title's face: "line" (Naïve Indie Line Sans, as text, the default) or "tramline" (drawn by the pen). */
+  face?: LetteringFace
   /** The pen's hand. Left out, the sleeve follows the page's hand. */
   hand?: HandName
   /** Makes the whole sleeve a link to this address. */
@@ -107,7 +107,7 @@ export function RecordSleeve({
   const key = catalogue
   const seed = seedOf(key)
   const peek = Math.round(px * stream(seed, "sleeve-peek").between(0.1, 0.15))
-  const letters = face ?? stream(seed, "sleeve-face").pick(["liner", "stilt"])
+  const letters = face ?? "line"
   const cover = object ?? stream(seed, "sleeve-cover").pick(COVERS)
   const cases = useMemo(
     () =>
@@ -120,7 +120,7 @@ export function RecordSleeve({
   // Long titles letter smaller, so they wrap onto two or three lines rather than pushing the drawing off the sleeve.
   // A title too long to letter at a readable size is set in small capitals instead, as a printer would.
   const words = title.trim().split(/\s+/).filter(Boolean)
-  const perChar = letters === "stilt" ? 0.36 : 0.62
+  const perChar = 0.62
   const room = (inner * 2.4) / (title.length * perChar + words.length * 0.3)
   const printed = room < word * 0.72
   const height = Math.min(word, room)
@@ -128,6 +128,8 @@ export function RecordSleeve({
     <span className="line-clamp-3 font-read text-[0.8125rem] leading-tight tracking-[0.04em] uppercase group-data-[size=lg]/record-sleeve:text-body group-data-[size=md]/record-sleeve:text-small">
       {title}
     </span>
+  ) : letters === "line" ? (
+    <Lettering text={title} className="text-balance" />
   ) : (
     <>
       <span className="sr-only">{title}</span>

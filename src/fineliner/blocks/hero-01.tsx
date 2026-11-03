@@ -4,9 +4,8 @@ import { useEffect, useId, useRef, useState, type ReactNode } from "react"
 import { DicesIcon } from "lucide-react"
 import { Drawing } from "@/fineliner/drawing/drawing"
 import { settleDrawing } from "@/fineliner/drawing/drawing-motion"
-import { Lettering } from "@/fineliner/drawing/lettering"
+import { Lettering, type LetteringFace } from "@/fineliner/drawing/lettering"
 import { cn } from "@/fineliner/lib/utils"
-import type { FaceName } from "@/fineliner/pen/lettering-svg"
 import { SCENES, type SceneName } from "@/fineliner/pen/scenes"
 import { seedOf, stream } from "@/fineliner/pen/seed"
 import { Button, buttonVariants } from "@/fineliner/ui/button"
@@ -31,8 +30,8 @@ export const meta = {
 export interface Hero01Props {
   /** The product's name, lettered by the pen and read as the page's heading. */
   product?: string
-  /** The lettering face: liner, stilt, ribbon or tramline. */
-  face?: FaceName
+  /** The wordmark's face: "line" (Naïve Indie Line Sans, as text) or "tramline" (drawn by the pen). */
+  face?: LetteringFace
   /** A line in the label voice above the name. */
   kicker?: ReactNode
   /** One line under the name. */
@@ -110,7 +109,7 @@ const ACTIONS = (
 
 export function Hero01({
   product = "Fineliner",
-  face = "liner",
+  face = "line",
   kicker,
   copy = "A shadcn/ui kit drawn the way a natural-wine label is: one pen, cream paper and a quiet hand.",
   command = "npx shadcn add @fineliner/fineliner",
@@ -141,14 +140,23 @@ export function Hero01({
             <p className="label m-0 mb-snug text-pen-quiet">{kicker}</p>
           )}
           <h1 id={titleId} className="m-0">
-            <span className="sr-only">{product}</span>
-            <Lettering
-              aria-hidden="true"
-              text={product}
-              face={face}
-              seed={`wordmark:${product}`}
-              className="w-full max-w-[26rem]"
-            />
+            {face === "line" ? (
+              <Lettering
+                text={product}
+                className="block text-[clamp(3.25rem,13cqi,6.5rem)]"
+              />
+            ) : (
+              <>
+                <span className="sr-only">{product}</span>
+                <Lettering
+                  aria-hidden="true"
+                  text={product}
+                  face={face}
+                  seed={`wordmark:${product}`}
+                  className="w-full max-w-[26rem]"
+                />
+              </>
+            )}
           </h1>
           {copy && (
             <p className="m-0 mt-line max-w-measure text-body leading-body @min-[40rem]:text-lead @min-[40rem]:leading-lead">

@@ -2,6 +2,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "./fonts.css";
+@import "./line-sans.generated.css";
 @import "./tokens.css";
 @import "./stocks.css";
 @import "./pens.css";
@@ -77,6 +78,7 @@
   --font-type: var(--face-type);
   --font-label: var(--face-label);
   --font-hand: var(--face-hand);
+  --font-line: var(--face-line);
   --font-ui: var(--face-ui);
   --font-serif: var(--face-read);
   --font-mono: var(--face-type);

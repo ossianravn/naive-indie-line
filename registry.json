@@ -79,6 +79,11 @@
           "target": "~/src/fineliner/styles/frames.css"
         },
         {
+          "path": "src/fineliner/styles/line-sans.generated.css",
+          "type": "registry:file",
+          "target": "~/src/fineliner/styles/line-sans.generated.css"
+        },
+        {
           "path": "src/fineliner/styles/pens.css",
           "type": "registry:file",
           "target": "~/src/fineliner/styles/pens.css"

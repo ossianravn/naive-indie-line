@@ -2,9 +2,8 @@
 
 import type { ComponentProps, ReactNode } from "react"
 import { Drawing } from "@/fineliner/drawing/drawing"
-import { Lettering } from "@/fineliner/drawing/lettering"
+import { Lettering, type LetteringFace } from "@/fineliner/drawing/lettering"
 import { cn } from "@/fineliner/lib/utils"
-import type { FaceName } from "@/fineliner/pen/lettering-svg"
 import type { SceneName } from "@/fineliner/pen/scenes"
 import type { HandName } from "@/fineliner/pen/stroke"
 
@@ -24,8 +23,8 @@ export interface RoomHeaderProps extends Omit<
   kicker?: ReactNode
   /** room (a listening room), studio (a freelancer's desk) or bistro (a table for two). */
   scene?: SceneName
-  /** The lettering face: liner, stilt, ribbon or tramline. */
-  face?: FaceName
+  /** The lettering face: "line" (Naïve Indie Line Sans, as text) or "tramline" (drawn by the pen). */
+  face?: LetteringFace
   /** beside: title and scene side by side on wide containers. under: the scene above, the title centred under it. */
   layout?: "beside" | "under"
   /** The heading's level. */
@@ -44,7 +43,7 @@ export function RoomHeader({
   title,
   kicker,
   scene = "room",
-  face = "liner",
+  face = "line",
   layout = "beside",
   level = 1,
   seed,
@@ -99,18 +98,24 @@ export function RoomHeader({
                 : "@min-[44rem]/room-header:[--letter-size:clamp(2.5rem,5.4cqi,4.75rem)]",
             )}
           >
-            <span className="sr-only">{title}</span>
-            {words.map((word, i) => (
-              <Lettering
-                key={`${i}-${word}`}
-                aria-hidden="true"
-                text={word}
-                face={face}
-                seed={`${key}:${i}`}
-                hand={hand}
-                className="h-(--letter-size) shrink-0 [&>svg]:h-full [&>svg]:w-auto"
-              />
-            ))}
+            {face === "line" ? (
+              <Lettering text={title} className="text-balance" />
+            ) : (
+              <>
+                <span className="sr-only">{title}</span>
+                {words.map((word, i) => (
+                  <Lettering
+                    key={`${i}-${word}`}
+                    aria-hidden="true"
+                    text={word}
+                    face={face}
+                    seed={`${key}:${i}`}
+                    hand={hand}
+                    className="h-(--letter-size) shrink-0 [&>svg]:h-full [&>svg]:w-auto"
+                  />
+                ))}
+              </>
+            )}
           </Heading>
           {children && (
             <div

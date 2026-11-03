@@ -26,12 +26,12 @@ export default function RoomHeaderDemo() {
             </p>
           </RoomHeader>
         </StateRow>
-        <StateRow label="Studio, stilt">
+        <StateRow label="Studio, Line Sans">
           <RoomHeader
             title="Notes from the back office"
             kicker="The journal · Nº 12"
             scene="studio"
-            face="stilt"
+            face="line"
             level={2}
             className="w-full"
           />

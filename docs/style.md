@@ -94,7 +94,7 @@ Calm controls, lively surfaces, as in Patina: what people operate wobbles less t
 | Read    | Newsreader (variable, optical sizes); alternatives EB Garamond, Libre Caslon Text        | Headings, body and interface text                                   |
 | Type    | Courier Prime; alternative Cutive Mono (thinner, closer to a fine-liner)                 | Menus, prices, receipts, order numbers: the restaurant's typewriter |
 | Label   | The reading serif in tracked small caps, or the typewriter in capitals (a theme setting) | Field labels, metadata, kickers                                     |
-| Display | Our own letters: Liner, Stilt, Ribbon, Tramline (below)                                  | Wordmarks, headlines, signs, covers                                 |
+| Display | Our own letters: Naïve Indie Line Sans and Tramline (below)                              | Wordmarks, headlines, signs, covers                                 |
 | Hand    | Gaegu; alternatives Patrick Hand, Shadows Into Light Two                                 | Asides and annotations only                                         |
 | Spine   | The reading serif set vertically, bottom to top                                          | Edition marks and page spines, after the label                      |
 
@@ -102,16 +102,16 @@ The typewriter replaces Patina's code mono: restaurants that use this style prin
 
 ## Our own letters
 
-Four display faces drawn by the pen from **one skeleton alphabet** (`specimen/lettering/`): every capital, digit, accent (Æ Ø Å Ä Ö Ü É Ï) and common mark as centre-line strokes at cap height 100. The faces differ only in how they stroke the skeleton:
+Display lettering in two faces, both from the kit, both named Naïve Indie (the style's name):
 
-| Face     | Stroke                                                        | Inspired by (not copied from) |
-| -------- | ------------------------------------------------------------- | ----------------------------- |
-| Liner    | One monoline, with a short serif across every free stroke end | A naive monoline serif        |
-| Stilt    | Liner condensed to just over half its width: tall and narrow  | A condensed hand-drawn serif  |
-| Ribbon   | Two outlines a stroke-width apart, filled with the pen's wash | An inline sans                |
-| Tramline | Three parallel lines, no serifs                               | A multi-line deco sans        |
+| Face                  | What it is                                                                                   | Where it shows                                |
+| --------------------- | -------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| Naïve Indie Line Sans | A real font (OTF, WOFF2): the pen as a typeface, one round-ended monoline, capitals only     | Wordmarks, headings, covers, signs: as text   |
+| Tramline              | Drawn by the pen from the skeleton alphabet as SVG: three parallel lines, each letter seeded | Covers and signs that want to look hand-drawn |
 
-Each letter takes a small seeded tilt and lift, so a word reads as hand-lettered and still renders the same every time. Today they draw as SVG, named by their text for screen readers. The same skeleton can build real font files: expand the strokes to outlines, then compile OTF and WOFF2 with a few alternates per letter that cycle, as handwriting fonts do. Ribbon needs two layers (outline and fill) or a colour font.
+Naïve Indie Line Sans is built from the same **skeleton alphabet** as Tramline (`src/fineliner/pen/glyphs.ts`, centre-line strokes at cap height 100) plus the marks and letters in `tools/fonts/glyphs.mjs`: every capital of the Latin-script languages of Europe (Æ Ø Å, Œ Þ Ð Ŋ ẞ, Polish, Czech, Hungarian, Romanian, Turkish, Baltic, Maltese and Welsh accents), figures, punctuation and the common symbols. Lowercase types the same capitals. The strokes are wobbled by the pen's hand, swept by a round pen 32 units wide (4.6 % of the cap height) and merged into outlines; every glyph has three takes that rotate through `calt`, so a word never repeats a stamp. Because it is text, search engines and screen readers read it as words.
+
+A second font in the same family, Naïve Indie Inline (a serif with tinted inline strokes), is next. Liner, Stilt and Ribbon, the earlier drawn faces, are gone (2026-11-03).
 
 ## Motion
 
@@ -170,4 +170,4 @@ The plan tracks these as decisions; the direction itself (S1) is agreed.
 6. Frames: drawn by the pen at measured size (truest to the reference; needs a small script per frame, so no server rendering) or filtered CSS borders (no script, server-rendered). In the specimen the filtered frames read nearly as well, so the recommendation is filtered frames for anything that resizes and the pen only where a shape is fixed.
 7. The correction pen as the only second colour.
 8. The wash as an art-only second tone.
-9. Our own letters: which of the four faces to keep, and whether to build them as font files now.
+9. Our own letters: decided 2026-11-03: Tramline stays drawn, Naïve Indie Line Sans is a real font, Naïve Indie Inline is next.
