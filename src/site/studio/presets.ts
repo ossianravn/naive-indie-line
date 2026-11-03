@@ -1,13 +1,15 @@
-import type { Appearance } from "@/fineliner/theme"
+import type { Appearance, PEN_MIX } from "@/fineliner/theme"
 
 /** What a theme fixes: every appearance setting but day or night, which the export covers both of. */
 export type ThemeChoices = Omit<Appearance, "theme">
+/** A preset picks one of the named pens, so it leaves the custom pen's mix as it was. */
+type PresetChoices = Omit<ThemeChoices, keyof typeof PEN_MIX>
 
 export interface Preset {
   name: string
   /** The look in a few words. */
   note: string
-  choices: ThemeChoices
+  choices: PresetChoices
 }
 
 export const PRESETS: Preset[] = [
@@ -88,10 +90,13 @@ export const CHOICE_KEYS = [
   "density",
 ] as const satisfies readonly (keyof ThemeChoices)[]
 
-export const choicesOf = (appearance: Appearance) =>
-  Object.fromEntries(
+export const choicesOf = (appearance: Appearance): ThemeChoices => ({
+  ...(Object.fromEntries(
     CHOICE_KEYS.map((key) => [key, appearance[key]]),
-  ) as unknown as ThemeChoices
+  ) as unknown as PresetChoices),
+  penHue: appearance.penHue,
+  penStrength: appearance.penStrength,
+})
 
 /** The preset the page currently shows, if any. */
 export const matchPreset = (appearance: Appearance) =>

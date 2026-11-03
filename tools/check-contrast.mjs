@@ -1,7 +1,8 @@
 // Checks every pen against every paper surface it can sit on, with the paper composited in: for each stock and theme
 // it stacks the texture layers at their own tile sizes over paper and the recessed paper-2, blurs to about a glyph so
 // single flecks average out, and measures each pen against the darkest and lightest 1% of the surface. Text needs
-// 4.5:1; every pen is also the reading ink, so every pen is held to it. The wash is art only and is not checked.
+// 4.5:1; every pen is also the reading ink, so every pen is held to it. The custom pen is checked round the whole hue
+// circle at full strength, converted from OKLCH and clipped to sRGB. The wash is art only and is not checked.
 // Exits 1 if any pair falls below its floor. Ported from Patina UI's checker.
 //
 //   npm run check:contrast
@@ -32,6 +33,7 @@ const SIZES = {
   mottle: 1201,
 }
 const LAYERS = Object.keys(SIZES)
+const HUES = Array.from({ length: 36 }, (_, k) => k * 10)
 const CANVAS = 1201
 
 // Top-level rules only.
@@ -89,6 +91,33 @@ const channel = (c) =>
 const luminance = ([r, g, b]) =>
   0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b)
 const ratio = (a, b) => (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)
+// OKLCH to an sRGB hex, each channel clipped (Björn Ottosson's matrices).
+function oklchHex(l, c, h) {
+  const a = c * Math.cos((h * Math.PI) / 180)
+  const b = c * Math.sin((h * Math.PI) / 180)
+  const [L, M, S] = [
+    l + 0.3963377774 * a + 0.2158037573 * b,
+    l - 0.1055613458 * a - 0.0638541728 * b,
+    l - 0.0894841775 * a - 1.291485548 * b,
+  ].map((v) => v ** 3)
+  const linear = [
+    4.0767416621 * L - 3.3077115913 * M + 0.2309699292 * S,
+    -1.2684380046 * L + 2.6097574011 * M - 0.3413193965 * S,
+    -0.0041960863 * L - 0.7034186147 * M + 1.707614701 * S,
+  ]
+  const encode = (v) => {
+    const x = Math.min(1, Math.max(0, v))
+    return x <= 0.0031308 ? 12.92 * x : 1.055 * x ** (1 / 2.4) - 0.055
+  }
+  return `#${linear
+    .map((v) =>
+      Math.round(encode(v) * 255)
+        .toString(16)
+        .padStart(2, "0"),
+    )
+    .join("")}`
+}
+
 const svgOf = (url) =>
   Buffer.from(
     decodeURIComponent(
@@ -138,10 +167,15 @@ for (const stock of STOCKS)
     const t = tokens(stock, theme)
     const notes = []
     let min = Infinity
+    const custom = HUES.map((hue) => [
+      `custom@${hue}`,
+      oklchHex(+t("custom-lightness"), +t("custom-chroma"), hue),
+    ])
+    const pens = [...TEXT.map((name) => [name, t(name)]), ...custom]
     for (const surface of SURFACES) {
       const [dark, light] = await extremes(t(surface), t)
-      for (const name of TEXT) {
-        const l = luminance(hex(t(name)))
+      for (const [name, color] of pens) {
+        const l = luminance(hex(color))
         const r = Math.min(ratio(l, dark), ratio(l, light))
         min = Math.min(min, r / 4.5)
         if (r < 4.5)

@@ -14,6 +14,14 @@
   --paper-texture-size: var(--paper-specks-size), var(--paper-grain-size);
 }
 
+/* On a phone the specks are drawn larger and so fewer to a screen: each fleck and fibre stays big enough to see at
+   arm's length, and the page reads a little quieter than on a desk. */
+@media (max-width: 40rem) {
+  :root {
+    --paper-specks-size: 1007px, 858px;
+  }
+}
+
 @layer base {
   /* The paper's colour lies on the root, so it fills the whole window however short the page; the stable gutter keeps
      the page from shifting sideways between pages that scroll and pages that don't. */

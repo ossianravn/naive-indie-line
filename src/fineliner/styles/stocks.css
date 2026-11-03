@@ -16,6 +16,11 @@
   --wash-sepia: #a47d5c;
   --wash-forest: #6f9279;
   --wash-oxblood: #a9636e;
+  /* The custom pen (pens.css): its OKLCH lightness, the most colour any hue may take and still pass, and the wash's
+     lightness. tools/check-contrast.mjs sweeps the hue circle at full strength on every stock. */
+  --custom-lightness: 0.32;
+  --custom-chroma: 0.12;
+  --custom-wash-lightness: 0.6;
   /* The correction pen: errors and destructive actions only. */
   --correction: #962a23;
 }
@@ -27,6 +32,8 @@
   --pen-sepia: #3e2718;
   --pen-forest: #1b3524;
   --pen-oxblood: #4d1e28;
+  --custom-lightness: 0.27;
+  --custom-chroma: 0.11;
   --correction: #5e1612;
   /* The quiet pen (secondary text) is mixed nearer the pen, so it keeps 4.5:1 on the recess too. */
   --quiet-share: 88%;
@@ -50,6 +57,9 @@
   --wash-sepia: #7d5d43;
   --wash-forest: #4d6a55;
   --wash-oxblood: #7f4650;
+  --custom-lightness: 0.89;
+  --custom-chroma: 0.07;
+  --custom-wash-lightness: 0.47;
   --correction: #f28b80;
 }
 

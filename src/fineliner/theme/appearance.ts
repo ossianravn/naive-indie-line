@@ -6,7 +6,7 @@ export const APPEARANCE = {
   theme: ["system", "day", "night"],
   stock: ["bond", "recycled", "kraft"],
   /** The one pen that inks the document (styles/pens.css). */
-  pen: ["navy", "black", "sepia", "forest", "oxblood"],
+  pen: ["navy", "black", "sepia", "forest", "oxblood", "custom"],
   /** How far lines wobble and run past their corners. */
   hand: ["calm", "lively"],
   /** Line boil: drawings redrawn a few times a second, on hover or all the time. */
@@ -16,6 +16,15 @@ export const APPEARANCE = {
   /** Labels in the serif's small caps, or typewriter capitals. */
   labels: ["caps", "type"],
   density: ["comfortable", "compact"],
+} as const
+
+/**
+ * The custom pen's two numbers, each with its range: the hue on the OKLCH circle, and its strength as a share of the
+ * most colour every stock keeps at 4.5:1. styles/pens.css derives the day pen, the night gel pen and the wash from them.
+ */
+export const PEN_MIX = {
+  penHue: [0, 359],
+  penStrength: [0, 100],
 } as const
 
 export type ThemePreference = (typeof APPEARANCE.theme)[number]
@@ -36,6 +45,8 @@ export interface Appearance {
   containers: Containers
   labels: Labels
   density: Density
+  penHue: number
+  penStrength: number
 }
 
 export const defaultAppearance: Appearance = {
@@ -47,13 +58,23 @@ export const defaultAppearance: Appearance = {
   containers: "open",
   labels: "caps",
   density: "comfortable",
+  penHue: 200,
+  penStrength: 80,
 }
 
 export const STORAGE_KEY = "fineliner-appearance"
 
-const KEYS = Object.keys(APPEARANCE) as (keyof Appearance)[]
-/** Settings written to <html> under their own name: data-stock, data-pen and so on. */
-const ATTRIBUTES = KEYS.filter((key) => key !== "theme")
+type Choice = keyof typeof APPEARANCE
+type Mix = keyof typeof PEN_MIX
+const KEYS = Object.keys(APPEARANCE) as Choice[]
+const MIX_KEYS = Object.keys(PEN_MIX) as Mix[]
+/** Settings written to <html> under their own name: data-stock, data-pen, data-pen-hue and so on. */
+const ATTRIBUTES = [...KEYS.filter((key) => key !== "theme"), ...MIX_KEYS]
+/** The mix's numbers also go on <html> as custom properties, which the custom pen reads: --pen-hue, --pen-strength. */
+const PROPERTIES: Record<Mix, string> = {
+  penHue: "--pen-hue",
+  penStrength: "--pen-strength",
+}
 
 const pick = <T extends string>(
   options: readonly T[],
@@ -66,9 +87,16 @@ export function normalize(
   value: Partial<Record<keyof Appearance, unknown>>,
   defaults = defaultAppearance,
 ): Appearance {
-  const next: Record<string, string> = {}
+  const next: Record<string, string | number> = {}
   for (const key of KEYS)
     next[key] = pick<string>(APPEARANCE[key], value[key], defaults[key])
+  for (const key of MIX_KEYS) {
+    const [min, max] = PEN_MIX[key]
+    const number = Math.round(Number(value[key] ?? Number.NaN))
+    next[key] = Number.isFinite(number)
+      ? Math.min(max, Math.max(min, number))
+      : defaults[key]
+  }
   return next as unknown as Appearance
 }
 
@@ -104,7 +132,9 @@ export function apply(
 ) {
   root.dataset.theme = resolveTheme(appearance.theme)
   root.dataset.themePreference = appearance.theme
-  for (const key of ATTRIBUTES) root.dataset[key] = appearance[key]
+  for (const key of ATTRIBUTES) root.dataset[key] = String(appearance[key])
+  for (const key of MIX_KEYS)
+    root.style.setProperty(PROPERTIES[key], String(appearance[key]))
 }
 
 /** The appearance currently applied to the document. */
@@ -121,5 +151,7 @@ export function current(
 /** The <html> attributes useAppearance watches. */
 export const APPEARANCE_ATTRIBUTES = [
   "data-theme-preference",
-  ...ATTRIBUTES.map((key) => `data-${key}`),
+  ...ATTRIBUTES.map(
+    (key) => `data-${key.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`)}`,
+  ),
 ]

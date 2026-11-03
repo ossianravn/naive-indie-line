@@ -8,7 +8,7 @@ import { PRESETS, type Preset } from "./presets"
 const PAPER = { recycled: "#ece2ca", kraft: "#cdb48f", bond: "#f4f0e6" }
 
 /** The preset's paper and pen, as a swatch: a square of its stock with a stroke of its pen across it. */
-function Swatch({ preset }: { preset: Preset }) {
+export function PresetSwatch({ preset }: { preset: Preset }) {
   const { stock, pen } = preset.choices
   return (
     <span
@@ -49,7 +49,7 @@ export function PresetPicker({
                 style={frameVars(seedOf(preset.name)) as CSSProperties}
                 className="frame press flex w-full cursor-pointer items-start gap-tight px-tight py-hair text-left aria-pressed:[--pen-weight:var(--pen-weight-pressed)] hover:[--pen-weight:var(--pen-weight-pressed)]"
               >
-                <Swatch preset={preset} />
+                <PresetSwatch preset={preset} />
                 <span className="flex min-w-0 flex-1 flex-col">
                   <span className="flex items-center justify-between gap-hair">
                     <span className="font-medium leading-subhead">

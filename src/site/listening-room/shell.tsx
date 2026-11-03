@@ -39,6 +39,7 @@ import {
   SidebarRail,
   SidebarTrigger,
 } from "@/fineliner/ui/sidebar"
+import { AppearancePanel } from "@/site/appearance-panel"
 import { RELEASES } from "./data"
 import { SESSIONS, TODAY } from "./sessions-data"
 
@@ -228,6 +229,7 @@ export function ListeningRoomShell({
           <a href="/" className="label ms-auto text-pen-quiet max-sm:hidden">
             Demo · Fineliner
           </a>
+          <AppearancePanel dotOnPhone className="max-sm:-me-2 max-sm:ms-auto" />
         </header>
         {children}
       </SidebarInset>

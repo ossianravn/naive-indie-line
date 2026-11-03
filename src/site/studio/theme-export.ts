@@ -1,4 +1,4 @@
-import { defaultAppearance } from "@/fineliner/theme"
+import { apply, defaultAppearance } from "@/fineliner/theme"
 import type { ThemeChoices } from "./presets"
 
 // A theme leaves the studio as Patina's do: a stylesheet of resolved token values for day and night, and the same
@@ -81,13 +81,23 @@ function probe() {
 export function readTheme(choices: ThemeChoices): ResolvedTheme {
   const element = probe()
   const root = element.contentDocument!.documentElement
-  for (const [key, value] of Object.entries(choices)) root.dataset[key] = value
+  apply({ ...choices, theme: "day" }, root)
+  // The custom pen's colours arrive as the arithmetic that mixes them; a probe's computed colour settles each one.
+  const swatch = root.ownerDocument.body ?? root
+  const settle = (value: string) => {
+    if (!value.includes("calc(")) return value
+    swatch.style.color = value
+    return element.contentWindow!.getComputedStyle(swatch).color
+  }
   const read = (groups: Groups): Values => {
     const style = element.contentWindow!.getComputedStyle(root)
     return Object.fromEntries(
       groups
         .flatMap(([, tokens]) => tokens)
-        .map((token) => [token, style.getPropertyValue(`--${token}`).trim()]),
+        .map((token) => [
+          token,
+          settle(style.getPropertyValue(`--${token}`).trim()),
+        ]),
     )
   }
   root.dataset.theme = "day"
@@ -122,7 +132,7 @@ const block = (selectors: string[], groups: Groups, values: Values) =>
     )
     .join("\n\n")}\n}\n`
 
-const quoted = (value: string) => JSON.stringify(value)
+const quoted = (value: string | number) => JSON.stringify(value)
 
 /** The theme as a stylesheet that loads after fineliner.css. */
 export function themeCss(
@@ -130,8 +140,12 @@ export function themeCss(
   choices: ThemeChoices,
   theme: ResolvedTheme,
 ) {
+  // The custom pen's mix only matters, and is only written, when the custom pen is chosen.
+  const mixed = choices.pen === "custom"
   const changed = (Object.keys(choices) as (keyof ThemeChoices)[]).filter(
-    (key) => choices[key] !== defaultAppearance[key],
+    (key) =>
+      choices[key] !== defaultAppearance[key] &&
+      (mixed || (key !== "penHue" && key !== "penStrength")),
   )
   const defaults = changed.length
     ? `{ ${changed.map((key) => `${key}: ${quoted(choices[key])}`).join(", ")} }`

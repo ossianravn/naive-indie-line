@@ -9,6 +9,7 @@
     "@fineliner/alert",
     "@fineliner/alert-dialog",
     "@fineliner/appearance-control",
+    "@fineliner/appearance-pen",
     "@fineliner/aspect-ratio",
     "@fineliner/attachment",
     "@fineliner/avatar",

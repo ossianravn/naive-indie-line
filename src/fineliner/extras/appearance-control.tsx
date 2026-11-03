@@ -1,20 +1,20 @@
 "use client"
 
 import { useId, type ComponentProps, type CSSProperties } from "react"
-import { PenMark } from "@/fineliner/drawing/pen-mark"
 import { cn } from "@/fineliner/lib/utils"
 import { frameVars } from "@/fineliner/pen/filters"
 import { seedOf } from "@/fineliner/pen/seed"
 import { APPEARANCE, useAppearance, type Appearance } from "@/fineliner/theme"
 import { ToggleGroup, ToggleGroupItem } from "@/fineliner/ui/toggle-group"
+import { PenControl } from "./appearance-pen"
 
 // Every appearance setting as a form column: each name beside its control, the names set to their column's end and
 // the controls lined up on one edge, so every label sits next to what it sets. The short choices are segmented
 // controls (the toggle group's joined outline); the pen is a row of ink swatches with the chosen one ringed by the
-// pen and named beside them. Under a container 28rem wide each name stands above its control. Every change applies
+// pen and named beside them, and a mixer for the custom pen (appearance-pen.tsx). Under a container 28rem wide each name stands above its control. Every change applies
 // to <html> and persists through useAppearance, so every island on the page follows.
 
-export type AppearanceRow = keyof Appearance
+export type AppearanceRow = keyof typeof APPEARANCE
 
 /** Every row, in reading order (the order of APPEARANCE). */
 export const APPEARANCE_ROWS = Object.keys(APPEARANCE) as AppearanceRow[]
@@ -42,6 +42,7 @@ export const appearanceLabels: {
       sepia: "Sepia",
       forest: "Forest",
       oxblood: "Oxblood",
+      custom: "Custom",
     },
   },
   hand: { label: "Hand", options: { calm: "Calm", lively: "Lively" } },
@@ -149,9 +150,10 @@ function Row({
       </span>
       <div className="flex min-w-0 flex-col items-start gap-hair">
         {row === "pen" ? (
-          <Swatches
-            value={appearance.pen}
+          <PenControl
+            appearance={appearance}
             update={update}
+            names={appearanceLabels.pen.options}
             labelledBy={labelId}
             describedBy={hintId}
           />
@@ -210,65 +212,5 @@ function Segmented({
         </ToggleGroupItem>
       ))}
     </ToggleGroup>
-  )
-}
-
-/** The pens as ink swatches, each in its own pen; the chosen one is ringed by the pen and named beside the row. */
-function Swatches({
-  value,
-  update,
-  labelledBy,
-  describedBy,
-}: ControlProps & { value: Appearance["pen"] }) {
-  const name = useId()
-  const names = appearanceLabels.pen.options
-  return (
-    <div className="flex items-center gap-hair">
-      <div
-        role="radiogroup"
-        aria-labelledby={labelledBy}
-        aria-describedby={describedBy}
-        className="-ms-[0.3rem] flex items-center"
-      >
-        {APPEARANCE.pen.map((pen) => {
-          const chosen = value === pen
-          return (
-            <label
-              key={pen}
-              title={names[pen]}
-              data-pen={pen}
-              className="press relative grid size-control cursor-pointer place-items-center rounded-full text-pen has-focus-visible:outline-[1.5px] has-focus-visible:outline-offset-0 has-focus-visible:outline-pen has-focus-visible:outline-dashed"
-            >
-              <input
-                type="radio"
-                name={name}
-                value={pen}
-                aria-label={names[pen]}
-                checked={chosen}
-                onChange={() => update({ pen })}
-                className="peer sr-only"
-              />
-              <span
-                aria-hidden="true"
-                className="size-[1.125rem] rounded-full bg-pen [filter:var(--wob-2)] forced-colors:[forced-color-adjust:none]"
-              />
-              {chosen && (
-                <PenMark
-                  name="ring"
-                  seed={`swatch:${pen}`}
-                  className="put-down pointer-events-none absolute inset-[0.4rem]"
-                />
-              )}
-            </label>
-          )
-        })}
-      </div>
-      <span
-        aria-hidden="true"
-        className="text-small leading-small text-pen-quiet"
-      >
-        {names[value]}
-      </span>
-    </div>
   )
 }

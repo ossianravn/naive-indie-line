@@ -199,10 +199,10 @@
       "name": "appearance-control",
       "type": "registry:component",
       "title": "Appearance Control",
-      "description": "Every appearance setting (light, paper, pen, hand, line boil, containers, labels, density) as segmented controls and pen swatches.",
+      "description": "Every appearance setting (light, paper, pen, hand, line boil, containers, labels, density) as segmented controls and pen swatches, with a mixer for the custom pen.",
       "registryDependencies": [
+        "@fineliner/appearance-pen",
         "@fineliner/base",
-        "@fineliner/drawing",
         "@fineliner/toggle-group"
       ],
       "files": [
@@ -210,6 +210,24 @@
           "path": "src/fineliner/extras/appearance-control.tsx",
           "type": "registry:file",
           "target": "~/src/fineliner/extras/appearance-control.tsx"
+        }
+      ]
+    },
+    {
+      "name": "appearance-pen",
+      "type": "registry:component",
+      "title": "Appearance Pen",
+      "description": "The pen row of AppearanceControl: ink swatches for the named pens and a custom pen mixed from colour directions, a hue and a strength.",
+      "registryDependencies": [
+        "@fineliner/base",
+        "@fineliner/drawing",
+        "@fineliner/slider"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/extras/appearance-pen.tsx",
+          "type": "registry:file",
+          "target": "~/src/fineliner/extras/appearance-pen.tsx"
         }
       ]
     },
@@ -2270,6 +2288,7 @@
         "@fineliner/alert",
         "@fineliner/alert-dialog",
         "@fineliner/appearance-control",
+        "@fineliner/appearance-pen",
         "@fineliner/aspect-ratio",
         "@fineliner/attachment",
         "@fineliner/avatar",

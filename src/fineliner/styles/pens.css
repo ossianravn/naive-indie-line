@@ -23,6 +23,20 @@
   --wash: var(--wash-oxblood);
 }
 
+/* The custom pen: any hue at a chosen strength, at the lightness the stock sets for text, so every hue reads as ink on
+   every paper. The appearance runtime writes --pen-hue and --pen-strength on <html>; any region can set its own. */
+[data-pen="custom"] {
+  --custom-share: calc(var(--pen-strength, 80) / 100);
+  --pen: oklch(
+    var(--custom-lightness) calc(var(--custom-chroma) * var(--custom-share))
+      var(--pen-hue, 200)
+  );
+  --wash: oklch(
+    var(--custom-wash-lightness)
+      calc(var(--custom-chroma) * var(--custom-share) * 0.8) var(--pen-hue, 200)
+  );
+}
+
 /* Recomputed wherever a pen is chosen, so a region with its own pen gets its own quieter pens and tint. */
 :root,
 [data-pen] {

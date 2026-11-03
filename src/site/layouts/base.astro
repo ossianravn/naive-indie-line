@@ -9,6 +9,7 @@ import { appearanceScript } from "@/fineliner/theme/appearance-script"
 import { frameVars, seedOf } from "@/fineliner/pen"
 import { Lettering } from "@/fineliner/drawing/lettering"
 import { siteAppearance } from "@/site/appearance"
+import { AppearancePanel } from "@/site/appearance-panel"
 import { shareFor } from "@/site/share/shares"
 
 interface Props {
@@ -65,11 +66,14 @@ const NAV = [
     >
       Skip to content
     </a>
-    <header class="mx-auto flex max-w-[76rem] flex-wrap items-center justify-between gap-x-snug gap-y-tight px-snug pt-snug sm:px-line">
+    <!-- On a phone the wordmark and the appearance button share the top row and the nav wraps under them; wider, the
+         button follows the nav at the end of the row. -->
+    <header class="mx-auto flex max-w-[76rem] flex-wrap items-center gap-x-snug gap-y-tight px-snug pt-snug sm:px-line">
       <a class="block text-pen no-underline" href="/">
         <Lettering text="Fineliner" className="text-[1.75rem]" />
       </a>
-      <nav aria-label="Site">
+      <AppearancePanel className="ms-auto md:order-last md:ms-0" client:idle />
+      <nav aria-label="Site" class="max-md:order-last max-md:w-full md:ms-auto">
         <ul class="m-0 flex list-none flex-wrap gap-x-snug gap-y-hair p-0">
           {NAV.map(({ href, label }) => (
             <li>
