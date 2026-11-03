@@ -14,6 +14,8 @@ export interface Share {
   kicker: string
   object?: string
   scene?: SceneName
+  /** Another pen and its wash than the site's navy, for a page with its own look (MÅLTID's oxblood). */
+  ink?: { pen: string; wash: string }
 }
 
 const W = 1200
@@ -73,7 +75,7 @@ function flecks(seed: string) {
 }
 
 /** The whole share image as an SVG string. */
-export function shareSvg({ slug, title, kicker, object, scene }: Share) {
+export function shareSvg({ slug, title, kicker, object, scene, ink }: Share) {
   const p = pen(`share:${slug}`, "lively")
   const border = p.edges([
     [36, 36],
@@ -97,5 +99,8 @@ export function shareSvg({ slug, title, kicker, object, scene }: Share) {
     place(titleSvg, 92, 190, 560, titleHeight * 2.4, "xMinYMid"),
     place(art, 660, 96, 470, 440),
     `</svg>`,
-  ].join("")
+  ]
+    .join("")
+    .replaceAll(PEN, ink?.pen ?? PEN)
+    .replaceAll(WASH, ink?.wash ?? WASH)
 }

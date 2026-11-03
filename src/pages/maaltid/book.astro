@@ -1,0 +1,27 @@
+---
+// Booking a table: the form beside the house rules a guest wants before they book.
+import Layout from "@/site/maaltid/layout.astro"
+import { Booking } from "@/site/maaltid/booking"
+import { PLACE } from "@/site/maaltid/data"
+---
+
+<Layout
+  title="Book a table"
+  description="Book a table at MÅLTID, Wednesday to Saturday from 17:30."
+>
+  <div class="mx-auto mt-section grid max-w-[76rem] gap-x-line gap-y-section px-snug sm:px-line lg:grid-cols-12">
+    <header class="grid content-start gap-snug lg:col-span-4">
+      <h1 class="m-0 text-title leading-heading">Book a table</h1>
+      <p class="m-0 max-w-measure text-pen-quiet">
+        Most of the room is one long table, so you may share it. We keep a few
+        seats at the bar for whoever walks in.
+      </p>
+      <p class="m-0 text-small leading-small text-pen-quiet">
+        {PLACE.hours}. {PLACE.kitchen}. {PLACE.closed}.
+      </p>
+    </header>
+    <div class="lg:col-span-8">
+      <Booking client:load />
+    </div>
+  </div>
+</Layout>

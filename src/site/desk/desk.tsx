@@ -4,7 +4,7 @@
 // the seed, the code or the SVG. The seed travels in the URL, so a drawing can be shared. Lettering here is drawn by
 // the pen from its seed (lettering() in the engine), not set in the Tramline font.
 import "@/fineliner/pen/objects"
-import "@/fineliner/pen/objects/rooms"
+import { ROOMS } from "@/fineliner/pen/objects/rooms"
 import { useEffect, useRef, useState } from "react"
 import { Drawing } from "@/fineliner/drawing/drawing"
 import { settleDrawing } from "@/fineliner/drawing/drawing-motion"
@@ -135,8 +135,8 @@ export function Desk() {
             label="Scene"
             value={scene}
             onChange={setScene}
-            options={Object.entries(SCENES).map(
-              ([k, s]) => [k as SceneName, s.name] as const,
+            options={ROOMS.map(
+              (k) => [k as SceneName, SCENES[k]?.name ?? k] as const,
             )}
           />
         )}

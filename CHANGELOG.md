@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Renamed the four fonts to Fineliner Naïve Sans, Inline, Inline Fill and Tramline, with matching download files and font metadata; the letters and their seeded takes are unchanged.
+- MÅLTID, a second demo at `/maaltid`: the website of a made-up Copenhagen restaurant cooking Italy's peasant food in the north and pouring natural wine. Home, tonight's menu, the wine list as tasting notes, and a booking form (an evening from Wednesday to Saturday, a time, guests, a name and email; full times struck through; the booking confirmed in place). Its look is its own (bond paper, the oxblood pen, a calm hand, typewriter labels), and its drawings (a long table, a cast-iron pot, a crate of wine and its dining room) were made with the drawing skill in the site's own module. `pen/objects/rooms` exports `ROOMS`, the kit's own scene names, so lists and counts can leave out a project's scenes.
 - The specimen's lettering shows the three faces the same way: a title at one size, the face's name, what it is and its files beside it, then its letters and figures at one size, with a faint rule between faces; the set they share (marks, accents, languages) closes the section once.
 - A favicon drawn by the pen: a capital F on bond paper that turns night paper in a dark browser (`public/favicon.svg`, with a 32 px `favicon.ico` and an iOS touch icon, from `tools/render-favicon.mjs`). The site had none, so every browser asked for `/favicon.ico` and got a 404.
 

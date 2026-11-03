@@ -56,6 +56,14 @@ const PAGES: Share[] = [
     object: "record",
   },
   {
+    slug: "maaltid",
+    title: "MÅLTID",
+    kicker: "Peasant food · natural wine",
+    scene: "maaltid",
+    // Bond's oxblood pen and wash (src/fineliner/styles/stocks.css).
+    ink: { pen: "#5c2430", wash: "#a9636e" },
+  },
+  {
     slug: "listening-room",
     title: "Listening Room",
     kicker: "Records · Room · Wine",

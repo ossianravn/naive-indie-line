@@ -6,7 +6,7 @@ import Base from "@/site/layouts/base.astro"
 import PageHeader from "@/site/layouts/page-header.astro"
 import { InstallCommand } from "@/site/docs/install-command"
 import { Typography } from "@/fineliner/ui/typography"
-import { listObjects } from "@/fineliner/pen"
+import { COLLECTIONS, listObjects } from "@/fineliner/pen"
 import examples from "@/site/skill/examples.generated.json"
 import * as skill from "../../../skills/fineliner-drawings/SKILL.md"
 import * as style from "../../../skills/fineliner-drawings/references/style.md"
@@ -30,7 +30,7 @@ async function prose(
     )
 }
 
-const kit = listObjects().length
+const kit = COLLECTIONS.reduce((n, [key]) => n + listObjects(key).length, 0)
 const ASKS = [
   {
     ask: "Our booking app has no bicycle drawing. Add one in the same style for the empty state, above ‘No bookings yet’.",

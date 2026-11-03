@@ -273,7 +273,7 @@ The maintainer set three directions: more drawings from two brainstorms, a page 
 - [x] Wave 1, drawn by four Codex runs (gpt-6.1-sol, xhigh) on fixed specs, each reviewed large and sent back until it held: a new **Everyday** collection (`post.ts`, `household.ts`: door, basket, hourglass, padlock, keys, magnifier, envelope, parcel, paper plane, telephone, checklist) and a kitchen for Food & drink (`pantry.ts`, `market.ts`)
 - [x] `/drawings/skill`: what the skill draws (its worked example, drawn ahead by `tools/render-skill-examples.mjs` so it stays out of the kit's library), install, example asks, and the skill and its references to read
 - [x] Collections as separate registry items (decided by the maintainer, 2026-11-03): `pen` is the engine alone; `drawings-<collection>`, `drawings-all` and `scenes` items; kit parts import what they draw; /drawings shows each collection in brief, with a page per collection
-- [ ] MÅLTID, the restaurant demo
+- [x] MÅLTID (`/maaltid`), the restaurant demo: home, menu, wine list and booking in a frame of its own (bond, oxblood pen, calm hand, typewriter labels; day and night follow the system); the wordmark is Tramline drawn as SVG, so no Tramline font loads; the kit's tasting notes, calendar, toggle group and fields; its own drawings (a long table, a cast-iron pot, a wine crate and its dining room) drawn by Codex through the drawing skill in the site's module, as a consumer would
 
 ## Risks
 

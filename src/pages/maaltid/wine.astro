@@ -1,0 +1,64 @@
+---
+// The wine list by kind, each wine a tasting note: its grower, grape, region and year, a note in the hand, the bottle's
+// price and the glass's where it is poured by the glass. A sold-out wine stays on the list, crossed through.
+import Layout from "@/site/maaltid/layout.astro"
+import { TastingNote } from "@/fineliner/extras/tasting-note"
+import { KINDS, WINES, kr } from "@/site/maaltid/data"
+
+const slug = (kind: string) => kind.toLowerCase()
+---
+
+<Layout
+  title="Wine"
+  description="MÅLTID's wine list: natural wine from small growers in Italy, France, Austria and a cider from Møn."
+>
+  <div class="mx-auto mt-section grid max-w-[76rem] gap-x-line gap-y-section px-snug sm:px-line lg:grid-cols-12">
+    <header class="grid content-start gap-snug lg:col-span-4 lg:sticky lg:top-line lg:self-start">
+      <h1 class="m-0 text-title leading-heading">Wine</h1>
+      <p class="m-0 max-w-measure text-pen-quiet">
+        Natural wine from small growers: grapes farmed without sprays, fermented
+        with their own yeasts, nothing added but a little sulphur when it needs
+        it. Most of it is poured by the glass too.
+      </p>
+      <nav aria-label="Kinds of wine">
+        <ul class="m-0 flex list-none flex-wrap gap-x-snug gap-y-hair p-0">
+          {KINDS.map((kind) => (
+            <li>
+              <a href={`#${slug(kind)}`}>{kind}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </header>
+    <div class="grid gap-y-page lg:col-span-8">
+      {KINDS.map((kind) => (
+        <section
+          id={slug(kind)}
+          class="grid scroll-mt-line gap-y-line"
+          aria-labelledby={`${slug(kind)}-title`}
+        >
+          <h2 id={`${slug(kind)}-title`} class="m-0 text-h2 leading-heading">
+            {kind}
+          </h2>
+          <div class="grid gap-x-line gap-y-section md:grid-cols-2">
+            {WINES.filter((w) => w.kind === kind).map((w) => (
+              <TastingNote
+                name={w.name}
+                producer={w.producer}
+                grape={w.grape}
+                region={w.region}
+                year={w.year}
+                price={kr(w.bottle)}
+                glass={w.glass ? kr(w.glass) : undefined}
+                vessel={w.vessel}
+                soldOut={w.soldOut}
+              >
+                {w.note}
+              </TastingNote>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+</Layout>

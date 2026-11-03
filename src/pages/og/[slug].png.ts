@@ -1,6 +1,7 @@
 // Share images, drawn by the pen and rasterised at build time: one PNG per main page, block and component.
 import "@/fineliner/pen/objects"
 import "@/fineliner/pen/objects/rooms"
+import "@/site/maaltid/drawings"
 import type { APIRoute } from "astro"
 import sharp from "sharp"
 import { shareSvg, type Share } from "@/site/share/share-image"

@@ -1,0 +1,38 @@
+---
+// Tonight's menu: the whole card, with the set menu and what to tell the kitchen beside it.
+import Layout from "@/site/maaltid/layout.astro"
+import MenuCard from "@/site/maaltid/menu-card.astro"
+import { SET_MENU, TONIGHT, kr } from "@/site/maaltid/data"
+---
+
+<Layout
+  title="Tonight's menu"
+  description="MÅLTID's menu tonight: rye focaccia, pici cacio e pepe, ribollita, whole mackerel over beech and sheep's ricotta."
+>
+  <div class="mx-auto mt-section grid max-w-[76rem] gap-x-line gap-y-section px-snug sm:px-line lg:grid-cols-12">
+    <header class="grid content-start gap-snug lg:col-span-4">
+      <p class="label m-0 text-pen-quiet">{TONIGHT.label}</p>
+      <h1 class="m-0 text-title leading-heading">Tonight's menu</h1>
+      <p class="m-0 max-w-measure text-pen-quiet">
+        We cook what comes in, so the menu changes most days. Order a few things
+        to share, or let us cook the whole of it for the table.
+      </p>
+      <dl class="m-0 mt-tight grid w-fit grid-cols-[auto_auto] gap-x-line gap-y-hair">
+        <dt>The whole menu</dt>
+        <dd class="m-0 font-type text-small">{kr(SET_MENU.food)}</dd>
+        <dt>Wine with it</dt>
+        <dd class="m-0 font-type text-small">{kr(SET_MENU.wine)}</dd>
+      </dl>
+      <p class="m-0 text-small leading-small text-pen-quiet">
+        A person, for the whole table. Tell us about allergies when you book;
+        most of it can be made without gluten or dairy.
+      </p>
+      <p class="m-0">
+        <a href="/maaltid/book">Book a table</a>
+      </p>
+    </header>
+    <div class="lg:col-span-8">
+      <MenuCard />
+    </div>
+  </div>
+</Layout>

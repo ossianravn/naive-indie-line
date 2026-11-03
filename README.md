@@ -4,7 +4,7 @@ A shadcn/ui component library drawn with one fine-liner on unbleached paper: a s
 
 <img alt="The kit's four scenes, drawn by its pen: a record shop floor with browser bins and a counter, a freelancer's studio, a bistro table for two and someone at work at a desk under a window." src="docs/style/scenes.webp">
 
-**Status:** v0.1, live at [naiveindieline.com](https://naiveindieline.com). All of shadcn/ui's parts (64, keeping shadcn's names, props and `data-slot`s; `form` and `toast` are served by `field` and `sonner`), twelve parts of Fineliner's own (label cards, record sleeves, track lists, price tags, hand notes and more), seven blocks, a chart drawn by the pen through the exact data, the pen engine with 85 drawings and four scenes, Fineliner Naïve Sans, Inline and Tramline (our own fonts), a theme studio, and Listening Room, a record shop built only from the kit.
+**Status:** v0.1, live at [naiveindieline.com](https://naiveindieline.com). All of shadcn/ui's parts (64, keeping shadcn's names, props and `data-slot`s; `form` and `toast` are served by `field` and `sonner`), twelve parts of Fineliner's own (label cards, record sleeves, track lists, price tags, hand notes and more), seven blocks, a chart drawn by the pen through the exact data, the pen engine with 85 drawings and four scenes, Fineliner Naïve Sans, Inline and Tramline (our own fonts), a theme studio, Listening Room, a record shop built only from the kit, and [MÅLTID](https://naiveindieline.com/maaltid), a made-up restaurant's website with drawings of its own made with the drawing skill.
 
 ## What is in it
 
@@ -77,7 +77,7 @@ npm ci
 npm run dev
 ```
 
-Open `http://127.0.0.1:4791`: the home page, the components and blocks (`/docs`), the drawing library and desk, the theme studio (`/studio`), the specimen and Listening Room (`/listening-room`). `npm run build` writes the static site, the registry (`public/r`) and the share images to `dist`.
+Open `http://127.0.0.1:4791`: the home page, the components and blocks (`/docs`), the drawing library and desk, the theme studio (`/studio`), the specimen, Listening Room (`/listening-room`) and MÅLTID (`/maaltid`). `npm run build` writes the static site, the registry (`public/r`) and the share images to `dist`.
 
 Checks: `typecheck`, `lint`, `format:check`, `build`, `check:contrast` (every pen on every textured stock, day and night), `registry` and `registry:check`, `test:consumer`. `npm run build:textures` regenerates the paper.
 

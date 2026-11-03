@@ -1,0 +1,137 @@
+---
+// MÅLTID's own frame: a restaurant's site, not the docs. Its look is fixed (bond paper, the oxblood pen, a calm hand,
+// typewriter labels) whatever a visitor chose elsewhere on Fineliner's site; only day and night follow the system.
+// The wordmark is Tramline drawn by the pen as SVG, so no Tramline font loads.
+import "@/fineliner/styles/fineliner.css"
+import "@/site/maaltid/drawings"
+import { FinelinerDefs } from "@/fineliner/defs/fineliner-defs"
+import { frameStyle } from "@/fineliner/lib/frame-style"
+import { buttonVariants } from "@/fineliner/ui/button"
+import { frameVars, lettering, seedOf } from "@/fineliner/pen"
+import { PLACE } from "./data"
+
+interface Props {
+  /** The page's own title; the home page passes none. */
+  title?: string
+  description: string
+}
+const { title, description } = Astro.props
+const fullTitle = title ? `${title} · MÅLTID` : "MÅLTID · København N"
+const path = Astro.url.pathname.replace(/\/$/, "")
+const NAV = [
+  { href: "/maaltid/menu", label: "Menu" },
+  { href: "/maaltid/wine", label: "Wine" },
+]
+const wordmark = lettering("MÅLTID", { seed: "maaltid", hand: "calm" })[0]
+const shareImage = new URL("/og/maaltid.png", Astro.site ?? Astro.url).href
+---
+
+<!doctype html>
+<html
+  lang="en"
+  data-stock="bond"
+  data-pen="oxblood"
+  data-hand="calm"
+  data-boil="hover"
+  data-containers="open"
+  data-labels="type"
+  data-density="comfortable"
+  data-theme-preference="system"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={shareImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>
+      document.documentElement.dataset.theme = matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches
+        ? "night"
+        : "day"
+    </script>
+  </head>
+  <body>
+    <FinelinerDefs />
+    <a
+      class="label absolute -left-[999px] top-2 z-30 bg-pen px-tight py-hair text-paper focus:left-2"
+      href="#main"
+    >
+      Skip to content
+    </a>
+    <header class="mx-auto flex max-w-[76rem] flex-wrap items-center justify-between gap-x-line gap-y-snug px-snug pt-line sm:px-line">
+      <a href="/maaltid" class="block text-pen" aria-label="MÅLTID, home">
+        <span
+          class="block h-8 [&>svg]:h-full [&>svg]:w-auto"
+          set:html={wordmark}
+        />
+      </a>
+      <nav aria-label="MÅLTID">
+        <ul class="m-0 flex list-none flex-wrap items-center gap-x-line gap-y-tight p-0">
+          {NAV.map(({ href, label }) => (
+            <li>
+              <a
+                href={href}
+                class="no-underline hover:underline aria-[current=page]:underline"
+                aria-current={path === href ? "page" : undefined}
+              >
+                {label}
+              </a>
+            </li>
+          ))}
+          <li>
+            <a
+              href="/maaltid/book"
+              class={buttonVariants({ size: "sm", className: "no-underline" })}
+              style={frameStyle(["Book a table"])}
+              aria-current={path === "/maaltid/book" ? "page" : undefined}
+            >
+              Book a table
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="mx-auto mt-page max-w-[76rem] px-snug pb-line sm:px-line">
+      <div
+        class="rule mb-line"
+        style={frameVars(seedOf("maaltid-footer"))}
+        aria-hidden="true"
+      ></div>
+      <div class="grid gap-x-line gap-y-snug text-small leading-small sm:grid-cols-3">
+        <p class="m-0">
+          {PLACE.street}
+          <br />
+          {PLACE.city}
+        </p>
+        <p class="m-0">
+          {PLACE.hours}
+          <br />
+          {PLACE.kitchen}
+          <br />
+          <span class="text-pen-quiet">{PLACE.closed}</span>
+        </p>
+        <p class="m-0 text-pen-quiet">
+          A restaurant that doesn't exist, built with <a href="/">Fineliner</a>{" "}
+          to show the kit at work.
+        </p>
+      </div>
+    </footer>
+    <script>
+      // Drawings rendered at build time carry their first take; this draws the others where line boil shows them.
+      import { boilTakesIn } from "@/fineliner/drawing/drawing-takes"
+      boilTakesIn(document, () => import("@/site/maaltid/drawings"))
+    </script>
+  </body>
+</html>

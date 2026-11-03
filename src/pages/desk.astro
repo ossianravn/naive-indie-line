@@ -3,9 +3,12 @@
 import Base from "@/site/layouts/base.astro"
 import PageHeader from "@/site/layouts/page-header.astro"
 import { Desk } from "@/site/desk/desk"
-import { SCENES, listObjects } from "@/fineliner/pen"
+import { COLLECTIONS, listObjects } from "@/fineliner/pen"
+import { ROOMS } from "@/fineliner/pen/objects/rooms"
 
-const counts = `${listObjects().length} objects, ${Object.keys(SCENES).length} scenes and lettering`
+// The kit's own drawings only: a page elsewhere on the site may have registered its own in the same build.
+const kit = COLLECTIONS.reduce((n, [key]) => n + listObjects(key).length, 0)
+const counts = `${kit} objects, ${ROOMS.length} scenes and lettering`
 ---
 
 <Base

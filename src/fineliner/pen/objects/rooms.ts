@@ -176,3 +176,6 @@ const BUILT_IN = {
 } satisfies Record<string, Scene>
 
 for (const [name, scene] of Object.entries(BUILT_IN)) defineScene(name, scene)
+
+/** The kit's own rooms, for listing them apart from scenes a project adds. */
+export const ROOMS = Object.keys(BUILT_IN) as (keyof typeof BUILT_IN)[]
