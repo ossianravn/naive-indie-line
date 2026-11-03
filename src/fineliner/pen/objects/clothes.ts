@@ -204,6 +204,8 @@ export function clothes(
     wave: [r.signed() * 5, -155],
     mug: [r.signed() * 5, 52],
     walk: [14, -12],
+    // Both hands down in front, into a bin of records. Fixed, so it takes nothing from the stream.
+    browse: [-11, 11],
   }
   const swing = swings[pose] ?? stand
   const hands = [-1, 1].map((side, i) => {

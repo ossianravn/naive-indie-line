@@ -34,7 +34,7 @@ Measured 2026-11-03: sizes gzipped (unpacked in brackets), speed in Chrome.
 | Specimen                           | 103 KB of HTML (704 KB; was 8 MB)                                                                            |
 | Theme studio                       | 39 KB of HTML (289 KB)                                                                                       |
 | Listening Room catalogue           | 33 KB of HTML (215 KB)                                                                                       |
-| The drawing library                | 75 KB of HTML (485 KB, 57 objects), plus the pen engine (23 KB) where boil shows the other takes             |
+| The drawing library                | 83 KB of HTML (582 KB, 62 objects), plus the pen engine (23 KB) where boil shows the other takes             |
 | Stylesheet                         | 51 KB with the paper textures; Line Sans loads beside it from `/fonts/` (74 KB, preloaded)                   |
 | A collapsible opening              | No frame over 17 ms in Chrome with the GPU (one frame in three took 100 ms while the paper repainted)        |
 | A 200-row table                    | No frame over 20 ms while scrolling at 1× CPU; two or three 33 ms frames at 4× (headless Chromium)           |

@@ -46,11 +46,7 @@ export const picture: Draw = (
   r,
   c,
   k = 1,
-  {
-    w = 96 * k,
-    h = 120 * k,
-    kind = r.pick(["treehouse", "moon", "hills"]),
-  } = {},
+  { w = 96 * k, h = 120 * k, kind = r.pick(["boat", "moon", "hills"]) } = {},
 ) => {
   const tilt = r.signed() * 2.2
   const at: Map = (u, v) =>
@@ -75,17 +71,22 @@ export const picture: Draw = (
     s.fill(p.shape([at(l, v - z), at(u, v - z * 2.1), at(e, v - z)]))
     s.fill(p.shape(q(u - z * 0.35, v - z * 0.7, u + z * 0.05, v - z * 0.35)))
   }
-  if (kind === "treehouse") {
-    for (const f of [-1, 1]) {
-      const tip = at(0.5 + f * r.between(0.24, 0.3), r.between(0.36, 0.44))
-      sprig(s, p, at(0.5, 0.56 + f * 0.04), tip, 8 * k)
+  if (kind === "boat") {
+    // A sailboat on a calm sea under a low sun: the sail is the picture's one pocket of ink.
+    s.stroke(p.ring(...dot(at(r.between(0.2, 0.3), 0.26), w * 0.07)))
+    const u = r.between(0.42, 0.56)
+    s.fill(p.shape([at(u, 0.3), at(u, 0.6), at(u + 0.2, 0.6)]))
+    s.stroke(p.line(at(u - 0.015, 0.27), at(u - 0.015, 0.63)))
+    const hull = [-0.17, 0.24, 0.18, -0.12].map((du, i) =>
+      at(u + du, i < 2 ? 0.63 : 0.7),
+    )
+    outline(s, p, hull)
+    for (const a of [0.12, 0.26]) {
+      const wave = [0, 1, 2, 3, 4, 5, 6].map((i) =>
+        at(a + i * 0.1, 0.76 + (a - 0.12) * 0.57 + (i % 2 ? 0.015 : -0.015)),
+      )
+      s.stroke(p.path(wave))
     }
-    outline(s, p, q(0.465, 0.42, 0.535, 0.9))
-    for (let v = 0.83; v > 0.46; v -= 0.06)
-      bar(s, p, at(0.465, v), at(0.535, v), 0.9 * k)
-    hill(0.86, 0.04)
-    outline(s, p, q(0.33, 0.405, 0.67, 0.43))
-    cottage(0.5, 0.405, 0.1)
   } else if (kind === "moon") {
     const m = at(0.55, 0.36)
     s.fill(p.disc(...dot(m, w * 0.17)))

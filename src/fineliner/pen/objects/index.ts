@@ -2,6 +2,7 @@
 // drawing(), the scenes and the docs.
 import "./hifi"
 import "./music"
+import "./shop"
 import "./plants"
 import "./home"
 import "./bistro"

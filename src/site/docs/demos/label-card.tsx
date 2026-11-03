@@ -16,11 +16,11 @@ export default function LabelCardDemo() {
       <DemoSection title="Labels">
         <StateRow label="Scene, lettered">
           <LabelCard
-            scene="room"
-            title="Listening Room"
+            scene="bistro"
+            title="Thursday Wine"
             face="line"
             kicker="Chenin blanc · Loire · 2025"
-            spine="Pétillant Naturel"
+            spine="Vin de France"
             className="w-[19rem]"
           />
         </StateRow>

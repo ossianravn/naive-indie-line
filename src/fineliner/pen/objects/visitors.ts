@@ -6,7 +6,8 @@ import { clothes } from "./clothes"
 
 /**
  * A sweater, hoodie or open shirt and wide trousers with nobody in them. On its own the visitor stands empty-handed;
- * scenes may ask for "walk" or "record" (carrying a sleeve, which is also its own object, the visitor with a record).
+ * scenes may ask for "walk", "browse" (both hands down into a bin in front of them) or "record" (carrying a sleeve,
+ * which is also its own object, the visitor with a record).
  */
 export const visitor: Draw = (s, p, r, at, k = 1, { pose = "stand" } = {}) => {
   const P = (u: number, v: number): Point => [at[0] + u * k, at[1] + v * k]

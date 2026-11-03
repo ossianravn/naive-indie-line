@@ -99,48 +99,43 @@ export function stage(
   }
 }
 
+/**
+ * The shop floor at Listening Room, seen straight on: a back wall of records face out on rails, a gig poster and a
+ * pendant lamp; browser bins with someone flicking through one; the counter with the till and a turntable to try a
+ * record on, and now and then someone behind it.
+ */
 function room(seed: string, hand: HandName, take: number) {
-  const { s, p, r, put, corner, floor, walls, rug, border } = stage(
-    seed,
-    hand,
-    take,
-    "room",
-  )
-  walls()
-  if (r.chance(0.6)) {
-    const [x0, x1] = [M + 12, corner - 14]
-    s.stroke(
-      p.edges(
-        [
-          [x0, floor + (corner - x0) * 0.62 + 4],
-          [x0, H * 0.2],
-          [x1, H * 0.12],
-          [x1, floor + (corner - x1) * 0.62],
-        ],
-        false,
-      ),
-    )
-    s.fill(p.disc([x1 - 7, H * 0.42], [1.8, 0], [0, 1.8]))
-  }
-  rug()
-  put("picture", "picture", [r.between(0.62, 0.7) * W, H * 0.2], 0.875)
-  put("disco-ball", "ball", [r.between(0.28, 0.36) * W, H * 0.25], 0.95, {
-    top: M,
+  const { s, p, r, put, floor, border } = stage(seed, hand, take, "room")
+  s.stroke(p.line([M, floor], [W - M, floor + r.signed() * 6]))
+  const rails = r.chance(0.55) ? 2 : 1
+  put("sleeve-rail", "rail", [r.between(0.05, 0.08) * W, floor - 96], 0.9, {
+    w: r.between(270, 300),
   })
-  const b = put(
-    "shelf",
-    "shelf",
-    [r.between(0.4, 0.45) * W, floor + 44],
-    1.15,
-  ) as Box
-  put("speaker", "left", b.top(0.01, 0.22), 0.95)
-  put("speaker", "right", b.top(0.83, 0.22), 0.95)
-  put("turntable", "turntable", b.top(0.2, 0.08), 0.84)
-  put("sunflower", "plant", [r.between(0.86, 0.89) * W, floor + 80], 1.35)
-  // Everyone in a room is only their clothes, as on the label: here someone looking at a record.
-  put("visitor", "second", [r.between(0.27, 0.31) * W, H - M - 34], 1.25, {
-    pose: "record",
-  })
+  if (rails === 2)
+    put("sleeve-rail", "high", [r.between(0.08, 0.12) * W, floor - 162], 0.9, {
+      w: r.between(190, 230),
+    })
+  put("pendant", "lamp", [r.between(0.5, 0.54) * W, H * 0.2], 0.95, { top: M })
+  put("poster", "poster", [r.between(0.68, 0.72) * W, H * 0.27], 1)
+  // The counter on the right, with whoever minds the shop behind it.
+  const cx = r.between(0.61, 0.64) * W
+  if (r.chance(0.75))
+    put("visitor", "staff", [cx + r.between(110, 140), H - M - 52], 1.15, {
+      pose: "stand",
+    })
+  const top = put("counter", "counter", [cx, H - M - 40], 0.95, {
+    w: 196,
+  }) as Box
+  put("turntable", "deck", top.top(0.05, 0.22), 0.5)
+  put("till", "till", top.top(0.64, 0.3), 0.9)
+  // The bins, the far one first; someone stands behind the near one, hands in the records.
+  const bx = r.between(0.08, 0.12) * W
+  put("record-bin", "far", [bx + r.between(150, 165), H - M - 30], 0.9)
+  put("visitor", "browser", [bx + 60, H - M - 16], 1.15, { pose: "browse" })
+  put("record-bin", "near", [bx, H - M - 4], 0.95)
+  if (r.chance(0.5))
+    put("house-plant", "plant", [r.between(0.54, 0.57) * W, H - M - 6], 1)
+  else put("crate", "crate", [r.between(0.47, 0.5) * W, H - M - 4], 0.7)
   border()
   return s
 }
@@ -226,7 +221,7 @@ function work(seed: string, hand: HandName, take: number) {
   else put("laptop", "screen", top.top(0.36, 0.3), 0.8)
   put("mug", "mug", top.top(0.72, 0.2), 0.55)
   put("desk-lamp", "lamp", top.top(0.9, 0.65), 0.75)
-  // Someone at work, seen from behind on an office chair, as in the label's rooms: only their clothes.
+  // Someone at work, seen from behind on an office chair: only their clothes.
   put("visitor-seated", "worker", [x + r.between(130, 160), H - M - 20], 1.55)
   if (r.chance(0.5))
     put("cat", "cat", [r.between(0.84, 0.9) * W, H - M - 18], 0.85)
@@ -246,7 +241,8 @@ export interface Scene {
 const BUILT_IN = {
   room: {
     name: "Listening room",
-    label: "A room corner with a record shelf, a disco ball and visitors",
+    label:
+      "A record shop floor: browser bins, records face out on the wall and the counter with its till",
     size: [W, H],
     compose: room,
   },

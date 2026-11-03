@@ -1346,6 +1346,11 @@
           "target": "~/src/fineliner/pen/objects/seated.ts"
         },
         {
+          "path": "src/fineliner/pen/objects/shop.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/shop.ts"
+        },
+        {
           "path": "src/fineliner/pen/objects/units.ts",
           "type": "registry:file",
           "target": "~/src/fineliner/pen/objects/units.ts"
