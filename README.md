@@ -10,6 +10,7 @@ A shadcn/ui component library drawn with one fine-liner on unbleached paper: a s
 
 - **The pen engine** (`pen`): framework-free TypeScript that draws objects, scenes, lettering and marks as SVG from a seed, the same in Node and in the browser. Three takes of each drawing give the line boil.
 - **Drawings** (`drawing`): `<Drawing object="turntable" seed="…" />`, `<Lettering>`, `<PenMark>`, `<Circled>`.
+- **A drawing skill** for your coding agent, to draw your own objects, people and scenes in the same style ([below](#more-drawings-the-drawing-skill)).
 - **Components**: every shadcn part on Base UI, drawn: steady fields, frames that run past their corners, ink pockets, marks the pen puts down, sheets with the cartoonist's shadow, tables ruled by hand, charts drawn through the data.
 - **Extras and blocks**: Fineliner's own parts and whole sections (sign-in, settings, dashboard, pricing, article, empty states, hero).
 - **Appearance**: paper (bond, recycled, kraft; day and night), five pens, a calm or lively hand, line boil, open or boxed containers, small-caps or typewriter labels, density; saved per visitor and set before paint.
@@ -37,6 +38,27 @@ npx shadcn add @fineliner/record-sleeve
 ```
 
 Make `src/fineliner/styles/fineliner.css` your Tailwind entry (`@import "./fineliner/styles/fineliner.css";`), render `<FinelinerDefs />` once near the top of the page (the shared wobble filters), and run `appearanceScript()` in the document head before paint so the paper and pen are right on the first frame. The install contract is tested: `npm run test:consumer` installs items into a fresh Vite app and a Next.js App Router app offline, and type-checks and builds both.
+
+## More drawings: the drawing skill
+
+The kit draws 57 objects and four scenes; your project will want its own: a bicycle for a repair shop's empty state, your bakery's counter, someone walking a dog on the sign-up page. The drawing skill teaches your coding agent (Claude Code, Codex, or any agent that reads skills) to draw them in the kit's style, from a seed, in your own code.
+
+Install it from the registry, next to the kit:
+
+```sh
+npx shadcn add @fineliner/drawing-skill
+```
+
+That puts the skill in `.claude/skills/fineliner-drawings` and `.agents/skills/fineliner-drawings`; it is also in this repository under [`skills/fineliner-drawings`](skills/fineliner-drawings) to copy by hand. Then ask your agent for the drawing you need.
+
+What the agent does with it:
+
+- **Draws in your module, not the kit's.** New objects and scenes go in `src/drawings/index.ts`, registered with `define()` and `defineScene()`, so `npx shadcn add` can update `src/fineliner` without losing them. Import `@/drawings` where you render `<Drawing object="your-id" />` or `<Drawing scene="your-scene" />`.
+- **Builds from the kit's parts.** Boxes, padded shapes, rounds seen from above and cylinders; people from the same clothes and hair as the kit's; scenes on the same stage, with walls, a rug and the drawn border.
+- **Follows the style.** One monoline, calm 3/4 views, corners that meet, a few pockets of ink, every choice from the seed.
+- **Looks before it reports.** `scripts/render.mjs` draws a contact sheet of the new drawings at several seeds and both hands (it uses `jiti`, and `sharp` for a PNG), and the skill's checklist is the one the kit's own drawings were reviewed against.
+
+The skill's test prompts are in `skills/fineliner-drawings/evals`, in the layout `claude plugin eval` reads.
 
 ## Run the site
 

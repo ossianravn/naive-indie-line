@@ -290,7 +290,7 @@ define(
     "furniture",
     "home",
   ]),
-  T("window", "Window", [130, 150], [18, 140], 1, roomWindow, [
+  T("window", "Window", [138, 158], [23, 140], 1, roomWindow, [
     "wall",
     "view",
     "home",

@@ -260,17 +260,17 @@ export const portrait: Draw = (s, p, r, at, k = 1, options = {}) => {
 const T = objectsIn("people")
 
 define(
-  T("person", "Person", [110, 240], [55, 232], 1.15, person, [
+  T("person", "Person", [118, 262], [57, 252], 1.15, person, [
     "person",
     "team",
     "customer",
   ]),
-  T("person-wave", "Waving", [110, 240], [55, 232], 1.15, personWave, [
+  T("person-wave", "Waving", [118, 262], [57, 252], 1.15, personWave, [
     "person",
     "greeting",
     "welcome",
   ]),
-  T("person-mug", "With a mug", [110, 240], [55, 232], 1.15, personMug, [
+  T("person-mug", "With a mug", [118, 262], [57, 252], 1.15, personMug, [
     "person",
     "break",
     "coffee",

@@ -241,12 +241,12 @@ define(
     "computer",
     "remote",
   ]),
-  T("monitor", "Monitor", [170, 150], [85, 142], 1, monitor, [
+  T("monitor", "Monitor", [176, 152], [94, 142], 1, monitor, [
     "work",
     "computer",
     "screen",
   ]),
-  T("website", "Website", [190, 140], [9, 134], 1, website, [
+  T("website", "Website", [190, 150], [9, 134], 1, website, [
     "web",
     "browser",
     "launch",

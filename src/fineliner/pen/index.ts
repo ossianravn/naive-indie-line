@@ -11,7 +11,18 @@ export * from "./geometry"
 export { pen, HANDS, type Pen, type HandName } from "./stroke"
 export { plot, type Plot } from "./plot"
 export { sheet, type Sheet } from "./layers"
-export { box, cylinder, depth, handle, scribble, type Box } from "./shapes"
+export {
+  banded,
+  box,
+  cylinder,
+  depth,
+  drum,
+  handle,
+  pad,
+  scribble,
+  sprig,
+  type Box,
+} from "./shapes"
 export {
   COLLECTIONS,
   define,
@@ -25,7 +36,14 @@ export {
   type DrawOptions,
   type DrawingObject,
 } from "./library"
-export { SCENES, type Scene, type SceneName } from "./scenes"
+export {
+  SCENES,
+  defineScene,
+  stage,
+  type Scene,
+  type SceneName,
+  type Stage,
+} from "./scenes"
 export { drawing, type DrawingOptions } from "./drawing-svg"
 export { GLYPHS, type Glyph } from "./glyphs"
 export {
@@ -35,4 +53,7 @@ export {
   type LetteringOptions,
 } from "./lettering-svg"
 export { MARKS, penMark, penBorder, type MarkName } from "./pen-marks"
+// Building blocks for people, so a project can draw new poses in the same clothes and hair.
+export { clothes, TOPS, type Outfit } from "./objects/clothes"
+export { HAIR, hairBehind, head } from "./objects/people"
 import "./objects"

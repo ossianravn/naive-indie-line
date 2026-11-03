@@ -1,0 +1,7 @@
+schema_version: "1.1"
+name: person-walking-dog
+expected_outcome: |
+  In a Vite + React app with Fineliner's drawing item installed (src/fineliner), like tests/consumer/fixture.
+  A person walking a dog, registered from the project's own module, built from the kit's clothes(), head() and
+  hairBehind() so the person matches the kit's (young, everyday clothes, inked hair), with a simple dog in the same
+  line and a lead from the hand to the collar. App.tsx shows it. The app type-checks and it renders at every seed.

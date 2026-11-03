@@ -272,7 +272,7 @@ export const crate: Draw = (s, p, r, at, k = 1) => {
 const T = objectsIn("indie")
 
 define(
-  T("shelf", "Record shelf", [220, 150], [12, 138], 1, shelf, [
+  T("shelf", "Record shelf", [224, 150], [12, 138], 1, shelf, [
     "music",
     "record",
     "furniture",

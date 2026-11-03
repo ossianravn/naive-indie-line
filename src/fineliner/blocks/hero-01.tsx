@@ -181,7 +181,7 @@ export function Hero01({
           </div>
           <figcaption className="mt-tight flex flex-wrap items-center gap-x-snug gap-y-hair">
             <p aria-live="polite" className="label m-0 min-w-0 text-pen-quiet">
-              {SCENES[scene].name} · seed{" "}
+              {SCENES[scene]?.name ?? scene} · seed{" "}
               <span className="font-type tracking-normal text-pen normal-case [font-variant-caps:normal]">
                 {seed}
               </span>

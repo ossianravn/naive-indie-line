@@ -1,6 +1,7 @@
 // Scenes: rooms composed from the object library, back to front, inside the hand-drawn border. Every object gets its
 // own fork of the scene's seed, so two speakers in one room are drawn differently; the room's layout comes from the
-// scene's `room` stream, so every take of a scene has the same composition.
+// scene's `room` stream, so every take of a scene has the same composition. A project adds its own with defineScene,
+// built on the same stage.
 import type { Point } from "./geometry"
 import { place, type DrawOptions } from "./library"
 import type { Box } from "./shapes"
@@ -12,7 +13,7 @@ const W = 640
 const H = 440
 const M = 14
 
-interface Stage {
+export interface Stage {
   s: Sheet
   p: Pen
   r: Stream
@@ -23,6 +24,11 @@ interface Stage {
     k?: number,
     options?: DrawOptions,
   ) => unknown
+  /** The sheet's size and the border's margin. */
+  w: number
+  h: number
+  m: number
+  /** Where the side wall meets the back wall, and where the back wall meets the floor. */
   corner: number
   floor: number
   walls(): void
@@ -34,7 +40,7 @@ interface Stage {
  * What every room shares: the scene's pen and stream, a way to place objects, walls, a rug and the border. The sheet's
  * mask ids include the scene and hand, so two scenes drawn from one seed on the same page do not share masks.
  */
-function stage(
+export function stage(
   seed: string,
   hand: HandName,
   take: number,
@@ -59,6 +65,9 @@ function stage(
     p,
     r,
     put,
+    w: W,
+    h: H,
+    m: M,
     corner,
     floor,
     walls() {
@@ -234,7 +243,7 @@ export interface Scene {
   compose: (seed: string, hand: HandName, take: number) => Sheet
 }
 
-export const SCENES = {
+const BUILT_IN = {
   room: {
     name: "Listening room",
     label: "A room corner with a record shelf, a disco ball and visitors",
@@ -264,4 +273,12 @@ export const SCENES = {
   },
 } satisfies Record<string, Scene>
 
-export type SceneName = keyof typeof SCENES
+/** A scene's name: one of the kit's, or one a project added with defineScene. */
+export type SceneName = keyof typeof BUILT_IN | (string & {})
+
+export const SCENES: Record<string, Scene> = { ...BUILT_IN }
+
+/** Add a scene, or replace one with the same name, so drawing({ scene }) and <Drawing scene> find it. */
+export function defineScene(name: string, scene: Scene) {
+  SCENES[name] = scene
+}

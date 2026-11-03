@@ -36,7 +36,7 @@ const shadcn = path.join(repo, "node_modules/shadcn/dist/index.js")
 // umbrella: it lists every item, so it would hide a missing dependency.
 // dialog brings button, field brings label and separator, toggle-group brings toggle, avatar brings drawing, and
 // chart brings recharts and the pen's plotting module; record-sleeve is an extra and sign-in-01 a block, which
-// installs with its own item dependencies.
+// installs with its own item dependencies. drawing-skill is the coding agents' skill, outside the kit.
 const items = [
   "drawing",
   "dialog",
@@ -49,6 +49,7 @@ const items = [
   "chart",
   "record-sleeve",
   "sign-in-01",
+  "drawing-skill",
 ]
 
 // Builds and serves the registry, copies the fixture into a temporary app, installs it offline, adds the items and
@@ -82,6 +83,20 @@ test(
   { timeout: 15 * 60_000 },
   async (t) => {
     const { app, env, bin } = await install(t, "fixture")
+    // The drawing skill lands where agents look for it, and its example module type-checks against the installed kit
+    // in the app's strict settings, as a project's own src/drawings/index.ts would.
+    const skill = (agent) =>
+      path.join(app, `.${agent}/skills/fineliner-drawings`)
+    for (const agent of ["claude", "agents"])
+      assert.ok(
+        fs.existsSync(path.join(skill(agent), "SKILL.md")),
+        `drawing-skill did not install into .${agent}/skills`,
+      )
+    fs.mkdirSync(path.join(app, "src/drawings"))
+    fs.copyFileSync(
+      path.join(skill("claude"), "assets/example-drawings.ts"),
+      path.join(app, "src/drawings/index.ts"),
+    )
     await run(env, app, bin("typescript/bin/tsc"), "-b")
     await run(env, app, bin("vite/bin/vite.js"), "build")
     assert.ok(

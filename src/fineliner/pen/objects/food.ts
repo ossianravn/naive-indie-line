@@ -249,7 +249,7 @@ export const lemon: Draw = (s, p, r, at, k = 1) => {
 const T = objectsIn("food")
 
 define(
-  T("coffee", "Coffee", [90, 100], [45, 88], 1.1, coffee, [
+  T("coffee", "Coffee", [90, 106], [45, 88], 1.1, coffee, [
     "drink",
     "coffee",
     "morning",

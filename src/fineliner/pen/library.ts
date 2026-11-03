@@ -12,7 +12,8 @@ export const COLLECTIONS = [
   ["people", "People"],
 ] as const
 
-export type Collection = (typeof COLLECTIONS)[number][0]
+/** One of the kit's collections, or any name a project files its own objects under. */
+export type Collection = (typeof COLLECTIONS)[number][0] | (string & {})
 
 /** Choices an object may take instead of drawing them from its seed. */
 export interface DrawOptions {

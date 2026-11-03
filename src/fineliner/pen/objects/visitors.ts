@@ -122,8 +122,8 @@ define(
   T(
     "visitor-record",
     "Visitor with a record",
-    [110, 220],
-    [50, 212],
+    [112, 220],
+    [70, 212],
     1.15,
     visitorRecord,
     ["person", "music", "shopping"],

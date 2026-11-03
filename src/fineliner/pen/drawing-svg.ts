@@ -34,6 +34,10 @@ export function drawing({
     const named = take === 0 ? title : ""
     if (scene) {
       const sc = SCENES[scene]
+      if (!sc)
+        throw new Error(
+          `drawing() needs a known scene, got "${scene}"; add your own with defineScene()`,
+        )
       const label = named ?? sc.label
       out.push(
         sc

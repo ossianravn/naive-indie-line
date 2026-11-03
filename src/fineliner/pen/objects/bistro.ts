@@ -217,12 +217,12 @@ define(
     "menu",
     "prices",
   ]),
-  T("bistro-table", "Bistro table", [160, 130], [80, 124], 1, bistroTable, [
+  T("bistro-table", "Bistro table", [160, 140], [80, 131], 1, bistroTable, [
     "furniture",
     "restaurant",
     "cafe",
   ]),
-  T("pendant", "Pendant lamp", [80, 120], [40, 108], 1, pendant, [
+  T("pendant", "Pendant lamp", [80, 126], [40, 108], 1, pendant, [
     "light",
     "lamp",
     "restaurant",

@@ -178,7 +178,7 @@ export const radio: Draw = (s, p, r, at, k = 1) => {
 const T = objectsIn("indie")
 
 define(
-  T("turntable", "Turntable", [170, 120], [14, 104], 1, turntable, [
+  T("turntable", "Turntable", [176, 120], [14, 104], 1, turntable, [
     "music",
     "record",
     "vinyl",

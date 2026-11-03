@@ -34,6 +34,18 @@ const walk = (dir) =>
       return /\.(tsx?|css)$/u.test(entry.name) ? [file] : []
     })
 
+// Every file under a folder, for the drawing skill, whatever its type; its test cases (evals/) stay in the repository.
+const walkAll = (dir) =>
+  fs
+    .readdirSync(path.join(root, dir), { withFileTypes: true })
+    .filter((entry) => entry.name !== "evals")
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .flatMap((entry) =>
+      entry.isDirectory()
+        ? walkAll(`${dir}/${entry.name}`)
+        : [`${dir}/${entry.name}`],
+    )
+
 const matches = (file, pattern) =>
   pattern.endsWith("/") ? file.startsWith(pattern) : file === pattern
 
@@ -197,6 +209,23 @@ export function buildRegistry({ base } = {}) {
       .filter((item) => item.type !== "registry:block")
       .map((item) => address(item.name)),
     files: [],
+  })
+  // The drawing skill: not kit code but instructions for the project's coding agent, installed where Claude Code
+  // (.claude/skills) and agents that follow the open skills layout (.agents/skills) look for skills.
+  const skill = "skills/fineliner-drawings"
+  const skillFiles = walkAll(skill)
+  items.push({
+    name: "drawing-skill",
+    type: "registry:item",
+    title: "Drawing Skill",
+    description: descriptions["drawing-skill"],
+    files: ["claude", "agents"].flatMap((agent) =>
+      skillFiles.map((file) => ({
+        path: file,
+        type: "registry:file",
+        target: `~/.${agent}/skills/fineliner-drawings/${file.slice(skill.length + 1)}`,
+      })),
+    ),
   })
   return {
     $schema: "https://ui.shadcn.com/schema/registry.json",

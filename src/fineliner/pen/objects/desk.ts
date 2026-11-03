@@ -260,7 +260,7 @@ define(
     "furniture",
     "office",
   ]),
-  T("office-chair", "Office chair", [100, 140], [50, 132], 1, officeChair, [
+  T("office-chair", "Office chair", [100, 147], [50, 138], 1, officeChair, [
     "work",
     "furniture",
     "seat",
@@ -270,7 +270,7 @@ define(
     "work",
     "late",
   ]),
-  T("books", "Books", [140, 90], [20, 82], 1, books, [
+  T("books", "Books", [156, 93], [24, 82], 1, books, [
     "reading",
     "study",
     "library",
@@ -280,7 +280,7 @@ define(
     "ideas",
     "design",
   ]),
-  T("sticky-notes", "Sticky notes", [160, 90], [26, 74], 1, stickyNotes, [
+  T("sticky-notes", "Sticky notes", [160, 90], [34, 74], 1, stickyNotes, [
     "notes",
     "planning",
     "todo",

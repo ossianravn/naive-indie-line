@@ -1,0 +1,8 @@
+schema_version: "1.1"
+name: bicycle-empty-state
+expected_outcome: |
+  In a Vite + React app with Fineliner's drawing item installed (src/fineliner), like tests/consumer/fixture.
+  A bicycle object registered from the project's own module (not inside src/fineliner), drawn in the kit's style:
+  one wobbly monoline, corners that meet, wheels as rings, a frame that joins the wheels, little ink. App.tsx imports
+  the module and shows <Drawing object="..."> above "No bookings yet". The app type-checks, and the bicycle renders
+  at every seed without coordinates going wrong.

@@ -1,0 +1,7 @@
+schema_version: "1.1"
+name: roastery-scene
+expected_outcome: |
+  In a Vite + React app with Fineliner's drawing item installed (src/fineliner), like tests/consumer/fixture.
+  A roastery scene added with defineScene() on the kit's stage (walls, border), composed back to front from new
+  objects (a drum roaster, sacks of beans, a scale) and a person working, in the kit's style with plenty of air.
+  App.tsx shows <Drawing scene="..."> at the top. The app type-checks and the scene renders at every seed.

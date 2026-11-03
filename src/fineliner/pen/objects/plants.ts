@@ -221,7 +221,7 @@ define(
     "flower",
     "summer",
   ]),
-  T("house-plant", "House plant", [120, 140], [60, 132], 1, housePlant, [
+  T("house-plant", "House plant", [138, 142], [69, 132], 1, housePlant, [
     "plant",
     "home",
   ]),
