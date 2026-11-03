@@ -10,6 +10,9 @@
   --face-hand: "Gaegu", "Segoe Print", "Bradley Hand", cursive;
   /* Display lettering: Naïve Indie Line Sans, the pen as a typeface (capitals only), from line-sans.generated.css. */
   --face-line: "Naïve Indie Line Sans", "Avenir Next", "Segoe UI", sans-serif;
+  /* Naïve Indie Inline and its tint, from inline.generated.css, which a project imports when it uses the face. */
+  --face-inline: "Naïve Indie Inline", var(--face-line);
+  --face-inline-fill: "Naïve Indie Inline Fill";
   --face-ui: var(--face-read);
 
   /* Labels: the reading serif in tracked small caps, as on the reference label. data-labels="type" switches them to

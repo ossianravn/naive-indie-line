@@ -4,8 +4,28 @@
 /* The drawing's box is a default the call site sizes (w-20, [&>svg]:h-6), so it sits in a layer below utilities. */
 @layer components {
   /* Lettering set in Naïve Indie Line Sans: display lines sit close. A caller's leading-* still wins (no specificity). */
-  :where([data-slot="lettering"][data-face="line"]) {
+  :where([data-slot="lettering"]:is([data-face="line"], [data-face="inline"])) {
     line-height: 1.1;
+  }
+  /* Naïve Indie Inline: the outlines in the pen, its Fill font laid under them in the wash. Both fonts shape a line
+     the same way, so the tint sits exactly between the outlines however the words wrap. */
+  :where([data-slot="lettering"][data-face="inline"]) {
+    position: relative;
+    isolation: isolate;
+  }
+  :where([data-slot="lettering"][data-face="inline"])::before {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    font-family: var(--face-inline-fill);
+    color: var(--wash);
+    pointer-events: none;
+  }
+  @media (forced-colors: active) {
+    :where([data-slot="lettering"][data-face="inline"])::before {
+      display: none;
+    }
   }
   .fl-drawing {
     display: block;

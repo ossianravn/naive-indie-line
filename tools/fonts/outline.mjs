@@ -13,7 +13,7 @@ const unit = (v) => {
 const normal = (v) => [-v[1], v[0]]
 
 /** Points every `step` units along each segment, keeping every original point (corners stay corners). */
-function resample(points, step) {
+export function resample(points, step) {
   const out = [points[0]]
   for (let i = 1; i < points.length; i++) {
     const [a, b] = [points[i - 1], points[i]]
@@ -141,6 +141,47 @@ function loop(points, h) {
   ]
 }
 
+/** Snap a polygon to a 1/32-unit grid, nudged by (dx, dy): near-coincident edges confuse the union less on a grid. */
+const snapped = (polygon, dx = 0, dy = 0) =>
+  polygon.map((ring) =>
+    ring.map(([x, y]) => [
+      Math.round((x + dx) * 32) / 32,
+      Math.round((y + dy) * 32) / 32,
+    ]),
+  )
+
+/**
+ * Union of many shapes. polygon-clipping can fail on near-coincident edges (an inline stroke's two outlines where it
+ * thins out); then the shapes merge one at a time, and a shape that still fails is nudged by a few hundredths of a
+ * unit, the same nudge every build.
+ */
+function union(shapes) {
+  try {
+    return polygonClipping.union(...shapes)
+  } catch {
+    // fall through to the grid
+  }
+  try {
+    return polygonClipping.union(...shapes.map((s) => snapped(s)))
+  } catch {
+    let acc = []
+    shapes.forEach((shape, i) => {
+      for (const nudge of [0, 0.03, 0.07, 0.13]) {
+        try {
+          acc = polygonClipping.union(
+            acc,
+            snapped(shape, nudge * ((i % 3) - 1), nudge),
+          )
+          return
+        } catch {
+          // try the next nudge
+        }
+      }
+    })
+    return acc
+  }
+}
+
 const area = (ring) =>
   ring.reduce(
     (t, p, i) => (i ? t + (ring[i - 1][0] * p[1] - p[0] * ring[i - 1][1]) : t),
@@ -149,10 +190,10 @@ const area = (ring) =>
 
 /**
  * One glyph's outline: strokes (each a polyline, a ring when it closes) and dots, swept by a pen of radius h and
- * merged. Returns contours as cubic paths: outer contours counter-clockwise and holes clockwise, as CFF expects.
+ * merged, with any ready-made shapes in `fills` (polygon-clipping polygons). Returns contours as cubic paths: outer contours counter-clockwise and holes clockwise, as CFF expects.
  */
-export function outline(strokes, dots, h) {
-  const shapes = []
+export function outline(strokes, dots, h, fills = []) {
+  const shapes = [...fills]
   for (const s of strokes) {
     const closed = s.length > 3 && len(sub(s[0], s[s.length - 1])) < 1
     if (closed && runs(s, 60).length === 1) {
@@ -172,7 +213,7 @@ export function outline(strokes, dots, h) {
     shapes.push([ring])
   }
   if (!shapes.length) return []
-  const merged = polygonClipping.union(...shapes)
+  const merged = union(shapes)
   const contours = []
   for (const polygon of merged)
     polygon.forEach((ring, i) => {

@@ -64,3 +64,17 @@ export function addTable(font, tag, data) {
   ov.setUint32(head + 8, (0xb1b0afba - checksum(out)) >>> 0)
   return out
 }
+
+/** A table's bytes, copied out of a finished OpenType file. */
+export function getTable(font, tag) {
+  const view = new DataView(font.buffer, font.byteOffset, font.byteLength)
+  for (let i = 0; i < view.getUint16(4); i++) {
+    const at = 12 + i * 16
+    if (String.fromCharCode(...font.subarray(at, at + 4)) === tag)
+      return font.slice(
+        view.getUint32(at + 8),
+        view.getUint32(at + 8) + view.getUint32(at + 12),
+      )
+  }
+  throw new Error(`no ${tag} table`)
+}

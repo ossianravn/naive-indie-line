@@ -79,6 +79,7 @@
   --font-label: var(--face-label);
   --font-hand: var(--face-hand);
   --font-line: var(--face-line);
+  --font-inline: var(--face-inline);
   --font-ui: var(--face-ui);
   --font-serif: var(--face-read);
   --font-mono: var(--face-type);

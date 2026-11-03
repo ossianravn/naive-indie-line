@@ -36,6 +36,7 @@
     "@fineliner/edition-number",
     "@fineliner/empty",
     "@fineliner/field",
+    "@fineliner/font-inline",
     "@fineliner/hand-note",
     "@fineliner/hover-card",
     "@fineliner/input",

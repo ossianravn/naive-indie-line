@@ -104,14 +104,15 @@ The typewriter replaces Patina's code mono: restaurants that use this style prin
 
 Display lettering in two faces, both from the kit, both named Naïve Indie (the style's name):
 
-| Face                  | What it is                                                                                   | Where it shows                                |
-| --------------------- | -------------------------------------------------------------------------------------------- | --------------------------------------------- |
-| Naïve Indie Line Sans | A real font (OTF, WOFF2): the pen as a typeface, one round-ended monoline, capitals only     | Wordmarks, headings, covers, signs: as text   |
-| Tramline              | Drawn by the pen from the skeleton alphabet as SVG: three parallel lines, each letter seeded | Covers and signs that want to look hand-drawn |
+| Face                  | What it is                                                                                     | Where it shows                                |
+| --------------------- | ---------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| Naïve Indie Line Sans | A real font (OTF, WOFF2): the pen as a typeface, one round-ended monoline, capitals only       | Wordmarks, headings, covers, signs: as text   |
+| Naïve Indie Inline    | Two real fonts set one over the other: a contrasted serif's outlines, and its Fill in the wash | Titles and covers that want the label's serif |
+| Tramline              | Drawn by the pen from the skeleton alphabet as SVG: three parallel lines, each letter seeded   | Covers and signs that want to look hand-drawn |
 
 Naïve Indie Line Sans is built from the same **skeleton alphabet** as Tramline (`src/fineliner/pen/glyphs.ts`, centre-line strokes at cap height 100) plus the marks and letters in `tools/fonts/glyphs.mjs`: every capital of the Latin-script languages of Europe (Æ Ø Å, Œ Þ Ð Ŋ ẞ, Polish, Czech, Hungarian, Romanian, Turkish, Baltic, Maltese and Welsh accents), figures, punctuation and the common symbols. Lowercase types the same capitals. The strokes are wobbled by the pen's hand, swept by a round pen 32 units wide (4.6 % of the cap height) and merged into outlines; every glyph has three takes that rotate through `calt`, so a word never repeats a stamp. Because it is text, search engines and screen readers read it as words.
 
-A second font in the same family, Naïve Indie Inline (a serif with tinted inline strokes), is next. Liner, Stilt and Ribbon, the earlier drawn faces, are gone (2026-11-03).
+Naïve Indie Inline draws the same skeleton as a contrasted serif. A broad nib's rule decides the weight from each stroke's direction: verticals and \ diagonals are thick, drawn as two lines with the tint between them; horizontals and / diagonals are thin, one line; curves swell at their sides. Free ends on the baseline and cap line take short serifs, arm ends a tick, dots are open rings. The tint is its own font, Naïve Indie Inline Fill, set under the outlines in the pen's wash, so it follows the pen and the night card. Liner, Stilt and Ribbon, the earlier drawn faces, are gone (2026-11-03).
 
 ## Motion
 

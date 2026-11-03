@@ -1,4 +1,17 @@
-/* Site-only pieces: the drawing desk's segmented settings, from before the kit had a toggle group. */
+/* Site-only pieces: the drawing desk's segmented settings, from before the kit had a toggle group, and the Inline
+   fonts from their files, so a page that does not use them does not load them. A project using the kit imports
+   styles/inline.generated.css, which carries them inside it, instead. */
+
+@font-face {
+  font-family: "Naïve Indie Inline";
+  font-display: swap;
+  src: url("/fonts/naive-indie-inline.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Naïve Indie Inline Fill";
+  font-display: swap;
+  src: url("/fonts/naive-indie-inline-fill.woff2") format("woff2");
+}
 
 .segmented {
   display: inline-flex;

@@ -1,6 +1,6 @@
 ---
 // Lettering: Naïve Indie Line Sans, the pen as a real typeface, shown at size with its whole character set and a line
-// in several languages; then Tramline, drawn by the pen from the skeleton alphabet. Titles come from the shop's racks,
+// in several languages; Naïve Indie Inline, its contrasted serif with the tint; then Tramline, drawn by the pen. Titles come from the shop's racks,
 // so the section hands on to the records in use at the end of the sheet.
 import { Lettering } from "@/fineliner/drawing/lettering"
 import SheetSection from "./sheet-section.astro"
@@ -46,6 +46,21 @@ const EUROPE = "Blåbærsyltetøy · Zażółć gęślą jaźń · Árvíztűrő
       }
     </dl>
     <Lettering text={EUROPE} className="block max-w-[52rem] text-[1.6rem] leading-[1.35]" />
+    <div class="grid items-end gap-x-line gap-y-tight lg:grid-cols-9">
+      <Lettering text="Side Streets" face="inline" className="block text-[clamp(3rem,9vw,5.5rem)] lg:col-span-6" />
+      <div class="lg:col-span-3">
+        <p class="m-0 text-lead leading-subhead">Naïve Indie Inline</p>
+        <p class="m-0 text-small leading-small text-pen-quiet">
+          The pen as a contrasted serif: thick strokes drawn as two lines with the wash between them, thin strokes as
+          one. Two fonts, the outlines and their Fill, set one over the other.
+        </p>
+        <p class="m-0 mt-tight text-small leading-small">
+          <a href="/fonts/naive-indie-inline.otf" download>Inline OTF</a> ·
+          <a href="/fonts/naive-indie-inline-fill.otf" download>Fill OTF</a> · MIT
+        </p>
+      </div>
+    </div>
+    <Lettering text={SET[3]?.[1] ?? ""} face="inline" className="block max-w-[56rem] text-[2rem] leading-[1.35] wrap-anywhere" />
     <div class="grid items-end gap-x-line gap-y-tight lg:grid-cols-9">
       <Lettering
         text="Pétillant"
