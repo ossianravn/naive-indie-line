@@ -320,6 +320,7 @@ The maintainer asked for a page of its own for lettering, with room to show the 
 - [x] Bold, Italic and Bold Italic of Sans, Inline (and Fill) and Tramline, from the same seeds; opt-in registry items `font-*-styles`
 - [x] `/lettering`: a tester (words, face, bold and italic, size, pen, Inline's Fill), each face in four styles with its takes, letters and files, Inline in colour, the shared set; linked from the nav; the specimen's section shortened to point to it
 - [x] The curve fitter's stray handles (a hairline from Inline's G) fixed
+- [x] The desk's Letters mode removed (2026-11-04, the maintainer: lettering has its own page); `lettering()` stays for MÅLTID's wordmark
 - [ ] Inline as a colour font (COLR), still decided and not scheduled
 - [ ] Lowercase, and a true cursive italic: new alphabets, not started
 

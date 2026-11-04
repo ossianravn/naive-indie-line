@@ -1,8 +1,7 @@
 "use client"
 
-// The drawing desk: choose an object, a scene or a line of lettering, reroll its seed until it is right, then take
-// the seed, the code or the SVG. The seed travels in the URL, so a drawing can be shared. Lettering here is drawn by
-// the pen from its seed (lettering() in the engine), not set in the Tramline font.
+// The drawing desk: choose an object or a scene, reroll its seed until it is right, then take the seed, the JSX or
+// the SVG. The seed travels in the URL, so a drawing can be shared. Lettering has its own page (/lettering).
 import "@/fineliner/pen/objects"
 import { ROOMS } from "@/fineliner/pen/objects/rooms"
 import { useEffect, useRef, useState } from "react"
@@ -13,7 +12,6 @@ import {
   COLLECTIONS,
   SCENES,
   drawing,
-  lettering,
   listObjects,
   type HandName,
   type SceneName,
@@ -21,7 +19,7 @@ import {
 import { Segments, frame } from "./desk-controls"
 import { download, standaloneSvg } from "./export-svg"
 
-type Kind = "scene" | "object" | "lettering"
+type Kind = "scene" | "object"
 const WORDS = [
   "corner-shop",
   "side-b",
@@ -46,7 +44,6 @@ export function Desk() {
   const [object, setObject] = useState(
     () => query().get("object") ?? "turntable",
   )
-  const [text, setText] = useState("Listening room")
   const [seed, setSeed] = useState(() => query().get("seed") ?? "corner-shop")
   const [hand, setHand] = useState<HandName>("lively")
   const [copied, setCopied] = useState("")
@@ -68,41 +65,27 @@ export function Desk() {
     setSeed(next)
   }
   const svg = () =>
-    (kind === "lettering"
-      ? lettering(text, { face: "tramline", seed, hand })
-      : drawing({
-          ...(kind === "scene" ? { scene } : { object }),
-          seed,
-          hand,
-        }))[0] ?? ""
+    drawing({
+      ...(kind === "scene" ? { scene } : { object }),
+      seed,
+      hand,
+    })[0] ?? ""
   const jsx =
-    kind === "lettering"
-      ? `lettering(${JSON.stringify(text)}, { seed: "${seed}" })`
-      : kind === "scene"
-        ? `<Drawing scene="${scene}" seed="${seed}" />`
-        : `<Drawing object="${object}" seed="${seed}" />`
+    kind === "scene"
+      ? `<Drawing scene="${scene}" seed="${seed}" />`
+      : `<Drawing object="${object}" seed="${seed}" />`
   const copy = (what: string, value: string) =>
     navigator.clipboard
       .writeText(value)
       .then(() => (setCopied(what), setTimeout(() => setCopied(""), 1600)))
   const neighbours = [1, 2, 3, 4].map((n) => `${seed}-${n}`)
-  const show = (s: string, className = "") =>
-    kind === "lettering" ? (
-      // The first take names itself by the text.
-      <span
-        className={`fl-takes ${className}`}
-        dangerouslySetInnerHTML={{
-          __html: lettering(text, { seed: s, hand, takes: 3 }).join(""),
-        }}
-      />
-    ) : (
-      <Drawing
-        {...(kind === "scene" ? { scene } : { object })}
-        seed={s}
-        hand={hand}
-        className={className}
-      />
-    )
+  const show = (s: string) => (
+    <Drawing
+      {...(kind === "scene" ? { scene } : { object })}
+      seed={s}
+      hand={hand}
+    />
+  )
 
   return (
     // One column on a phone: the drawing, its controls right under it, then the neighbouring seeds. From lg the
@@ -112,12 +95,7 @@ export function Desk() {
         ref={stage}
         className={kind === "object" ? "mx-auto w-full max-w-[26rem]" : ""}
       >
-        {show(
-          seed,
-          kind === "lettering"
-            ? "[&>svg]:h-28 [&>svg]:w-auto [&>svg]:max-w-full"
-            : "",
-        )}
+        {show(seed)}
       </div>
       <div className="grid content-start gap-snug lg:col-start-2 lg:row-span-2 lg:row-start-1">
         <Segments
@@ -127,7 +105,6 @@ export function Desk() {
           options={[
             ["scene", "Scene"],
             ["object", "Object"],
-            ["lettering", "Letters"],
           ]}
         />
         {kind === "scene" && (
@@ -169,24 +146,6 @@ export function Desk() {
               />
             </span>
           </label>
-        )}
-        {kind === "lettering" && (
-          <>
-            <label className="grid justify-items-start gap-hair">
-              <span className="label">Words</span>
-              <span
-                className="frame inline-flex h-control w-56 items-center px-tight"
-                style={frame("desk-words")}
-              >
-                <input
-                  className="w-full bg-transparent text-ui outline-none"
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  spellCheck={false}
-                />
-              </span>
-            </label>
-          </>
         )}
         <label className="grid justify-items-start gap-hair">
           <span className="label">Seed</span>
@@ -236,9 +195,9 @@ export function Desk() {
               type="button"
               className="frame h-control px-tight text-small"
               style={frame("desk-copy-jsx")}
-              onClick={() => copy(kind === "lettering" ? "code" : "JSX", jsx)}
+              onClick={() => copy("JSX", jsx)}
             >
-              {kind === "lettering" ? "Copy code" : "Copy JSX"}
+              Copy JSX
             </button>
             <button
               type="button"
@@ -271,12 +230,7 @@ export function Desk() {
               onClick={() => reroll(n)}
               aria-label={`Use seed ${n}`}
             >
-              {show(
-                n,
-                kind === "lettering"
-                  ? "[&>svg]:h-8 [&>svg]:w-auto [&>svg]:max-w-full"
-                  : "",
-              )}
+              {show(n)}
               <span className="font-type text-small">{n}</span>
             </button>
           ))}

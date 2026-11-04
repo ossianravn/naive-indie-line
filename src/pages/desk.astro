@@ -1,5 +1,5 @@
 ---
-// The drawing desk: reroll any object, scene or line of lettering, then take its seed, JSX or SVG.
+// The drawing desk: reroll any object or scene, then take its seed, JSX or SVG. Lettering has its own page.
 import Base from "@/site/layouts/base.astro"
 import PageHeader from "@/site/layouts/page-header.astro"
 import { Desk } from "@/site/desk/desk"
@@ -8,17 +8,17 @@ import { ROOMS } from "@/fineliner/pen/objects/rooms"
 
 // The kit's own drawings only: a page elsewhere on the site may have registered its own in the same build.
 const kit = COLLECTIONS.reduce((n, [key]) => n + listObjects(key).length, 0)
-const counts = `${kit} objects, ${ROOMS.length} scenes and lettering`
+const counts = `${kit} objects and ${ROOMS.length} scenes`
 ---
 
 <Base
   title="Desk"
-  description="Fineliner's drawing desk: choose an object, a scene or lettering, reroll the seed, and take the seed, JSX or SVG."
+  description="Fineliner's drawing desk: choose an object or a scene, reroll the seed, and take the seed, JSX or SVG."
 >
   <PageHeader title="Desk">
     <Fragment slot="kicker">Fineliner · {counts}</Fragment>
-    Draw any object, scene or line of lettering from a seed, reroll until it
-    sits right, then take the seed, the JSX or the SVG.
+    Draw any object or scene from a seed, reroll until it sits right, then take
+    the seed, the JSX or the SVG.
   </PageHeader>
   <div class="mx-auto mt-section max-w-[76rem] px-snug sm:px-line">
     <Desk client:only="react" />

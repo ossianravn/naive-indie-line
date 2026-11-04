@@ -118,7 +118,7 @@ Fineliner Naïve Sans is built from the **skeleton alphabet** (`src/fineliner/pe
 
 Fineliner Naïve Inline draws the same skeleton as a contrasted serif. A broad nib's rule decides the weight from each stroke's direction: verticals and \ diagonals are thick, drawn as two lines with the tint between them; horizontals and / diagonals are thin, one line; curves swell at their sides. Free ends on the baseline and cap line take short serifs, arm ends a tick, dots are open rings. The tint is its own font, Fineliner Naïve Inline Fill, set under the outlines in the pen's wash, so it follows the pen and the night card. Liner, Stilt and Ribbon, the earlier drawn faces, are gone (2026-11-03).
 
-Fineliner Naïve Tramline is the drawn Tramline as a font: every stroke of the skeleton three parallel lines, each wobbled on its own and running a little past its ends or stopping short, so the lines cross where strokes meet; accents draw their three lines closer. Each take tilts and lifts its letter a little. The lines are 4.6 % of the cap height apart and the pen under 2 %, so it is a display face: from about 40px up. The pen engine still draws Tramline as SVG from a seed (`lettering()`), which the desk rerolls.
+Fineliner Naïve Tramline is the drawn Tramline as a font: every stroke of the skeleton three parallel lines, each wobbled on its own and running a little past its ends or stopping short, so the lines cross where strokes meet; accents draw their three lines closer. Each take tilts and lifts its letter a little. The lines are 4.6 % of the cap height apart and the pen under 2 %, so it is a display face: from about 40px up. The pen engine still draws Tramline as SVG from a seed (`lettering()`), for a wordmark that should not load the font.
 
 ## Motion
 
@@ -178,4 +178,4 @@ The plan tracks these as decisions; the direction itself (S1) is agreed.
 6. Frames: drawn by the pen at measured size (truest to the reference; needs a small script per frame, so no server rendering) or filtered CSS borders (no script, server-rendered). In the specimen the filtered frames read nearly as well, so the recommendation is filtered frames for anything that resizes and the pen only where a shape is fixed.
 7. The correction pen as the only second colour.
 8. The wash as an art-only second tone.
-9. Our own letters: decided 2026-11-03: Fineliner Naïve Sans, Inline and Tramline are real fonts (Tramline followed later that day, at the maintainer's word); the pen engine still draws Tramline as seeded SVG for the desk.
+9. Our own letters: decided 2026-11-03: Fineliner Naïve Sans, Inline and Tramline are real fonts (Tramline followed later that day, at the maintainer's word); the pen engine still draws Tramline as seeded SVG (`lettering()`).
