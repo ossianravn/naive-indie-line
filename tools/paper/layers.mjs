@@ -77,16 +77,21 @@ export function tinted(size, freq, octaves, seed, rgb, a, b) {
   )
 }
 
-/** Flecks: dark inclusions in recycled paper, mostly specks with the odd larger chip, drawn again across the edges. */
-export function flecks(size, count, seed, palette) {
+/**
+ * Flecks: dark inclusions in recycled paper, mostly specks with the odd larger chip, drawn again across the edges.
+ * `least` is the smallest half-width a speck may have. Specks under a pixel show on a 1x screen because each one is
+ * rounded up to a soft whole pixel; a 2x or 3x screen draws them true to size, where they vanish, so the sharp tile
+ * holds them to about a pixel across. Same seed, so both tiles have their specks in the same places.
+ */
+export function flecks(size, count, seed, palette, least = 0) {
   const r = prng(seed)
   const out = []
   for (let i = 0; i < count; i++) {
     const x = r() * size
     const y = r() * size
     const chip = r() < 0.1
-    const rx = chip ? 0.9 + r() * 1.3 : 0.3 + r() * 0.55
-    const ry = rx * (0.45 + r() * 0.55)
+    const rx = Math.max(least, chip ? 0.9 + r() * 1.3 : 0.3 + r() * 0.55)
+    const ry = Math.max(least * 0.75, rx * (0.45 + r() * 0.55))
     const turn = Math.round(r() * 180)
     const [color, alpha] = palette[Math.floor(r() * palette.length)]
     const opacity = Math.round(alpha * (0.55 + r() * 0.45) * 100) / 100

@@ -61,7 +61,7 @@ Kraft carries its own darker pens: sepia `#3e2718`, forest `#1b3524`, oxblood `#
 
 **The custom pen** is any hue at a chosen strength (`data-pen="custom"`, with `--pen-hue` 0–359 and `--pen-strength` 0–100 on `<html>`). Each stock sets the OKLCH lightness text needs and the most colour any hue may take at it (`--custom-lightness`, `--custom-chroma`: 0.32 and 0.12 on bond and recycled, 0.27 and 0.11 on kraft, 0.89 and 0.07 at night), so every hue reads as ink, night is still a pale gel pen, and the wash follows at `--custom-wash-lightness`. `check:contrast` sweeps the whole hue circle at full strength on every stock. The appearance control offers six directions to start from (indigo, teal, moss, ochre, rust, plum) and a hue and strength to tune.
 
-On a phone (under 40 rem) the specks are drawn 1.4 times larger and so fewer to a screen, so each fleck and fibre stays visible at arm's length while the page reads a little quieter.
+On a dense screen (a phone, a laptop at 150% or more) the flecks are the same specks held to about a pixel across, because a dense screen draws a speck under a pixel true to size and it vanishes; on a phone (under 40 rem) the fibres are drawn 1.4 times larger, so each stays visible at arm's length.
 
 **The wash** is each pen thinned (navy `#5b72a8`), the reference's soil colour. It fills art only: a pot, a picture, a highlight shape. It is never text and never the only carrier of meaning (3.7:1 on recycled).
 

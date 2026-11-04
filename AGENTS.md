@@ -32,7 +32,7 @@ Prefer installed packages. Propose a new dependency with the need it serves.
 | The pen engine, drawings, takes, rendering, the theme runtime      | [Architecture](docs/architecture.md) |
 | A shadcn part in `src/fineliner/ui/`, its docs demo                | [Primitives](docs/primitives.md)     |
 | An extra (`src/fineliner/extras/`) or a block (`blocks/`)          | [Extras and blocks](docs/extras.md)  |
-| Accessibility, performance, what the release must meet             | [Quality](docs/quality.md)           |
+| Accessibility, phones, page speed, what the release must meet      | [Quality](docs/quality.md)           |
 | Phase scope, decisions, what ports from Patina, progress           | [Plan](docs/plan.md)                 |
 
 Patina's seeded-variation document still describes the shared seed logic; Fineliner's own rules for seeds live in [Architecture](docs/architecture.md).
@@ -49,6 +49,17 @@ The bar: before showing or reporting a screen, ask whether Apple would ship it. 
 - **Pick the control that fits the choice.** Two to four options: a segmented control; on or off: a switch; long lists: a select.
 - **Respect content and theme changes.** Check long labels, 390px, day and night, all three stocks, both hands and forced colours.
 
+## Phones and page speed
+
+Build for a mid-range Android phone on mobile data first; a desktop on fibre is the easy case. [Quality](docs/quality.md#phones-and-page-speed) holds the budgets, the lab profile and which techniques are in use.
+
+- **The server's page is the page.** Everything on the first screen is HTML and CSS from the build: text, drawings, frames, paper. Scripts enhance what is already showing and never reveal it, so a page reads the same before its islands hydrate.
+- **Hydrate the least, the latest.** An island only where something is operated, `client:visible` or `client:idle` unless it is operated on the first screen; split a large island so the first screen's part hydrates alone. Keep every task under 50 ms on the lab profile: yield with `scheduler.yield()` (falling back to `setTimeout`), do deferred work in idle time, measure before animating.
+- **The critical path stays short.** Preload only the fonts the first screen sets (`src/site/font-preloads.astro`); one render-blocking stylesheet within its budget; no third-party requests; hashed assets immutable. A page's HTML, JavaScript and CSS stay inside their budgets, and a change that grows one says by how much.
+- **Paint is a phone's bottleneck.** Masks, SVG filters and large inline SVGs are slow to rasterize on a phone's GPU and repaint whenever something over them changes. Animate `opacity` and `transform` only; keep anything that moves off the paper and the scenes.
+- **Touch is a first-class pointer.** Every hover affordance has a tap or long-press equivalent; gate hover styles with `(hover: hover) and (pointer: fine)` (Tailwind's `hover:` is gated, raw `:hover` is not); targets at least 24 px, 44 px for the main action on a coarse pointer, by widening the hit area rather than the drawing; inputs at 16 px or larger; zoom stays on.
+- **Draw for dense screens.** A phone draws at 2.6–3.5×, true to size: a detail under one CSS pixel, such as a fleck or a faint hairline, vanishes there although a 1× monitor shows it.
+
 ## Engineering constraints
 
 - Keep every hand-maintained code file at **300 physical lines or fewer**. Generated files, data and documents are excluded.
@@ -62,7 +73,7 @@ The bar: before showing or reporting a screen, ask whether Apple would ship it. 
 Verify with the least total effort; never create unit tests. The dev server runs on **4791** (preview 4792); the static prototype on 4790 (`.claude/launch.json`). Never use framework default ports.
 
 1. Run `npm run typecheck` and `npm run lint` always; `npm run build` when routes, modules or dependencies change; `npm run registry` then `npm run registry:check` when a kit file is added, moved or changes its imports, and `npm run test:consumer` when an item's files or dependencies change; `npm run check:contrast` when stocks, pens or textures change (after `npm run build:textures` if you edited the layers); `npm run build:fonts` when the skeleton alphabet (`pen/glyphs.ts`) or `tools/fonts` change, then look at the font large in a browser.
-2. Look at the changed screen with realistic content at 1440 and 390 px, day and night, on more than one stock. The browser pane may be hidden, which freezes transitions, timers and observers: check motion through the Web Animations API and say what you could not watch.
+2. Look at the changed screen with realistic content at 1440 and 390 px, day and night, on more than one stock. The browser pane may be hidden, which freezes transitions, timers and observers: check motion through the Web Animations API and say what you could not watch. When a change affects what loads, paints or answers a touch, also run the changed pages on the [lab profile](docs/quality.md#the-lab-profile) against their budgets, operate touch through CDP touch events, and after the deploy check them in PageSpeed Insights (mobile). Emulation cannot show GPU raster cost, the on-screen keyboard or iOS: name what needs a real phone.
 3. Add a lasting test only for a boundary that will change again (from Phase 1: the registry install contract and the seed-to-drawing promise), in `tests/consumer/`.
 4. Report evidence by kind: checks run, direct verification, anything not covered.
 

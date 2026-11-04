@@ -1,0 +1,25 @@
+---
+// The fonts a page sets its first screen in, fetched alongside the stylesheet rather than after it: without this, a
+// phone on a mobile network paints the fallback serif and swaps to Newsreader a beat later, reflowing every line.
+// Naïve Sans is served as a file (astro.config.mjs); the others are the kit's Fontsource files, at the same hashed
+// URLs the stylesheet asks for.
+import newsreader from "@fontsource-variable/newsreader/files/newsreader-latin-opsz-normal.woff2?url"
+import courier from "@fontsource/courier-prime/files/courier-prime-latin-400-normal.woff2?url"
+
+interface Props {
+  /** The page letters something in Naïve Sans (the site and Listening Room do; MÅLTID does not). */
+  sans?: boolean
+  /** The page's labels are in the typewriter (MÅLTID's house look). */
+  typewriter?: boolean
+}
+const { sans = true, typewriter = false } = Astro.props
+const fonts = [
+  ...(sans ? ["/fonts/fineliner-naive-sans.woff2"] : []),
+  newsreader,
+  ...(typewriter ? [courier] : []),
+]
+---
+
+{fonts.map((href) => (
+  <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />
+))}

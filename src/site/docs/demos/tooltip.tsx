@@ -12,7 +12,7 @@ import { DemoSection, StateRow, type DemoMeta } from "../demo-kit"
 export const meta: DemoMeta = {
   title: "Tooltip",
   description:
-    "A slip of ink that names a control, or defines a term, while it is hovered or focused.",
+    "A slip of ink that names a control, or defines a term, while it is hovered or focused, or held on a touch screen.",
   item: "tooltip",
   group: "Overlays",
 }
@@ -46,7 +46,7 @@ export default function TooltipDemo() {
         </StateRow>
       </DemoSection>
       <DemoSection title="Sides">
-        <StateRow label="Hover or focus">
+        <StateRow label="Hover or hold">
           {SIDES.map(({ side, label, icon: Icon }) => (
             <Tooltip key={side}>
               <TooltipTrigger

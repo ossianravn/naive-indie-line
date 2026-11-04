@@ -7,6 +7,7 @@ import "@/fineliner/styles/fineliner.css"
 import { FinelinerDefs } from "@/fineliner/defs/fineliner-defs"
 import { appearanceScript } from "@/fineliner/theme/appearance-script"
 import { ListeningRoomShell, type Section } from "@/site/listening-room/shell"
+import FontPreloads from "@/site/font-preloads.astro"
 
 interface Props {
   title: string
@@ -23,14 +24,7 @@ const shareImage = new URL("/og/listening-room.png", Astro.site ?? Astro.url)
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Every page letters something in Naïve Sans; the build serves it as a file (astro.config.mjs). -->
-    <link
-      rel="preload"
-      href="/fonts/fineliner-naive-sans.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+    <FontPreloads />
     <title>{title} · Listening Room</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

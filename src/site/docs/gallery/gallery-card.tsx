@@ -41,7 +41,7 @@ export function GalleryCard({ name }: { name: string }) {
             aria-hidden="true"
             inert
             data-preview-plate
-            className="pointer-events-none absolute inset-0 grid items-center-safe justify-items-center overflow-hidden px-snug py-tight select-none [&_.fl-unseen_*]:animate-none! [&_.fl-unseen_.ln]:[stroke-dasharray:none]! [&_.fl-unseen_:is(.ink,.wash,.sheet-fill)]:opacity-100!"
+            className="pointer-events-none absolute inset-0 grid items-center-safe justify-items-center overflow-hidden px-snug py-tight select-none [&_.fl-unseen]:opacity-100!"
           >
             <div className="flex w-full min-w-0 justify-center">
               <TooltipProvider>

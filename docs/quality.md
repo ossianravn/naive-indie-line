@@ -20,7 +20,55 @@ Target: WCAG 2.2 AA for every component and every shipped workflow, on every sto
 | Direction        | Arrows, chevrons and notes mirror in right-to-left text                                                                                                                                                                                                  |
 | Interaction      | Base UI's keyboard behaviour, focus management and dismissal stay intact; dialogs and sheets move focus in, contain it and return it; menus and listboxes follow their ARIA patterns                                                                     |
 
-## Performance
+## Phones and page speed
+
+Built for a mid-range Android phone on mobile data. [AGENTS.md](../AGENTS.md#phones-and-page-speed) has the rules every change follows; this section has the numbers they answer to.
+
+### Budgets
+
+Proposed 2026-11-04. Field numbers are Google's "good" Core Web Vitals at the 75th percentile; lab numbers are on the lab profile below, stricter where the lab can be.
+
+| Measure                       | Budget                                                                | Measured 2026-11-04                                                                       |
+| ----------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Largest contentful paint      | Field 2.5 s; lab 2.5 s                                                | Not yet measured on the profile                                                           |
+| Interaction to next paint     | Field 200 ms; lab, no interaction over 200 ms                         | Not yet measured                                                                          |
+| Cumulative layout shift       | Field 0.1; lab 0.05                                                   | 0.001–0.031 on home, studio, Listening Room and MÅLTID                                    |
+| Main thread                   | No task over 50 ms after the first screen; total blocking time 200 ms | Fails: tasks of 130–480 ms while islands hydrate at 6× CPU; the studio hydrates for 1.2 s |
+| HTML per page                 | 100 KB gzipped                                                        | Home 56 KB; the specimen 110 KB is over                                                   |
+| JavaScript for the first view | 150 KB gzipped                                                        | A docs page 129 KB                                                                        |
+| Render-blocking CSS           | 60 KB gzipped                                                         | 55 KB with both fleck tiles                                                               |
+| Preloaded fonts               | Only the first screen's, two or three files                           | Naïve Sans and Newsreader; MÅLTID Newsreader and Courier Prime                            |
+
+### The lab profile
+
+Headless Chrome (the installed Chrome, through Python Playwright) as a Pixel 7: 412 × 915 CSS px at 2.625×, touch and a mobile user agent (`devices["Pixel 7"]`); CPU slowed 4× (`Emulation.setCPUThrottlingRate`); slow 4G, 150 ms round trip, 1.6 Mbps down and 750 kbps up, cache off (`Network.emulateNetworkConditions`). Serve the build over a port (`npm run preview`, 4792): responses fulfilled by a Playwright route skip the network throttling.
+
+- **Record** with performance observers added before load (`add_init_script`): `largest-contentful-paint`, `layout-shift`, `longtask`, `event` (duration threshold 16 ms) for interactions, and frame gaps from `requestAnimationFrame`. A CDP screencast (`Page.startScreencast`) shows what appears in what order.
+- **Operate touch** with `Input.dispatchTouchEvent`: a tap is start and end within 100 ms, a long press holds 700 ms, a scroll adds moves.
+- **It cannot show** GPU raster cost (headless rasterizes in software, and CPU throttling slows the main thread only), sticky hover, the on-screen keyboard, or Safari. For those, a Performance trace from a real phone through `chrome://inspect`.
+- **After a deploy,** PageSpeed Insights (mobile) on the changed pages: https://pagespeed.web.dev, or `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=<page>&strategy=mobile`. The keyless API's daily quota is small (it was spent on 2026-11-04); when it is, say so. Field data appears there once the site has the traffic.
+
+### Techniques
+
+| Technique                                                                         | State                                                                                       |
+| --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Static HTML first, islands only where something is operated                       | In use                                                                                      |
+| Pictures visible without script; draw-on only for drawings that start out of view | In use since 2026-11-04                                                                     |
+| One take per drawing in the page, the others drawn in idle time                   | In use                                                                                      |
+| The paper's filtered grain on a fixed layer of its own                            | In use                                                                                      |
+| Sharp flecks on dense screens                                                     | In use since 2026-11-04                                                                     |
+| First-screen fonts preloaded as WOFF2, `font-display: swap`                       | In use since 2026-11-04                                                                     |
+| A metric-matched fallback font (`size-adjust`, `ascent-override`)                 | Not yet: on 4G the swap to Newsreader still rewraps a line                                  |
+| Same-origin prefetch through the Speculation Rules API (moderate eagerness)       | Not yet                                                                                     |
+| Cross-document view transitions (`@view-transition`), none under reduced motion   | Not yet                                                                                     |
+| Back/forward cache: no `unload` handlers, no `no-store`                           | Believed eligible; not checked                                                              |
+| Brotli or zstd                                                                    | Not yet: nginx serves gzip; precompress at build and serve with `gzip_static`-style lookups |
+| A year's cache for `/fonts/`                                                      | Not yet: the files revalidate on every visit; a versioned name would make them immutable    |
+| `scheduler.yield()` in long work                                                  | Not yet: hydration and draw-on's measuring are the long tasks                               |
+| The studio's island split, the chart library loaded when a chart is in view       | Not yet                                                                                     |
+| `content-visibility: auto` on long pages                                          | Measured 2026-11-03 and left out: little gain, and it clips drawn edges                     |
+
+### What the pages weigh
 
 The kit renders on the server and hydrates only what moves or is chosen. Drawings are inline SVG drawn at build time; line boil swaps three takes by opacity in CSS; the page carries each drawing's first take, and the browser draws the other two only where boil can show them. A hydrating drawing keeps the server's markup. The paper's filtered grain lies on a fixed layer of its own, so nothing on the page repaints it.
 

@@ -1,8 +1,9 @@
 // Line boil's other takes, drawn in the browser where boil can show them. A server-rendered drawing carries its first
 // take only, so a page ships each drawing once. boilTakes() adds the second and third once the page's boil setting
 // would cycle them: during idle time for drawings in view when boil runs always, or on hover with a pointer that can
-// hover (the default), and at once under the pointer. Boil off, reduced motion, or a phone without hover, and they are
-// never drawn. The pen engine loads only when the first one is. No React, so static pages can use it too.
+// hover (the default), and at once under the pointer. A touch screen has no hover, so there a tap draws them and boils
+// the drawing once (boilOnce). Boil off or reduced motion, and they are never drawn. The pen engine loads only when
+// the first one is. No React, so static pages can use it too.
 import { ownIds } from "@/fineliner/lib/own-ids"
 import type { SceneName } from "@/fineliner/pen/scenes"
 
@@ -17,17 +18,17 @@ let seen: IntersectionObserver | undefined
 let made = 0
 let busy = false
 
-const boils = (el: HTMLElement) => {
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return false
-  const style = getComputedStyle(el)
-  const running = (name: string) =>
-    style.getPropertyValue(name).trim() === "running"
-  return (
-    running("--boil") ||
-    (running("--boil-hover") &&
-      matchMedia("(hover: hover) and (pointer: fine)").matches)
-  )
-}
+const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches
+const running = (el: HTMLElement, name: string) =>
+  getComputedStyle(el).getPropertyValue(name).trim() === "running"
+const boils = (el: HTMLElement) =>
+  !reduced() &&
+  (running(el, "--boil") ||
+    (running(el, "--boil-hover") &&
+      matchMedia("(hover: hover) and (pointer: fine)").matches))
+// Where boil waits for a hover, a tap on a touch screen boils the drawing once instead.
+const boilsOnTap = (el: HTMLElement) =>
+  !reduced() && !running(el, "--boil") && running(el, "--boil-hover")
 
 /** Add the next take, or every missing take (`all`, under the pointer). Returns whether one is still missing. */
 async function grow(el: HTMLElement, all = false) {
@@ -81,7 +82,41 @@ async function next() {
   else busy = false
 }
 
+const TAP_STEPS = [1, 2, 0, 1, 2, 0]
+/** A tap's boil: every take drawn, then two rounds of them at the boil's pace, resting on the first. */
+async function boilOnce(el: HTMLElement) {
+  if (el.dataset.show !== undefined) return
+  el.dataset.show = "0"
+  await grow(el, true)
+  if (el.children.length < TAKES) return void delete el.dataset.show
+  const pace = getComputedStyle(el).getPropertyValue("--take").trim()
+  const take = parseFloat(pace) * (/\ds$/.test(pace) ? 1000 : 1) || 120
+  TAP_STEPS.forEach((show, i) =>
+    setTimeout(() => (el.dataset.show = String(show)), take * i),
+  )
+  setTimeout(() => delete el.dataset.show, take * TAP_STEPS.length)
+}
+
 function start() {
+  // A tap, not the start of a scroll: the finger lifts on the drawing it came down on (a scroll cancels the pointer).
+  let tapped: HTMLElement | undefined
+  document.addEventListener(
+    "pointerdown",
+    (e) => {
+      const el =
+        e.pointerType === "mouse"
+          ? undefined
+          : (e.target as Element).closest?.<HTMLElement>(".fl-takes")
+      tapped = el && watched.has(el) ? el : undefined
+    },
+    { passive: true },
+  )
+  document.addEventListener("pointercancel", () => (tapped = undefined))
+  document.addEventListener("pointerup", (e) => {
+    const el = (e.target as Element).closest?.<HTMLElement>(".fl-takes")
+    if (el && el === tapped && boilsOnTap(el)) void boilOnce(el)
+    tapped = undefined
+  })
   seen = new IntersectionObserver(
     (entries) => {
       for (const e of entries) {

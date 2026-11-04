@@ -12,6 +12,7 @@ import { frameVars, lettering, seedOf } from "@/fineliner/pen"
 import { appearanceScript } from "@/fineliner/theme/appearance-script"
 import { AppearancePanel } from "@/site/appearance-panel"
 import { PartsXray } from "@/site/parts-xray"
+import FontPreloads from "@/site/font-preloads.astro"
 import { PRESETS } from "@/site/studio/presets"
 import {
   MAALTID_PRESET,
@@ -52,6 +53,7 @@ const look = maaltidAppearance
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <FontPreloads sans={false} typewriter />
     <title>{fullTitle}</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

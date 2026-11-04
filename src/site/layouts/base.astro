@@ -10,6 +10,7 @@ import { frameVars, seedOf } from "@/fineliner/pen"
 import { Lettering } from "@/fineliner/drawing/lettering"
 import { siteAppearance } from "@/site/appearance"
 import { AppearancePanel } from "@/site/appearance-panel"
+import FontPreloads from "@/site/font-preloads.astro"
 import { shareFor } from "@/site/share/shares"
 
 interface Props {
@@ -38,14 +39,7 @@ const NAV = [
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Every page letters something in Fineliner Naïve Sans; the build serves it as a file (astro.config.mjs). -->
-    <link
-      rel="preload"
-      href="/fonts/fineliner-naive-sans.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+    <FontPreloads />
     <title>{fullTitle}</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

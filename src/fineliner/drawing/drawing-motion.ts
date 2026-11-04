@@ -2,8 +2,6 @@
 // by stroke, the first time it is seen. Both do nothing under prefers-reduced-motion.
 
 const SETTLE = 60
-// The CSS shows an undrawn drawing at 2.5 s if no script draws it; a script that arrives later finds it showing.
-const LATE = 2000
 const EASE = "cubic-bezier(0.23, 1, 0.32, 1)"
 
 const reduced = () =>
@@ -62,8 +60,10 @@ export function drawOn(
 }
 
 /**
- * Draw an element's drawings on the first time it comes into view; until then they wait undrawn. For rare moments
- * (a hero, an empty state, a first run). Returns a cleanup for effects.
+ * Draw an element's drawings on the first time it comes into view. For rare moments (a hero, an empty state, a first
+ * run). A drawing drawn in the browser waits undrawn (fl-unseen) from its first paint. One the server sent is already
+ * showing, and stays so if it is in view when the script arrives; one that starts out of view is hidden there, where
+ * nobody sees it go, and drawn on when it comes into view. Returns a cleanup for effects.
  */
 export function drawWhenSeen(el: HTMLElement) {
   const svgs = () => [...el.querySelectorAll<SVGSVGElement>("svg.fl-drawing")]
@@ -73,18 +73,20 @@ export function drawWhenSeen(el: HTMLElement) {
     show(svgs())
     return () => {}
   }
-  svgs().forEach((svg) => svg.classList.add("fl-unseen"))
-  let first = true
+  let waiting = svgs().some((svg) => svg.classList.contains("fl-unseen"))
   let timer: ReturnType<typeof setTimeout> | undefined
   const observer = new IntersectionObserver(
     (entries) => {
       const seen = entries.some((e) => e.isIntersecting)
-      // In view when the script arrived, after the fallback showed it: drawing it again would make it blink.
-      const late = first && seen && performance.now() > LATE
-      first = false
+      if (!waiting) {
+        // The first report says where the server's drawing is: on screen, it stays as it is.
+        if (seen) return observer.disconnect()
+        svgs().forEach((svg) => svg.classList.add("fl-unseen"))
+        waiting = true
+        return
+      }
       if (!seen) return
       observer.disconnect()
-      if (late) return show(svgs())
       // The pen draws the take on show; the others, which line boil shows in turn, appear once it has finished.
       const [take, ...rest] = svgs()
       timer = setTimeout(() => show(rest), take ? drawOn(take) : 0)

@@ -14,18 +14,26 @@
   --paper-texture-size: var(--paper-specks-size), var(--paper-grain-size);
 }
 
-/* On a phone the specks are drawn larger and so fewer to a screen: each fleck and fibre stays big enough to see at
-   arm's length, and the page reads a little quieter than on a desk. */
+/* A dense screen (a phone, a laptop at 150% or more) draws a speck true to size, and one under a pixel across
+   vanishes; there the sharp tile holds every speck to about a pixel. On a phone the fibres are drawn larger too, so
+   each stays big enough to see at arm's length. */
+@media (resolution >= 1.5dppx) {
+  :root {
+    --paper-specks: var(--tex-flecks-sharp), var(--tex-fibres);
+  }
+}
 @media (max-width: 40rem) {
   :root {
-    --paper-specks-size: 1007px, 858px;
+    --paper-specks-size: 719px, 858px;
   }
 }
 
 @layer base {
   /* The paper's colour lies on the root, so it fills the whole window however short the page; the stable gutter keeps
-     the page from shifting sideways between pages that scroll and pages that don't. */
+     the page from shifting sideways between pages that scroll and pages that don't. No grey box flashes over what a
+     finger taps: controls show their own press (the press utility). */
   html {
+    -webkit-tap-highlight-color: transparent;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
     scrollbar-gutter: stable;

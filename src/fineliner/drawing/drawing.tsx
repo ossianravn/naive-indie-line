@@ -70,10 +70,12 @@ export function Drawing({
       title,
       takes: still || typeof window === "undefined" ? 1 : 3,
     })
-    // A drawing that is drawn on waits undrawn from the first paint, so the server's copy never flashes first.
+    // Drawn in the browser, a drawing that is drawn on waits undrawn from its first paint. The server's copy shows at
+    // once: a page never waits for its script to show its pictures (drawWhenSeen hides it only out of view).
+    const waits = drawOnView && typeof window !== "undefined"
     return svg
       .map((s) =>
-        drawOnView
+        waits
           ? s.replace('class="fl-drawing ', 'class="fl-drawing fl-unseen ')
           : s,
       )

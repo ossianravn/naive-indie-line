@@ -128,31 +128,18 @@
   opacity: 1;
 }
 
-/* A drawing waiting to be drawn on the first time it is seen (drawOnView). If no script ever draws it (a static page,
-   a failed load), it simply appears after 2.5s. */
-.fl-drawing.fl-unseen .ln {
-  stroke-dasharray: 0 100000;
-  animation: fl-appear 0s linear 2.5s forwards;
-}
-.fl-drawing.fl-unseen :is(.ink, .wash, .sheet-fill) {
+/* A drawing waiting to be drawn on the first time it is seen (drawOnView). Only the script that draws it on hides it:
+   the server's copy shows, so a page without its script still has its pictures. Hidden whole, not by its dashes: a
+   zero-length dash with a round cap still paints a dot. */
+.fl-drawing.fl-unseen {
   opacity: 0;
-  animation: fl-appear 0s linear 2.5s forwards;
-}
-@keyframes fl-appear {
-  to {
-    stroke-dasharray: none;
-    opacity: 1;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .fl-takes > * {
     animation: none;
   }
-  .fl-drawing.fl-unseen .ln {
-    stroke-dasharray: none;
-  }
-  .fl-drawing.fl-unseen :is(.ink, .wash, .sheet-fill) {
+  .fl-drawing.fl-unseen {
     opacity: 1;
   }
 }
