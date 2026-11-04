@@ -6,9 +6,13 @@ import { seedOf, stream, type Stream } from "./seed"
 import { sheet, type Sheet } from "./layers"
 import { pen, type HandName, type Pen } from "./stroke"
 
-const W = 640
-const H = 440
 const M = 14
+
+/**
+ * How a scene is drawn: boxed in its border (the default, 640 by 440), or open, without a border, its floor running
+ * past both edges so it can fill a page section: wide for a desktop's first screen, tall for a phone's.
+ */
+export type SceneFormat = "boxed" | "wide" | "tall"
 
 export interface Stage {
   s: Sheet
@@ -35,13 +39,15 @@ export interface Stage {
 
 /**
  * What every room shares: the scene's pen and stream, a way to place objects, walls, a rug and the border. The sheet's
- * mask ids include the scene and hand, so two scenes drawn from one seed on the same page do not share masks.
+ * mask ids include the scene and hand, so two scenes drawn from one seed on the same page do not share masks (an open
+ * format passes its own name, such as "room:wide"). `size` is the sheet's, 640 by 440 unless an open format says.
  */
 export function stage(
   seed: string,
   hand: HandName,
   take: number,
   scene: string,
+  [W, H]: [number, number] = [640, 440],
 ): Stage {
   const s = sheet(
     `fl${seedOf(`${seed}:${scene}:${hand}`).toString(36)}s${take}`,
@@ -96,12 +102,26 @@ export function stage(
   }
 }
 
+type Compose = (seed: string, hand: HandName, take: number) => Sheet
+
 export interface Scene {
   name: string
   /** The accessible name of a drawing of this scene. */
   label: string
   size: [number, number]
-  compose: (seed: string, hand: HandName, take: number) => Sheet
+  compose: Compose
+  /** The scene open, for a page section: no border, the floor past both edges, the wall's left kept clear for text. */
+  open?: Partial<
+    Record<
+      Exclude<SceneFormat, "boxed">,
+      { size: [number, number]; compose: Compose }
+    >
+  >
+}
+
+/** The size and composer of a scene in a format; a scene without that open format is drawn boxed. */
+export function sceneIn(scene: Scene, format: SceneFormat = "boxed") {
+  return (format !== "boxed" && scene.open?.[format]) || scene
 }
 
 /** The kit's four rooms live in objects/rooms.ts; a project can add its own with defineScene. */

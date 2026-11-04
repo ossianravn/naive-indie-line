@@ -27,15 +27,15 @@ Drawings in extras come from the object library and scenes (`Drawing`, `Letterin
 
 A block is `src/fineliner/blocks/<name>-<number>.tsx` (helpers `<name>-<number>-<part>.tsx` install with it), a registry block that installs on its own with its item dependencies. The `fineliner` umbrella item leaves blocks out. Each has a live view at `/docs/blocks/view/<name>-<number>` and a card on `/docs/blocks`. Content is Listening Room's; a block takes its data as props with that content as the default, so it renders out of the box.
 
-| Block          | What it is                                                                                                                                                         |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `sign-in-01`   | Sign in with email and password or a link by email, beside a drawing; errors in the correction pen                                                                 |
-| `settings-01`  | A narrow settings column: profile, the `AppearanceControl`, notifications as switches, and closing the account behind an alert dialog                              |
-| `dashboard-01` | The shop's week: four figures in the typewriter, a chart drawn by the pen, a table of holds and a list of the next sessions                                        |
-| `pricing-01`   | Three memberships for the listening room as price tags, a monthly or yearly segmented control, what each includes ticked by the pen, and questions in an accordion |
-| `article-01`   | A journal post: `RoomHeader`, `EditionNumber`, prose in `typography`, a `PullQuote`, a `HandNote` in the margin and `ReadingProgress`                              |
-| `empty-01`     | Empty states with drawings: an empty catalogue, no search results, nothing booked, each with one action                                                            |
-| `hero-01`      | A lettered wordmark beside a drawn scene the visitor can reroll, one line of copy, the install command in a code block and two actions                             |
+| Block          | What it is                                                                                                                                                                                   |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sign-in-01`   | Sign in with email and password or a link by email, beside a drawing; errors in the correction pen                                                                                           |
+| `settings-01`  | A narrow settings column: profile, the `AppearanceControl`, notifications as switches, and closing the account behind an alert dialog                                                        |
+| `dashboard-01` | The shop's week: four figures in the typewriter, a chart drawn by the pen, a table of holds and a list of the next sessions                                                                  |
+| `pricing-01`   | Three memberships for the listening room as price tags, a monthly or yearly segmented control, what each includes ticked by the pen, and questions in an accordion                           |
+| `article-01`   | A journal post: `RoomHeader`, `EditionNumber`, prose in `typography`, a `PullQuote`, a `HandNote` in the margin and `ReadingProgress`                                                        |
+| `empty-01`     | Empty states with drawings: an empty catalogue, no search results, nothing booked, each with one action                                                                                      |
+| `hero-01`      | A lettered wordmark, one line of copy, the install command and two actions in an open room the visitor can reroll (wide behind the text, tall under it on phones), or beside the boxed scene |
 
 ## The theme studio and the home page
 

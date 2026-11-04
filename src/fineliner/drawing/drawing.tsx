@@ -35,6 +35,7 @@ const never = () => () => {}
 export function Drawing({
   object,
   scene,
+  format,
   seed,
   hand,
   title,
@@ -53,7 +54,16 @@ export function Drawing({
   )
   // The server's markup is already this drawing, so hydration keeps it instead of drawing every take again (a scene
   // is a few hundred milliseconds of work on a phone). The pen draws in the browser once a prop changes.
-  const asked = [object, scene, seed, hand, title, still, drawOnView].join("|")
+  const asked = [
+    object,
+    scene,
+    format,
+    seed,
+    hand,
+    title,
+    still,
+    drawOnView,
+  ].join("|")
   const [served] = useState(() =>
     hydrating && typeof window !== "undefined" ? asked : null,
   )
@@ -65,6 +75,7 @@ export function Drawing({
     const svg = drawing({
       object,
       scene,
+      format,
       seed,
       hand,
       title,
@@ -80,7 +91,7 @@ export function Drawing({
           : s,
       )
       .join("")
-  }, [keep, object, scene, seed, hand, title, still, drawOnView])
+  }, [keep, object, scene, format, seed, hand, title, still, drawOnView])
   const inner = useRef<HTMLSpanElement | null>(null)
   useEffect(() => {
     const el = inner.current
@@ -100,6 +111,7 @@ export function Drawing({
       data-slot="drawing"
       data-object={object}
       data-scene={scene}
+      data-format={format}
       // What the browser needs to draw the other takes (drawing-takes.ts).
       data-seed={still ? undefined : String(seed)}
       data-hand={hand}

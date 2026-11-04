@@ -1,7 +1,9 @@
-// Shared drawn parts: leaves, flowerpots and mugs, used by several collections without registering any objects.
+// Shared drawn parts: leaves, flowerpots, mugs, headphones, and the strokes a cartoon draws round a moment (a fan of
+// short lines, sound rising), used by several collections without registering any objects.
 // Their composition and pen strokes stay the same wherever they are placed.
-import { add, arc, type Point } from "../geometry"
+import { add, arc, dot, type Point } from "../geometry"
 import type { Draw } from "../library"
+import type { Stream } from "../seed"
 import type { Sheet } from "../layers"
 import { cylinder, drum, handle, scribble } from "../shapes"
 import type { Pen } from "../stroke"
@@ -75,4 +77,70 @@ export const mug: Draw = (s, p, r, at, k = 1) => {
   const heart = pairs([0, 6, -7, -1, -4, -6, 0, -3, 4, -6, 7, -1])
   if (r.chance(0.5)) s.fill(p.shape(heart.map((d) => add(m, d, k))))
   else scribble(s, p, r, x - 12 * k, y - 26 * k, 22 * k, 2, 6 * k)
+}
+
+/**
+ * Over-ear headphones face on; `at` is bottom-centre. The band and its two sliders are one closed stroke; each slider
+ * holds a yoke that cradles the top of its cup, pinned to the cup at both ends, and the cushions show on the inside.
+ */
+export const headphones: Draw = (s, p, _r, at, k = 1) => {
+  const [x, y] = at
+  const P = (u: number, v: number): Point => [x + u * k, y - v * k]
+  const [cx, cy, rx, ry, gap] = [36, 22, 9, 15, 3.5]
+  const top = cy + ry + gap
+  const c = P(0, 46)
+  const [ox, oy, ix, iy] = [cx + 3, 28, cx - 3, 22]
+  s.stroke(
+    p.shape([
+      P(-ox, top),
+      ...arc(c, ox * k, oy * k, 180, 360, 18),
+      P(ox, top),
+      P(ix, top),
+      ...arc(c, ix * k, iy * k, 360, 180, 14),
+      P(-ix, top),
+    ]),
+  )
+  for (const side of [-1, 1]) {
+    const cup = P(side * cx, cy)
+    const [yx, yy] = [(rx + gap) * k, (ry + gap) * k]
+    s.stroke(p.path(arc(cup, yx, yy, 208, 332, 12)))
+    s.fill(p.disc(add(cup, [-side * 8 * k, 0]), [5.5 * k, 0], [0, 12 * k]))
+    s.blank(p.disc(cup, [rx * k, 0], [0, ry * k]))
+    s.stroke(p.ring(cup, [rx * k, 0], [0, ry * k]))
+    for (const a of [200, 340]) {
+      const pin = arc(cup, (rx + gap / 2) * k, (ry + gap / 2) * k, a, a, 1)
+      s.fill(p.disc(...dot(pin[0] as Point, 2 * k)))
+    }
+  }
+}
+
+/** Short strokes fanning out round `c` at the given angles (degrees, 0 to the right, -90 up), from `rad` to 1.4 times
+ * as far: the cartoonist's "look at this" round a find, or a hand raised, or music leaking from headphones. */
+export function fan(s: Sheet, p: Pen, c: Point, rad: number, angles: number[]) {
+  for (const a of angles) {
+    const d: Point = [
+      Math.cos((a * Math.PI) / 180),
+      Math.sin((a * Math.PI) / 180),
+    ]
+    s.stroke(p.line(add(c, d, rad), add(c, d, rad * 1.4)))
+  }
+}
+
+/** Sound rising from `at`: three short waves leaning to the right, each shorter and higher than the one before. */
+export function soundLines(s: Sheet, p: Pen, r: Stream, at: Point, k = 1) {
+  for (let i = 0; i < 3; i++) {
+    const len = (54 - i * 10) * k
+    const x0 = at[0] + (i * 16 + r.between(-3, 3)) * k
+    const y0 = at[1] - i * 8 * k
+    const lean = r.between(0.3, 0.45)
+    s.stroke(
+      p.path(
+        Array.from({ length: 7 }, (_, j): Point => {
+          const t = j / 6
+          const side = Math.sin(t * Math.PI * 2 + i) * 5 * k
+          return [x0 + t * len * lean + side, y0 - t * len]
+        }),
+      ),
+    )
+  }
 }

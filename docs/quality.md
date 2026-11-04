@@ -30,11 +30,11 @@ Proposed 2026-11-04. Field numbers are Google's "good" Core Web Vitals at the 75
 
 | Measure                       | Budget                                                                | Measured 2026-11-04                                                                       |
 | ----------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| Largest contentful paint      | Field 2.5 s; lab 2.5 s                                                | Not yet measured on the profile                                                           |
+| Largest contentful paint      | Field 2.5 s; lab 2.5 s                                                | Home 2.1 s (the live home before the open room also 2.1 s)                                |
 | Interaction to next paint     | Field 200 ms; lab, no interaction over 200 ms                         | Not yet measured                                                                          |
-| Cumulative layout shift       | Field 0.1; lab 0.05                                                   | 0.001–0.031 on home, studio, Listening Room and MÅLTID                                    |
+| Cumulative layout shift       | Field 0.1; lab 0.05                                                   | 0.001–0.031 on home, studio, Listening Room and MÅLTID; home 0.029 with the open room     |
 | Main thread                   | No task over 50 ms after the first screen; total blocking time 200 ms | Fails: tasks of 130–480 ms while islands hydrate at 6× CPU; the studio hydrates for 1.2 s |
-| HTML per page                 | 100 KB gzipped                                                        | Home 56 KB; the specimen 110 KB is over                                                   |
+| HTML per page                 | 100 KB gzipped                                                        | Home 82 KB (the open room's wide and tall drawings); the specimen 110 KB is over          |
 | JavaScript for the first view | 150 KB gzipped                                                        | A docs page 129 KB                                                                        |
 | Render-blocking CSS           | 60 KB gzipped                                                         | 55 KB with both fleck tiles                                                               |
 | Preloaded fonts               | Only the first screen's, two or three files                           | Naïve Sans and Newsreader; MÅLTID Newsreader and Courier Prime                            |

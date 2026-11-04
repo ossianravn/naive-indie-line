@@ -1,9 +1,12 @@
 // The kit's four rooms, composed from registered collections on the shared stage.
 // Every object keeps its own fork of the seed, with the same composition across takes.
-import type { Point } from "../geometry"
-import { defineScene, stage, type Scene } from "../scenes"
+import { add, type Point } from "../geometry"
+import type { Sheet } from "../layers"
+import { defineScene, stage, type Scene, type Stage } from "../scenes"
+import type { Stream } from "../seed"
 import type { Box } from "../shapes"
-import type { HandName } from "../stroke"
+import type { HandName, Pen } from "../stroke"
+import { soundLines } from "./parts"
 import "./indie"
 import "./food"
 import "./studio"
@@ -14,45 +17,97 @@ const H = 440
 const M = 14
 
 /**
- * The shop floor at Listening Room, seen straight on: a back wall of records face out on rails, a gig poster and a
- * pendant lamp; browser bins with someone flicking through one; the counter with the till and a turntable to try a
- * record on, and now and then someone behind it.
+ * The shop floor at Listening Room, seen straight on, at the moment someone finds the record: they hold it high under
+ * the pendant lamp while whoever minds the counter raises a hand to them, a record plays on the turntable and someone
+ * at the bin, headphones on, sways to their own. Records face out on rails on the back wall; a gig poster; the cat.
  */
 function room(seed: string, hand: HandName, take: number) {
   const { s, p, r, put, floor, border } = stage(seed, hand, take, "room")
   s.stroke(p.line([M, floor], [W - M, floor + r.signed() * 6]))
-  const rails = r.chance(0.55) ? 2 : 1
-  put("sleeve-rail", "rail", [r.between(0.05, 0.08) * W, floor - 96], 0.9, {
-    w: r.between(270, 300),
+  const lx = r.between(0.05, 0.08) * W
+  put("sleeve-rail", "rail", [lx, floor - 112], 0.9, { w: r.between(190, 210) })
+  if (r.chance(0.55))
+    put("sleeve-rail", "high", [lx + 20, floor - 176], 0.9, { w: 150 })
+  put("pendant", "lamp", [r.between(0.52, 0.55) * W, H * 0.2], 0.95, { top: M })
+  put("poster", "poster", [r.between(0.86, 0.88) * W, H * 0.27], 1)
+  shopCounter(put, s, p, r, [r.between(0.63, 0.65) * W, H - M - 40], 0.95, 130)
+  const bx = r.between(0.04, 0.07) * W
+  put("visitor", "listener", [bx + 62, H - M - 16], 0.95, { pose: "listen" })
+  put("record-bin", "bin", [bx, H - M - 4], 0.95)
+  put("cat", "cat", [r.between(0.33, 0.36) * W, H - M - 6], 0.8)
+  put("visitor", "finder", [r.between(0.47, 0.49) * W, H - M - 12], 0.95, {
+    pose: "cheer",
   })
-  if (rails === 2)
-    put("sleeve-rail", "high", [r.between(0.08, 0.12) * W, floor - 162], 0.9, {
-      w: r.between(190, 230),
-    })
-  put("pendant", "lamp", [r.between(0.5, 0.54) * W, H * 0.2], 0.95, { top: M })
-  put("poster", "poster", [r.between(0.68, 0.72) * W, H * 0.27], 1)
-  // The counter on the right, with whoever minds the shop behind it.
-  const cx = r.between(0.61, 0.64) * W
-  if (r.chance(0.75))
-    put("visitor", "staff", [cx + r.between(110, 140), H - M - 52], 1.15, {
-      pose: "stand",
-    })
-  const top = put("counter", "counter", [cx, H - M - 40], 0.95, {
-    w: 196,
-  }) as Box
-  put("turntable", "deck", top.top(0.05, 0.22), 0.5)
-  put("till", "till", top.top(0.64, 0.3), 0.9)
-  // The bins, the far one first; someone stands behind the near one, hands in the records.
-  const bx = r.between(0.08, 0.12) * W
-  put("record-bin", "far", [bx + r.between(150, 165), H - M - 30], 0.9)
-  put("visitor", "browser", [bx + 60, H - M - 16], 1.15, { pose: "browse" })
-  put("record-bin", "near", [bx, H - M - 4], 0.95)
-  if (r.chance(0.5))
-    put("house-plant", "plant", [r.between(0.54, 0.57) * W, H - M - 6], 1)
-  else put("crate", "crate", [r.between(0.47, 0.5) * W, H - M - 4], 0.7)
   border()
   return s
 }
+
+/**
+ * The counter, its left end at `at` (front foot), with whoever minds it standing `behind` along it, raising a hand to
+ * the find; the turntable plays at its left end and the till sits in the middle. `w` is its width before scaling.
+ */
+function shopCounter(
+  put: Stage["put"],
+  s: Sheet,
+  p: Pen,
+  r: Stream,
+  at: Point,
+  k: number,
+  behind: number,
+  w = 196,
+) {
+  put("visitor", "staff", [at[0] + behind * k, at[1] - 12 * k], k * 1.2, {
+    pose: "hail",
+  })
+  const top = put("counter", "counter", at, k, { w }) as Box
+  const deck = top.top(0.05, 0.22)
+  put("turntable", "deck", deck, k * 0.53)
+  soundLines(s, p, r, add(deck, [30 * k, -60 * k]), k * 0.95)
+  put("till", "till", top.top(0.62, 0.3), k * 0.95)
+}
+
+/**
+ * The same moment open, for a desktop's first screen: no border, the floor past both edges, the lamp hung from above
+ * the sheet (from the page's own top rule), the left of the wall kept clear for the page's text, the counter running
+ * off the right edge. A page crops it like a photograph, so nothing that matters sits near the sides.
+ */
+function roomWide(seed: string, hand: HandName, take: number) {
+  const [w, h] = WIDE
+  const { s, p, r, put } = stage(seed, hand, take, "room:wide", WIDE)
+  const floor = 640
+  s.stroke(p.line([-60, floor], [w + 60, floor + r.signed() * 6]))
+  put("sleeve-rail", "rail", [800, floor - 250], 1.3, { w: 210 })
+  if (r.chance(0.6))
+    put("sleeve-rail", "high", [830, floor - 370], 1.3, { w: 160 })
+  put("poster", "poster", [1420, 280], 1.45)
+  put("pendant", "lamp", [1190, 300], 1.4, { top: -20 })
+  shopCounter(put, s, p, r, [1270, h - 40], 1.4, 145, 300)
+  put("visitor", "listener", [880, h - 64], 1.6, { pose: "listen" })
+  put("record-bin", "bin", [790, h - 46], 1.32)
+  put("cat", "cat", [1040, h - 14], 1.15)
+  put("visitor", "finder", [1170, h - 22], 1.7, { pose: "cheer" })
+  return s
+}
+
+/** The moment open and tall, for a phone, under the page's text: the bin and the counter cropped by the sides. */
+function roomTall(seed: string, hand: HandName, take: number) {
+  const [w, h] = TALL
+  const { s, p, r, put } = stage(seed, hand, take, "room:tall", TALL)
+  const floor = 480
+  s.stroke(p.line([-60, floor], [w + 60, floor + r.signed() * 6]))
+  put("sleeve-rail", "rail", [30, floor - 150], 1.3, { w: 300 })
+  put("poster", "poster", [640, 170], 1.45)
+  put("pendant", "lamp", [430, 170], 1.4, { top: -20 })
+  shopCounter(put, s, p, r, [560, h - 40], 1.4, 155, 300)
+  put("visitor", "listener", [30, h - 64], 1.6, { pose: "listen" })
+  put("record-bin", "bin", [-60, h - 46], 1.32)
+  put("cat", "cat", [250, h - 14], 1.15)
+  put("visitor", "finder", [380, h - 22], 1.7, { pose: "cheer" })
+  return s
+}
+
+const WIDE: [number, number] = [1600, 860]
+const TALL: [number, number] = [800, 900]
 
 function studio(seed: string, hand: HandName, take: number) {
   const { s, r, put, floor, walls, border } = stage(seed, hand, take, "studio")
@@ -148,9 +203,13 @@ const BUILT_IN = {
   room: {
     name: "Listening room",
     label:
-      "A record shop floor: browser bins, records face out on the wall and the counter with its till",
+      "A record shop: someone holds up the record they just found, the shopkeeper raises a hand, a record plays",
     size: [W, H],
     compose: room,
+    open: {
+      wide: { size: WIDE, compose: roomWide },
+      tall: { size: TALL, compose: roomTall },
+    },
   },
   studio: {
     name: "Studio",

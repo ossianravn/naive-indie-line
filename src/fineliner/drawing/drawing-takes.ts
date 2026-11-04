@@ -5,7 +5,7 @@
 // the drawing once (boilOnce). Boil off or reduced motion, and they are never drawn. The pen engine loads only when
 // the first one is. No React, so static pages can use it too.
 import { ownIds } from "@/fineliner/lib/own-ids"
-import type { SceneName } from "@/fineliner/pen/scenes"
+import type { SceneFormat, SceneName } from "@/fineliner/pen/scenes"
 
 const TAKES = 3
 const watched = new WeakSet<HTMLElement>()
@@ -32,7 +32,7 @@ const boilsOnTap = (el: HTMLElement) =>
 
 /** Add the next take, or every missing take (`all`, under the pointer). Returns whether one is still missing. */
 async function grow(el: HTMLElement, all = false) {
-  const { seed, object, scene, hand } = el.dataset
+  const { seed, object, scene, format, hand } = el.dataset
   const has = el.children.length
   if (!seed || has >= TAKES) return false
   // A drawing still waiting to be drawn on gets its other takes afterwards, so boil never flashes them first.
@@ -51,6 +51,7 @@ async function grow(el: HTMLElement, all = false) {
     takes = drawing({
       object,
       scene: scene as SceneName | undefined,
+      format: format as SceneFormat | undefined,
       seed,
       hand: hand === "calm" ? "calm" : "lively",
       takes: all ? TAKES : has + 1,

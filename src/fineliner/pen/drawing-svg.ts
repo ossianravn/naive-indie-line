@@ -2,7 +2,7 @@
 // pen each (line boil and settling); CSS cycles them. Only the first take is named for screen readers; the others are
 // decorative copies, which a page can draw later, where boil shows them (`from`).
 import { getObject, tile } from "./library"
-import { SCENES, type SceneName } from "./scenes"
+import { SCENES, sceneIn, type SceneFormat, type SceneName } from "./scenes"
 import type { HandName } from "./stroke"
 
 export interface DrawingOptions {
@@ -10,6 +10,8 @@ export interface DrawingOptions {
   object?: string
   /** A scene: "room", "studio", "bistro" or "work". */
   scene?: SceneName
+  /** boxed (the default), or a scene's open format: wide or tall. */
+  format?: SceneFormat
   /** Same seed, same drawing, on the server, in the browser and in every build. */
   seed: string | number
   hand?: HandName
@@ -25,6 +27,7 @@ export interface DrawingOptions {
 export function drawing({
   object,
   scene,
+  format,
   seed,
   hand = "lively",
   takes = 1,
@@ -42,10 +45,9 @@ export function drawing({
           `drawing() needs a known scene, got "${scene}"; add your own with defineScene()`,
         )
       const label = named ?? sc.label
+      const { size, compose } = sceneIn(sc, format)
       out.push(
-        sc
-          .compose(key, hand, take)
-          .svg(sc.size[0], sc.size[1], label || undefined),
+        compose(key, hand, take).svg(size[0], size[1], label || undefined),
       )
     } else {
       const o = object ? getObject(object) : undefined

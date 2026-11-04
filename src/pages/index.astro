@@ -13,7 +13,8 @@ import Install from "@/site/home/install.astro"
   title="Fineliner"
   description="A shadcn/ui kit drawn with one fine-liner on unbleached paper: frames, marks and drawings of objects, rooms and people, installed from its own registry."
 >
-  <Hero01 client:load />
+  <!-- The open room fills the first screen below the site's header (--hero-top, its height). -->
+  <Hero01 className="[--hero-top:5rem]" client:load />
   <Drawings />
   <InUse />
   <ComponentIndex />

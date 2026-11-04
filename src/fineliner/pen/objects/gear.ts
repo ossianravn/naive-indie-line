@@ -2,7 +2,6 @@
 // Composition comes from `r` (the shape stream), never from the pen, so takes agree.
 import {
   add,
-  arc,
   deg,
   dist,
   dot,
@@ -13,6 +12,7 @@ import {
 } from "../geometry"
 import { define, type Draw, objectsIn } from "../library"
 import { banded, box } from "../shapes"
+import { headphones } from "./parts"
 
 /** Key widths per row, front (space bar) to back, in key units; every row is 10 units. Few, large keys, so the
  * keyboard still reads as one at the size of a library tile. */
@@ -121,41 +121,6 @@ export const tablet: Draw = (s, p, _r, at, k = 1) => {
   s.stroke(p.shape(stylus))
   const nib = lerp(tip, end, 0.05)
   s.fill(p.shape([tip, add(nib, side, 0.5), add(nib, side, -0.5)]))
-}
-
-/**
- * Over-ear headphones face on; `at` is bottom-centre. The band and its two sliders are one closed stroke; each slider
- * holds a yoke that cradles the top of its cup, pinned to the cup at both ends, and the cushions show on the inside.
- */
-export const headphones: Draw = (s, p, _r, at, k = 1) => {
-  const [x, y] = at
-  const P = (u: number, v: number): Point => [x + u * k, y - v * k]
-  const [cx, cy, rx, ry, gap] = [36, 22, 9, 15, 3.5]
-  const top = cy + ry + gap
-  const c = P(0, 46)
-  const [ox, oy, ix, iy] = [cx + 3, 28, cx - 3, 22]
-  s.stroke(
-    p.shape([
-      P(-ox, top),
-      ...arc(c, ox * k, oy * k, 180, 360, 18),
-      P(ox, top),
-      P(ix, top),
-      ...arc(c, ix * k, iy * k, 360, 180, 14),
-      P(-ix, top),
-    ]),
-  )
-  for (const side of [-1, 1]) {
-    const cup = P(side * cx, cy)
-    const [yx, yy] = [(rx + gap) * k, (ry + gap) * k]
-    s.stroke(p.path(arc(cup, yx, yy, 208, 332, 12)))
-    s.fill(p.disc(add(cup, [-side * 8 * k, 0]), [5.5 * k, 0], [0, 12 * k]))
-    s.blank(p.disc(cup, [rx * k, 0], [0, ry * k]))
-    s.stroke(p.ring(cup, [rx * k, 0], [0, ry * k]))
-    for (const a of [200, 340]) {
-      const pin = arc(cup, (rx + gap / 2) * k, (ry + gap / 2) * k, a, a, 1)
-      s.fill(p.disc(...dot(pin[0] as Point, 2 * k)))
-    }
-  }
 }
 
 /**

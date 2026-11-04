@@ -41,8 +41,10 @@ export {
 export {
   SCENES,
   defineScene,
+  sceneIn,
   stage,
   type Scene,
+  type SceneFormat,
   type SceneName,
   type Stage,
 } from "./scenes"

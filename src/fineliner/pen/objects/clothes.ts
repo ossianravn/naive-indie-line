@@ -56,6 +56,8 @@ export interface Outfit {
   bottom?: string
   stride?: number
   nobody?: boolean
+  /** Each arm's swing from hanging, in degrees (left, right), in place of the pose's: both up is [150, -150]. */
+  swing?: Point
 }
 
 /** The whole outfit, back to front: hood, trainers, trousers or skirt, the top and its sleeves. Returns the hands. */
@@ -71,6 +73,7 @@ export function clothes(
     bottom = "trousers",
     stride = 0,
     nobody = false,
+    swing: arms,
   }: Outfit = {},
 ) {
   const [x, y] = at
@@ -207,7 +210,7 @@ export function clothes(
     // Both hands down in front, into a bin of records. Fixed, so it takes nothing from the stream.
     browse: [-11, 11],
   }
-  const swing = swings[pose] ?? stand
+  const swing = arms ?? swings[pose] ?? stand
   const hands = [-1, 1].map((side, i) => {
     const S = P(side * 22, -155)
     const a = swing[i] as number
