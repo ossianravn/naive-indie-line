@@ -1,6 +1,7 @@
 /* Site-only pieces: the drawing desk's segmented settings, from before the kit had a toggle group, and the Inline and
-   Tramline fonts from their files, so a page that does not use them does not load them. A project using the kit
-   imports styles/inline.generated.css and styles/tramline.generated.css, which carry them inside, instead. */
+   Tramline fonts and every face's other styles from their files, so a page that does not use them does not load them.
+   A project using the kit imports styles/inline.generated.css, styles/tramline.generated.css and the *-styles
+   companions, which carry them inside, instead. */
 
 @font-face {
   font-family: "Fineliner Naïve Inline";
@@ -16,6 +17,92 @@
   font-family: "Fineliner Naïve Tramline";
   font-display: swap;
   src: url("/fonts/fineliner-naive-tramline.woff2") format("woff2");
+}
+/* Every face's Bold, Italic and Bold Italic, fetched only where a page sets them. */
+@font-face {
+  font-family: "Fineliner Naïve Sans";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/fineliner-naive-sans-bold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fineliner Naïve Sans";
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url("/fonts/fineliner-naive-sans-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fineliner Naïve Sans";
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url("/fonts/fineliner-naive-sans-bold-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fineliner Naïve Inline";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/fineliner-naive-inline-bold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fineliner Naïve Inline";
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url("/fonts/fineliner-naive-inline-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fineliner Naïve Inline";
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url("/fonts/fineliner-naive-inline-bold-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fineliner Naïve Inline Fill";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/fineliner-naive-inline-fill-bold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fineliner Naïve Inline Fill";
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url("/fonts/fineliner-naive-inline-fill-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fineliner Naïve Inline Fill";
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url("/fonts/fineliner-naive-inline-fill-bold-italic.woff2")
+    format("woff2");
+}
+@font-face {
+  font-family: "Fineliner Naïve Tramline";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/fineliner-naive-tramline-bold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fineliner Naïve Tramline";
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url("/fonts/fineliner-naive-tramline-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fineliner Naïve Tramline";
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url("/fonts/fineliner-naive-tramline-bold-italic.woff2") format("woff2");
 }
 
 .segmented {

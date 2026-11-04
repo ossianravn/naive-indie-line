@@ -1111,6 +1111,38 @@
       ]
     },
     {
+      "name": "font-inline-styles",
+      "type": "registry:component",
+      "title": "Font Inline Styles",
+      "description": "Fineliner Naïve Inline and its Fill in Bold, Italic and Bold Italic, embedded in one stylesheet: import it once beside inline.generated.css (@import \"./fineliner/styles/inline-styles.generated.css\").",
+      "registryDependencies": [
+        "@fineliner/base"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/styles/inline-styles.generated.css",
+          "type": "registry:file",
+          "target": "~/src/fineliner/styles/inline-styles.generated.css"
+        }
+      ]
+    },
+    {
+      "name": "font-sans-styles",
+      "type": "registry:component",
+      "title": "Font Sans Styles",
+      "description": "Fineliner Naïve Sans in Bold, Italic and Bold Italic, embedded in one stylesheet: import it once (@import \"./fineliner/styles/line-sans-styles.generated.css\") and font-bold or italic on <Lettering> use them. The Italic is the pen's hand slanted 10°.",
+      "registryDependencies": [
+        "@fineliner/base"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/styles/line-sans-styles.generated.css",
+          "type": "registry:file",
+          "target": "~/src/fineliner/styles/line-sans-styles.generated.css"
+        }
+      ]
+    },
+    {
       "name": "font-tramline",
       "type": "registry:component",
       "title": "Font Tramline",
@@ -1123,6 +1155,22 @@
           "path": "src/fineliner/styles/tramline.generated.css",
           "type": "registry:file",
           "target": "~/src/fineliner/styles/tramline.generated.css"
+        }
+      ]
+    },
+    {
+      "name": "font-tramline-styles",
+      "type": "registry:component",
+      "title": "Font Tramline Styles",
+      "description": "Fineliner Naïve Tramline in Bold, Italic and Bold Italic, embedded in one stylesheet: import it once beside tramline.generated.css (@import \"./fineliner/styles/tramline-styles.generated.css\").",
+      "registryDependencies": [
+        "@fineliner/base"
+      ],
+      "files": [
+        {
+          "path": "src/fineliner/styles/tramline-styles.generated.css",
+          "type": "registry:file",
+          "target": "~/src/fineliner/styles/tramline-styles.generated.css"
         }
       ]
     },
@@ -2323,7 +2371,10 @@
         "@fineliner/empty",
         "@fineliner/field",
         "@fineliner/font-inline",
+        "@fineliner/font-inline-styles",
+        "@fineliner/font-sans-styles",
         "@fineliner/font-tramline",
+        "@fineliner/font-tramline-styles",
         "@fineliner/hand-note",
         "@fineliner/hover-card",
         "@fineliner/input",

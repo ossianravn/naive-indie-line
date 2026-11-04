@@ -50,23 +50,23 @@ Headless Chrome (the installed Chrome, through Python Playwright) as a Pixel 7: 
 
 ### Techniques
 
-| Technique                                                                         | State                                                                                       |
-| --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| Static HTML first, islands only where something is operated                       | In use                                                                                      |
-| Pictures visible without script; draw-on only for drawings that start out of view | In use since 2026-11-04                                                                     |
-| One take per drawing in the page, the others drawn in idle time                   | In use                                                                                      |
-| The paper's filtered grain on a fixed layer of its own                            | In use                                                                                      |
-| Sharp flecks on dense screens                                                     | In use since 2026-11-04                                                                     |
-| First-screen fonts preloaded as WOFF2, `font-display: swap`                       | In use since 2026-11-04                                                                     |
-| A metric-matched fallback font (`size-adjust`, `ascent-override`)                 | Not yet: on 4G the swap to Newsreader still rewraps a line                                  |
-| Same-origin prefetch through the Speculation Rules API (moderate eagerness)       | Not yet                                                                                     |
-| Cross-document view transitions (`@view-transition`), none under reduced motion   | Not yet                                                                                     |
-| Back/forward cache: no `unload` handlers, no `no-store`                           | Believed eligible; not checked                                                              |
-| Brotli or zstd                                                                    | Not yet: nginx serves gzip; precompress at build and serve with `gzip_static`-style lookups |
-| A year's cache for `/fonts/`                                                      | Not yet: the files revalidate on every visit; a versioned name would make them immutable    |
-| `scheduler.yield()` in long work                                                  | Not yet: hydration and draw-on's measuring are the long tasks                               |
-| The studio's island split, the chart library loaded when a chart is in view       | Not yet                                                                                     |
-| `content-visibility: auto` on long pages                                          | Measured 2026-11-03 and left out: little gain, and it clips drawn edges                     |
+| Technique                                                                         | State                                                                                                                 |
+| --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Static HTML first, islands only where something is operated                       | In use                                                                                                                |
+| Pictures visible without script; draw-on only for drawings that start out of view | In use since 2026-11-04                                                                                               |
+| One take per drawing in the page, the others drawn in idle time                   | In use                                                                                                                |
+| The paper's filtered grain on a fixed layer of its own                            | In use                                                                                                                |
+| Sharp flecks on dense screens                                                     | In use since 2026-11-04                                                                                               |
+| First-screen fonts preloaded as WOFF2, `font-display: swap`                       | In use since 2026-11-04                                                                                               |
+| A metric-matched fallback font (`size-adjust`, `ascent-override`)                 | Not yet: on 4G the swap to Newsreader still rewraps a line                                                            |
+| Same-origin prefetch through the Speculation Rules API (moderate eagerness)       | Not yet                                                                                                               |
+| Cross-document view transitions (`@view-transition`), none under reduced motion   | Not yet                                                                                                               |
+| Back/forward cache: no `unload` handlers, no `no-store`                           | Believed eligible; not checked                                                                                        |
+| Brotli or zstd                                                                    | Not yet: nginx serves gzip; precompress at build and serve with `gzip_static`-style lookups                           |
+| A year's cache for `/fonts/`                                                      | Not yet: the files revalidate on every visit; a versioned name would make them immutable                              |
+| `scheduler.yield()` in long work                                                  | Not yet: hydration and draw-on's measuring are the long tasks                                                         |
+| The studio's island split, the chart library loaded when a chart is in view       | Not yet                                                                                                               |
+| `content-visibility: auto` on long pages                                          | Left out for drawing pages (little gain, clips drawn edges); in use on `/lettering`, so a face's fonts load near view |
 
 ### What the pages weigh
 

@@ -44,6 +44,12 @@ const PAGES: Share[] = [
     object,
   })),
   {
+    slug: "lettering",
+    title: "Lettering",
+    kicker: "Fineliner",
+    object: "sketchbook",
+  },
+  {
     slug: "desk",
     title: "Drawing desk",
     kicker: "Fineliner",

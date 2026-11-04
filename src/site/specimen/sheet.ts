@@ -39,7 +39,7 @@ export const SHEET = [
     id: "lettering",
     title: "Lettering",
     intro:
-      "For covers and signs, our own faces: Fineliner Naïve Sans, Inline and Tramline, the pen as real typefaces.",
+      "For covers and signs, our own faces: Fineliner Naïve Sans, Inline and Tramline, the pen as real typefaces, each in four styles.",
     rows: [],
   },
   {

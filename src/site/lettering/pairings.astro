@@ -1,0 +1,57 @@
+---
+// Inline in colour: its outlines and its Fill are two fonts, so each takes a colour of its own. Pairings of the kit's
+// pens with their own wash, another pen's wash or none, and one set in paper on the pen. Every colour comes from the
+// stocks' tokens, so the pairings follow the paper and turn over at night like the rest of the page.
+import { Lettering } from "@/fineliner/drawing/lettering"
+import { INKS, type Ink } from "./faces"
+
+const name = (ink: Ink) => INKS.find(([key]) => key === ink)![1]
+const PAIRS: { ink: Ink; fill: Ink | "none"; word: string }[] = [
+  { ink: "navy", fill: "navy", word: "Verte" },
+  { ink: "oxblood", fill: "forest", word: "Cuvée" },
+  { ink: "forest", fill: "sepia", word: "Orto" },
+  { ink: "black", fill: "oxblood", word: "Bar Nº 9" },
+  { ink: "sepia", fill: "none", word: "Bistro" },
+]
+---
+
+<div class="grid gap-y-tight">
+  <h3 class="label m-0 text-pen-quiet">In colour</h3>
+  <ul class="m-0 grid list-none gap-x-line gap-y-snug p-0 sm:grid-cols-2 lg:grid-cols-3">
+    {PAIRS.map(({ ink, fill, word }) => (
+      <li class="grid gap-hair">
+        <div
+          data-pen={ink}
+          style={`--wash: ${fill === "none" ? "transparent" : `var(--wash-${fill})`}`}
+          class="text-pen"
+        >
+          <Lettering
+            text={word}
+            face="inline"
+            className="block text-[3.25rem] leading-tight"
+          />
+        </div>
+        <p class="m-0 text-small leading-small text-pen-quiet">
+          {name(ink)},{" "}
+          {fill === "none"
+            ? "no fill"
+            : fill === ink
+              ? "its own wash"
+              : `${name(fill).toLowerCase()} wash`}
+        </p>
+      </li>
+    ))}
+    <li class="grid gap-hair">
+      <div class="bg-pen px-snug py-tight text-paper">
+        <Lettering
+          text="Late"
+          face="inline"
+          className="block text-[3.25rem] leading-tight"
+        />
+      </div>
+      <p class="m-0 text-small leading-small text-pen-quiet">
+        Paper on the pen, its wash between
+      </p>
+    </li>
+  </ul>
+</div>

@@ -95,15 +95,22 @@ function fitCubic(d, t1, t2, error, out) {
     out.push([d[0], add(d[0], mul(t1, l)), add(d[1], mul(t2, l)), d[1]])
     return
   }
+  // The error is measured only at the points, so a curve whose handles reach far beyond them can pass while it loops
+  // out between two of them (Inline's G drew a hairline across its neighbours that way). Such a fit is split instead.
+  const reach = Math.max(...d.map((p) => dist(p, d[0])))
+  const wild = (c) =>
+    dist(c[0], c[1]) > 1.5 * reach || dist(c[3], c[2]) > 1.5 * reach
   let u = chordParams(d)
   let b = generate(d, u, t1, t2)
   let [max, split] = maxError(d, b, u)
+  if (wild(b)) max = Infinity
   if (max < error) return void out.push(b)
   if (max < error * 16)
     for (let k = 0; k < 6; k++) {
       u = u.map((t, i) => newton(b, d[i], t))
       b = generate(d, u, t1, t2)
       ;[max, split] = maxError(d, b, u)
+      if (wild(b)) max = Infinity
       if (max < error) return void out.push(b)
     }
   const centre = unit(sub(d[split - 1], d[split + 1]))

@@ -11,7 +11,8 @@ const name = (c) =>
   `uni${c.codePointAt(0).toString(16).toUpperCase().padStart(4, "0")}`
 
 /**
- * spec: { family, postScript, description, chars, codes, takes, advance(c), path(c, take) → opentype.Path }.
+ * spec: { family, postScript, description, chars, codes, takes, advance(c), path(c, take) → opentype.Path, style? }.
+ * style: { name, weight, italic } for a Bold, Italic or Bold Italic beside the Regular; the Regular's bytes are as before.
  * Returns { otf, woff2 } as Uint8Arrays.
  */
 export async function buildFamily(spec) {
@@ -45,12 +46,12 @@ export async function buildFamily(spec) {
 
   const font = new opentype.Font({
     familyName: spec.family,
-    styleName: "Regular",
+    styleName: spec.style?.name ?? "Regular",
     // CFF wants the PostScript name in plain ASCII, without the ï.
     postScriptName: spec.postScript,
     // A fixed date, so the same sources always build the same bytes.
     createdTimestamp: Date.UTC(2026, 10, 3) / 1000,
-    fullName: `${spec.family} Regular`,
+    fullName: `${spec.family} ${spec.style?.name ?? "Regular"}`,
     unitsPerEm: 1000,
     ascender: 920,
     descender: -240,
@@ -111,9 +112,34 @@ export async function buildFamily(spec) {
   view.setUint16(62, view.getUint16(62) | 0x80)
   view.setUint16(74, 1000)
   view.setUint16(76, 300)
-  const otf = addTable(kerned, "OS/2", os2)
+  let otf = addTable(kerned, "OS/2", os2)
+  if (spec.style && spec.style.name !== "Regular") otf = styled(otf, spec.style)
   // wawoff2 returns a view into its WebAssembly heap, which the next compress overwrites: keep a copy.
   return { otf, woff2: Uint8Array.from(await wawoff2.compress(otf)) }
+}
+
+/**
+ * Mark a Bold, Italic or Bold Italic so apps link it to its Regular: the weight class and fsSelection in OS/2, macStyle
+ * in head, and the italic angle (degrees, leaning right) in post.
+ */
+function styled(font, { weight, italic, angle = 10 }) {
+  const bold = weight >= 700
+  const os2 = getTable(font, "OS/2")
+  const o = new DataView(os2.buffer)
+  o.setUint16(4, weight)
+  o.setUint16(
+    62,
+    (o.getUint16(62) & ~0x61) | (italic ? 0x01 : 0) | (bold ? 0x20 : 0),
+  )
+  font = addTable(font, "OS/2", os2)
+  const head = getTable(font, "head")
+  const h = new DataView(head.buffer)
+  h.setUint16(44, (bold ? 1 : 0) | (italic ? 2 : 0))
+  font = addTable(font, "head", head)
+  if (!italic) return font
+  const post = getTable(font, "post")
+  new DataView(post.buffer).setInt32(4, -angle * 65536)
+  return addTable(font, "post", post)
 }
 
 /** A path from fitted contours ([start, ...[c1, c2, end]]). */
@@ -128,10 +154,10 @@ export function toPath(contours) {
 }
 
 /** An @font-face rule carrying the WOFF2 inside it. */
-export const fontFace = (family, woff2) => `@font-face {
+export const fontFace = (family, woff2, style) => `@font-face {
   font-family: "${family}";
-  font-style: normal;
-  font-weight: 400;
+  font-style: ${style?.italic ? "italic" : "normal"};
+  font-weight: ${style?.weight ?? 400};
   font-display: swap;
   src: url(data:font/woff2;base64,${Buffer.from(woff2).toString("base64")}) format("woff2");
 }

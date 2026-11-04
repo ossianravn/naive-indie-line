@@ -6,6 +6,9 @@ src/fineliner/styles/textures.generated.css
 src/fineliner/styles/line-sans.generated.css
 src/fineliner/styles/inline.generated.css
 src/fineliner/styles/tramline.generated.css
+src/fineliner/styles/line-sans-styles.generated.css
+src/fineliner/styles/inline-styles.generated.css
+src/fineliner/styles/tramline-styles.generated.css
 src/site/skill/examples.generated.json
 specimen/
 public/r/
