@@ -1,26 +1,17 @@
 ---
-// The drawing desk: reroll any object or scene, then take its seed, JSX or SVG. Lettering has its own page.
+// The drawing desk: reroll any object or scene, then take its seed, JSX or SVG. The desk is a tool, so it opens on the
+// drawing and its controls, with nothing above them: the nav says where the page sits, and the page's title is for
+// screen readers. Lettering has its own page.
 import Base from "@/site/layouts/base.astro"
-import PageHeader from "@/site/layouts/page-header.astro"
 import { Desk } from "@/site/desk/desk"
-import { COLLECTIONS, listObjects } from "@/fineliner/pen"
-import { ROOMS } from "@/fineliner/pen/objects/rooms"
-
-// The kit's own drawings only: a page elsewhere on the site may have registered its own in the same build.
-const kit = COLLECTIONS.reduce((n, [key]) => n + listObjects(key).length, 0)
-const counts = `${kit} objects and ${ROOMS.length} scenes`
 ---
 
 <Base
   title="Desk"
   description="Fineliner's drawing desk: choose an object or a scene, reroll the seed, and take the seed, JSX or SVG."
 >
-  <PageHeader title="Desk">
-    <Fragment slot="kicker">Fineliner · {counts}</Fragment>
-    Draw any object or scene from a seed, reroll until it sits right, then take
-    the seed, the JSX or the SVG.
-  </PageHeader>
-  <div class="mx-auto mt-section max-w-[76rem] px-snug sm:px-line">
+  <div class="mx-auto mt-line max-w-[76rem] px-snug sm:px-line">
+    <h1 class="sr-only">Desk</h1>
     <Desk client:only="react" />
   </div>
 </Base>

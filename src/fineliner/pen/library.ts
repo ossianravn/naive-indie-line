@@ -25,6 +25,8 @@ export interface DrawOptions {
   hair?: string
   glasses?: boolean
   beard?: boolean
+  /** How a face looks: "joy" (mouth open, looking up a little) or "dreamy" (eyes closed); a smile otherwise. */
+  mood?: string
   black?: boolean
   wine?: boolean
   /** Where a hanging object's cord starts. */

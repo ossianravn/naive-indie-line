@@ -12,8 +12,8 @@ import { Badge } from "@/fineliner/ui/badge"
 import { Typography } from "@/fineliner/ui/typography"
 
 // A journal post: a pen line along the top that draws itself as you read, a page head with the title lettered beside
-// a drawn scene and the issue's number in the kicker, a byline, prose with a drop cap held to the reading measure, a
-// pull quote, a hand note in the margin (under its paragraph on narrow screens), and the tags it was filed under.
+// a drawn scene, a byline, prose with a drop cap held to the reading measure, a pull quote, a hand note in the margin
+// (under its paragraph on narrow screens), and at the end the tags it was filed under and the journal's issue.
 // Pass your own prose as children; the structure is the block.
 
 export const meta = {
@@ -23,7 +23,7 @@ export const meta = {
 }
 
 export interface Article01Props {
-  /** The journal's issue, in the kicker: Nº 012. */
+  /** The journal's issue, at the end of the post: Nº 012. */
   issue?: number
   /** The journal's name, beside the issue. */
   section?: string
@@ -59,16 +59,7 @@ export function Article01({
         ref={article}
         className="mx-auto max-w-[66rem] px-snug pt-section pb-page @min-[40rem]:px-line"
       >
-        <RoomHeader
-          title={title}
-          scene={scene}
-          seed={`journal:${issue}`}
-          kicker={
-            <>
-              <EditionNumber value={issue} digits={3} /> · {section}
-            </>
-          }
-        >
+        <RoomHeader title={title} scene={scene} seed={`journal:${issue}`}>
           <p>{standfirst}</p>
         </RoomHeader>
         {byline && <p className="label m-0 mt-line text-pen-quiet">{byline}</p>}
@@ -77,19 +68,24 @@ export function Article01({
           {children}
         </Typography>
 
-        {tags.length > 0 && (
-          <footer className="mt-section max-w-measure">
-            <div className="rule text-pen-faint" aria-hidden="true" />
-            <p className="label m-0 mt-tight text-pen-quiet">Filed under</p>
-            <ul className="m-0 mt-hair flex list-none flex-wrap gap-hair p-0">
-              {tags.map((tag) => (
-                <li key={tag}>
-                  <Badge variant="outline">{tag}</Badge>
-                </li>
-              ))}
-            </ul>
-          </footer>
-        )}
+        <footer className="mt-section max-w-measure">
+          <div className="rule text-pen-faint" aria-hidden="true" />
+          {tags.length > 0 && (
+            <>
+              <p className="label m-0 mt-tight text-pen-quiet">Filed under</p>
+              <ul className="m-0 mt-hair flex list-none flex-wrap gap-hair p-0">
+                {tags.map((tag) => (
+                  <li key={tag}>
+                    <Badge variant="outline">{tag}</Badge>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          <p className="label m-0 mt-snug text-pen-quiet">
+            {section} · <EditionNumber value={issue} digits={3} />
+          </p>
+        </footer>
       </article>
     </div>
   )

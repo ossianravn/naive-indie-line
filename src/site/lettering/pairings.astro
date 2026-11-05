@@ -32,12 +32,10 @@ const PAIRS: { ink: Ink; fill: Ink | "none"; word: string }[] = [
           />
         </div>
         <p class="m-0 text-small leading-small text-pen-quiet">
-          {name(ink)},{" "}
+          {name(ink)} lines,{" "}
           {fill === "none"
             ? "no fill"
-            : fill === ink
-              ? "its own wash"
-              : `${name(fill).toLowerCase()} wash`}
+            : `${name(fill).toLowerCase()} wash between`}
         </p>
       </li>
     ))}
@@ -50,7 +48,7 @@ const PAIRS: { ink: Ink; fill: Ink | "none"; word: string }[] = [
         />
       </div>
       <p class="m-0 text-small leading-small text-pen-quiet">
-        Paper on the pen, its wash between
+        Paper-coloured letters on solid ink
       </p>
     </li>
   </ul>

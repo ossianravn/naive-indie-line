@@ -88,8 +88,8 @@ export function Catalogue({ initial = RELEASES }: { initial?: Release[] }) {
   return (
     <ShellPage>
       <PageHeader
-        kicker={`${tally(inRacks)} in the racks · ${tally(held)} on hold`}
         title="Catalogue"
+        lede={`${tally(inRacks)} in the racks, ${tally(held)} on hold`}
         action={<AddRecord onAdd={add} next={next} />}
       />
 

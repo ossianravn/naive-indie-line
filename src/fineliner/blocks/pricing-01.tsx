@@ -108,8 +108,7 @@ export function Pricing01({
   return (
     <div className={cn("@container", className)}>
       <div className="mx-auto max-w-[68rem] px-snug pt-section pb-page @min-[40rem]:px-line">
-        <p className="label m-0 text-pen-quiet">Listening Room · Membership</p>
-        <h1 className="m-0 mt-hair max-w-[18em] text-h1 text-balance">
+        <h1 className="m-0 max-w-[18em] text-h1 text-balance">
           A chair in the room, a seat on Thursdays
         </h1>
         <p className="m-0 mt-tight max-w-measure text-body leading-body text-pen-quiet">

@@ -35,8 +35,10 @@ function compose(seed: string, hand: HandName, take: number) {
   put("plate", "right-plate", top.top(0.77, 0.13), 0.57, { dish: "pasta" })
   put("bread", "bread", top.top(0.46, 0.1), 0.46)
   put("maaltid-crate", "floor-wine", [r.between(514, 520), floor + 128], 0.64)
-  put("visitor", "waiter", [r.between(107, 116), floor + 109], 1.06, {
+  // The waiter, turned to the table.
+  put("person-side", "waiter", [r.between(107, 116), floor + 109], 1.06, {
     pose: "stand",
+    view: "right",
   })
   border()
   return s

@@ -13,7 +13,8 @@ Kept out, or rewritten before they go in:
   for art (wine in a glass, a sticky note), at most one area per object.
 - **Brands.** Pantone, Chemex, Walkman, Anglepoise: drawn and named as the generic thing (swatch fan, pour-over,
   cassette player, desk lamp).
-- **Faces.** "Eyes looking upward", "peeking colleague", "thinking person". Figures are headless, clothes only.
+- **Faces that act.** "Eyes looking upward", "peeking colleague", "thinking person". Faces are dot eyes, a nose and a
+  short mouth, with three moods at most (a smile, joy, eyes closed); a figure shows what it feels through its pose.
 - **Bodiless hands.** A hand and cuff alone reads as a clip-art icon, not a drawing.
 - **Too busy for a tile.** Drum kit, sewing machine, spiral staircase, tractor, mixing desk, slide projector: dozens of
   small parts that turn into scribble at 120 px.

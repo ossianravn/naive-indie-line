@@ -1,19 +1,23 @@
 "use client"
 
-import { useId, useState, type CSSProperties, type ReactNode } from "react"
+import { useId, useState, type CSSProperties } from "react"
 import { BoldIcon, ItalicIcon } from "lucide-react"
 import { Lettering, type LetteringFace } from "@/fineliner/drawing/lettering"
-import { PenMark } from "@/fineliner/drawing/pen-mark"
 import { cn } from "@/fineliner/lib/utils"
 import { Input } from "@/fineliner/ui/input"
 import { Slider } from "@/fineliner/ui/slider"
 import { ToggleGroup, ToggleGroupItem } from "@/fineliner/ui/toggle-group"
-import { FACES, INKS, styleClass, type Ink } from "./faces"
+import { FACES, styleClass, type Ink } from "./faces"
+import {
+  Control,
+  FillSwatches,
+  PenSwatches,
+  washStyle,
+  type Fill,
+} from "./swatches"
 
 // The lettering page's tester: your words in any face and style, at any size, in any pen, and Inline's Fill in any
 // pen's wash or none. The sample shrinks to fit a narrow screen, so the size is the most it is set at.
-
-type Fill = "own" | Ink | "none"
 
 export function LetteringTester() {
   const [words, setWords] = useState("Rêverie")
@@ -26,11 +30,7 @@ export function LetteringTester() {
   const bold = style.includes("bold")
   const italic = style.includes("italic")
   const wash: CSSProperties | undefined =
-    face !== "inline" || fill === "own"
-      ? undefined
-      : ({
-          "--wash": fill === "none" ? "transparent" : `var(--wash-${fill})`,
-        } as CSSProperties)
+    face === "inline" ? washStyle(fill) : undefined
 
   return (
     <div className="grid gap-y-line">
@@ -97,29 +97,14 @@ export function LetteringTester() {
       {/* Colour on a row of its own: the pen, and for Inline its Fill, each named beside its dots. */}
       <div className="flex flex-wrap items-end gap-x-page gap-y-snug">
         <Control label="Pen" labelId={`${id}-ink`}>
-          <Swatches
-            labelledBy={`${id}-ink`}
-            options={INKS.map(([value, name]) => ({ value, name, pen: value }))}
-            value={ink}
-            none="The page's pen"
-            onChange={(v) => setInk(v as Ink)}
-          />
+          <PenSwatches labelledBy={`${id}-ink`} value={ink} onChange={setInk} />
         </Control>
         {face === "inline" && (
           <Control label="Fill" labelId={`${id}-fill`}>
-            <Swatches
+            <FillSwatches
               labelledBy={`${id}-fill`}
-              options={[
-                { value: "own", name: "The pen's wash", wash: "own" },
-                ...INKS.map(([value, name]) => ({
-                  value,
-                  name: `${name} wash`,
-                  wash: value,
-                })),
-                { value: "none", name: "No fill", wash: "none" },
-              ]}
               value={fill}
-              onChange={(v) => setFill(v as Fill)}
+              onChange={setFill}
             />
           </Control>
         )}
@@ -137,109 +122,6 @@ export function LetteringTester() {
           style={{ fontSize: `min(${size}px, 17cqi)` }}
         />
       </div>
-    </div>
-  )
-}
-
-function Control({
-  label,
-  htmlFor,
-  labelId,
-  children,
-}: {
-  label: string
-  htmlFor?: string
-  labelId?: string
-  children: ReactNode
-}) {
-  return (
-    <div className="grid gap-y-hair">
-      <label id={labelId} htmlFor={htmlFor} className="label text-pen-quiet">
-        {label}
-      </label>
-      {children}
-    </div>
-  )
-}
-
-interface Option {
-  value: string
-  name: string
-  /** A pen's dot, or a wash: "own" (the pen's), a pen's, or "none". */
-  pen?: Ink
-  wash?: string
-}
-
-/** A row of colour dots as radios, the chosen one ringed by the pen. */
-function Swatches({
-  labelledBy,
-  options,
-  value,
-  none = "",
-  onChange,
-}: {
-  labelledBy: string
-  options: Option[]
-  value: string | null
-  /** What a row with nothing chosen says beside it. */
-  none?: string
-  onChange: (value: string) => void
-}) {
-  const name = useId()
-  const chosen = options.find((o) => o.value === value)?.name ?? none
-  return (
-    <div className="flex h-control items-center gap-hair">
-      <div
-        role="radiogroup"
-        aria-labelledby={labelledBy}
-        className="-ms-[0.3rem] flex items-center"
-      >
-        {options.map((o) => (
-          <label
-            key={o.value}
-            title={o.name}
-            data-pen={o.pen}
-            className="press relative grid size-control cursor-pointer place-items-center rounded-full text-pen has-focus-visible:outline-[1.5px] has-focus-visible:outline-pen has-focus-visible:outline-dashed"
-          >
-            <input
-              type="radio"
-              name={name}
-              value={o.value}
-              aria-label={o.name}
-              checked={value === o.value}
-              onChange={() => onChange(o.value)}
-              className="peer sr-only"
-            />
-            <span
-              aria-hidden="true"
-              style={
-                o.wash && o.wash !== "own" && o.wash !== "none"
-                  ? { background: `var(--wash-${o.wash})` }
-                  : undefined
-              }
-              className={cn(
-                "size-[1.125rem] rounded-full [filter:var(--wob-2)] forced-colors:[forced-color-adjust:none]",
-                o.pen && "bg-pen",
-                o.wash === "own" && "bg-wash",
-                o.wash && "border border-pen",
-              )}
-            />
-            {value === o.value && (
-              <PenMark
-                name="ring"
-                seed={`tester:${o.value}`}
-                className="put-down pointer-events-none absolute inset-[0.4rem]"
-              />
-            )}
-          </label>
-        ))}
-      </div>
-      <span
-        aria-hidden="true"
-        className="text-small leading-small text-pen-quiet"
-      >
-        {chosen}
-      </span>
     </div>
   )
 }

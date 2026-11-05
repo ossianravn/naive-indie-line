@@ -60,11 +60,19 @@ export const visitor: Draw = (s, p, r, at, k = 1, { pose = "stand" } = {}) => {
 
 /**
  * The find held high: a sleeve gripped by its sides between the two raised cuffs, the record half out of it in ink
- * (the scene's one pocket) and a fan of short strokes round it.
+ * (the scene's one pocket) and a fan of short strokes round it. `lift` raises it by that share of its size, so it
+ * clears a head (the visitors have none).
  */
-function cheer(s: Sheet, p: Pen, r: Stream, [a, b]: [Point, Point], k: number) {
+export function cheer(
+  s: Sheet,
+  p: Pen,
+  r: Stream,
+  [a, b]: [Point, Point],
+  k: number,
+  lift = 0,
+) {
   const n = Math.min(56 * k, Math.max(40 * k, Math.abs(b[0] - a[0]) * 0.9))
-  const c = add([(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], [0, -n * 0.2])
+  const c = add([(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], [0, -n * (0.2 + lift)])
   const tilt = r.signed() * 6
   const on = (u: number, v: number) =>
     turn([c[0] + (u - 0.5) * n, c[1] + (v - 0.5) * n], c, tilt)
@@ -85,6 +93,12 @@ function cheer(s: Sheet, p: Pen, r: Stream, [a, b]: [Point, Point], k: number) {
 function listen(s: Sheet, p: Pen, r: Stream, at: Point, k: number) {
   const head: Point = [at[0], at[1] - 184 * k]
   headphones(s, p, r, add(head, [0, 13.6 * k]), k * 0.62, {})
+  swaying(s, p, at, k)
+}
+
+/** Music leaking either side of the head and a sway either side of the shoulders, for someone standing at `at`. */
+export function swaying(s: Sheet, p: Pen, at: Point, k: number) {
+  const head: Point = [at[0], at[1] - 184 * k]
   for (const side of [-1, 1]) {
     fan(
       s,

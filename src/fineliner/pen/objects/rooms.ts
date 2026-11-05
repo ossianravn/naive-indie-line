@@ -29,15 +29,13 @@ function room(seed: string, hand: HandName, take: number) {
   if (r.chance(0.55))
     put("sleeve-rail", "high", [lx + 20, floor - 176], 0.9, { w: 150 })
   put("pendant", "lamp", [r.between(0.52, 0.55) * W, H * 0.2], 0.95, { top: M })
-  put("poster", "poster", [r.between(0.86, 0.88) * W, H * 0.27], 1)
+  put("poster", "poster", [r.between(0.86, 0.88) * W, H * 0.2], 1)
   shopCounter(put, s, p, r, [r.between(0.63, 0.65) * W, H - M - 40], 0.95, 130)
   const bx = r.between(0.04, 0.07) * W
-  put("visitor", "listener", [bx + 62, H - M - 16], 0.95, { pose: "listen" })
+  put("person-listening", "listener", [bx + 62, H - M - 16], 0.95)
   put("record-bin", "bin", [bx, H - M - 4], 0.95)
   put("cat", "cat", [r.between(0.33, 0.36) * W, H - M - 6], 0.8)
-  put("visitor", "finder", [r.between(0.47, 0.49) * W, H - M - 12], 0.95, {
-    pose: "cheer",
-  })
+  put("person-cheer", "finder", [r.between(0.47, 0.49) * W, H - M - 12], 0.95)
   border()
   return s
 }
@@ -56,8 +54,10 @@ function shopCounter(
   behind: number,
   w = 196,
 ) {
-  put("visitor", "staff", [at[0] + behind * k, at[1] - 12 * k], k * 1.2, {
+  // Turned to the find, so the room's three people do not all look out.
+  put("person-side", "staff", [at[0] + behind * k, at[1] - 12 * k], k * 1.2, {
     pose: "hail",
+    view: "left",
   })
   const top = put("counter", "counter", at, k, { w }) as Box
   const deck = top.top(0.05, 0.22)
@@ -80,12 +80,12 @@ function roomWide(seed: string, hand: HandName, take: number) {
   if (r.chance(0.6))
     put("sleeve-rail", "high", [830, floor - 370], 1.3, { w: 160 })
   put("poster", "poster", [1420, 280], 1.45)
-  put("pendant", "lamp", [1190, 300], 1.4, { top: -20 })
+  put("pendant", "lamp", [1190, 250], 1.4, { top: -20 })
   shopCounter(put, s, p, r, [1270, h - 40], 1.4, 145, 300)
-  put("visitor", "listener", [880, h - 64], 1.6, { pose: "listen" })
+  put("person-listening", "listener", [880, h - 64], 1.6)
   put("record-bin", "bin", [790, h - 46], 1.32)
   put("cat", "cat", [1040, h - 14], 1.15)
-  put("visitor", "finder", [1170, h - 22], 1.7, { pose: "cheer" })
+  put("person-cheer", "finder", [1170, h - 22], 1.7)
   return s
 }
 
@@ -99,10 +99,10 @@ function roomTall(seed: string, hand: HandName, take: number) {
   put("poster", "poster", [640, 170], 1.45)
   put("pendant", "lamp", [430, 170], 1.4, { top: -20 })
   shopCounter(put, s, p, r, [560, h - 40], 1.4, 155, 300)
-  put("visitor", "listener", [30, h - 64], 1.6, { pose: "listen" })
+  put("person-listening", "listener", [30, h - 64], 1.6)
   put("record-bin", "bin", [-60, h - 46], 1.32)
   put("cat", "cat", [250, h - 14], 1.15)
-  put("visitor", "finder", [380, h - 22], 1.7, { pose: "cheer" })
+  put("person-cheer", "finder", [380, h - 22], 1.7)
   return s
 }
 
@@ -127,8 +127,10 @@ function studio(seed: string, hand: HandName, take: number) {
   else put("laptop", "screen", top.top(0.4, 0.3), 0.85)
   put("desk-lamp", "lamp", top.top(0.92, 0.7), 0.75)
   put("mug", "mug", top.top(0.2, 0.18), 0.62)
-  put("visitor", "person", [r.between(0.13, 0.18) * W, H - M - 14], 1.25, {
+  // Walking over to the desk, looking at it.
+  put("person-side", "person", [r.between(0.13, 0.18) * W, H - M - 14], 1.25, {
     pose: "walk",
+    view: "right",
   })
   if (r.chance(0.6))
     put("cat", "cat", [r.between(0.82, 0.9) * W, H - M - 18], 0.9)
@@ -160,12 +162,14 @@ function bistro(seed: string, hand: HandName, take: number) {
   put("glass", "left", [t[0] - 12, t[1] + 8], 0.75)
   put("glass", "right", [t[0] + 22, t[1] + 4], 0.75)
   put("plate", "plate", [t[0] - 2, t[1] + 22], 0.62)
-  put("visitor", "guest", [r.between(0.2, 0.25) * W, H - M - 14], 1.25, {
+  // A guest coming in, seen from behind; the waiter, if there is one, turns to the table.
+  put("person-back", "guest", [r.between(0.2, 0.25) * W, H - M - 14], 1.25, {
     pose: r.pick(["stand", "walk"]),
   })
   if (r.chance(0.5))
-    put("visitor", "waiter", [r.between(0.84, 0.88) * W, H - M - 24], 1.1, {
+    put("person-side", "waiter", [r.between(0.84, 0.88) * W, H - M - 24], 1.1, {
       pose: "stand",
+      view: "left",
     })
   else put("cat", "cat", [r.between(0.84, 0.88) * W, H - M - 24], 0.9)
   border()
@@ -190,8 +194,8 @@ function work(seed: string, hand: HandName, take: number) {
   else put("laptop", "screen", top.top(0.36, 0.3), 0.8)
   put("mug", "mug", top.top(0.72, 0.2), 0.55)
   put("desk-lamp", "lamp", top.top(0.9, 0.65), 0.75)
-  // Someone at work, seen from behind on an office chair: only their clothes.
-  put("visitor-seated", "worker", [x + r.between(130, 160), H - M - 20], 1.55)
+  // Someone at work, seen from behind on an office chair.
+  put("person-seated", "worker", [x + r.between(130, 160), H - M - 20], 1.55)
   if (r.chance(0.5))
     put("cat", "cat", [r.between(0.84, 0.9) * W, H - M - 18], 0.85)
   else put("house-plant", "floor", [r.between(0.86, 0.9) * W, H - M - 6], 1.1)
@@ -214,14 +218,14 @@ const BUILT_IN = {
   studio: {
     name: "Studio",
     label:
-      "A studio with a desk, a screen, sticky notes and a person with a coffee",
+      "A studio with a desk, a screen and sticky notes, and someone walking over to it",
     size: [W, H],
     compose: studio,
   },
   bistro: {
     name: "Bistro",
     label:
-      "A bistro table for two with wine, a candle and a plate, under a pendant lamp",
+      "A bistro table for two with wine, a candle and a plate under a pendant lamp, and a guest coming in",
     size: [W, H],
     compose: bistro,
   },

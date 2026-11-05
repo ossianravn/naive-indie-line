@@ -19,12 +19,7 @@ const seed = "library"
   title={`${c.title} drawings`}
   description={`Fineliner's ${c.title.toLowerCase()} drawings: ${c.lead}`}
 >
-  <PageHeader title={c.title}>
-    <Fragment slot="kicker">
-      <a href="/drawings">Drawings</a> · {c.objects.length} objects
-    </Fragment>
-    {c.lead}
-  </PageHeader>
+  <PageHeader title={c.title}>{c.lead}</PageHeader>
   <div class="mx-auto max-w-[76rem] px-snug pb-page sm:px-line">
     <nav aria-label="Collections" class="mt-line">
       <ul class="m-0 flex list-none flex-wrap gap-x-snug gap-y-hair p-0">

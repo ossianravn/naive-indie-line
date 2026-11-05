@@ -1,8 +1,8 @@
 import type { AppearanceRow } from "@/fineliner/extras/appearance-control"
 
 /**
- * The specimen sheet's sections in reading order: the title block's contents and every section's number, title,
- * introduction and the appearance settings that change what it shows all come from here. Each introduction picks up
+ * The specimen sheet's sections in reading order: the title block's contents and every section's title, introduction
+ * and the appearance settings that change what it shows all come from here. Each introduction picks up
  * where the one before left off, so the sheet reads as one story: paper, the pen on it, its line, its words, its
  * letters, its drawings, and the shop they run.
  */
@@ -64,7 +64,3 @@ export const SHEET = [
 }[]
 
 export type SheetId = (typeof SHEET)[number]["id"]
-
-/** A section's number as the sheet prints it: 01, 02… */
-export const numberOf = (id: SheetId) =>
-  String(SHEET.findIndex((s) => s.id === id) + 1).padStart(2, "0")

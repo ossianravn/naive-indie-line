@@ -1510,7 +1510,8 @@
       "title": "Pen",
       "description": "The pen engine, framework-free: seeded strokes, shapes and sheets, the object library's registry, scenes' stage, lettering and pen marks, as SVG strings on a server, at build time or in the browser. It draws no objects by itself: add the collections you use.",
       "registryDependencies": [
-        "@fineliner/base"
+        "@fineliner/base",
+        "@fineliner/drawings-people"
       ],
       "files": [
         {
@@ -1547,6 +1548,16 @@
           "path": "src/fineliner/pen/library.ts",
           "type": "registry:file",
           "target": "~/src/fineliner/pen/library.ts"
+        },
+        {
+          "path": "src/fineliner/pen/objects/figures.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/figures.ts"
+        },
+        {
+          "path": "src/fineliner/pen/objects/heads.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/pen/objects/heads.ts"
         },
         {
           "path": "src/fineliner/pen/objects/parts.ts",

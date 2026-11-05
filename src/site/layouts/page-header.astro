@@ -1,14 +1,12 @@
 ---
-// The one page head for the site's working pages (components, blocks, drawings, desk, studio, 404): a kicker in the
-// label voice that says where the page sits, the title, and a lead paragraph at the reading measure. The title and
-// the lead keep one size and one position on every page, so moving between pages never shifts them. An optional
-// `aside` slot sits beside the head from md (the 404's drawing); the home page and the specimen have heads of their
-// own. Inside a column of its own (`contained={false}`) it drops the site container but keeps its top.
+// The one page head for the site's working pages (components, blocks, drawings, studio, 404): the title and a lead
+// paragraph at the reading measure, nothing above the title (the site's nav already says where the page sits). The
+// title and the lead keep one size and one position on every page, so moving between pages never shifts them. An
+// optional `aside` slot sits beside the head from md (the 404's drawing); the home page, the specimen, the lettering
+// page and the desk have heads of their own. Inside a column of its own (`contained={false}`) it drops the site
+// container but keeps its top.
 //
-//   <PageHeader title="Drawings">
-//     <Fragment slot="kicker">Fineliner · 120 objects</Fragment>
-//     The lead paragraph.
-//   </PageHeader>
+//   <PageHeader title="Drawings">The lead paragraph.</PageHeader>
 
 interface Props {
   title: string
@@ -28,10 +26,7 @@ const aside = Astro.slots.has("aside")
   ]}
 >
   <div class="min-w-0" data-page-header>
-    <p class="label m-0 text-pen-quiet [&_a]:text-pen-quiet">
-      <slot name="kicker" />
-    </p>
-    <h1 class="m-0 mt-tight text-title leading-heading">{title}</h1>
+    <h1 class="m-0 text-title leading-heading">{title}</h1>
     {Astro.slots.has("default") && (
       <p class="m-0 mt-tight max-w-measure text-body leading-body sm:text-lead sm:leading-lead">
         <slot />

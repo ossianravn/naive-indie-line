@@ -25,8 +25,8 @@ export const meta = {
 }
 
 export interface Dashboard01Data {
-  /** Where and when, above the title. */
-  kicker: string
+  /** The period the figures cover, under the title. */
+  period: string
   figures: { label: string; value: string; note: string }[]
   guests: { title: string; note: string; days: GuestDay[] }
   holds: { title: string; note: string; rows: Hold[] }
@@ -35,7 +35,7 @@ export interface Dashboard01Data {
 
 /** Listening Room on Monday 2 November 2026: the fortnight's bookings and the records in the shop. */
 export const SAMPLE: Dashboard01Data = {
-  kicker: "The shop · first week of November",
+  period: "The first week of November",
   figures: [
     { label: "In the shop", value: "18", note: "3 on hold, 2 sold" },
     {
@@ -128,8 +128,10 @@ export function Dashboard01({
   return (
     <div className={cn("@container", className)}>
       <div className="mx-auto max-w-[72rem] px-snug pt-section pb-page @min-[40rem]:px-line">
-        <p className="label m-0 text-pen-quiet">{data.kicker}</p>
-        <h1 className="m-0 mt-hair text-h1">{title}</h1>
+        <h1 className="m-0 text-h1">{title}</h1>
+        <p className="m-0 mt-hair max-w-measure text-lead leading-subhead text-pen-quiet">
+          {data.period}
+        </p>
 
         <section
           aria-label="Figures"

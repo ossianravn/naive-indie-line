@@ -7,7 +7,6 @@ import ObjectGrid from "@/site/drawings/object-grid.astro"
 import { COLLECTION_PAGES } from "@/site/drawings/collections"
 
 const seed = "library"
-const total = COLLECTION_PAGES.reduce((n, c) => n + c.objects.length, 0)
 ---
 
 <Base
@@ -15,9 +14,6 @@ const total = COLLECTION_PAGES.reduce((n, c) => n + c.objects.length, 0)
   description="Fineliner's object library: every drawing by collection, each drawn by the pen from a seed."
 >
   <PageHeader title="Drawings">
-    <Fragment slot="kicker">
-      Fineliner · {total} objects in {COLLECTION_PAGES.length} collections
-    </Fragment>
     Every object the pen draws, by collection, each from a seed. The library
     keeps growing; the <a href="/desk">desk</a> rerolls any of them, and the{" "}
     <a href="/drawings/skill">drawing skill</a> draws the ones your project

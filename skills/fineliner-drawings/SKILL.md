@@ -91,9 +91,10 @@ define(T("stool", "Step stool", [120, 100], [20, 90], 1, stool, [
 
 ## People and scenes
 
-- **People**: `references/people.md`. Build new poses from the kit's `clothes()`, `head()` and `hairBehind()`, so they
-  wear the same loose tops, wide trousers and trainers and the same inked hair. People in scenes are usually only their
-  clothes (no head), as in every kit scene.
+- **People**: `references/people.md`. Put people in with the kit's `figure()` (any pose, looking out, turned to either
+  side or seen from behind), or build new poses from its `clothes()`, `head()`, `profile()` and `backOfHead()`, so they
+  wear the same loose tops, wide trousers and trainers and the same inked hair. People in scenes have faces, and when a
+  scene has two or more, they face different ways.
 - **Scenes**: `references/scenes.md`. `defineScene(name, { name, label, size, compose })` with the kit's `stage()` for the
   walls, rug, border and `put()`, then `<Drawing scene="name" seed="…" />`.
 

@@ -45,7 +45,7 @@ import { SESSIONS, TODAY } from "./sessions-data"
 
 export type Section = "catalogue" | "sessions" | "overview" | "settings"
 
-// Each badge counts what its page's kicker counts, in the same words: records in the racks, sessions today.
+// Each badge counts what its page's lede counts, in the same words: records in the racks, sessions today.
 const SHOP: {
   key: Section
   label: string

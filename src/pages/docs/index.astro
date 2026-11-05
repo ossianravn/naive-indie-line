@@ -3,7 +3,7 @@
 // its states. The previews render on the server; the page ships no script of its own.
 import Base from "@/site/layouts/base.astro"
 import PageHeader from "@/site/layouts/page-header.astro"
-import { COMPONENTS, GROUPS } from "@/site/docs/catalogue"
+import { GROUPS } from "@/site/docs/catalogue"
 import { GalleryCard } from "@/site/docs/gallery/gallery-card"
 ---
 
@@ -12,9 +12,6 @@ import { GalleryCard } from "@/site/docs/gallery/gallery-card"
   description="Every Fineliner component, with its states and the command that installs it."
 >
   <PageHeader title="Components">
-    <Fragment slot="kicker">
-      Fineliner · {COMPONENTS.length} components
-    </Fragment>
     shadcn/ui's parts with shadcn's names, props and data-slots, built on Base
     UI and drawn with one pen. Start from a whole page in{" "}
     <a href="/docs/blocks">Blocks</a>.

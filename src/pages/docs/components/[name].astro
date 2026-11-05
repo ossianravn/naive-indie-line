@@ -28,9 +28,6 @@ const { meta } = Astro.props
   <div class="mx-auto grid max-w-[76rem] gap-x-page px-snug sm:px-line lg:grid-cols-[minmax(0,1fr)_12rem]">
     <div class="min-w-0">
       <PageHeader title={meta.title} contained={false}>
-        <Fragment slot="kicker">
-          <a href="/docs">Components</a> · {meta.group ?? "Other"}
-        </Fragment>
         {meta.description}
       </PageHeader>
       <InstallCommand

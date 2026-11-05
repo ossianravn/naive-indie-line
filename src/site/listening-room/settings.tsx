@@ -5,7 +5,7 @@ import { PageHeader, ShellPage } from "./page"
 export function SettingsPage() {
   return (
     <ShellPage>
-      <PageHeader kicker="Behind the counter · Maya Singh" title="Settings" />
+      <PageHeader title="Settings" />
       <Settings01
         bare
         appearance={["theme", "stock", "pen"]}

@@ -92,8 +92,8 @@ export function Sessions() {
   return (
     <ShellPage>
       <PageHeader
-        kicker={`${longDay(TODAY)} · ${today} ${today === 1 ? "session" : "sessions"} today`}
         title="Sessions"
+        lede={`${longDay(TODAY)}, ${today} ${today === 1 ? "session" : "sessions"} today`}
         action={<BookSession onBook={book} next={next} />}
       />
 

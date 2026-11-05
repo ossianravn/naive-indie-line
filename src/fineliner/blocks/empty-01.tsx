@@ -119,12 +119,7 @@ export function Empty01({
   return (
     <div className={cn("@container", className)}>
       <div className="mx-auto max-w-[56rem] px-snug pt-section pb-page @min-[40rem]:px-line">
-        <p className="label m-0 text-pen-quiet">
-          {sessions ? "The room · this week" : "The shop"}
-        </p>
-        <h1 className="m-0 mt-hair text-h1">
-          {sessions ? "Sessions" : "Catalogue"}
-        </h1>
+        <h1 className="m-0 text-h1">{sessions ? "Sessions" : "Catalogue"}</h1>
         {variant === "no-results" && (
           <InputGroup className="mt-snug w-[22rem] max-w-full">
             <InputGroupAddon>

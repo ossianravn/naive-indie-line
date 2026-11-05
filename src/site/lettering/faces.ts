@@ -38,7 +38,7 @@ export const FACES: Face[] = [
     short: "Sans",
     sample: "Paper Moons",
     about:
-      "The pen as a typeface: capitals in one line, three takes of every letter that take turns, so a word never repeats a stamp.",
+      "Capital letters drawn in a single, even line, the way the pen writes a sign by hand.",
     file: "fineliner-naive-sans",
     items: ["base", "font-sans-styles"],
   },
@@ -48,7 +48,7 @@ export const FACES: Face[] = [
     short: "Inline",
     sample: "Rue Verte",
     about:
-      "A contrasted serif: thick strokes drawn as two lines with a tint between them, thin strokes as one. Two fonts, the outlines and their Fill, set one over the other, so each takes its own colour.",
+      "A serif with thick and thin strokes. Each thick stroke is drawn as two lines with colour between them. It comes as two fonts set on top of each other, one for the lines and one for the fill, so each can have its own colour.",
     file: "fineliner-naive-inline",
     fill: "fineliner-naive-inline-fill",
     items: ["font-inline", "font-inline-styles"],
@@ -59,7 +59,7 @@ export const FACES: Face[] = [
     short: "Tramline",
     sample: "Rêverie",
     about:
-      "Every stroke drawn three times side by side, the lines running past their ends where they meet, each letter leaning a little its own way.",
+      "Every stroke is drawn as three lines side by side that run a little past each other at the corners. Each letter leans slightly its own way.",
     file: "fineliner-naive-tramline",
     items: ["font-tramline", "font-tramline-styles"],
   },

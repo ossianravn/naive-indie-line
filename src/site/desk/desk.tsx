@@ -1,7 +1,7 @@
 "use client"
 
 // The drawing desk: choose an object or a scene, reroll its seed until it is right, then take the seed, the JSX or
-// the SVG. The seed travels in the URL, so a drawing can be shared. Lettering has its own page (/lettering).
+// the SVG. The seed and the object or scene travel in the URL, so a drawing can be shared. Lettering has its own page (/lettering).
 import "@/fineliner/pen/objects"
 import { ROOMS } from "@/fineliner/pen/objects/rooms"
 import { useEffect, useRef, useState } from "react"
@@ -16,6 +16,7 @@ import {
   type HandName,
   type SceneName,
 } from "@/fineliner/pen"
+import { cn } from "@/fineliner/lib/utils"
 import { Segments, frame } from "./desk-controls"
 import { download, standaloneSvg } from "./export-svg"
 
@@ -40,7 +41,10 @@ export function Desk() {
   const [kind, setKind] = useState<Kind>(() =>
     query().get("object") ? "object" : "scene",
   )
-  const [scene, setScene] = useState<SceneName>("room")
+  const [scene, setScene] = useState<SceneName>(() => {
+    const asked = query().get("scene") ?? ""
+    return (ROOMS as string[]).includes(asked) ? (asked as SceneName) : "room"
+  })
   const [object, setObject] = useState(
     () => query().get("object") ?? "turntable",
   )
@@ -55,7 +59,7 @@ export function Desk() {
     settle.current = false
     const q = new URLSearchParams({
       seed,
-      ...(kind === "object" ? { object } : {}),
+      ...(kind === "object" ? { object } : { scene }),
     })
     history.replaceState(null, "", `?${q}`)
   }, [seed, kind, object, scene])
@@ -89,11 +93,16 @@ export function Desk() {
 
   return (
     // One column on a phone: the drawing, its controls right under it, then the neighbouring seeds. From lg the
-    // controls run down a narrow column beside the drawing and its neighbours.
+    // controls run down a narrow column beside the drawing and its neighbours. The drawing is never taller than the
+    // screen leaves it (a tall object narrows instead, its viewBox centred), so a drawing and every control that
+    // changes it are in view together; on a phone it takes half the screen, leaving the first controls under it.
     <div className="grid gap-x-section gap-y-line lg:grid-cols-[minmax(0,1fr)_19rem] lg:grid-rows-[auto_1fr]">
       <div
         ref={stage}
-        className={kind === "object" ? "mx-auto w-full max-w-[26rem]" : ""}
+        className={cn(
+          "[&_.fl-drawing]:max-h-[50svh] lg:[&_.fl-drawing]:max-h-[calc(100svh-8.5rem)]",
+          kind === "object" && "mx-auto w-full max-w-[30rem]",
+        )}
       >
         {show(seed)}
       </div>

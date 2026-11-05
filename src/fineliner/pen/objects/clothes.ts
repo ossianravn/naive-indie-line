@@ -58,6 +58,8 @@ export interface Outfit {
   nobody?: boolean
   /** Each arm's swing from hanging, in degrees (left, right), in place of the pose's: both up is [150, -150]. */
   swing?: Point
+  /** Seen from behind: no neckline, fronts or pocket, a plain collar, and a hood lying on the back. */
+  back?: boolean
 }
 
 /** The whole outfit, back to front: hood, trainers, trousers or skirt, the top and its sleeves. Returns the hands. */
@@ -74,13 +76,14 @@ export function clothes(
     stride = 0,
     nobody = false,
     swing: arms,
+    back = false,
   }: Outfit = {},
 ) {
   const [x, y] = at
   const P = (u: number, v: number): Point => [x + u * k, y + v * k]
   const path = (pts: [number, number][]) => pts.map(([u, v]) => P(u, v))
   const ribbed = top === "sweater" || top === "hoodie"
-  if (top === "hoodie") {
+  if (top === "hoodie" && !back) {
     // The hood lies on the shoulders behind the neck; the body hides its lower half.
     const hood = path([
       [-16, -154],
@@ -147,7 +150,26 @@ export function clothes(
   s.blank(p.shape(body))
   s.stroke(p.path(body))
   const neck = path(arc([0, -163], 8, 4, 0, 180, 8) as [number, number][])
-  if (top === "overshirt") {
+  if (back) {
+    // The collar's back, nearly straight; a shirt's yoke across the shoulders; a hood lying over the back.
+    s.stroke(
+      p.path(path(arc([0, -163], 8, 1.6, 0, 180, 6) as [number, number][])),
+    )
+    if (top === "overshirt") s.stroke(p.line(P(-18, -150), P(18, -150)))
+    if (ribbed) s.stroke(p.line(P(-18, -93), P(18, -93)))
+    if (top === "hoodie") {
+      const hood = path([
+        [-12, -163],
+        [-15, -152],
+        [-8.5, -143],
+        [8.5, -143],
+        [15, -152],
+        [12, -163],
+      ])
+      s.blank(p.shape(hood))
+      s.stroke(p.shape(hood))
+    }
+  } else if (top === "overshirt") {
     // An open shirt over a tee: the tee's neckline, two lapels and the shirt's fronts falling apart.
     s.stroke(p.path(neck))
     for (const side of [-1, 1]) {
@@ -185,7 +207,7 @@ export function clothes(
     // Bands sit a little inside the outline, so a run past their ends stays on the cloth.
     if (ribbed) s.stroke(p.line(P(-18, -93), P(18, -93)))
   }
-  if (top === "hoodie") {
+  if (top === "hoodie" && !back) {
     s.stroke(
       p.path(
         path([

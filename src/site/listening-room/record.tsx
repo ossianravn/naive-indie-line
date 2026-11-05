@@ -47,11 +47,7 @@ export function RecordPage({ record }: { record: Release }) {
 
   return (
     <ShellPage>
-      <PageHeader
-        kicker={`${record.id} · ${record.genre}`}
-        title={record.title}
-        lede={record.artist}
-      />
+      <PageHeader title={record.title} lede={record.artist} />
 
       <div className="mt-line grid max-w-[60rem] gap-x-section gap-y-line md:grid-cols-[14rem_minmax(0,1fr)]">
         <Drawing

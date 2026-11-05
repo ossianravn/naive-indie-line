@@ -117,7 +117,7 @@ export function Overview() {
   const genres = byGenre()
   return (
     <ShellPage>
-      <PageHeader kicker="The shop · first week of November" title="Overview" />
+      <PageHeader title="Overview" lede="The first week of November" />
 
       {/* Two columns that end together: the figures and the room on the left, the racks on the right. */}
       <div className="mt-line grid gap-x-section gap-y-section lg:grid-cols-2 lg:items-start">

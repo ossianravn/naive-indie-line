@@ -1,7 +1,7 @@
 ---
-// Lettering: the pen's three typefaces with room to show them. A tester first (your words in any face, style, size and
-// pen, the one island), then a section per face with its four styles, its takes, its letters and its files, Inline's
-// colours, and the set all three share. Face sections are laid out only near the viewport, so a phone fetches a
+// Lettering: the pen's three typefaces with room to show them. The title is set in the Sans, then a tester (your words
+// in any face, style, size and pen), then a section per face with its four styles, its takes, its letters and its
+// files, Inline's colours, and the characters all three share. Face sections are laid out only near the viewport, so a phone fetches a
 // face's fonts when it is about to be read rather than all sixteen files at once.
 import Base from "@/site/layouts/base.astro"
 import { Lettering } from "@/fineliner/drawing/lettering"
@@ -14,29 +14,29 @@ import { LetteringTester } from "@/site/lettering/tester"
 
 <Base
   title="Lettering"
-  description="Fineliner Naïve Sans, Inline and Tramline: three typefaces drawn from the pen's own alphabet, each in Regular, Bold, Italic and Bold Italic, with three takes of every letter. MIT."
+  description="Fineliner Naïve Sans, Inline and Tramline: three free hand-drawn typefaces, each in Regular, Bold, Italic and Bold Italic, with three versions of every letter so repeated letters never look identical."
 >
   <div class="mx-auto max-w-[76rem] px-snug pt-section sm:px-line">
-    <p class="label m-0 text-pen-quiet">Fineliner · Lettering</p>
-    <h1 class="m-0 mt-tight">
+    <h1 class="m-0">
       <Lettering
         text="Lettering"
-        face="inline"
+        face="line"
         className="block text-[clamp(3.5rem,11vw,7.5rem)] leading-none"
       />
     </h1>
     <p class="m-0 mt-snug max-w-measure text-lead leading-lead max-sm:text-body max-sm:leading-body">
-      Three typefaces drawn from the pen's own alphabet, each in Regular, Bold,
-      Italic and Bold Italic. Capitals for every Latin-script language in
-      Europe, three takes of every letter, MIT.
+      Three typefaces drawn with the same pen as the rest of Fineliner, each in
+      Regular, Bold, Italic and Bold Italic. Every letter is drawn three times,
+      so repeated letters never look identical. Free to use under the MIT
+      licence.
     </p>
     <div class="mt-section">
       <LetteringTester client:idle />
     </div>
   </div>
 
-  {FACES.map((face, i) => (
-    <FaceSection face={face} n={i + 1}>
+  {FACES.map((face) => (
+    <FaceSection face={face}>
       {face.face === "inline" && <Pairings />}
     </FaceSection>
   ))}
@@ -52,13 +52,13 @@ import { LetteringTester } from "@/site/lettering/tester"
     ></div>
     <div class="grid gap-x-line gap-y-line pt-section lg:grid-cols-12">
       <header class="grid content-start gap-tight lg:col-span-3">
-        <p class="label m-0 text-pen-quiet">Nº 04</p>
         <h2 id="shared" class="m-0 text-h2 leading-heading">
-          The set they share
+          Characters
         </h2>
         <p class="m-0 max-w-measure text-small leading-small text-pen-quiet">
-          All three draw the same 197 characters, for every Latin-script
-          language in Europe; lowercase types the capitals.
+          All three fonts have the same 197 characters, enough for every
+          European language written in the Latin alphabet. They are capitals
+          only: lowercase letters come out as capitals.
         </p>
       </header>
       <dl class="m-0 grid min-w-0 content-start gap-y-tight lg:col-span-9 lg:grid-cols-9 lg:gap-x-line">

@@ -54,14 +54,20 @@ export function hairBehind(
     )
 }
 
-/** A face centred at `c` with its hair in front: ears, features, glasses and a beard, all from the seed unless given. */
+/** A face centred at `c` with its hair in front: ears, features, glasses and a beard, all from the seed unless given;
+ * a mood opens the mouth and lifts the features, or closes the eyes. */
 export const head: Draw = (
   s,
   p,
   r,
   c,
   k = 1,
-  { hair = r.pick(HAIR), glasses = r.chance(0.3), beard = r.chance(0.15) } = {},
+  {
+    hair = r.pick(HAIR),
+    glasses = r.chance(0.3),
+    beard = r.chance(0.15),
+    mood,
+  } = {},
 ) => {
   const { P, A } = onHead(c, k)
   s.stroke(p.line(P(-4, 12), P(-4, 15.5)))
@@ -154,23 +160,28 @@ export const head: Draw = (
       ]),
     )
   }
+  const up = mood === "joy" ? -1.5 : 0
+  const F = (u: number, v: number) => P(u, v + up)
   if (glasses) {
     for (const side of [-1, 1])
       s.stroke(
         p.shape(
           roundRect(
             c[0] + (side * 5.2 - 4.4) * k,
-            c[1] - 2.6 * k,
+            c[1] + (up - 2.6) * k,
             8.8 * k,
             7.2 * k,
             2.6 * k,
           ),
         ),
       )
-    s.stroke(p.line(P(-0.9, 0.4), P(0.9, 0.4)))
+    s.stroke(p.line(F(-0.9, 0.4), F(0.9, 0.4)))
   }
-  for (const side of [-1, 1]) s.fill(p.disc(...dot(P(side * 5, 1), 1.15 * k)))
-  s.stroke(p.path([P(0.6, 2), P(-1.4, 7.2), P(1.4, 7.6)]))
+  for (const side of [-1, 1])
+    if (mood === "dreamy")
+      s.stroke(p.path(arc(F(side * 5, 1), 2.1 * k, 1.3 * k, 20, 160, 5)))
+    else s.fill(p.disc(...dot(F(side * 5, 1), 1.15 * k)))
+  s.stroke(p.path([F(0.6, 2), F(-1.4, 7.2), F(1.4, 7.6)]))
   if (beard && !["long", "bob", "fringe"].includes(hair))
     s.fill(
       p.shape([
@@ -181,6 +192,8 @@ export const head: Draw = (
         P(-5, 9),
       ]),
     )
+  else if (mood === "joy")
+    s.fill(p.shape(arc(F(0, 9.2), 3.8 * k, 3.2 * k, 0, 180, 8)))
   else s.stroke(p.path(A(3.4, 1.8, 20, 160, 6, 10.5)))
 }
 

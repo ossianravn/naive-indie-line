@@ -55,7 +55,6 @@ function RoomHeaderPreview() {
   return (
     <div className="grid w-full max-w-[17rem] grid-cols-[minmax(0,1fr)_6rem] items-end gap-x-snug">
       <div className="flex min-w-0 flex-col gap-hair">
-        <p className="label m-0 text-pen-quiet">The journal</p>
         <p className="m-0">
           <Lettering text="How we grade a record" className="text-[1.5rem]" />
         </p>

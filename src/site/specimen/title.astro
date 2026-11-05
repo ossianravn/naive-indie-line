@@ -1,15 +1,14 @@
 ---
-// The title block: what the sheet is, its contents set like a menu in the typewriter, and the listening room the rest
-// of the sheet takes apart. The room is drawn on as it comes into view, the one moment that hydrates here.
+// The title block: what the sheet is, its contents in the typewriter, and the listening room the rest of the sheet
+// takes apart. The room is drawn on as it comes into view, the one moment that hydrates here.
 import { Drawing } from "@/fineliner/drawing/drawing"
-import { SHEET, numberOf } from "./sheet"
+import { SHEET } from "./sheet"
 ---
 
 <div class="mx-auto max-w-[76rem] px-snug pt-section sm:px-line">
   <div class="grid items-start gap-x-line gap-y-section lg:grid-cols-12">
     <div class="lg:col-span-5">
-      <p class="label m-0 text-pen-quiet">Fineliner · Specimen Nº 1</p>
-      <h1 class="m-0 mt-tight max-w-[14ch] text-display leading-display text-balance">
+      <h1 class="m-0 max-w-[14ch] text-display leading-display text-balance">
         One pen, good paper and a quiet hand.
       </h1>
       <p class="m-0 mt-snug max-w-measure text-lead leading-lead max-sm:text-body max-sm:leading-body">
@@ -22,10 +21,8 @@ import { SHEET, numberOf } from "./sheet"
           {
             SHEET.map(({ id, title }) => (
               <li>
-                <a href={`#${id}-section`} class="flex items-baseline gap-tight no-underline hover:underline">
+                <a href={`#${id}-section`} class="no-underline hover:underline">
                   {title}
-                  <span class="contents-dots" aria-hidden="true" />
-                  <span class="tabular-nums">{numberOf(id)}</span>
                 </a>
               </li>
             ))
@@ -41,11 +38,3 @@ import { SHEET, numberOf } from "./sheet"
     </figure>
   </div>
 </div>
-
-<style>
-  .contents-dots {
-    flex: 1;
-    border-bottom: 1.5px dotted currentColor;
-    translate: 0 -0.3em;
-  }
-</style>

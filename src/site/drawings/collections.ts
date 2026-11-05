@@ -24,13 +24,13 @@ const ABOUT: Record<string, { lead: string; picks: string[] }> = {
     picks: ["laptop", "desk-lamp", "camera", "sketchbook", "headphones", "mug"],
   },
   people: {
-    lead: "People with a dot for each eye, visitors who are only their clothes, portraits for avatars, and a cat.",
+    lead: "People with a dot for each eye, looking out, turned aside or seen from behind; visitors who are only their clothes; portraits for avatars; and a cat.",
     picks: [
       "person-wave",
-      "visitor",
+      "person-side",
+      "person-back",
+      "person-listening",
       "portrait",
-      "visitor-seated",
-      "person-mug",
       "cat",
     ],
   },
