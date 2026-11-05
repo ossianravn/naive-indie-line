@@ -47,6 +47,7 @@ function ToggleGroup({
       data-size={size}
       data-spacing={spacing}
       data-orientation={orientation}
+      orientation={orientation}
       style={frameStyle(
         props["aria-label"],
         typeof style === "function"
