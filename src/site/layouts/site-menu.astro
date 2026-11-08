@@ -1,0 +1,106 @@
+---
+// The site's menu on a phone: a burger at the end of the header opens a sheet from the right with every section. It is
+// the browser's own popover, so it works from the server's HTML before any script: a tap outside or Escape closes it
+// and focus goes back to the burger. The sheet is the kit's (paper, drawn frame, pen-shadow, the page dimmed with
+// paper), and it fades in and grows a little from its edge, as the kit's sheets do. From md up the nav sits inline.
+import { MenuIcon, XIcon } from "lucide-react"
+import { cn } from "@/fineliner/lib/utils"
+import { buttonVariants } from "@/fineliner/ui/button"
+import { frameVars, seedOf } from "@/fineliner/pen"
+import { NAV, currentOf } from "./nav"
+
+interface Props {
+  path: string
+}
+const { path } = Astro.props
+---
+
+<button
+  type="button"
+  popovertarget="site-menu"
+  data-slot="button"
+  class={cn(
+    buttonVariants({ variant: "ghost", size: "icon" }),
+    "-me-3 md:hidden",
+  )}
+>
+  <MenuIcon aria-hidden="true" className="size-5" />
+  <span class="sr-only">Menu</span>
+</button>
+<nav
+  id="site-menu"
+  popover
+  aria-label="Site"
+  class="menu float-sheet frame fixed inset-y-tight right-tight left-auto m-0 h-auto w-[calc(75%-var(--space-tight))] max-w-sm overflow-visible border-0 p-0 text-pen md:hidden"
+  style={frameVars(seedOf("site-menu"))}
+>
+  <span aria-hidden="true" class="pen-shadow"></span>
+  <ul class="m-0 grid list-none p-tight ps-snug">
+    {NAV.map(({ href, label }) => (
+      <li>
+        <a
+          class="flex min-h-control items-center text-lead no-underline aria-[current=page]:underline"
+          href={href}
+          aria-current={currentOf(path, href)}
+        >
+          {label}
+        </a>
+      </li>
+    ))}
+  </ul>
+  <button
+    type="button"
+    popovertarget="site-menu"
+    popovertargetaction="hide"
+    data-slot="button"
+    class={cn(
+      buttonVariants({ variant: "ghost", size: "icon" }),
+      "absolute top-tight right-tight",
+    )}
+  >
+    <XIcon aria-hidden="true" className="size-5" />
+    <span class="sr-only">Close</span>
+  </button>
+</nav>
+
+<style>
+  .menu {
+    transform-origin: right;
+    transition:
+      opacity var(--overlay) var(--ease-out),
+      scale var(--overlay) var(--ease-out),
+      overlay var(--overlay) allow-discrete,
+      display var(--overlay) allow-discrete;
+  }
+  .menu:not(:popover-open) {
+    opacity: 0;
+    scale: 0.97;
+  }
+  @starting-style {
+    .menu:popover-open {
+      opacity: 0;
+      scale: 0.97;
+    }
+  }
+  .menu::backdrop {
+    background-color: color-mix(in oklab, var(--paper) 70%, transparent);
+    transition:
+      opacity var(--overlay) var(--ease-out),
+      overlay var(--overlay) allow-discrete,
+      display var(--overlay) allow-discrete;
+  }
+  .menu:not(:popover-open)::backdrop {
+    opacity: 0;
+  }
+  @starting-style {
+    .menu:popover-open::backdrop {
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .menu,
+    .menu:not(:popover-open) {
+      scale: none;
+    }
+  }
+</style>

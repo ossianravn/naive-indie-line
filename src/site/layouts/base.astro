@@ -12,6 +12,8 @@ import { siteAppearance } from "@/site/appearance"
 import { AppearancePanel } from "@/site/appearance-panel"
 import FontPreloads from "@/site/font-preloads.astro"
 import { shareFor } from "@/site/share/shares"
+import { NAV, currentOf } from "./nav"
+import SiteMenu from "./site-menu.astro"
 
 interface Props {
   title: string
@@ -25,14 +27,6 @@ const shareImage = new URL(
   Astro.site ?? Astro.url,
 ).href
 const path = Astro.url.pathname.replace(/\/$/, "") || "/"
-const NAV = [
-  { href: "/specimen", label: "Specimen" },
-  { href: "/drawings", label: "Drawings" },
-  { href: "/lettering", label: "Lettering" },
-  { href: "/desk", label: "Desk" },
-  { href: "/docs", label: "Components" },
-  { href: "/studio", label: "Studio" },
-]
 ---
 
 <!doctype html>
@@ -61,25 +55,20 @@ const NAV = [
     >
       Skip to content
     </a>
-    <!-- On a phone the wordmark and the appearance button share the top row and the nav wraps under them; wider, the
-         button follows the nav at the end of the row. -->
-    <header class="mx-auto flex max-w-[76rem] flex-wrap items-center gap-x-snug gap-y-tight px-snug pt-snug sm:px-line">
+    <!-- One row: the wordmark, then the nav and the appearance button at the end; on a phone the nav folds into the
+         menu behind a burger after the button. -->
+    <header class="mx-auto flex max-w-[76rem] items-center gap-x-snug px-snug pt-snug sm:px-line">
       <a class="block text-pen no-underline" href="/">
         <Lettering text="Fineliner" className="text-[1.75rem]" />
       </a>
-      <AppearancePanel className="ms-auto md:order-last md:ms-0" client:idle />
-      <nav aria-label="Site" class="max-md:order-last max-md:w-full md:ms-auto">
+      <nav aria-label="Site" class="ms-auto max-md:hidden">
         <ul class="m-0 flex list-none flex-wrap gap-x-snug gap-y-hair p-0">
           {NAV.map(({ href, label }) => (
             <li>
               <a
                 class="text-small no-underline aria-[current=page]:underline"
                 href={href}
-                aria-current={
-                  path === href || (href !== "/" && path.startsWith(`${href}/`))
-                    ? "page"
-                    : undefined
-                }
+                aria-current={currentOf(path, href)}
               >
                 {label}
               </a>
@@ -87,6 +76,8 @@ const NAV = [
           ))}
         </ul>
       </nav>
+      <AppearancePanel className="max-md:ms-auto" client:idle />
+      <SiteMenu path={path} />
     </header>
     <div class="mx-auto max-w-[76rem] px-snug sm:px-line">
       <div
