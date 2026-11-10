@@ -111,16 +111,17 @@
   }
 }
 /* The part under the pointer (or a tap): drawing-parts.ts names it in data-hot, copies its groups (g[data-k]) from each
-   take into an SVG of their own over the room (.fl-part, data-take) and hides them in the first take (fl-hot). The room
-   rests on its first take and only the copies cycle. They cycle as whole elements, as the takes do, which the
-   compositor can do without painting: an opacity change inside an SVG repaints all of it, masks and all, every frame. */
-.fl-takes[data-hot] > :not(.fl-part) {
-  animation: none;
-}
+   take into an SVG of their own the size of the part, over it (.fl-part, data-take), and hides them in the first take
+   (fl-hot). The room rests on its first take and only the copies cycle. They cycle as whole elements, as the takes do,
+   which the compositor can do without painting: an opacity change inside an SVG repaints all of it, masks and all,
+   every frame. The room's takes keep their (paused) animation: taking it away re-layers the room at every part. */
 .fl-takes[data-hot] > :first-child .fl-hot {
   visibility: hidden;
 }
 .fl-takes > .fl-part {
+  place-self: start;
+  max-width: none;
+  overflow: hidden;
   pointer-events: none;
   animation: fl-take calc(var(--take) * 3) steps(1, end) infinite;
   animation-play-state: var(--boil-hover, paused);

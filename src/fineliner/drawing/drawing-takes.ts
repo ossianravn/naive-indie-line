@@ -172,6 +172,10 @@ function start() {
     },
     { passive: true },
   )
+  // A hot part's copy is placed in pixels; a resize drops it and the next move places it again.
+  addEventListener("resize", () => over && setHot(over, undefined), {
+    passive: true,
+  })
   seen = new IntersectionObserver(
     (entries) => {
       for (const e of entries) {
