@@ -32,6 +32,12 @@
       "pen/objects/devices.ts",
       "pen/objects/gear.ts",
       "pen/objects/desk.ts",
+      "pen/objects/tools.ts",
+      "pen/objects/papers.ts",
+      "pen/objects/workshop.ts",
+      "pen/objects/equipment.ts",
+      "pen/objects/craft.ts",
+      "pen/objects/prints.ts",
       "pen/objects/studio.ts"
     ],
     "drawings-people": [
@@ -39,11 +45,14 @@
       "pen/objects/faces.ts",
       "pen/objects/visitors.ts",
       "pen/objects/seated.ts",
+      "pen/objects/sitting.ts",
+      "pen/objects/poses.ts",
       "pen/objects/people.ts"
     ],
     "drawings-everyday": [
       "pen/objects/household.ts",
       "pen/objects/post.ts",
+      "pen/objects/street.ts",
       "pen/objects/everyday.ts"
     ],
     "drawings-all": ["pen/objects/index.ts"],
@@ -87,6 +96,12 @@
     "record-sleeve": "A square record sleeve: a drawing on the front, the title lettered, the catalogue number on the spine and the record's edge peeking out.",
     "track-list": "Side A and side B: numbers and durations in the typewriter, titles in the reading face, dotted leaders, the playing track marked by the pen.",
     "tasting-note": "A wine on the list: name and producer, grape, region and year in the typewriter, the note in the hand voice, the price and a drawing.",
+    "pinned": "A sheet fixed to the wall by a pin, tape or a clip, holding any content; a few seeded degrees off true at the lively hand, the whole sheet one target as a link.",
+    "sticky-note": "A sticky note in the hand voice: a drawn square with a band of the wash along its glued edge and a curled corner.",
+    "receipt": "A till receipt for estimates, orders and invoices: ReceiptLine rows in the typewriter with dotted leaders, ReceiptTotal under a doubled rule, a torn lower edge.",
+    "stamp": "A rubber-stamp word in typewriter capitals inside a doubled drawn frame, put down a few degrees off true; the correction pen for destructive meanings.",
+    "scene-spots": "A scene with operable places: SceneSpot buttons or links over named objects, placed in percentages from sceneRegions(), labelled, ringed by the pen on hover and focus.",
+    "room-section": "A page section with a room in it: content on the wall, a scene strip along its floor cropped from the centre on narrow containers, optional scene spots and outer walls.",
     "price-tag": "A hanging price tag: a drawn tag with a punched hole and string, the price in the typewriter, an old price struck through by the pen.",
     "hand-note": "An aside in the hand voice with a drawn arrow toward what it is about, in the margin on wide screens and under its line on phones.",
     "edition-number": "An edition number, Nº 0412, in the typewriter, optionally of a total, or set on the spine.",

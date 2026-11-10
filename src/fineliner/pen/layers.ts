@@ -4,6 +4,15 @@
 // room leaves a layer alone, so masks stay small and paint stays cheap.
 import { pathBox, type Bounds } from "./path"
 
+/** Where something landed on a sheet: a placed object under the key a scene gave it, or a part a scene marked. */
+export interface Region {
+  key: string
+  /** The object's id, or what the part is ("face", "board"). */
+  id: string
+  /** Its box in the drawing's own units: x0, y0, x1, y1. */
+  box: Bounds
+}
+
 export interface Sheet {
   /** A pen line. */
   stroke(d: string): void
@@ -19,6 +28,10 @@ export interface Sheet {
   blank(d: string): void
   /** The SVG: named by `label` (role="img"), or decorative without one. */
   svg(width: number, height: number, label?: string): string
+  /** The box of everything put on the sheet (strokes, fills, washes, blanks) while `draw` runs; nothing drawn, none. */
+  measure(draw: () => void): Bounds | undefined
+  /** Where placed objects and marked parts landed; scenes record them, and nothing here reaches the SVG. */
+  regions: Region[]
 }
 
 // Room around a layer for its pen line: a non-scaling stroke is wider, in the drawing's units, the smaller it is shown.
@@ -61,7 +74,13 @@ const escape = (text: string) =>
 export function sheet(id: string): Sheet {
   const layers: { paths: string[]; box?: Bounds }[] = [{ paths: [] }]
   const blanks: { d: string; box: Bounds }[] = []
+  // The boxes being measured, innermost last: every mark grows all of them, so measures can nest.
+  const watching: { box?: Bounds }[] = []
+  const seen = (box: Bounds) => {
+    for (const w of watching) w.box = grow(w.box, box)
+  }
   const put = (markup: string, box: Bounds) => {
+    seen(box)
     const layer = layers[layers.length - 1] as (typeof layers)[number]
     layer.paths.push(markup)
     layer.box = grow(layer.box, box)
@@ -75,9 +94,22 @@ export function sheet(id: string): Sheet {
     wash: add("wash"),
     paper: add("sheet-fill"),
     raw: (markup) => put(markup, boxOf(markup)),
+    regions: [],
+    measure(draw) {
+      const w: { box?: Bounds } = {}
+      watching.push(w)
+      try {
+        draw()
+      } finally {
+        watching.splice(watching.indexOf(w), 1)
+      }
+      return w.box && w.box.every(Number.isFinite) ? w.box : undefined
+    },
     blank(d) {
+      const box = pathBox(d) ?? EVERYWHERE
+      seen(box)
       if (layers.every((l) => !l.paths.length)) return
-      blanks.push({ d, box: pathBox(d) ?? EVERYWHERE })
+      blanks.push({ d, box })
       layers.push({ paths: [] })
     },
     svg(width, height, label) {

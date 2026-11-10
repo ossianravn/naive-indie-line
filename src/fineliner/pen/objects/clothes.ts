@@ -49,6 +49,42 @@ function limb(S: Point, side: number, k: number, a: number, cut: Point[]) {
   }
 }
 
+// A bent arm in two sleeves: the upper arm from the shoulder, the forearm from the elbow, its cuff and hand at the end.
+const UPPER: Point[] = [
+  [8.5, 6],
+  [8.5, 27],
+  [-4.5, 27],
+  [-5.5, 8],
+]
+const FORE: Point[] = [
+  [6.5, 2],
+  [7, 25],
+  [-4, 26],
+  [-6, 2],
+]
+
+/** An arm bent at the elbow: swung `a` from hanging at the shoulder, then `b` further at the elbow. Returns the hand. */
+function bent(
+  s: Sheet,
+  p: Pen,
+  S: Point,
+  side: number,
+  k: number,
+  a: number,
+  b: number,
+  ribbed: boolean,
+) {
+  const up = limb(S, side, k, a, UPPER)
+  s.blank(p.shape(up.outline))
+  s.stroke(p.path([...up.outline, up.outline[0] as Point]))
+  const E = turn([S[0] + side * 2 * k, S[1] + 25 * k], S, a)
+  const fore = limb(E, side, k, a + b, FORE)
+  s.blank(p.shape(fore.outline.slice(1)))
+  s.stroke(p.shape(fore.outline.slice(1)))
+  if (ribbed) s.stroke(p.line(...fore.band))
+  return fore.hand
+}
+
 /** What someone wears: a pose, a top, a bottom, how far apart the feet are, and whether anybody is inside. */
 export interface Outfit {
   pose?: string
@@ -60,6 +96,8 @@ export interface Outfit {
   swing?: Point
   /** Seen from behind: no neckline, fronts or pocket, a plain collar, and a hood lying on the back. */
   back?: boolean
+  /** Each arm's bend at the elbow, in degrees (left, right); an arm without one hangs straight from its swing. */
+  bend?: [number | undefined, number | undefined]
 }
 
 /** The whole outfit, back to front: hood, trainers, trousers or skirt, the top and its sleeves. Returns the hands. */
@@ -77,6 +115,7 @@ export function clothes(
     nobody = false,
     swing: arms,
     back = false,
+    bend,
   }: Outfit = {},
 ) {
   const [x, y] = at
@@ -236,6 +275,8 @@ export function clothes(
   const hands = [-1, 1].map((side, i) => {
     const S = P(side * 22, -155)
     const a = swing[i] as number
+    const elbow = bend?.[i]
+    if (elbow !== undefined) return bent(s, p, S, side, k, a, elbow, ribbed)
     const short = top === "tee" && !nobody
     const sl = limb(S, side, k, a, short ? SHORT : LONG)
     const arm = limb(S, side, k, a, ARM)

@@ -1,0 +1,251 @@
+---
+// BAGHUSET: a made-up drawing office in Aarhus as a one-page site whose page is the building it works in, in
+// section from the roof to the street. Each storey is a wall of HTML above a drawn strip of floor where something is
+// happening; slabs and the outer walls are CSS. Everything is in the server's HTML; the work wall, the estimate, the
+// strips' spots and the brief form hydrate when they come into view.
+import "@/site/baghuset/drawings"
+import Layout from "@/site/baghuset/layout.astro"
+import StoreyHead from "@/site/baghuset/storey-head.astro"
+import { Drawing } from "@/fineliner/drawing/drawing"
+import { RoomSection } from "@/fineliner/extras/room-section"
+import { StickyNote } from "@/fineliner/extras/sticky-note"
+import { frameStyle } from "@/fineliner/lib/frame-style"
+import { frameVars, penMark, seedOf, sceneRegions } from "@/fineliner/pen"
+import { buttonVariants } from "@/fineliner/ui/button"
+import { ArchiveRoom } from "@/site/baghuset/archive-room"
+import { RoofRoom } from "@/site/baghuset/roof-room"
+import { BriefForm } from "@/site/baghuset/brief-form"
+import { Estimate } from "@/site/baghuset/estimate"
+import { PeopleList } from "@/site/baghuset/people-list"
+import { PeopleRoom } from "@/site/baghuset/people-room"
+import { StudioRoom } from "@/site/baghuset/studio-room"
+import { WorkWall } from "@/site/baghuset/work-wall"
+import { CLIENTS, PLACE, PROCESS, SERVICES } from "@/site/baghuset/data"
+
+const regions = (scene: string) =>
+  sceneRegions({ scene, format: "strip", seed: "baghuset" })
+const slab = (name: string) => frameVars(seedOf(`baghuset-slab-${name}`))
+const wall = "px-snug pt-section pb-line sm:px-line"
+const indent = "sm:ps-[calc(3rem+var(--space-line))]"
+---
+
+<Layout description="A small drawing office in a back building in Aarhus. Identities, websites and printed things.">
+  <section
+    id="top"
+    aria-labelledby="top-title"
+    class="mx-auto max-w-[76rem] sm:px-line"
+  >
+    <div class="grid justify-items-start gap-y-snug px-snug pt-page pb-line sm:px-0">
+      <h1
+        id="top-title"
+        class="m-0 font-line text-[clamp(3rem,11vw,7.5rem)] leading-[0.95] tracking-[0.02em]"
+      >
+        BAGHUSET
+      </h1>
+      <p class="m-0 max-w-measure font-read text-lead leading-lead">
+        A small drawing office in a back building in Aarhus. We make identities,
+        websites and printed things for people who make something themselves.
+      </p>
+      <div class="flex flex-wrap items-center gap-x-line gap-y-tight">
+        <a
+          href="#work"
+          data-slot="button"
+          class={buttonVariants({ className: "no-underline" })}
+          style={frameStyle(["See the work"])}
+        >
+          See the work
+        </a>
+        <a href="#write">Write to us</a>
+      </div>
+    </div>
+    <RoofRoom regions={regions("baghuset-roof")} />
+  </section>
+
+  <div class="mx-auto max-w-[76rem] sm:px-line">
+    <div class="rule" style={slab("eaves")} aria-hidden="true"></div>
+
+    <ArchiveRoom client:visible regions={regions("baghuset-top")}>
+      <div class={wall}>
+        <StoreyHead
+          number="2"
+          floor="Second floor"
+          title="Work"
+          id="work-title"
+        >
+          <p class="m-0 max-w-measure text-pen-quiet">
+            What is on the wall this month. Open a sheet for the story behind
+            it.
+          </p>
+        </StoreyHead>
+        <div class:list={["pt-section", indent]}>
+          <WorkWall client:visible />
+        </div>
+      </div>
+    </ArchiveRoom>
+    <div class="rule" style={slab("2")} aria-hidden="true"></div>
+
+    <StudioRoom client:visible regions={regions("baghuset-studio")}>
+      <div class={wall}>
+        <StoreyHead
+          number="1"
+          floor="First floor"
+          title="Studio"
+          id="studio-title"
+        >
+          <p class="m-0 max-w-measure text-pen-quiet">
+            What we make, how we work, and what it costs. The pens, the paper
+            and the lamp on the table change how this page looks.
+          </p>
+        </StoreyHead>
+        <div class:list={["grid gap-y-page pt-section", indent]}>
+          <ul class="m-0 grid list-none grid-cols-2 gap-x-snug gap-y-section p-0 sm:gap-x-line lg:grid-cols-4">
+            {SERVICES.map((s) => (
+              <li class="grid content-start gap-y-tight">
+                <Drawing
+                  object={s.object}
+                  seed={`baghuset-service-${s.object}`}
+                  title=""
+                  className="[&>svg]:h-16 [&>svg]:w-auto"
+                />
+                <h3 class="m-0 font-read text-lead leading-subhead">
+                  {s.name}
+                </h3>
+                <p class="m-0 max-w-[24rem] text-small leading-small">
+                  {s.lines}
+                </p>
+                <p class="m-0 font-type text-small text-pen-quiet">
+                  From {s.from}
+                </p>
+              </li>
+            ))}
+          </ul>
+          <div class="grid gap-y-snug">
+            <h3 class="label m-0 text-pen-quiet">How we work</h3>
+            <ol class="m-0 flex list-none flex-wrap items-center gap-x-tight gap-y-line p-0">
+              {PROCESS.map((step, i) => (
+                <li class="flex items-center gap-x-tight">
+                  <StickyNote seed={`baghuset-${step}`}>{step}</StickyNote>
+                  {i < PROCESS.length - 1 && (
+                    <span
+                      aria-hidden="true"
+                      class="block h-4 w-10 text-pen max-sm:hidden [&>svg]:size-full"
+                      set:html={penMark("arrow", `baghuset-arrow-${i}`)}
+                    />
+                  )}
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div class="grid gap-y-snug">
+            <h3 class="m-0 text-h2 leading-heading">What it costs</h3>
+            <Estimate client:visible />
+          </div>
+        </div>
+      </div>
+    </StudioRoom>
+    <div class="rule" style={slab("1")} aria-hidden="true"></div>
+
+    <PeopleRoom client:visible regions={regions("baghuset-ground")}>
+      <div class={wall}>
+        <StoreyHead
+          number="St."
+          floor="Ground floor"
+          title="People"
+          id="people-title"
+        >
+          <p class="m-0 max-w-measure text-pen-quiet">
+            Five of us and a cat, in the back building since 2019.
+          </p>
+        </StoreyHead>
+        <div
+          class:list={[
+            "grid gap-x-section gap-y-section pt-section lg:grid-cols-[minmax(0,34rem)_minmax(0,1fr)]",
+            indent,
+          ]}
+        >
+          <div class="grid content-start gap-y-snug">
+            <p class="m-0 max-w-measure">
+              We started in the back building of a print shop that has since
+              moved out, and kept the plan chest it left behind. We draw first
+              and build second, and most of what we make is for people who make
+              something themselves: a restaurant, a roastery, a potter.
+            </p>
+            <p class="m-0 max-w-measure">
+              We eat lunch together at the long table every day at twelve. Come
+              by if you are in Mejlgade; ring the bell in the gate.
+            </p>
+          </div>
+          <div class="grid content-start gap-y-section">
+            <PeopleList />
+            <div class="grid gap-y-tight">
+              <h3 class="label m-0 text-pen-quiet">Clients</h3>
+              <ul class="m-0 grid list-none gap-x-line gap-y-hair p-0 font-type text-small leading-small sm:grid-cols-2">
+                {CLIENTS.map((client) => (
+                  <li>{client}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </PeopleRoom>
+    <div class="rule" style={slab("ground")} aria-hidden="true"></div>
+
+    <RoomSection
+      id="write"
+      aria-labelledby="write-title"
+      scene="baghuset-street"
+      seed="baghuset"
+      side="both"
+      title="The street: the front door, a bicycle, and a courier arriving with a parcel"
+    >
+      <div class={wall}>
+        <StoreyHead
+          number=""
+          floor="The street"
+          title="Write to us"
+          id="write-title"
+        >
+          <p class="m-0 max-w-measure text-pen-quiet">
+            Tell us what you are making. We answer within two working days.
+          </p>
+        </StoreyHead>
+        <div
+          class:list={[
+            "grid items-start gap-x-section gap-y-section pt-section md:grid-cols-[minmax(0,30rem)_minmax(0,1fr)]",
+            indent,
+          ]}
+        >
+          <BriefForm client:visible />
+          <dl class="m-0 grid content-start gap-y-snug font-type text-small leading-small">
+            <div>
+              <dt class="label text-pen-quiet">Address</dt>
+              <dd class="m-0">
+                {PLACE.street}
+                <br />
+                {PLACE.city}
+              </dd>
+            </div>
+            <div>
+              <dt class="label text-pen-quiet">Hours</dt>
+              <dd class="m-0">{PLACE.hours}</dd>
+            </div>
+            <div>
+              <dt class="label text-pen-quiet">Email</dt>
+              <dd class="m-0">
+                <a href={`mailto:${PLACE.email}`}>{PLACE.email}</a>
+              </dd>
+            </div>
+            <div>
+              <dt class="label text-pen-quiet">Phone</dt>
+              <dd class="m-0">{PLACE.phone}</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </RoomSection>
+    <footer class="px-snug pt-line pb-page text-small leading-small text-pen-quiet sm:px-0">
+      A drawing office that doesn't exist, <a href="/">drawn with Fineliner</a>.
+    </footer>
+  </div>
+</Layout>

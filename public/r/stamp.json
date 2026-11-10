@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "stamp",
+  "title": "Stamp",
+  "description": "A rubber-stamp word in typewriter capitals inside a doubled drawn frame, put down a few degrees off true; the correction pen for destructive meanings.",
+  "registryDependencies": [
+    "@fineliner/base"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/extras/stamp.tsx",
+      "content": "import type { ComponentProps, CSSProperties } from \"react\"\nimport { cn } from \"@/fineliner/lib/utils\"\nimport { frameVars } from \"@/fineliner/pen/filters\"\nimport { seedOf, stream } from \"@/fineliner/pen/seed\"\n\n// A rubber-stamp mark: a word in typewriter capitals inside a doubled drawn frame, a few seeded degrees off true, as\n// a stamp is never put down straight. It is put down as the kit's other marks are (the pen's 140 ms wipe), and fades\n// in under reduced motion. In the pen; `tone=\"correction\"` only for a destructive meaning (VOID, REJECTED).\n\nexport interface StampProps extends ComponentProps<\"span\"> {\n  /** \"correction\" for a destructive meaning only. */\n  tone?: \"pen\" | \"correction\"\n  /** Same seed, same frame and angle. Defaults to the stamp's word. */\n  seed?: string | number\n}\n\n/** A word stamped on the page: ESTIMATE, RECEIVED, PAID. */\nexport function Stamp({\n  tone = \"pen\",\n  seed,\n  children,\n  className,\n  style,\n  ...props\n}: StampProps) {\n  const key = String(\n    seed ?? (typeof children === \"string\" ? children : \"stamp\"),\n  )\n  const r = stream(seedOf(key), \"stamp\")\n  const turn = (r.chance(0.5) ? 1 : -1) * r.between(3, 7)\n  return (\n    <span\n      data-slot=\"stamp\"\n      data-tone={tone}\n      className={cn(\n        \"put-down frame inline-block rotate-(--stamp-turn) p-[0.22em] align-middle font-type text-small leading-none tracking-[0.18em] uppercase\",\n        tone === \"correction\" ? \"text-correction\" : \"text-pen\",\n        className,\n      )}\n      style={\n        {\n          ...frameVars(seedOf(`${key}:outer`)),\n          \"--stamp-turn\": `${turn.toFixed(2)}deg`,\n          ...style,\n        } as CSSProperties\n      }\n      {...props}\n    >\n      <span\n        className=\"frame block px-[0.7em] py-[0.5em] ps-[0.88em]\"\n        style={frameVars(seedOf(`${key}:inner`))}\n      >\n        {children}\n      </span>\n    </span>\n  )\n}\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/extras/stamp.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

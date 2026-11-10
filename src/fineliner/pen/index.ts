@@ -11,8 +11,8 @@ export {
 export * from "./geometry"
 export { pen, HANDS, type Pen, type HandName } from "./stroke"
 export { plot, type Plot } from "./plot"
-export { sheet, type Sheet } from "./layers"
-export { pathOf, pathPoints, pathBox } from "./path"
+export { sheet, type Region, type Sheet } from "./layers"
+export { pathOf, pathPoints, pathBox, type Bounds } from "./path"
 export {
   banded,
   box,
@@ -42,6 +42,7 @@ export {
   SCENES,
   defineScene,
   sceneIn,
+  sceneRegions,
   stage,
   type Scene,
   type SceneFormat,

@@ -6,6 +6,9 @@ import { cn } from "@/fineliner/lib/utils"
 // input, so the page's dashed ring is drawn with has-focus-visible, on the thumb itself, which is never filtered.
 // Orientation is matched on data-orientation; the root's width stays a plain class so a call-site width replaces it,
 // and a vertical slider takes its height from the call site (at least 10rem).
+// Thumbs are centred on their value by CSS alone ("center"), so the server's HTML carries no script that measures the
+// slider while the page is parsing (which forced a layout of everything above it). The control is inset by half a
+// thumb and the track runs out under the thumbs, so a thumb at either end still meets the track's end edge to edge.
 const line =
   "bg-[linear-gradient(currentColor,currentColor)] bg-center bg-no-repeat"
 
@@ -31,15 +34,15 @@ function Slider({
       value={value}
       min={min}
       max={max}
-      thumbAlignment="edge"
+      thumbAlignment="center"
       {...props}
     >
-      <SliderPrimitive.Control className="relative flex w-full touch-none items-center py-hair text-pen select-none data-disabled:cursor-not-allowed data-disabled:text-pen-faint data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-40 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col data-[orientation=vertical]:px-hair data-[orientation=vertical]:py-0">
+      <SliderPrimitive.Control className="relative flex touch-none items-center py-hair data-[orientation=horizontal]:mx-2.5 text-pen select-none data-disabled:cursor-not-allowed data-disabled:text-pen-faint data-[orientation=vertical]:my-2.5 data-[orientation=vertical]:h-[calc(100%-1.25rem)] data-[orientation=vertical]:min-h-[8.75rem] data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col data-[orientation=vertical]:px-hair data-[orientation=vertical]:py-0">
         <SliderPrimitive.Track
           data-slot="slider-track"
           className={cn(
             line,
-            "relative grow [filter:var(--wob-3)] select-none data-[orientation=horizontal]:h-3 data-[orientation=horizontal]:w-full data-[orientation=horizontal]:bg-size-[100%_var(--pen-weight)] data-[orientation=vertical]:h-full data-[orientation=vertical]:w-3 data-[orientation=vertical]:bg-size-[var(--pen-weight)_100%]",
+            "relative shrink-0 [filter:var(--wob-3)] select-none data-[orientation=horizontal]:-mx-2.5 data-[orientation=horizontal]:h-3 data-[orientation=horizontal]:w-[calc(100%+1.25rem)] data-[orientation=horizontal]:bg-size-[100%_var(--pen-weight)] data-[orientation=vertical]:-my-2.5 data-[orientation=vertical]:h-[calc(100%+1.25rem)] data-[orientation=vertical]:w-3 data-[orientation=vertical]:bg-size-[var(--pen-weight)_100%]",
           )}
         >
           <SliderPrimitive.Indicator

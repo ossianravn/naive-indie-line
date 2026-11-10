@@ -4,7 +4,7 @@ A shadcn/ui component library drawn with one fine-liner on unbleached paper: a s
 
 <img alt="The kit's four scenes, drawn by its pen: a record shop floor with browser bins and a counter, a freelancer's studio, a bistro table for two and someone at work at a desk under a window." src="docs/style/scenes.webp">
 
-**Status:** v0.1, live at [naiveindieline.com](https://naiveindieline.com). All of shadcn/ui's parts (64, keeping shadcn's names, props and `data-slot`s; `form` and `toast` are served by `field` and `sonner`), twelve parts of Fineliner's own (label cards, record sleeves, track lists, price tags, hand notes and more), seven blocks, a chart drawn by the pen through the exact data, the pen engine with 85 drawings and four scenes, Fineliner Naïve Sans, Inline and Tramline (our own fonts), a theme studio, Listening Room, a record shop built only from the kit, and [MÅLTID](https://naiveindieline.com/maaltid), a made-up restaurant's website with drawings of its own made with the drawing skill.
+**Status:** v0.1, live at [naiveindieline.com](https://naiveindieline.com). All of shadcn/ui's parts (64, keeping shadcn's names, props and `data-slot`s; `form` and `toast` are served by `field` and `sonner`), twelve parts of Fineliner's own (label cards, record sleeves, track lists, price tags, hand notes and more), seven blocks, a chart drawn by the pen through the exact data, the pen engine with 122 drawings and four scenes, Fineliner Naïve Sans, Inline and Tramline (our own fonts), a theme studio, Listening Room, a record shop built only from the kit, and [MÅLTID](https://naiveindieline.com/maaltid), a made-up restaurant's website with drawings of its own made with the drawing skill.
 
 ## What is in it
 
@@ -47,7 +47,7 @@ Drawings come in collections, each its own item, so a project carries only the o
 
 ## More drawings: the drawing skill
 
-The kit draws 85 objects and four scenes; your project will want its own: a bicycle for a repair shop's empty state, your bakery's counter, someone walking a dog on the sign-up page. The drawing skill teaches your coding agent (Claude Code, Codex, or any agent that reads skills) to draw them in the kit's style, from a seed, in your own code.
+The kit draws 122 objects and four scenes; your project will want its own: a bicycle for a repair shop's empty state, your bakery's counter, someone walking a dog on the sign-up page. The drawing skill teaches your coding agent (Claude Code, Codex, or any agent that reads skills) to draw them in the kit's style, from a seed, in your own code.
 
 Install it from the registry, next to the kit:
 

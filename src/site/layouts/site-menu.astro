@@ -11,13 +11,18 @@ import { NAV, currentOf } from "./nav"
 
 interface Props {
   path: string
+  /** Another site's sections (BAGHUSET's anchors); the site's own by default. */
+  items?: { href: string; label: string }[]
+  /** The popover's id and name, when a page has a menu of its own. */
+  id?: string
+  label?: string
 }
-const { path } = Astro.props
+const { path, items = NAV, id = "site-menu", label = "Site" } = Astro.props
 ---
 
 <button
   type="button"
-  popovertarget="site-menu"
+  popovertarget={id}
   data-slot="button"
   class={cn(
     buttonVariants({ variant: "ghost", size: "icon" }),
@@ -28,15 +33,15 @@ const { path } = Astro.props
   <span class="sr-only">Menu</span>
 </button>
 <nav
-  id="site-menu"
+  id={id}
   popover
-  aria-label="Site"
+  aria-label={label}
   class="menu float-sheet frame fixed inset-y-tight right-tight left-auto m-0 h-auto w-[calc(75%-var(--space-tight))] max-w-sm overflow-visible border-0 p-0 text-pen md:hidden"
-  style={frameVars(seedOf("site-menu"))}
+  style={frameVars(seedOf(id))}
 >
   <span aria-hidden="true" class="pen-shadow"></span>
   <ul class="m-0 grid list-none p-tight ps-snug">
-    {NAV.map(({ href, label }) => (
+    {items.map(({ href, label }) => (
       <li>
         <a
           class="flex min-h-control items-center text-lead no-underline aria-[current=page]:underline"
@@ -50,7 +55,7 @@ const { path } = Astro.props
   </ul>
   <button
     type="button"
-    popovertarget="site-menu"
+    popovertarget={id}
     popovertargetaction="hide"
     data-slot="button"
     class={cn(

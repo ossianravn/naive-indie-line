@@ -74,11 +74,10 @@ Drawn when a page needs them. Names are the generic thing.
 - **Food & drink.** Espresso machine, grinder, pour-over, French press, gooseneck kettle, milk jug, bag of beans,
   croissant, cinnamon bun, cake slice, egg cup, sandwich, pizza peel, bar stool, ice bucket with a bottle, salt and
   pepper mills, linen napkin, coupe glass, counter bell, tip jar, receipt spike, apron on a hook, pastry dome.
-- **Studio.** Pencil cup, uncapped fineliner and a test line, scissors, masking tape, swatch fan, paint tubes, palette,
-  ink bottle, eraser, cutting mat with a ruler, easel, mood board, crumpled draft, bulldog clip, string-tied folder,
-  rubber stamp, compass, typewriter, tripod, film canister, instant photo, contact sheet, print-drying rack.
+- **Studio.** Paint tubes, palette, ink bottle, eraser, easel, bulldog clip, compass, typewriter, tripod, film canister,
+  contact sheet, print-drying rack.
 - **People** (one figure, a pose in `clothes()`; see `skills/fineliner-drawings/references/people.md`). Reading,
-  listening with eyes shut, carrying a crate or a box, carrying groceries, walking with headphones, with a dog on a
+  listening with eyes shut, carrying groceries, walking with headphones, with a dog on a
   lead, in a wheelchair at a shelf, with a cane, a barista pouring, a cook tasting, a server with a tray, a baker at
   the dough, a florist behind a bouquet, a potter at the wheel. Animals: a sleeping dog, a bird on a branch.
 
@@ -86,14 +85,14 @@ Drawn when a page needs them. Names are the generic thing.
 
 In the order they would serve the most sites:
 
-1. **Home.** Bed with the duvet turned back, sofa, sideboard, leaning mirror, coat rack with a scarf, rug.
+1. **Home.** Bed with the duvet turned back, sofa, sideboard, leaning mirror, rug.
 2. **Shop & post** (grows out of Everyday). Paper shopping bag, price tag on a string, card terminal, open box with
    tissue, receipt, awning, cargo bike.
 3. **Garden.** Watering can, wrapped bouquet, secateurs, seed packets, seedling tray, vase with dried stems.
 4. **Making.** Embroidery hoop, yarn and needles, thread spool, pinch pot, clay tools in a jar, toolbox, work gloves,
-   paint roller and tray, stepladder.
+   paint roller and tray.
 5. **Travel & stays.** Hotel key fob, reception bell, suitcase, folded map, passport with a boarding pass, binoculars,
-   tent, lantern, city bicycle, lighthouse.
+   tent, lantern, lighthouse.
 6. **Care.** Rolled yoga mat, soap on a dish, rolled towels, dropper bottle, mortar and pestle, folded linen stack.
 
 ## Before the library triples

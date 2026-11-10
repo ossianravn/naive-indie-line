@@ -70,6 +70,14 @@ const PAGES: Share[] = [
     ink: { pen: "#5c2430", wash: "#a9636e" },
   },
   {
+    slug: "baghuset",
+    title: "BAGHUSET",
+    kicker: "A drawing office in Aarhus",
+    object: "pen-pot",
+    // Recycled's forest pen and wash (src/fineliner/styles/stocks.css).
+    ink: { pen: "#23412f", wash: "#6f9279" },
+  },
+  {
     slug: "listening-room",
     title: "Listening Room",
     kicker: "Records · Room · Wine",

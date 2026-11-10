@@ -4,21 +4,24 @@
 // profile over a body that stays square, as a naive hand draws someone looking across. From behind, the back of the
 // clothes and of the head. `at` is where they stand (bottom-centre) and `k` their scale; composition comes from `r`
 // (the shape stream), never from the pen, so takes agree.
-import { arc, type Point } from "../geometry"
+import { add, arc, lerp, type Point } from "../geometry"
 import type { Sheet } from "../layers"
 import { define, type Draw, type DrawOptions, objectsIn } from "../library"
+import { box, depth } from "../shapes"
 import type { Pen } from "../stroke"
 import { clothes, TOPS } from "./clothes"
 import { HAIR, hairBehind, head } from "./faces"
 import { backOfHead, profile, profileBehind } from "./heads"
 import { fan } from "./parts"
+import { arms, handset } from "./poses"
 import { cheer, swaying } from "./visitors"
 
 /** Which way someone faces: towards you, to the left or right of the sheet, or away. */
 export const VIEWS = ["front", "left", "right", "back"]
 
 /**
- * A person in a pose ("stand", "walk", "browse", "mug", "record", "cheer", "listen", "hail") and a view (see VIEWS).
+ * A person in a pose ("stand", "walk", "browse", "mug", "record", "cheer", "listen", "hail", "point",
+ * "reach", "carry", "call") and a view (see VIEWS).
  * Their hair, glasses, beard, top and bottom come from the seed unless given.
  */
 export const figure: Draw = (
@@ -40,15 +43,15 @@ export const figure: Draw = (
   const top = picked === "hoodie" && hair === "long" ? "sweater" : picked
   const bottom = r.chance(0.3) ? "skirt" : "trousers"
   const stride = pose === "walk" ? 9 : r.signed() * 2
-  const swing: Point | undefined =
-    pose === "cheer"
-      ? [164 + r.signed() * 3, -166 + r.signed() * 3]
-      : pose === "hail"
-        ? [138 + r.signed() * 4, r.signed() * 5]
-        : undefined
-  const c: Point = [at[0], at[1] - 178 * k]
   const side = view === "left" ? -1 : view === "right" ? 1 : 0
   const back = view === "back"
+  const { swing, bend } =
+    pose === "cheer"
+      ? { swing: [164 + r.signed() * 3, -166 + r.signed() * 3] as Point }
+      : pose === "hail"
+        ? { swing: [138 + r.signed() * 4, r.signed() * 5] as Point }
+        : arms(r, pose, side)
+  const c: Point = [at[0], at[1] - 178 * k]
   const mood = pose === "cheer" ? "joy" : pose === "listen" ? "dreamy" : ""
   if (side) profileBehind(s, p, c, k, side, hair)
   else if (!back) hairBehind(s, p, c, k, hair)
@@ -59,6 +62,7 @@ export const figure: Draw = (
     stride,
     swing,
     back,
+    bend,
   })
   if (back) backOfHead(s, p, c, k, hair, [12, 15.5])
   else if (side) profile(s, p, c, k, side, { hair, glasses, beard, mood })
@@ -69,6 +73,9 @@ export const figure: Draw = (
     swaying(s, p, at, k)
   }
   if (pose === "hail") fan(s, p, hands[0] as Point, 9 * k, [-150, -120, -90])
+  if (pose === "call")
+    handset(s, p, hands[side > 0 ? 0 : 1] as Point, c, k, side ? 6 : 13)
+  return hands
 }
 
 /** Headphones worn on a head centred at `c`: the band over the crown and a cup over each ear, or the near one in
@@ -99,6 +106,19 @@ function headphonesOn(s: Sheet, p: Pen, c: Point, k: number, side: number) {
   s.blank(p.shape(band))
   s.stroke(p.shape(band))
   for (const u of [-1, 1]) cup(P(u * 14.5, 2.5), 3.6)
+}
+
+/** Someone carrying a parcel in both forearms; the parcel sits on their hands, or behind them seen from the back. */
+const carrying: Draw = (s, p, r, at, k, options: DrawOptions) => {
+  const o = depth(r)
+  const parcel = (m: Point) =>
+    box(s, p, o, add(m, [-26 * k, 6 * k]), 52 * k, 32 * k, 24 * k)
+  if (options.view === "back") parcel([at[0], at[1] - 112 * k])
+  const hands = figure(s, p, r, at, k, { pose: "carry", ...options })
+  if (options.view !== "back") {
+    const [a, b] = hands as [Point, Point]
+    parcel(lerp(a, b, 0.5))
+  }
 }
 
 const T = objectsIn("people")
@@ -143,5 +163,23 @@ define(
     1,
     as("listen", "front"),
     ["person", "music", "listening"],
+  ),
+  T(
+    "person-pointing",
+    "Pointing",
+    [190, 262],
+    [64, 252],
+    1.15,
+    as("point", "right"),
+    ["person", "showing", "work"],
+  ),
+  T(
+    "person-carrying",
+    "Carrying a parcel",
+    [130, 262],
+    [65, 252],
+    1.15,
+    carrying,
+    ["person", "delivery", "work"],
   ),
 )

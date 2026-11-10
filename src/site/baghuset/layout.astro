@@ -1,0 +1,167 @@
+---
+// BAGHUSET's own frame: a drawing office's one-page site, not the docs. It starts in its own look (recycled paper, the
+// forest pen, the lively hand, small caps) whatever a visitor chose elsewhere, and saves changes under its own key. A
+// thin strip above the header belongs to the demo: the way back, "Show parts" and the appearance panel. The header
+// names the storeys; the one in view is underlined by the pen, as a tab is. On a phone they sit behind a burger.
+import "@/fineliner/styles/fineliner.css"
+import "@/site/baghuset/drawings"
+import { FinelinerDefs } from "@/fineliner/defs/fineliner-defs"
+import { frameStyle } from "@/fineliner/lib/frame-style"
+import { buttonVariants } from "@/fineliner/ui/button"
+import { penMark } from "@/fineliner/pen"
+import { appearanceScript } from "@/fineliner/theme/appearance-script"
+import { AppearancePanel } from "@/site/appearance-panel"
+import { PartsXray } from "@/site/parts-xray"
+import FontPreloads from "@/site/font-preloads.astro"
+import SiteMenu from "@/site/layouts/site-menu.astro"
+import { PRESETS } from "@/site/studio/presets"
+import {
+  BAGHUSET_PRESET,
+  BAGHUSET_STORAGE_KEY,
+  baghusetAppearance,
+} from "./appearance"
+
+interface Props {
+  description: string
+}
+const { description } = Astro.props
+const title = "BAGHUSET · a drawing office in Aarhus"
+const NAV = [
+  { href: "#work", label: "Work" },
+  { href: "#studio", label: "Studio" },
+  { href: "#people", label: "People" },
+]
+const look = baghusetAppearance
+const share = new URL("/og/baghuset.png", Astro.site ?? Astro.url).href
+---
+
+<!doctype html>
+<html
+  lang="en"
+  data-stock={look.stock}
+  data-pen={look.pen}
+  data-hand={look.hand}
+  data-boil={look.boil}
+  data-containers={look.containers}
+  data-labels={look.labels}
+  data-density={look.density}
+  data-theme-preference={look.theme}
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <FontPreloads />
+    <title>{title}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={share} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script
+      is:inline
+      set:html={appearanceScript(baghusetAppearance, BAGHUSET_STORAGE_KEY)}
+    />
+  </head>
+  <body>
+    <FinelinerDefs />
+    <a
+      class="label absolute -left-[999px] top-2 z-30 bg-pen px-tight py-hair text-paper focus:left-2"
+      href="#main"
+    >
+      Skip to content
+    </a>
+    <aside
+      aria-label="Fineliner demo"
+      data-parts-skip=""
+      class="mx-auto flex max-w-[76rem] flex-wrap items-center gap-x-line gap-y-hair px-snug pt-tight sm:px-line"
+    >
+      <a
+        href="/"
+        class="label me-auto text-pen-quiet no-underline hover:underline"
+      >
+        Demo · Fineliner
+      </a>
+      <PartsXray client:idle />
+      <AppearancePanel
+        defaults={baghusetAppearance}
+        presets={[BAGHUSET_PRESET, ...PRESETS]}
+        storageKey={BAGHUSET_STORAGE_KEY}
+        className="text-pen-quiet max-sm:-me-2"
+        dotOnPhone
+        client:idle
+      />
+    </aside>
+    <header class="mx-auto flex max-w-[76rem] items-center justify-between gap-x-line px-snug py-tight sm:px-line">
+      <a
+        href="#top"
+        class="font-line text-h3 leading-heading tracking-[0.04em] text-pen no-underline"
+      >
+        BAGHUSET
+      </a>
+      <nav aria-label="BAGHUSET" class="flex items-center gap-x-line">
+        <ul class="m-0 hidden list-none items-center gap-x-line p-0 md:flex">
+          {NAV.map(({ href, label }) => (
+            <li>
+              <a
+                href={href}
+                data-storey-link={href.slice(1)}
+                class="group/storey relative inline-block py-hair no-underline"
+              >
+                {label}
+                <span
+                  aria-hidden="true"
+                  class="put-down pointer-events-none absolute inset-x-[-0.2em] bottom-[-0.1em] hidden h-[0.45em] text-pen group-aria-[current=location]/storey:block [&>svg]:size-full"
+                  set:html={penMark("underline", `storey:${label}`, "calm")}
+                />
+              </a>
+            </li>
+          ))}
+        </ul>
+        <a
+          href="#write"
+          data-slot="button"
+          class={buttonVariants({ size: "sm", className: "no-underline" })}
+          style={frameStyle(["Write to us"])}
+        >
+          Write to us
+        </a>
+        <SiteMenu path="" items={NAV} id="baghuset-menu" label="BAGHUSET" />
+      </nav>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <script>
+      // The storey in view underlines its name in the header; a link in the phone's menu closes the menu.
+      const links =
+        document.querySelectorAll<HTMLAnchorElement>("[data-storey-link]")
+      const watch = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue
+            for (const link of links)
+              if (link.dataset.storeyLink === entry.target.id)
+                link.setAttribute("aria-current", "location")
+              else link.removeAttribute("aria-current")
+          }
+        },
+        { rootMargin: "-45% 0px -50% 0px" },
+      )
+      for (const link of links) {
+        const storey = document.getElementById(link.dataset.storeyLink ?? "")
+        if (storey) watch.observe(storey)
+      }
+      const menu = document.getElementById("baghuset-menu")
+      menu?.addEventListener("click", (event) => {
+        if ((event.target as Element).closest("a")) menu.hidePopover()
+      })
+      // Drawings rendered at build time carry their first take; this draws the others where line boil shows them.
+      import { boilTakesIn } from "@/fineliner/drawing/drawing-takes"
+      boilTakesIn(document, () => import("@/site/baghuset/drawings"))
+    </script>
+  </body>
+</html>

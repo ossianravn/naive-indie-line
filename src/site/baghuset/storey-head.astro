@@ -1,0 +1,25 @@
+---
+// A storey's head on its wall: the storey's number in the typewriter where a plan would mark it ("2", "1", "St."),
+// then its name and a line about it at the reading measure.
+interface Props {
+  number: string
+  /** What the number stands for, for screen readers. */
+  floor: string
+  title: string
+  id: string
+}
+const { number, floor, title, id } = Astro.props
+---
+
+<header class="grid gap-x-line gap-y-tight sm:grid-cols-[3rem_minmax(0,1fr)]">
+  <p class="m-0 font-type text-h2 leading-heading text-pen-quiet">
+    <span aria-hidden="true">{number}</span>
+    <span class="sr-only">{floor}</span>
+  </p>
+  <div class="grid gap-y-tight">
+    <h2 id={id} class="m-0 text-h1 leading-heading">
+      {title}
+    </h2>
+    <slot />
+  </div>
+</header>

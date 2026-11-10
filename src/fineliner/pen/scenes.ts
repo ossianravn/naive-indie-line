@@ -3,16 +3,20 @@
 import type { Point } from "./geometry"
 import { place, type DrawOptions } from "./library"
 import { seedOf, stream, type Stream } from "./seed"
-import { sheet, type Sheet } from "./layers"
+import { sheet, type Region, type Sheet } from "./layers"
+import type { Bounds } from "./path"
 import { pen, type HandName, type Pen } from "./stroke"
 
 const M = 14
 
 /**
  * How a scene is drawn: boxed in its border (the default, 640 by 440), or open, without a border, its floor running
- * past both edges so it can fill a page section: wide for a desktop's first screen, tall for a phone's.
+ * past both edges so it can fill a page section: wide for a desktop's first screen, tall for a phone's. A strip
+ * (about 1600 by 520) is the floor of a page section whose wall is the page above it: no border and no back wall,
+ * composed to be cropped from the centre, with the moment and everything operable between x 400 and 1200, so one
+ * drawing serves a wide container whole and a narrow one by its middle half.
  */
-export type SceneFormat = "boxed" | "wide" | "tall"
+export type SceneFormat = "boxed" | "wide" | "tall" | "strip"
 
 export interface Stage {
   s: Sheet
@@ -32,6 +36,8 @@ export interface Stage {
   /** Where the side wall meets the back wall, and where the back wall meets the floor. */
   corner: number
   floor: number
+  /** Record a part a page should address (a whiteboard's face, a sign's board) under its own key. */
+  mark(key: string, id: string, box: Bounds | undefined): void
   walls(): void
   rug(): void
   border(): void
@@ -54,13 +60,27 @@ export function stage(
   )
   const p = pen(seed, hand, take)
   const r = stream(seedOf(seed), "room")
+  const mark = (key: string, id: string, box: Bounds | undefined) => {
+    if (box) s.regions.push({ key, id, box })
+  }
+  // Each placed object is measured as it is drawn, so a page can find it by its key; the SVG is unchanged.
   const put = (
     id: string,
     key: string,
     at: Point,
     k = 1,
     options: DrawOptions = {},
-  ) => place(s, id, `${seed}:${key}`, hand, at, k, options, take)
+  ) => {
+    let out: unknown
+    mark(
+      key,
+      id,
+      s.measure(() => {
+        out = place(s, id, `${seed}:${key}`, hand, at, k, options, take)
+      }),
+    )
+    return out
+  }
   const corner = r.between(0.13, 0.22) * W
   const floor = r.between(0.6, 0.66) * H
   return {
@@ -73,6 +93,7 @@ export function stage(
     m: M,
     corner,
     floor,
+    mark,
     walls() {
       s.stroke(p.line([corner, M], [corner, floor]))
       s.stroke(p.line([corner, floor], [W - M, floor + r.signed() * 6]))
@@ -135,4 +156,29 @@ export const SCENES = ((globalThis as { [key: symbol]: unknown })[
 /** Add a scene, or replace one with the same name, so drawing({ scene }) and <Drawing scene> find it. */
 export function defineScene(name: string, scene: Scene) {
   SCENES[name] = scene
+}
+
+/**
+ * Where each placed object (and each part a scene marked) lands in a scene, keyed by the key it was put under, in the
+ * drawing's own units, with the drawing's size. Composition never comes from the pen, so take 0's regions hold for
+ * every take. A page turns them into percentages to put a button over the lamp without measuring anything.
+ */
+export function sceneRegions({
+  scene,
+  format,
+  seed,
+  hand = "lively",
+}: {
+  scene: SceneName
+  format?: SceneFormat
+  seed: string | number
+  hand?: HandName
+}): { size: [number, number]; regions: Record<string, Region> } {
+  const sc = SCENES[scene]
+  if (!sc) throw new Error(`sceneRegions() needs a known scene, got "${scene}"`)
+  const { size, compose } = sceneIn(sc, format)
+  const regions: Record<string, Region> = {}
+  for (const region of compose(String(seed), hand, 0).regions)
+    regions[region.key] = region
+  return { size, regions }
 }

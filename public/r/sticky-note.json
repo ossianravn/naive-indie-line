@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "sticky-note",
+  "title": "Sticky Note",
+  "description": "A sticky note in the hand voice: a drawn square with a band of the wash along its glued edge and a curled corner.",
+  "registryDependencies": [
+    "@fineliner/base"
+  ],
+  "files": [
+    {
+      "path": "src/fineliner/extras/sticky-note.tsx",
+      "content": "import type { ComponentProps, CSSProperties } from \"react\"\nimport { cn } from \"@/fineliner/lib/utils\"\nimport { frameVars } from \"@/fineliner/pen/filters\"\nimport { seedOf, stream } from \"@/fineliner/pen/seed\"\n\n// A sticky note: a small square of paper in the hand voice, its outline drawn by the pen, a band of the wash along\n// the glued edge at the top and its lower corner curling up. The wash stays in its band, above the words, never\n// behind them. It is square at its size and grows taller for longer words rather than shrinking them. At the lively\n// hand it sits a few seeded degrees off true, straight at the calm one.\n\nexport interface StickyNoteProps extends ComponentProps<\"div\"> {\n  /** Same seed, same outline and angle. Defaults to the note's words. */\n  seed?: string | number\n}\n\n/** A sticky note with words in the hand voice. */\nexport function StickyNote({\n  seed,\n  children,\n  className,\n  style,\n  ...props\n}: StickyNoteProps) {\n  const key = String(seed ?? (typeof children === \"string\" ? children : \"note\"))\n  const r = stream(seedOf(key), \"sticky\")\n  const turn = (r.chance(0.5) ? 1 : -1) * r.between(0.8, 2.8)\n  return (\n    <div\n      data-slot=\"sticky-note\"\n      className={cn(\n        \"frame relative flex min-h-[9.5rem] w-[9.5rem] rotate-(--note-turn) flex-col bg-paper text-pen calm:rotate-none\",\n        className,\n      )}\n      style={\n        {\n          ...frameVars(seedOf(key)),\n          \"--note-turn\": `${turn.toFixed(2)}deg`,\n          ...style,\n        } as CSSProperties\n      }\n      {...props}\n    >\n      <span\n        aria-hidden=\"true\"\n        data-slot=\"sticky-note-band\"\n        className=\"block h-5 shrink-0 bg-wash opacity-55 [filter:var(--wob,var(--wob-2))] forced-colors:hidden\"\n      />\n      <div className=\"flex-1 px-tight pt-tight pb-snug font-hand text-[1.3rem] leading-[1.15] text-balance\">\n        {children}\n      </div>\n      {/* The curl: paper over the frame's corner, and the fold's two edges drawn across it. */}\n      <svg\n        aria-hidden=\"true\"\n        viewBox=\"0 0 20 20\"\n        className=\"pointer-events-none absolute -right-px -bottom-px size-5 overflow-visible\"\n      >\n        <path d=\"M20 0.5 L20 20 L0.5 20 Z\" className=\"fill-paper\" />\n        <path\n          d=\"M19.5 1.5 L15 15.5 L1.5 19.5\"\n          className=\"fill-none stroke-current\"\n          strokeWidth=\"var(--pen-weight)\"\n          vectorEffect=\"non-scaling-stroke\"\n          style={{\n            filter: \"var(--wob, var(--wob-2))\",\n            strokeWidth: \"var(--pen-weight)\",\n          }}\n        />\n        <path\n          d=\"M19.5 1.5 L1.5 19.5\"\n          className=\"fill-none stroke-current\"\n          vectorEffect=\"non-scaling-stroke\"\n          style={{\n            filter: \"var(--wob, var(--wob-1))\",\n            strokeWidth: \"var(--pen-weight)\",\n          }}\n        />\n      </svg>\n    </div>\n  )\n}\n",
+      "type": "registry:file",
+      "target": "~/src/fineliner/extras/sticky-note.tsx"
+    }
+  ],
+  "type": "registry:component"
+}
