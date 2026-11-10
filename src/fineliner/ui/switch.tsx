@@ -6,6 +6,8 @@ import { cn } from "@/fineliner/lib/utils"
 // A pill the pen draws (::after, bent by the wobble filter). Off, a paper thumb with a drawn edge rests at the start;
 // on, the pen fills the track with a pocket of ink (::before, put down from the left, gone at once when it turns off)
 // and the thumb moves to the end. Both draw in currentColor, so disabled and invalid follow the text colour.
+// A native button, so a wrapping <label> or htmlFor names it in the server's HTML (Base UI's span is named only
+// after hydration).
 function Switch({
   className,
   size = "default",
@@ -15,6 +17,8 @@ function Switch({
 }) {
   return (
     <SwitchPrimitive.Root
+      render={<button type="button" />}
+      nativeButton
       data-slot="switch"
       data-size={size}
       className={cn(

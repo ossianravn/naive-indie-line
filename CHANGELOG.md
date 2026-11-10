@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- `Switch` renders a native `<button>`, so a label around it or pointing at it names it in the page's HTML. Base UI's `<span>` took its name from the label only after hydration, so a switch in an island that had not hydrated yet (BAGHUSET's estimate, the docs) had no name for screen readers. It looks and toggles as before; disabled, it is a disabled button.
+- `npm run psi -- <paths>` runs PageSpeed Insights (mobile) on the live site with the key in `PSI_API_KEY` in `.env`.
 - `Slider` no longer sends a script with the page. Its thumbs were placed by a script Base UI inlines after each server-rendered slider, which measured the slider while the page was still loading and made the browser lay out everything above it there and then (over 100 ms on a mid-range phone under BAGHUSET's drawings). The thumbs are now placed in CSS, and the track still ends flush with a thumb at either end.
 - `RoomSection` doesn't style, lay out or paint a strip that is off screen; the strip keeps its place at the scene's aspect ratio and stays in the page's HTML, readable and focusable.
 - BAGHUSET's first screen loads about 40 KB less JavaScript: its rooms no longer load the building's drawings, which the server already drew. With the two changes above, most loads on the lab profile have no task over 50 ms; the rest have one of 53–70 ms, where every load had one of up to 122 ms before.

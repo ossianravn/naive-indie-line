@@ -46,7 +46,7 @@ Headless Chrome (the installed Chrome, through Python Playwright) as a Pixel 7: 
 - **Record** with performance observers added before load (`add_init_script`): `largest-contentful-paint`, `layout-shift`, `longtask`, `event` (duration threshold 16 ms) for interactions, and frame gaps from `requestAnimationFrame`. A CDP screencast (`Page.startScreencast`) shows what appears in what order.
 - **Operate touch** with `Input.dispatchTouchEvent`: a tap is start and end within 100 ms, a long press holds 700 ms, a scroll adds moves.
 - **It cannot show** GPU raster cost (headless rasterizes in software, and CPU throttling slows the main thread only), sticky hover, the on-screen keyboard, or Safari. For those, a Performance trace from a real phone through `chrome://inspect`.
-- **After a deploy,** PageSpeed Insights (mobile) on the changed pages: https://pagespeed.web.dev, or `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=<page>&strategy=mobile`. The keyless API's daily quota is small (it was spent on 2026-11-04); when it is, say so. Field data appears there once the site has the traffic.
+- **After a deploy,** PageSpeed Insights (mobile) on the changed pages: `npm run psi -- /baghuset /maaltid` prints each page's scores and metrics, with the key in `PSI_API_KEY` in `.env` at the repo root (gitignored), or https://pagespeed.web.dev in a browser. The keyless API's daily quota is shared and usually spent. Field data appears there once the site has the traffic.
 
 ### Techniques
 

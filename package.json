@@ -26,7 +26,8 @@
     "build:fonts": "node tools/fonts/build.mjs",
     "registry": "node tools/registry/build.mjs",
     "registry:check": "node tools/registry/build.mjs --check",
-    "test:consumer": "node --test tests/consumer/*.test.mjs"
+    "test:consumer": "node --test tests/consumer/*.test.mjs",
+    "psi": "node tools/psi.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^7.1.2",
