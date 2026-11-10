@@ -126,11 +126,11 @@ Fineliner Naïve Tramline is the drawn Tramline as a font: every stroke of the s
 
 **Line boil** is the signature, and an option. A drawing is drawn three times from the same seed with a different pen each time (a labelled fork, `take:1`, `take:2`, so the composition never changes) and the takes cycle, as hand-drawn animation does when every frame is traced again. Rerolling to a new seed shows the opposite: everything changes at once, which reads as rough; boil keeps the thing still and lets only the line breathe.
 
-| Setting (`data-boil`) | What boils                                                  |
-| --------------------- | ----------------------------------------------------------- |
-| `off`                 | Nothing                                                     |
-| `hover` (default)     | A drawing while the pointer is over it (fine pointers only) |
-| `art`                 | Every drawing, lettering and scene on screen, all the time  |
+| Setting (`data-boil`) | What boils                                                                                                                                                          |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `off`                 | Nothing                                                                                                                                                             |
+| `hover` (default)     | A drawing while the pointer is over it (fine pointers only); in a scene, only the thing under the pointer, the room resting. A tap boils it twice on a touch screen |
+| `art`                 | Every drawing, lettering and scene on screen, all the time                                                                                                          |
 
 Any element can set `data-boil` for its subtree, and the nearest one wins (the choice travels as inherited custom properties), so a hero or an empty state can boil all the time inside a hover page, or a dense screen can switch it off. Heroes and empty states boil on hover like everything else for now; always-on for them can become a setting.
 

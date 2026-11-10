@@ -63,7 +63,8 @@ export function stage(
   const mark = (key: string, id: string, box: Bounds | undefined) => {
     if (box) s.regions.push({ key, id, box })
   }
-  // Each placed object is measured as it is drawn, so a page can find it by its key; the SVG is unchanged.
+  // Each placed object is measured as it is drawn, so a page can find it by its key, and grouped as a part under that
+  // key, so hover boils it alone.
   const put = (
     id: string,
     key: string,
@@ -72,13 +73,13 @@ export function stage(
     options: DrawOptions = {},
   ) => {
     let out: unknown
-    mark(
-      key,
-      id,
-      s.measure(() => {
+    let box: Bounds | undefined
+    s.part(key, () => {
+      box = s.measure(() => {
         out = place(s, id, `${seed}:${key}`, hand, at, k, options, take)
-      }),
-    )
+      })
+    })
+    mark(key, id, box)
     return out
   }
   const corner = r.between(0.13, 0.22) * W

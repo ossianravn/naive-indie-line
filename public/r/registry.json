@@ -761,6 +761,11 @@
           "target": "~/src/fineliner/drawing/drawing-motion.ts"
         },
         {
+          "path": "src/fineliner/drawing/drawing-parts.ts",
+          "type": "registry:file",
+          "target": "~/src/fineliner/drawing/drawing-parts.ts"
+        },
+        {
           "path": "src/fineliner/drawing/drawing-takes.ts",
           "type": "registry:file",
           "target": "~/src/fineliner/drawing/drawing-takes.ts"

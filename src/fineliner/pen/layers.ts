@@ -32,6 +32,8 @@ export interface Sheet {
   measure(draw: () => void): Bounds | undefined
   /** Where placed objects and marked parts landed; scenes record them, and nothing here reaches the SVG. */
   regions: Region[]
+  /** Group what `draw` puts down as one part (`<g data-k>`), so a page can boil one object of a scene. */
+  part(key: string, draw: () => void): void
 }
 
 // Room around a layer for its pen line: a non-scaling stroke is wider, in the drawing's units, the smaller it is shown.
@@ -72,7 +74,11 @@ const escape = (text: string) =>
 
 /** `id` prefixes the sheet's mask ids; derive it from the drawing's seed and take so server and browser agree. */
 export function sheet(id: string): Sheet {
-  const layers: { paths: string[]; box?: Bounds }[] = [{ paths: [] }]
+  // A layer's paths, its reach and the part whose group is open in it: consecutive paths of one part share a group.
+  const layers: { paths: string[]; box?: Bounds; open?: string }[] = [
+    { paths: [] },
+  ]
+  let part: string | undefined
   const blanks: { d: string; box: Bounds }[] = []
   // The boxes being measured, innermost last: every mark grows all of them, so measures can nest.
   const watching: { box?: Bounds }[] = []
@@ -82,6 +88,11 @@ export function sheet(id: string): Sheet {
   const put = (markup: string, box: Bounds) => {
     seen(box)
     const layer = layers[layers.length - 1] as (typeof layers)[number]
+    if (layer.open !== part) {
+      if (layer.open !== undefined) layer.paths.push("</g>")
+      if (part !== undefined) layer.paths.push(`<g data-k="${escape(part)}">`)
+      layer.open = part
+    }
     layer.paths.push(markup)
     layer.box = grow(layer.box, box)
   }
@@ -95,6 +106,15 @@ export function sheet(id: string): Sheet {
     paper: add("sheet-fill"),
     raw: (markup) => put(markup, boxOf(markup)),
     regions: [],
+    part(key, draw) {
+      const outer = part
+      part = key
+      try {
+        draw()
+      } finally {
+        part = outer
+      }
+    },
     measure(draw) {
       const w: { box?: Bounds } = {}
       watching.push(w)
@@ -120,8 +140,9 @@ export function sheet(id: string): Sheet {
       const box = `x="${-pad}" y="${-pad}" width="${width + 2 * pad}" height="${height + 2 * pad}"`
       let defs = ""
       let body = ""
-      layers.forEach(({ paths, box: reach }, i) => {
-        if (!paths.length || !reach) return
+      layers.forEach(({ paths: marks, box: reach, open }, i) => {
+        if (!marks.length || !reach) return
+        const paths = open === undefined ? marks : [...marks, "</g>"]
         const after = blanks.slice(i).filter((b) => meet(reach, b.box))
         if (!after.length) {
           body += paths.join("")

@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- In a scene, line boil on hover boils only the thing under the pointer (a person, the lamp, a shelf of records) while the rest of the room keeps still; hovering a scene spot boils the object it marks, and a tap on a touch screen boils the thing tapped. Scenes group each object's lines by its key (`<g data-k>`), which changes their markup but not their drawing. Single drawings boil whole as before, and boil "art" still boils everything.
 - `Switch` renders a native `<button>`, so a label around it or pointing at it names it in the page's HTML. Base UI's `<span>` took its name from the label only after hydration, so a switch in an island that had not hydrated yet (BAGHUSET's estimate, the docs) had no name for screen readers. It looks and toggles as before; disabled, it is a disabled button.
 - `npm run psi -- <paths>` runs PageSpeed Insights (mobile) on the live site with the key in `PSI_API_KEY` in `.env`.
 - `Slider` no longer sends a script with the page. Its thumbs were placed by a script Base UI inlines after each server-rendered slider, which measured the slider while the page was still loading and made the browser lay out everything above it there and then (over 100 ms on a mid-range phone under BAGHUSET's drawings). The thumbs are now placed in CSS, and the track still ends flush with a thumb at either end.

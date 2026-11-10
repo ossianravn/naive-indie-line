@@ -3,8 +3,10 @@
 // would cycle them: during idle time for drawings in view when boil runs always, or on hover with a pointer that can
 // hover (the default), and at once under the pointer. A touch screen has no hover, so there a tap draws them and boils
 // the drawing once (boilOnce). Boil off or reduced motion, and they are never drawn. The pen engine loads only when
-// the first one is. No React, so static pages can use it too.
+// the first one is. No React, so static pages can use it too. A scene boils only the thing under the pointer, or the
+// one tapped (drawing-parts.ts), and a scene spot boils the object it stands over.
 import { ownIds } from "@/fineliner/lib/own-ids"
+import { partAt, setHot } from "./drawing-parts"
 import type { SceneFormat, SceneName } from "@/fineliner/pen/scenes"
 
 const TAKES = 3
@@ -84,18 +86,54 @@ async function next() {
 }
 
 const TAP_STEPS = [1, 2, 0, 1, 2, 0]
+const paceOf = (el: HTMLElement) => {
+  const pace = getComputedStyle(el).getPropertyValue("--take").trim()
+  return parseFloat(pace) * (/\ds$/.test(pace) ? 1000 : 1) || 120
+}
 /** A tap's boil: every take drawn, then two rounds of them at the boil's pace, resting on the first. */
 async function boilOnce(el: HTMLElement) {
   if (el.dataset.show !== undefined) return
   el.dataset.show = "0"
   await grow(el, true)
   if (el.children.length < TAKES) return void delete el.dataset.show
-  const pace = getComputedStyle(el).getPropertyValue("--take").trim()
-  const take = parseFloat(pace) * (/\ds$/.test(pace) ? 1000 : 1) || 120
+  const take = paceOf(el)
   TAP_STEPS.forEach((show, i) =>
     setTimeout(() => (el.dataset.show = String(show)), take * i),
   )
   setTimeout(() => delete el.dataset.show, take * TAP_STEPS.length)
+}
+/** A tap on a scene boils the part tapped the same way, the rest of the room still. */
+async function boilPartOnce(el: HTMLElement, key: string) {
+  if (el.dataset.hot !== undefined || el.dataset.show !== undefined) return
+  await grow(el, true)
+  if (el.children.length < TAKES) return
+  setHot(el, key)
+  const done = paceOf(el) * TAP_STEPS.length
+  setTimeout(() => el.dataset.hot === key && setHot(el, undefined), done)
+}
+
+// The scene under a fine pointer, and whether its parts boil there (hover boil, not always, not reduced motion).
+let over: HTMLElement | undefined
+let parted = false
+let frame = 0
+function hover(target: Element, x: number, y: number) {
+  const spot = target.closest?.<HTMLElement>(
+    "[data-slot=scene-spot][data-region]",
+  )
+  const el = spot
+    ? spot
+        .closest("[data-slot=scene-spots]")
+        ?.querySelector<HTMLElement>(".fl-takes[data-scene]")
+    : target.closest?.<HTMLElement>(".fl-takes[data-scene]")
+  if (el !== over) {
+    if (over && parted) setHot(over, undefined)
+    over = el ?? undefined
+    parted = !!el && watched.has(el) && boils(el) && !running(el, "--boil")
+    if (el && parted) void grow(el, true)
+  }
+  if (!over || !parted || over.children.length < TAKES || over.dataset.show)
+    return
+  setHot(over, spot ? spot.dataset.region : partAt(over, x, y))
 }
 
 function start() {
@@ -115,9 +153,25 @@ function start() {
   document.addEventListener("pointercancel", () => (tapped = undefined))
   document.addEventListener("pointerup", (e) => {
     const el = (e.target as Element).closest?.<HTMLElement>(".fl-takes")
-    if (el && el === tapped && boilsOnTap(el)) void boilOnce(el)
+    if (el && el === tapped && boilsOnTap(el)) {
+      const key = el.dataset.scene && partAt(el, e.clientX, e.clientY)
+      if (!el.dataset.scene) void boilOnce(el)
+      else if (key) void boilPartOnce(el, key)
+    }
     tapped = undefined
   })
+  document.addEventListener(
+    "pointermove",
+    (e) => {
+      if (e.pointerType === "touch") return
+      const { target, clientX, clientY } = e
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() =>
+        hover(target as Element, clientX, clientY),
+      )
+    },
+    { passive: true },
+  )
   seen = new IntersectionObserver(
     (entries) => {
       for (const e of entries) {
